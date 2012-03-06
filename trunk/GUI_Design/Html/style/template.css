@@ -59,6 +59,10 @@ text-decoration:underline;
 {
 overflow:hidden;
 }
+.header_menu img
+{
+padding-left:5px;
+}
 .header_projectname
 {
 	margin: 0px;
@@ -132,4 +136,13 @@ background-color:#EFEFEF;
 .menu_menu_item_current
 {
 background-color:#FFFFFF; !important;
+}
+#header_menu_search
+{
+margin:0px;
+padding:5px 5px;
+}
+#header_menu_search input
+{
+width:200px;
 }
