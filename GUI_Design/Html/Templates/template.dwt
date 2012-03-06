@@ -30,7 +30,11 @@
 	<div class="menu_menu_item">Setting</div>
 	</div>
   </div>
-  <div class="content">this is content </div>
+  <div class="content">
+  <!-- TemplateBeginEditable name="EditRegion" -->
+  this is content 
+  <!-- TemplateEndEditable -->
+  </div>
   <footer class="footer">
 <p>powered by <a href="iopioiopipoi">cde</a> </p>
 <p>2011-2012</p>
