@@ -7,28 +7,48 @@
 <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
 <!--[if lt IE 9]><script src=http://html5shiv.googlecode.com/svn/trunk/html5.js></script><![endif]-->
 <link href="../style/template.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../scripts/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../scripts/jquery-1.7.1.min.js" ></script>
+<script type="text/javascript">
+
+</script>
 </head>
 <body>
 <div class="bodycontent">
   <header class="header">
     <div class="header_menu">
-      <nav class="header_menu_left"> <span id="header_menu_first"><a href="#">Home</a></span> <span><a href="#">My Page</a></span> <span><a href="#">My Projects </a><img src="../Images/left_right_arrow.png"></img></span> <span><a href="#">Administrator</a></span><span id="header_menu_search"><input id="header_menu_search" placeholder="Search projects ..." type="text" style="padding:0px; margin:0px;"></input></span></nav>
-	  <div class="header_menu_right"><span id="header_menu_first">Log in as <a href="#">admin</a></span><span><a href="#">Log out</a></span></div>
+      <nav class="header_menu_left">
+        <div class="header_menu_left_item" id="header_menu_first"><a href="#">Home</a></div>
+        <div class="header_menu_left_item"><a href="#">My Page</a></div>
+        <div class="header_menu_left_item"><a href="#">My Projects </a><img id="header_menu_myproject" src="../Images/left_right_arrow.png"></img></div>
+        <div class="header_menu_left_item"><a href="#">Administrator</a></div>
+        <div class="header_menu_left_item" id="header_menu_search">
+          <form>
+            <input id="header_menu_search_input" placeholder="Search projects ..." type="text">
+            </input>
+            <input id="header_menu_search_icon" type="image" src="../Images/search.png">
+            </input>
+          </form>
+        </div>
+      </nav>
+      <div class="header_menu_right">
+      
+        <div class="header_menu_right_item"><a href="#">Log out</a></div>
+		  <div class="header_menu_right_item" id="header_menu_first">Log in as <a href="#">admin</a></div>
+      </div>
     </div>
     <h1 class="header_projectname">Project name</h1>
   </header>
   <div class="menu">
     <div class="menu_sitemap"><a href="#">Parent project</a> >> <a href="#">Project name</a></div>
     <div class="menu_menu">
-	<div class="menu_menu_item_current">Overview</div>
-	<div class="menu_menu_item">Activity</div>
-	<div class="menu_menu_item">Work Items</div>
-	<div class="menu_menu_item">Calendars</div>
-	<div class="menu_menu_item">Wiki</div>
-	<div class="menu_menu_item">Surveys</div>
-	<div class="menu_menu_item">Setting</div>
-	</div>
+      <div class="menu_menu_item_current">Overview</div>
+      <div class="menu_menu_item">Activity</div>
+      <div class="menu_menu_item">Work Items</div>
+      <div class="menu_menu_item">Calendars</div>
+      <div class="menu_menu_item">Wiki</div>
+      <div class="menu_menu_item">Surveys</div>
+      <div class="menu_menu_item">Setting</div>
+    </div>
   </div>
   <div class="content">
   <!-- TemplateBeginEditable name="EditRegion" -->
@@ -36,9 +56,9 @@
   <!-- TemplateEndEditable -->
   </div>
   <footer class="footer">
-<p>powered by <a href="iopioiopipoi">cde</a> </p>
-<p>2011-2012</p>
-</footer>
+    <p>powered by <a href="iopioiopipoi">cde</a> </p>
+    <p>2011-2012</p>
+  </footer>
 </div>
 </body>
 </html>
