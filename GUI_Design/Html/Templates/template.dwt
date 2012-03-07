@@ -25,8 +25,8 @@
           <form>
             <input id="header_menu_search_input" placeholder="Search projects ..." type="text">
             </input>
-            <input id="header_menu_search_icon" type="image" src="../Images/search.png">
-            </input>
+            <!--<input id="header_menu_search_icon" type="image" src="../Images/search.png">-
+            </input>-->
           </form>
         </div>
       </nav>
@@ -36,19 +36,29 @@
 		  <div class="header_menu_right_item" id="header_menu_first">Log in as <a href="#">admin</a></div>
       </div>
     </div>
-    <h1 class="header_projectname">Project name</h1>
+    <!-- TemplateBeginEditable name="Project name" -->
+    <h1 class="header_projectname">
+    Project name
+	</h1>
+	<!-- TemplateEndEditable -->
   </header>
   <div class="menu">
-    <div class="menu_sitemap"><a href="#">Parent project</a> >> <a href="#">Project name</a></div>
+    <div class="menu_sitemap">
+	<!-- TemplateBeginEditable name="Site map" -->
+     <a href="#">Parent project</a> >> <a href="#">Project name</a>
+	<!-- TemplateEndEditable -->    
+   </div>
     <div class="menu_menu">
-      <div class="menu_menu_item_current">Overview</div>
-      <div class="menu_menu_item">Activity</div>
-      <div class="menu_menu_item">Work Items</div>
-      <div class="menu_menu_item">Calendars</div>
-      <div class="menu_menu_item">Wiki</div>
-      <div class="menu_menu_item">Surveys</div>
-      <div class="menu_menu_item">Setting</div>
-    </div>
+	<!-- TemplateBeginEditable name="Menu" -->
+	<div class="menu_menu_item_current">Overview</div>
+	<div class="menu_menu_item">Activity</div>
+	<div class="menu_menu_item">Work Items</div>
+	<div class="menu_menu_item">Calendars</div>
+	<div class="menu_menu_item">Wiki</div>
+	<div class="menu_menu_item">Surveys</div>
+	<div class="menu_menu_item">Setting</div>
+	<!-- TemplateEndEditable -->  
+	</div>
   </div>
   <div class="content">
   <!-- TemplateBeginEditable name="EditRegion" -->
