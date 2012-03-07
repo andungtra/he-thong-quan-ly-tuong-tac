@@ -1,0 +1,152 @@
+/* CSS Document */
+.command-bar
+{
+	background: #467aa7;
+	margin:auto;
+	height:30px;
+	border: thin solid #ccc;
+	border-radius: 4px;
+}
+#list
+{
+	border: thin solid #ccc;
+	min-height:400px;
+	border-radius: 4px;
+	margin : 10px 0 10px 0;
+	color:#467aa7;
+}
+
+#title
+{
+	height:30px;
+	background-color: #467aa7;
+	color:#FFF;
+}
+#title td
+{
+	text-align:center;
+}
+
+#list a
+{
+	text-decoration:none;
+	margin-left: 10px;
+	margin-right:10px;
+}
+.list-item
+{
+	background:#eee;
+}
+
+.list-item td
+{
+	margin-left: 5px;
+	padding-left:5px;
+}
+#command-page
+{
+	width:500px;
+	margin:	auto;
+	text-align:center;
+	padding:0;
+}
+#command-page button
+{
+	min-width:25px;
+	min-height:25px;
+	border:none;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    font-size:12px;
+    line-height:130%;
+    text-decoration:none;
+    font-weight:bold;
+    color:#565656;
+    cursor:pointer;
+
+}
+#command-page span
+{
+	background:#eee;
+	border: thin solid #ccc;
+	color:#333;
+	text-align:center;
+	padding:0;
+	margin-top:5px;
+	height:30px;
+}
+.num-box-left
+{	
+	border-radius : 4px 0 0 4px;
+}
+.num-box-right
+{
+	border-radius : 0 4px 4px 0;
+}
+#btn-first
+{
+	background:url(../Images/fist-un.png) no-repeat transparent;
+}
+#btn-first:hover
+{
+	background-image:url(../Images/fist.png);
+}
+#btn-prev
+{
+	background:url(../Images/prev-un.png) no-repeat transparent;
+}
+#btn-prev:hover
+{
+	background-image:url(../Images/prev.png);
+}
+#btn-next
+{
+	background:url(../Images/next-un.png) no-repeat transparent;
+}
+#btn-next:hover
+{
+	background-image:url(../Images/next.png);
+}
+#btn-last
+{
+	background:url(../Images/last-un.png) no-repeat transparent;
+}
+#btn-last:hover
+{
+	background-image:url(../Images/last.png);
+}
+/* end styles list - accounts */
+
+/* tyles edit-accounts*/
+.top-bar
+{
+	background:#467aa7;
+	color:#fff;
+	font-size:25px;
+	height:30px;
+	line-height:30px;
+	font-weight:bold;
+	text-align:center;
+}
+#info
+{
+	width:600px;
+	min-height:400px;
+	border: thin solid #ccc;
+	border-radius:4px;
+	margin:auto;
+	color:#467aa7;
+}
+
+#info td
+{
+	text-align:right;
+}
+#info input
+{
+	width:90%;
+	margin-right:40px;
+	height:30px;
+	font-size:20px;
+}
+
+/* end styles edit-accounts*/
