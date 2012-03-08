@@ -21,50 +21,36 @@
         <div class="header_menu_left_item"><a href="#">My Page</a></div>
         <div class="header_menu_left_item"><a href="#">My Projects </a><img id="header_menu_myproject" src="../Images/left_right_arrow.png"></img></div>
         <div class="header_menu_left_item"><a href="#">Administrator</a></div>
-        <div class="header_menu_left_item" id="header_menu_search">
+<!--        <div class="header_menu_left_item" id="header_menu_search">
           <form>
             <input id="header_menu_search_input" placeholder="Search projects ..." type="text">
             </input>
-            <!--<input id="header_menu_search_icon" type="image" src="../Images/search.png">-
-            </input>-->
+            <input id="header_menu_search_icon" type="image" src="../Images/search.png">-
+            </input>
           </form>
-        </div>
+        </div>-->
       </nav>
       <div class="header_menu_right">
-      
         <div class="header_menu_right_item"><a href="#">Log out</a></div>
-		  <div class="header_menu_right_item" id="header_menu_first">Log in as <a href="#">admin</a></div>
+        <div class="header_menu_right_item" id="header_menu_first">Log in as <a href="#">admin</a></div>
       </div>
     </div>
     <!-- TemplateBeginEditable name="Project name" -->
-    <h1 class="header_projectname">
-    Project name
-	</h1>
-	<!-- TemplateEndEditable -->
-  </header>
+    <h1 class="header_projectname"> Project name </h1>
+    <!-- TemplateEndEditable --> </header>
   <div class="menu">
-    <div class="menu_sitemap">
-	<!-- TemplateBeginEditable name="Site map" -->
-     <a href="#">Parent project</a> >> <a href="#">Project name</a>
-	<!-- TemplateEndEditable -->    
-   </div>
-    <div class="menu_menu">
-	<!-- TemplateBeginEditable name="Menu" -->
-	<div class="menu_menu_item_current">Overview</div>
-	<div class="menu_menu_item">Activity</div>
-	<div class="menu_menu_item">Work Items</div>
-	<div class="menu_menu_item">Calendars</div>
-	<div class="menu_menu_item">Wiki</div>
-	<div class="menu_menu_item">Surveys</div>
-	<div class="menu_menu_item">Setting</div>
-	<!-- TemplateEndEditable -->  
-	</div>
+    <div class="menu_sitemap"> <!-- TemplateBeginEditable name="Site map" --> <a href="#">Parent project</a> <img src="../Images/left_right_arrow.png"></img> <a href="#">Project name</a> <!-- TemplateEndEditable --> </div>
+    <div class="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
+      <div class="menu_menu_item_current">Overview</div>
+      <div class="menu_menu_item">Activity</div>
+      <div class="menu_menu_item">Work Items</div>
+      <div class="menu_menu_item">Calendars</div>
+      <div class="menu_menu_item">Wiki</div>
+      <div class="menu_menu_item">Surveys</div>
+      <div class="menu_menu_item">Setting</div>
+      <!-- TemplateEndEditable --> </div>
   </div>
-  <div class="content">
-  <!-- TemplateBeginEditable name="EditRegion" -->
-  this is content 
-  <!-- TemplateEndEditable -->
-  </div>
+  <div class="content"> <!-- TemplateBeginEditable name="EditRegion" --> this is content <!-- TemplateEndEditable --> </div>
   <footer class="footer">
     <p>powered by <a href="iopioiopipoi">cde</a> </p>
     <p>2011-2012</p>
