@@ -1,7 +1,7 @@
 /* CSS Document */
 body
 {
- margin:5px 0px;
+ margin:0px 0px;
  padding:0px;
 }
 .bodycontent
@@ -28,6 +28,7 @@ text-decoration:underline;
 .header_menu
 {
 overflow:hidden;
+font-size:80%;
 }
 .header_menu img
 {
@@ -67,14 +68,14 @@ overflow:hidden;
 {
 	float:left;
 	border-left: thin solid #000000;
-	padding:5px 31px;
+	padding:2px 31px;
 	margin:0px;
 }
 .header_menu_right_item
 {
 	float:right;
 	border-left: thin solid #000000;
-	padding:5px 31px;
+	padding:2px 31px;
 	margin:0px;
 }
 #header_menu_myproject:hover
@@ -101,7 +102,7 @@ width:250px;
 }
 #header_menu_search_icon
 {
-height:15px;
+height:10px;
 }
 .menu
 {
@@ -140,10 +141,15 @@ text-decoration:underline;
 	padding:5px;
 	padding-left:10px;
 	color:#85ADD0;
+	font-size:80%;
 }
 .menu_sitemap a
 {
 	padding:0px 5px;
+}
+.menu_sitemap img:hover
+{
+cursor:pointer;
 }
 .menu_menu
 {
