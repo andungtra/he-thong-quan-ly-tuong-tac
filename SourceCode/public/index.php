@@ -22,5 +22,20 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+
+/** Routing Info **/
+$FrontController = Zend_Controller_Front::getInstance();
+$Router = $FrontController->getRouter();
+$Router->addRoute("artiststore",
+                  new Zend_Controller_Router_Route
+                  (
+                      "artist/store",
+                      array
+                      ("controller" => "artist",
+                       "action"     => "artistaffiliatecontent"
+                    )
+                ));
+
 $application->bootstrap()
             ->run();
+
