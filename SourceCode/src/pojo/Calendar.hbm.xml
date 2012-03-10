@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 10, 2012 10:58:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pojo.Calendar" table="calendar" catalog="cde">
+        <id name="calendarId" type="java.lang.Integer">
+            <column name="CalendarID" />
+            <generator class="identity" />
+        </id>
+        <set name="projects" table="project" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CalendarID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.Project" />
+        </set>
+        <set name="events" table="event" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CalendarID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.Event" />
+        </set>
+        <set name="accounts" table="account" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="CalendarID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.Account" />
+        </set>
+    </class>
+</hibernate-mapping>

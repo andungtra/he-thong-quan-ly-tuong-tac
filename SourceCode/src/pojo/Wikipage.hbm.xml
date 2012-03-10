@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 10, 2012 10:58:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pojo.Wikipage" table="wikipage" catalog="cde">
+        <id name="wikiPageId" type="java.lang.Integer">
+            <column name="WikiPageID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="project" class="pojo.Project" fetch="select">
+            <column name="ProjectID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="account" class="pojo.Account" fetch="select">
+            <column name="AuthorID" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="Name" length="45" />
+        </property>
+        <property name="summary" type="string">
+            <column name="Summary" length="45" />
+        </property>
+        <property name="content" type="string">
+            <column name="Content" length="45" />
+        </property>
+        <set name="wikicomments" table="wikicomment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="WikiPage_WikiPageID" not-null="true" />
+            </key>
+            <one-to-many class="pojo.Wikicomment" />
+        </set>
+    </class>
+</hibernate-mapping>
