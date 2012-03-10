@@ -13,8 +13,13 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/javassist.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/spring-aop-3.0.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/spring-asm-3.0.2.RELEASE.jar"/>
@@ -37,5 +42,6 @@
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/spring-webmvc-3.0.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/spring-webmvc-portlet-3.0.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/standard.jar"/>
+	<classpathentry kind="lib" path="D:/Textbooks/01. He thong quan ly tuong tac trong cac du an phan mem/he-thong-quan-ly-tuong-tac/SourceCode/WebContent/WEB-INF/lib/mysql-connector-java-5.1.14-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

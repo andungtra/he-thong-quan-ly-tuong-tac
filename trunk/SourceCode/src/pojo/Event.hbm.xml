@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 10, 2012 10:58:54 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="pojo.Event" table="event" catalog="cde">
+        <id name="eventId" type="java.lang.Integer">
+            <column name="EventID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="calendar" class="pojo.Calendar" fetch="select">
+            <column name="CalendarID" not-null="true" />
+        </many-to-one>
+        <property name="dateTime" type="timestamp">
+            <column name="DateTime" length="19" not-null="true" />
+        </property>
+        <property name="name" type="string">
+            <column name="Name" length="45" not-null="true" />
+        </property>
+        <property name="location" type="string">
+            <column name="Location" length="45" />
+        </property>
+        <property name="description" type="string">
+            <column name="Description" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

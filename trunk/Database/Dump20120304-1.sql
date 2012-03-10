@@ -223,13 +223,13 @@ LOCK TABLES `calendar` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `class`
+-- Table structure for table `projectclass`
 --
 
-DROP TABLE IF EXISTS `class`;
+DROP TABLE IF EXISTS `projectclass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `class` (
+CREATE TABLE `projectclass` (
   `ClassID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `Description` text COLLATE utf8_unicode_ci,
@@ -238,12 +238,12 @@ CREATE TABLE `class` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `class`
+-- Dumping data for table `projectclass`
 --
 
-LOCK TABLES `class` WRITE;
-/*!40000 ALTER TABLE `class` DISABLE KEYS */;
-/*!40000 ALTER TABLE `class` ENABLE KEYS */;
+LOCK TABLES `projectclass` WRITE;
+/*!40000 ALTER TABLE `projectclass` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projectclass` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -430,7 +430,7 @@ CREATE TABLE `project` (
   KEY `fk_Project_Process1` (`ProcessID`),
   KEY `fk_Project_Calendar1` (`CalendarID`),
   CONSTRAINT `fk_Project_WorkItemContainer1` FOREIGN KEY (`ProjectID`) REFERENCES `workitemcontainer` (`WorkItemContainerID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Project_Class1` FOREIGN KEY (`ClassID`) REFERENCES `class` (`ClassID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Project_Class1` FOREIGN KEY (`ClassID`) REFERENCES `projectclass` (`ClassID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Project_Process1` FOREIGN KEY (`ProcessID`) REFERENCES `process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Project_Calendar1` FOREIGN KEY (`CalendarID`) REFERENCES `calendar` (`CalendarID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
