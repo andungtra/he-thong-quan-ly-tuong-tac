@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_hcmus_tis_model_Account" items="${accounts}" z="T4vTKgpd9Ypn1wEWkXgjg2/tHd4=">
+        <table:table data="${accounts}" id="l_org_hcmus_tis_model_Account" path="/accounts" z="eWRCkY8gmPJdZ7IjGwhobo2imkY=">
+            <table:column id="c_org_hcmus_tis_model_Account_firstName" property="firstName" z="7wyYCEYRUkcTbDX0w+MFUHPABSs="/>
+            <table:column id="c_org_hcmus_tis_model_Account_lastName" property="lastName" z="u6GqlrjlYBZiyWcxU1WaZmZlKdY="/>
+            <table:column id="c_org_hcmus_tis_model_Account_email" property="email" z="qJe8o16ZMsESM4Zwf2NYmi9bnRg="/>
+            <table:column id="c_org_hcmus_tis_model_Account_password" property="password" z="LqlVUeti16DpITkGBIZScor3ITQ="/>
+            <table:column id="c_org_hcmus_tis_model_Account_isAdmin" property="isAdmin" z="SyFNCcOCx1Bes1dQXh1klEYAwYE="/>
+        </table:table>
+    </page:list>
+</div>

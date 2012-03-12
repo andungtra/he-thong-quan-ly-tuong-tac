@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" xmlns:spring="http://www.springframework.org/tags" id="myMenu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:url value="/accounts?page=1&amp;size=${empty param.size ? 10 : param.size}" var="listAccountUrl"></spring:url>
+  <div class="menu">
+    <div class="menu_sitemap"> <!-- TemplateBeginEditable name="Site map" --> For administrator<!-- TemplateEndEditable --> </div>
+    <div class="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
+      <div class="menu_menu_item_current"><a href="${listAccountUrl}">Account</a></div>
+      <div class="menu_menu_item">Project</div>
+      <div class="menu_menu_item">Class</div>
+      <div class="menu_menu_item">Process</div>
+      <!-- TemplateEndEditable --> </div>
+  </div>
+</div>
