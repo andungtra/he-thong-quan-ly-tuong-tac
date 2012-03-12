@@ -1,0 +1,47 @@
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-11 16:20:44
+project --topLevelPackage org.hcmus.tis --projectName TIS --java 6 --packaging JAR
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-11 16:20:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-11 16:21:25
+jpa setup --database MYSQL --provider HIBERNATE
+entity jpa --class org.hcmus.tis.model.Project --testAutomatically
+field number --fieldName ProjectID --type int
+web mvc setup 
+web mvc all --package org.hcmus.tis.controller
+development mode --enabled true
+focus --class ~.model.Project
+field string --fieldName name --notNull --sizeMax 50
+focus --class ~.model.Project
+field string --fieldName description
+entity jpa --class org.hcmus.tis.model.StudyClass --testAutomatically 
+finder add --finderName finderTest --class ~.model.Project 
+finder list 
+focus --class ~.model.StudyClass
+field string --fieldName name --notNull --sizeMax 50
+field string --fieldName description
+focus --class ~.model.Project
+field reference --fieldName studyClass --type ~.model.StudyClass --notNull 
+web mvc scaffold --class ~.model.StudyClass
+web mvc all --package org.hcmus.tis.controller
+entity jpa --class org.hcmus.tis.model.Account --testAutomatically 
+field string --fieldName firstName --notNull --sizeMax 50 --sizeMin 1
+field string --fieldName lastName --notNull --sizeMax 50 --sizeMin 1
+field string --fieldName email --notNull --unique --sizeMin 1
+field string --fieldName password --notNull --sizeMin 1 --sizeMax 50
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-11 17:38:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-11 20:41:33
+// [failed] entity jpa --class org.hcmus.tis.model.Role --testAutomatically 
+entity jpa --class org.hcmus.tis.model.MemberRole --testAutomatically 
+field string --fieldName name --notNull --sizeMin 1 --sizeMax 50
+field string --fieldName description
+security setup
+backup
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-12 00:24:12
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-12 10:12:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-12 10:15:17
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-12 10:17:00
+focus --class ~.model.Account
+field boolean --fieldName isAdmin --notNull --value false
+finder list 
+finder add --finderName kjkhkjhkj
+backup

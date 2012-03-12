@@ -1,0 +1,33 @@
+<div id="myHeader" class="header" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+  <jsp:directive.page contentType="text/html;charset=UTF-8" />
+  <jsp:output omit-xml-declaration="yes" />
+  <spring:message code="global_home" var="home"></spring:message>
+  <spring:message code="global_my_page" var="myPage"></spring:message>
+  <spring:message code="global_my_projects" var="myProjects"></spring:message>
+  <spring:message code="global_administrator" var="administrator"></spring:message>
+  <spring:url value="/resources/images/left_right_arrow.png" var="lRArrowUrl"></spring:url>
+    <spring:message code="security_login_as" var="loginAs"></spring:message>
+        <spring:message code="security_logout" var="logout"></spring:message>
+   <div class="header_menu">
+      <nav class="header_menu_left">
+        <div class="header_menu_left_item" id="header_menu_first"><a href="#">${home}</a></div>
+        <div class="header_menu_left_item"><a href="#">${myPage}</a></div>
+        <div class="header_menu_left_item"><a href="#">${myProjects}</a><img id="header_menu_myproject" src="${lRArrowUrl}"></img></div>
+        <div class="header_menu_left_item"><a href="#">${administrator }</a></div>
+        <!--        <div class="header_menu_left_item" id="header_menu_search">
+          <form>
+            <input id="header_menu_search_input" placeholder="Search projects ..." type="text">
+            </input>
+            <input id="header_menu_search_icon" type="image" src="../Images/search.png">-
+            </input>
+          </form>
+        </div>-->
+      </nav>
+      <div class="header_menu_right">
+        <div class="header_menu_right_item"><a href="#">${logout }</a></div>
+        <div class="header_menu_right_item" id="header_menu_first">${loginAs } <a href="#">admin</a></div>
+      </div>
+    </div>
+    <!-- TemplateBeginEditable name="Project name" -->
+    <h1 class="header_projectname">Administrator </h1>
+</div> 
