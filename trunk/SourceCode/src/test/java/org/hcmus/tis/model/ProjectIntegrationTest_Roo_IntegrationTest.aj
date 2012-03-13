@@ -89,7 +89,7 @@ privileged aspect ProjectIntegrationTest_Roo_IntegrationTest {
         obj = Project.findProject(id);
         boolean modified =  dod.modifyProject(obj);
         Integer currentVersion = obj.getVersion();
-        Project merged = obj.merge();
+        Project merged = (Project)obj.merge();
         obj.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Project' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);

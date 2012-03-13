@@ -4,13 +4,12 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectController;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,11 +35,6 @@ privileged aspect ProjectController_Roo_Controller {
     @RequestMapping(params = "form", produces = "text/html")
     public String ProjectController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Project());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (StudyClass.countStudyClasses() == 0) {
-            dependencies.add(new String[] { "studyclass", "studyclasses" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
         return "projects/create";
     }
     
@@ -95,6 +89,7 @@ privileged aspect ProjectController_Roo_Controller {
     void ProjectController.populateEditForm(Model uiModel, Project project) {
         uiModel.addAttribute("project", project);
         uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
+        uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
     }
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

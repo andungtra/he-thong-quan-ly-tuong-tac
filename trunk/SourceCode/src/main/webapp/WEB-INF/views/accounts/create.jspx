@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_org_hcmus_tis_model_Account" modelAttribute="account" path="/accounts" render="${empty dependencies}" z="51areJweFb49LDDKpSccRCKedRk=">
-        <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="oPiB347g8pADTfEFGQqF/HeGPvk="/>
-        <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="R5SRZcsH/jEsdZiIIq/jeScZPZY="/>
+        <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
+        <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
         <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk="/>
-        <field:input field="password" id="c_org_hcmus_tis_model_Account_password" required="true" z="WWBi6dZbGOD+6+zMoRC7kHQq6Bo="/>
+        <field:input field="password" id="c_org_hcmus_tis_model_Account_password" required="true" z="user-managed"/>
         <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Account" render="${not empty dependencies}" z="fLrZinEv2B+MMHZGxO2gZySAXIA="/>
