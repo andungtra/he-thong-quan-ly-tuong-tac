@@ -3,8 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_org_hcmus_tis_model_Project" modelAttribute="project" path="/projects" versionField="Version" z="VltzOKzzRvDk+3kwSwdSPTsWC0Q=">
-        <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="AJZ/E47lJnDi4PB7RVs+1RP5gZk="/>
-        <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="0H5DcLgvQ0+fZobvXSfnQagUWlM="/>
-        <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" required="true" z="4ypblTmp+Oq6SxDrJwSzx1FOrBw="/>
+        <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
+        <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
+        <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
+        <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
     </form:update>
 </div>

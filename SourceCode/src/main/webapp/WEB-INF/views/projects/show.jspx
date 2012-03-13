@@ -3,8 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_hcmus_tis_model_Project" object="${project}" path="/projects" z="Zyy5Oa9tWqs7LlqR+z9uXEz0aHg=">
-        <field:display field="name" id="s_org_hcmus_tis_model_Project_name" object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI="/>
         <field:display field="description" id="s_org_hcmus_tis_model_Project_description" object="${project}" z="wdUFcebJjkZc28b97a5kBc7qxx8="/>
+        <field:display field="name" id="s_org_hcmus_tis_model_Project_name" object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI="/>
+        <field:display field="parentContainer" id="s_org_hcmus_tis_model_Project_parentContainer" object="${project}" z="qYcKn8kLGleo8hAt0FljFVzVDA4="/>
         <field:display field="studyClass" id="s_org_hcmus_tis_model_Project_studyClass" object="${project}" z="sfKZ8E0magtcyM6TuXn6zROX9MQ="/>
     </page:show>
 </div>

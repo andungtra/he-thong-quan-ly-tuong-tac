@@ -4,21 +4,10 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.hcmus.tis.model.Project;
 import org.springframework.transaction.annotation.Transactional;
 
 privileged aspect Project_Roo_Jpa_ActiveRecord {
-    
-    @PersistenceContext
-    transient EntityManager Project.entityManager;
-    
-    public static final EntityManager Project.entityManager() {
-        EntityManager em = new Project().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
     
     public static long Project.countProjects() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Project o", Long.class).getSingleResult();
@@ -35,35 +24,6 @@ privileged aspect Project_Roo_Jpa_ActiveRecord {
     
     public static List<Project> Project.findProjectEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Project o", Project.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
-    
-    @Transactional
-    public void Project.persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
-    
-    @Transactional
-    public void Project.remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            Project attached = Project.findProject(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
-    
-    @Transactional
-    public void Project.flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
-    
-    @Transactional
-    public void Project.clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
     }
     
     @Transactional

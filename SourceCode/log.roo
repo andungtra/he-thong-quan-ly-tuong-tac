@@ -45,3 +45,59 @@ field boolean --fieldName isAdmin --notNull --value false
 finder list 
 finder add --finderName kjkhkjhkj
 backup
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-12 21:21:05
+// [failed] entity jpa --class org.hcmus.tis.model.WorkItemContainer --abstract --testAutomatically --inheritanceType TABLE_PER_CLASS
+entity jpa --class org.hcmus.tis.model.WorkItemContainer --abstract  --inheritanceType TABLE_PER_CLASS
+entity jpa --class ~.model.Project --extends ~.model.WorkItemContainer --testAutomatically 
+focus --class ~.model.WorkItemContainer
+field string --fieldName name --sizeMax 50 --sizeMin 1 --notNull 
+focus --class ~.model.Project
+focus --class ~.model.Project
+field string --fieldName description
+web mvc all --package org.hcmus.tis.controller
+entity jpa --class org.hcmus.tis.model.WorkItemContainer --abstract  --inheritanceType SINGLE_TABLE 
+entity jpa --class ~.model.Project --extends ~.model.WorkItemContainer --testAutomatically 
+field string --fieldName description
+focus --class ~.model.WorkItemContainer
+field string --fieldName name --notNull --sizeMin 1 --sizeMax  50
+web mvc all --package org.hcmus.tis.controller
+entity jpa --class a.workitemContainer --abstract --inheritanceType JOINED
+entity jpa --class a.Project --extends ~.WorkitemContainer
+focus --class ~.model.Project
+// [failed] field string --fieldName description
+entity jpa --class a.workitemContainer --abstract --inheritanceType JOINED
+entity jpa --class a.Project --extends ~.WorkitemContainer
+focus --class ~.model.Project
+// [failed] field string --fieldName description
+focus --class ~.model.WorkItemContainer
+// [failed] field string --fieldName name --notNull --sizeMin 1 --sizeMax  50
+web mvc all --package org.hcmus.tis.controller
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-12 22:46:33
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-12 22:46:48
+entity jpa --class org.hcmus.tis.model.WorkItemContainer --abstract 
+entity jpa --class org.hcmus.tis.model.WorkItemContainer --abstract --inheritanceType JOINED 
+field string --fieldName  name --notNull --sizeMax 50 --sizeMin 1
+entity jpa --class org.hcmus.tis.model.Project --extends ~.model.WorkItemContainer --testAutomatically 
+web mvc all --package org.hcmus.tis.controller
+focus --class ~.model.Project
+field string --fieldName description
+web mvc all --package org.hcmus.tis.controller
+focus --class ~.model.WorkItemContainer
+field reference --fieldName parentContainer --type ~.model.WorkItemContainer 
+focus --class ~.model.Project
+field reference --fieldName studyClass --type ~.model.StudyClass
+web mvc all --package org.hcmus.tis.controller
+focus --class ~.model.StudyClass
+finder list 
+focus --class ~.model.Project
+finder list --depth 2
+finder list --filter name
+finder list --filter description
+finder list --depth 2 --filter name
+finder list --depth 2 --filter name,description
+finder list --filter name,description
+finder list --filter name
+finder add --finderName findProjectsByNameLike
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-13 00:15:07

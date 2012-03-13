@@ -15,5 +15,9 @@
             <menu:item id="i_account_new" messageCode="global_menu_new" url="/accounts?form" z="7ISq6pJsfrDJexgk1yAmzNiIcp8="/>
             <menu:item id="i_account_list" messageCode="global_menu_list" url="/accounts?page=1&amp;size=${empty param.size ? 10 : param.size}" z="VeXZsM9n5bR9ZvhjdYhrVsG24uw="/>
         </menu:category>
+        <menu:category id="c_memberrole" z="4p/xwSxyj4Xte7E5jvS0xXsM5CA=">
+            <menu:item id="i_memberrole_new" messageCode="global_menu_new" url="/memberroles?form" z="8UycwG068b4Po3fI0xERIo8J4bU="/>
+            <menu:item id="i_memberrole_list" messageCode="global_menu_list" url="/memberroles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="5qqE99MvWWA4QSN7jIuZU4YCHd4="/>
+        </menu:category>
     </menu:menu>
 </div>

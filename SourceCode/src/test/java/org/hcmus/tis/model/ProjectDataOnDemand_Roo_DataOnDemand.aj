@@ -14,6 +14,7 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
         Project obj = new Project();
         setDescription(obj, index);
         setName(obj, index);
+        setParentContainer(obj, index);
         setStudyClass(obj, index);
         return obj;
     }
@@ -47,6 +49,11 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
             name = name.substring(0, 50);
         }
         obj.setName(name);
+    }
+    
+    public void ProjectDataOnDemand.setParentContainer(Project obj, int index) {
+        WorkItemContainer parentContainer = null;
+        obj.setParentContainer(parentContainer);
     }
     
     public void ProjectDataOnDemand.setStudyClass(Project obj, int index) {

@@ -8,14 +8,6 @@ import org.hcmus.tis.model.StudyClass;
 
 privileged aspect Project_Roo_JavaBean {
     
-    public String Project.getName() {
-        return this.name;
-    }
-    
-    public void Project.setName(String name) {
-        this.name = name;
-    }
-    
     public String Project.getDescription() {
         return this.description;
     }
