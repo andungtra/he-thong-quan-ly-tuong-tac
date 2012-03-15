@@ -8,6 +8,7 @@
   <jsp:directive.attribute name="typeIdFieldName" type="java.lang.String" required="false" rtexprvalue="true" description="The identifier field name for the type (defaults to 'id')" />
   <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
   <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
+  <jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'show' link into table (default true)" />
   <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
@@ -33,6 +34,10 @@
     <c:if test="${empty delete}">
       <c:set var="delete" value="true" />
     </c:if>
+    
+      <c:if test="${empty show}">
+      <c:set var="show" value="true" />
+    </c:if>
 
     <spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
     <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
@@ -50,7 +55,9 @@
               <spring:eval var="colCounter" expression="colCounter  + 1" />
             </th>
           </c:forTokens>
+          <c:if test="${show }">
           <th></th>
+          </c:if>
           <c:if test="${update}">
             <th></th>
             <spring:eval var="colCounter" expression="colCounter  + 1" />
@@ -92,6 +99,7 @@
             </td>
           </c:forTokens>
           <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
+          <c:if test="${show}">
           <td class="utilbox">
             <spring:url value="${path}/${itemId}" var="show_form_url" />
             <spring:url value="/resources/images/show.png" var="show_image_url" />
@@ -100,6 +108,7 @@
               <img alt="${fn:escapeXml(show_label)}" class="image" src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
             </a>
           </td>
+          </c:if>
           <c:if test="${update}">
             <td class="utilbox">
               <spring:url value="${path}/${itemId}" var="update_form_url">

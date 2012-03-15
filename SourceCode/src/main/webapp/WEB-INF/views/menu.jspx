@@ -6,6 +6,7 @@
         <menu:category id="c_project" z="u0PzRIwMDmEv/J6b8vbKakXGIdQ=">
             <menu:item id="i_project_new" messageCode="global_menu_new" url="/projects?form" z="1BazRC1rLnod0a+MpP1flWTvehA="/>
             <menu:item id="i_project_list" messageCode="global_menu_list" url="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}" z="GHL05c3Rvr+eKDgRCk3Ttak0W+g="/>
+            <menu:item id="fi_project_namelike" messageCode="global_menu_find" url="/projects?find=ByNameLike&amp;form" z="F1okaSAgXeWYfAMHs1Pfsu9okCk="/>
         </menu:category>
         <menu:category id="c_studyclass" z="6ca/Ja9XalHDG0FzqNxunXmxh4w=">
             <menu:item id="i_studyclass_new" messageCode="global_menu_new" url="/studyclasses?form" z="lF1SN7DpiGhQkf1+P+GQe5N0ea8="/>
@@ -18,6 +19,13 @@
         <menu:category id="c_memberrole" z="4p/xwSxyj4Xte7E5jvS0xXsM5CA=">
             <menu:item id="i_memberrole_new" messageCode="global_menu_new" url="/memberroles?form" z="8UycwG068b4Po3fI0xERIo8J4bU="/>
             <menu:item id="i_memberrole_list" messageCode="global_menu_list" url="/memberroles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="5qqE99MvWWA4QSN7jIuZU4YCHd4="/>
+        </menu:category>
+        <menu:category id="c_memberinformation" z="XOF/qVaKN7CBR0QI2LT8+I4eNiE=">
+            <menu:item id="i_memberinformation_new" messageCode="global_menu_new" url="/memberinformations?form" z="C0ptwREVJsidk8m7/6gVgM5isQ0="/>
+            <menu:item id="i_memberinformation_list" messageCode="global_menu_list" url="/memberinformations?page=1&amp;size=${empty param.size ? 10 : param.size}" z="3T8awC4+3AVrqG0TrSfY7pAjqaI="/>
+        </menu:category>
+        <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
+            <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
     </menu:menu>
 </div>

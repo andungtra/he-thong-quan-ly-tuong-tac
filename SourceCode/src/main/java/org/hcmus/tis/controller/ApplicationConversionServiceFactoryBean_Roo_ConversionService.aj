@@ -5,6 +5,7 @@ package org.hcmus.tis.controller;
 
 import org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
@@ -36,6 +37,30 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Account>() {
             public org.hcmus.tis.model.Account convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), Account.class);
+            }
+        };
+    }
+    
+    public Converter<MemberInformation, String> ApplicationConversionServiceFactoryBean.getMemberInformationToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.MemberInformation, java.lang.String>() {
+            public String convert(MemberInformation memberInformation) {
+                return new StringBuilder().toString();
+            }
+        };
+    }
+    
+    public Converter<Long, MemberInformation> ApplicationConversionServiceFactoryBean.getIdToMemberInformationConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.MemberInformation>() {
+            public org.hcmus.tis.model.MemberInformation convert(java.lang.Long id) {
+                return MemberInformation.findMemberInformation(id);
+            }
+        };
+    }
+    
+    public Converter<String, MemberInformation> ApplicationConversionServiceFactoryBean.getStringToMemberInformationConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.MemberInformation>() {
+            public org.hcmus.tis.model.MemberInformation convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), MemberInformation.class);
             }
         };
     }
@@ -116,6 +141,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getAccountToStringConverter());
         registry.addConverter(getIdToAccountConverter());
         registry.addConverter(getStringToAccountConverter());
+        registry.addConverter(getMemberInformationToStringConverter());
+        registry.addConverter(getIdToMemberInformationConverter());
+        registry.addConverter(getStringToMemberInformationConverter());
         registry.addConverter(getMemberRoleToStringConverter());
         registry.addConverter(getIdToMemberRoleConverter());
         registry.addConverter(getStringToMemberRoleConverter());

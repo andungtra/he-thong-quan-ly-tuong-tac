@@ -1,6 +1,7 @@
 package org.hcmus.tis.controller;
 
 import org.hcmus.tis.model.Project;
+import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,5 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/projects")
 @Controller
 @RooWebScaffold(path = "projects", formBackingObject = Project.class)
+@RooWebFinder
 public class ProjectController {
 }

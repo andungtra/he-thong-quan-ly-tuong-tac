@@ -2,10 +2,16 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_org_hcmus_tis_model_Project" object="${project}" path="/projects" z="Zyy5Oa9tWqs7LlqR+z9uXEz0aHg=">
+    <page:show create="false" delete="false" id="ps_org_hcmus_tis_model_Project" list="false" object="${project}" path="/projects" update="false" z="user-managed">
         <field:display field="description" id="s_org_hcmus_tis_model_Project_description" object="${project}" z="wdUFcebJjkZc28b97a5kBc7qxx8="/>
         <field:display field="name" id="s_org_hcmus_tis_model_Project_name" object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI="/>
-        <field:display field="parentContainer" id="s_org_hcmus_tis_model_Project_parentContainer" object="${project}" z="qYcKn8kLGleo8hAt0FljFVzVDA4="/>
-        <field:display field="studyClass" id="s_org_hcmus_tis_model_Project_studyClass" object="${project}" z="sfKZ8E0magtcyM6TuXn6zROX9MQ="/>
+        <field:display field="parentContainer" id="s_org_hcmus_tis_model_Project_parentContainer" label="Parent project" object="${project}" z="user-managed"/>
+        <field:display field="studyClass" id="s_org_hcmus_tis_model_Project_studyClass" label="Class" object="${project}" z="user-managed"/>
     </page:show>
+    <page:list id="l_org_hcmus_tis_model_Project_memberInformation" items="${project.memberInformations}" label="Member" labelPlural="Members" openPane="false">
+        <field:table create="false" data="${project.memberInformations}" delete="false" id="t_org_hcmus_tis_Project_memberInformation" path="/memberinformations" show="false" update="false">
+            <field:column id="c_org_hcmus_tis_Project_memberInformation_account_email" label="Email" property="account"/>
+            <field:column id="c_org_hcmus_tis_Project_memberInformation_account_role" label="Role" property="memberRole"/>
+        </field:table>
+    </page:list>
 </div>

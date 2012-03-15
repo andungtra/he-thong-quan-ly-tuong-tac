@@ -101,3 +101,31 @@ finder list --filter name
 finder add --finderName findProjectsByNameLike
 web mvc all --package org.hcmus.tis.controller
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-13 00:15:07
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-13 09:47:51
+entity jpa --class org.hcmus.tis.model.MemberInformation --testAutomatically
+field reference --fieldName account --type ~.model.Account --notNull 
+field reference --fieldName memberRole --type ~.model.MemberRole --notNull 
+field reference --fieldName project --type ~.model.Project --notNull 
+focus --class ~.model.Project
+field set --fieldName projects --type ~.model.Project
+focus --class ~.model.Project
+field reference --fieldName members --type ~.model.MemberInformation
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-13 15:16:29
+web mvc all --package org.hcmus.tis.controller
+focus --class ~.model.Project
+field set --fieldName memberInformations --type ~.model.MemberInformation --cardinality ONE_TO_MANY 
+web mvc finder all
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-13 16:32:39
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-13 21:13:36
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-13 22:31:18
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-14 16:18:36
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-14 16:34:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-14 22:58:05
+selenium test --controller ~.controller.StudyClassController
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-15 00:23:11
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-15 08:36:44
+// [failed] selenium test --controller org.hcmus.tis.controller
+// [failed] selenium test --controller all
+selenium test --controller ~.controller.AccountController
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-15 09:18:10

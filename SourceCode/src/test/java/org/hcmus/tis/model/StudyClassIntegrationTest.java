@@ -9,4 +9,9 @@ public class StudyClassIntegrationTest {
     @Test
     public void testMarkerMethod() {
     }
+    @Test
+    public void testToString()
+    {
+    	Account account = new Account();
+    }
 }
