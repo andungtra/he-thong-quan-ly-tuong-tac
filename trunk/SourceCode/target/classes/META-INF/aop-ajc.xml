@@ -1,36 +1,41 @@
 <aspectj>
 <aspects>
 <aspect name="org.hcmus.tis.model.Account_Roo_Jpa_ActiveRecord"/>
-<aspect name="org.hcmus.tis.model.StudyClass_Roo_ToString"/>
 <aspect name="org.hcmus.tis.model.Project_Roo_Jpa_ActiveRecord"/>
-<aspect name="org.hcmus.tis.model.Project_Roo_ToString"/>
-<aspect name="org.hcmus.tis.model.Account_Roo_JavaBean"/>
+<aspect name="org.hcmus.tis.controller.MemberInformationController_Roo_Controller"/>
 <aspect name="org.hcmus.tis.model.Project_Roo_Configurable"/>
-<aspect name="org.hcmus.tis.model.StudyClass_Roo_Configurable"/>
-<aspect name="org.hcmus.tis.controller.MemberRoleController_Roo_Controller"/>
+<aspect name="org.hcmus.tis.model.Account_Roo_JavaBean"/>
 <aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_JavaBean"/>
 <aspect name="org.hcmus.tis.model.Project_Roo_Finder"/>
-<aspect name="org.hcmus.tis.model.MemberRole_Roo_ToString"/>
+<aspect name="org.hcmus.tis.model.MemberInformation_Roo_Jpa_Entity"/>
 <aspect name="org.hcmus.tis.controller.AccountController_Roo_Controller"/>
-<aspect name="org.hcmus.tis.model.MemberRole_Roo_JavaBean"/>
-<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Jpa_Entity"/>
-<aspect name="org.hcmus.tis.model.Account_Roo_ToString"/>
-<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_ToString"/>
-<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Configurable"/>
-<aspect name="org.hcmus.tis.model.MemberRole_Roo_Configurable"/>
 <aspect name="org.hcmus.tis.model.StudyClass_Roo_JavaBean"/>
-<aspect name="org.hcmus.tis.model.StudyClass_Roo_Jpa_Entity"/>
 <aspect name="org.hcmus.tis.model.MemberRole_Roo_Jpa_ActiveRecord"/>
 <aspect name="org.hcmus.tis.model.StudyClass_Roo_Jpa_ActiveRecord"/>
-<aspect name="org.hcmus.tis.model.Project_Roo_Jpa_Entity"/>
-<aspect name="org.hcmus.tis.controller.StudyClassController_Roo_Controller"/>
 <aspect name="org.hcmus.tis.controller.ProjectController_Roo_Controller"/>
-<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Jpa_ActiveRecord"/>
-<aspect name="org.hcmus.tis.model.Account_Roo_Jpa_Entity"/>
+<aspect name="org.hcmus.tis.controller.StudyClassController_Roo_Controller"/>
 <aspect name="org.hcmus.tis.model.MemberRole_Roo_Jpa_Entity"/>
 <aspect name="org.hcmus.tis.model.Project_Roo_JavaBean"/>
 <aspect name="org.hcmus.tis.model.Account_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.StudyClass_Roo_ToString"/>
+<aspect name="org.hcmus.tis.model.Project_Roo_ToString"/>
+<aspect name="org.hcmus.tis.model.MemberInformation_Roo_JavaBean"/>
+<aspect name="org.hcmus.tis.model.StudyClass_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.controller.MemberRoleController_Roo_Controller"/>
+<aspect name="org.hcmus.tis.model.MemberRole_Roo_ToString"/>
+<aspect name="org.hcmus.tis.model.MemberRole_Roo_JavaBean"/>
+<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Jpa_Entity"/>
+<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_ToString"/>
+<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.MemberRole_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.StudyClass_Roo_Jpa_Entity"/>
+<aspect name="org.hcmus.tis.controller.ProjectController_Roo_Controller_Finder"/>
+<aspect name="org.hcmus.tis.model.Project_Roo_Jpa_Entity"/>
+<aspect name="org.hcmus.tis.model.WorkItemContainer_Roo_Jpa_ActiveRecord"/>
+<aspect name="org.hcmus.tis.model.Account_Roo_Jpa_Entity"/>
+<aspect name="org.hcmus.tis.model.MemberInformation_Roo_Jpa_ActiveRecord"/>
 <aspect name="org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean_Roo_ConversionService"/>
+<aspect name="org.hcmus.tis.model.MemberInformation_Roo_Configurable"/>
 </aspects>
 </aspectj>
 

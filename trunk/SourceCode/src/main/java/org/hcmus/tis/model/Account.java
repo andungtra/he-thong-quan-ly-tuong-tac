@@ -9,7 +9,6 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
-@RooToString
 @RooJpaActiveRecord
 public class Account {
 
@@ -33,4 +32,10 @@ public class Account {
     @NotNull
     @Value("false")
     private Boolean isAdmin;
+    
+    
+    public String toString()
+    {
+    	return email;
+    }
 }

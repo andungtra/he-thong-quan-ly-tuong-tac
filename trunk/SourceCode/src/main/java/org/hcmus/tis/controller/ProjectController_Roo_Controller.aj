@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectController;
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItemContainer;
@@ -88,6 +89,7 @@ privileged aspect ProjectController_Roo_Controller {
     
     void ProjectController.populateEditForm(Model uiModel, Project project) {
         uiModel.addAttribute("project", project);
+        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
     }
