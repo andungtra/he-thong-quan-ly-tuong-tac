@@ -3,12 +3,14 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <spring:url value="/accounts?page=1&amp;size=${empty param.size ? 10 : param.size}" var="listAccountUrl"></spring:url>
+    <spring:url value="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}" var="listProjectUrl"></spring:url>
+    <spring:url value="/studyclasses?page=1&amp;size=${empty param.size ? 10 : param.size}" var="listClassUrl"></spring:url>
   <div class="menu">
     <div class="menu_sitemap"> <!-- TemplateBeginEditable name="Site map" --> For administrator<!-- TemplateEndEditable --> </div>
     <div class="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
       <div class="menu_menu_item_current"><a href="${listAccountUrl}">Account</a></div>
-      <div class="menu_menu_item">Project</div>
-      <div class="menu_menu_item">Class</div>
+      <div class="menu_menu_item"><a href="${listProjectUrl}">Project</a></div>
+      <div class="menu_menu_item"><a href="${listClassUrl }">Class</a></div>
       <div class="menu_menu_item">Process</div>
       <!-- TemplateEndEditable --> </div>
   </div>

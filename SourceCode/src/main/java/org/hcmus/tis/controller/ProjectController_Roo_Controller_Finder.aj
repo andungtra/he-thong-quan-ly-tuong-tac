@@ -4,23 +4,15 @@
 package org.hcmus.tis.controller;
 
 import org.hcmus.tis.controller.ProjectController;
-import org.hcmus.tis.model.Project;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 privileged aspect ProjectController_Roo_Controller_Finder {
     
     @RequestMapping(params = { "find=ByNameLike", "form" }, method = RequestMethod.GET)
     public String ProjectController.findProjectsByNameLikeForm(Model uiModel) {
         return "projects/findProjectsByNameLike";
-    }
-    
-    @RequestMapping(params = "find=ByNameLike", method = RequestMethod.GET)
-    public String ProjectController.findProjectsByNameLike(@RequestParam("name") String name, Model uiModel) {
-        uiModel.addAttribute("projects", Project.findProjectsByNameLike(name).getResultList());
-        return "projects/list";
     }
     
 }
