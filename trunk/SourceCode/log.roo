@@ -129,3 +129,24 @@ selenium test --controller ~.controller.StudyClassController
 // [failed] selenium test --controller all
 selenium test --controller ~.controller.AccountController
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-15 09:18:10
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-17 10:17:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-17 10:53:03
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-17 14:06:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-17 15:29:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-17 20:07:58
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-17 20:09:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-17 20:14:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 00:03:52
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-18 13:08:33
+// [failed] test stub --class ~.model.Project
+test stub --class ~.model.Account
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 13:47:38
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-18 13:49:41
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 13:53:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-18 14:19:07
+test mock --entity ~.model.Project
+test stub --class ~.model.Project
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 14:24:18
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-18 19:53:51
+test mock --entity ~.model.Project 

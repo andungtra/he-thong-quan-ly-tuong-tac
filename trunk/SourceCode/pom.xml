@@ -14,6 +14,7 @@
         <slf4j.version>1.6.4</slf4j.version>
         <spring.version>3.1.0.RELEASE</spring.version>
     <spring-security.version>3.1.0.RELEASE</spring-security.version>
+    <powermock.version>1.4.11</powermock.version>
     </properties>
     <repositories>
         <repository>
@@ -327,6 +328,18 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.powermock</groupId>
+        	<artifactId>powermock-module-junit4</artifactId>
+        	<version>1.4.11</version>
+        	<scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.powermock</groupId>
+        	<artifactId>powermock-api-mockito</artifactId>
+        	<version>1.4.11</version>
+        	<scope>test</scope>
         </dependency>
     </dependencies>
     <build>

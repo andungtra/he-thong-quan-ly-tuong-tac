@@ -17,14 +17,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
     
-    public Converter<Account, String> ApplicationConversionServiceFactoryBean.getAccountToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.Account, java.lang.String>() {
-            public String convert(Account account) {
-                return new StringBuilder().append(account.getFirstName()).append(" ").append(account.getLastName()).append(" ").append(account.getEmail()).append(" ").append(account.getPassword()).toString();
-            }
-        };
-    }
-    
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
             public org.hcmus.tis.model.Account convert(java.lang.Long id) {
@@ -65,14 +57,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<MemberRole, String> ApplicationConversionServiceFactoryBean.getMemberRoleToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.MemberRole, java.lang.String>() {
-            public String convert(MemberRole memberRole) {
-                return new StringBuilder().append(memberRole.getName()).append(" ").append(memberRole.getDescription()).toString();
-            }
-        };
-    }
-    
     public Converter<Long, MemberRole> ApplicationConversionServiceFactoryBean.getIdToMemberRoleConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.MemberRole>() {
             public org.hcmus.tis.model.MemberRole convert(java.lang.Long id) {
@@ -89,14 +73,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<Project, String> ApplicationConversionServiceFactoryBean.getProjectToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.Project, java.lang.String>() {
-            public String convert(Project project) {
-                return new StringBuilder().append(project.getName()).append(" ").append(project.getDescription()).toString();
-            }
-        };
-    }
-    
     public Converter<Long, Project> ApplicationConversionServiceFactoryBean.getIdToProjectConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Project>() {
             public org.hcmus.tis.model.Project convert(java.lang.Long id) {
@@ -109,14 +85,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Project>() {
             public org.hcmus.tis.model.Project convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), Project.class);
-            }
-        };
-    }
-    
-    public Converter<StudyClass, String> ApplicationConversionServiceFactoryBean.getStudyClassToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.StudyClass, java.lang.String>() {
-            public String convert(StudyClass studyClass) {
-                return new StringBuilder().append(studyClass.getName()).append(" ").append(studyClass.getDescription()).toString();
             }
         };
     }
