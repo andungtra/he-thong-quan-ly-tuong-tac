@@ -7,14 +7,14 @@ import org.springframework.mock.staticmock.MockStaticEntityMethods;
 
 @RunWith(JUnit4.class)
 @MockStaticEntityMethods
-public class ProjectTest {
+public class AccountTest {
 
     @Test
     public void testMethod() {
         int expectedCount = 13;
-        Project.countProjects();
+        Account.countAccounts();
         org.springframework.mock.staticmock.AnnotationDrivenStaticEntityMockingControl.expectReturn(expectedCount);
         org.springframework.mock.staticmock.AnnotationDrivenStaticEntityMockingControl.playback();
-        org.junit.Assert.assertEquals(expectedCount, Project.countProjects());
+        org.junit.Assert.assertEquals(expectedCount, Account.countAccounts());
     }
 }

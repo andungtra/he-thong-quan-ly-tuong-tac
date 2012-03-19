@@ -20,7 +20,7 @@
 			<attribute name="maven.scope" value="test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/test/java/spring-aspects-3.1.0.RELEASE.jar">
+	<classpathentry kind="lib" path="E:/DangHoc/KhoaLuan/GoogleCode/SourceCode/src/main/java/spring-aspects-3.1.0.RELEASE.jar">
 		<attributes>
 			<attribute name="org.eclipse.ajdt.aspectpath" value="org.eclipse.ajdt.aspectpath"/>
 		</attributes>

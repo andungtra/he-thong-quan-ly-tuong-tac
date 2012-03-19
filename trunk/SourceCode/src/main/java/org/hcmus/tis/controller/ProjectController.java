@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProjectController {
 	 @RequestMapping(params = "find=ByNameLike", method = RequestMethod.GET)
 	    public String findProjectsByNameLike(@RequestParam("name") String name, Model uiModel) {
-		 if(name != null)
+		 if(!name.isEmpty())
 		 {
 	     uiModel.addAttribute("projects", Project.findProjectsByNameLike(name).getResultList());
 		 }else{
