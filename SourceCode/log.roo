@@ -150,3 +150,9 @@ test stub --class ~.model.Project
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 14:24:18
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-18 19:53:51
 test mock --entity ~.model.Project 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-18 23:57:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-19 00:00:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-19 00:27:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-19 22:15:03
+test mock --entity ~.model.Account
+hint
