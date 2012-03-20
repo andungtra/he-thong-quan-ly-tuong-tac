@@ -1,0 +1,28 @@
+2012-03-15 10:01:42,647 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:44,656 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:46,664 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:48,673 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:50,684 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:52,701 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:54,711 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:56,722 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+2012-03-15 10:01:58,733 [main] ERROR org.hibernate.util.JDBCExceptionReporter - Cannot create PoolableConnectionFactory (Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.)
+
