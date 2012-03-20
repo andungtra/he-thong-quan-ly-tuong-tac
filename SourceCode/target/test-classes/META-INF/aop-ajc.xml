@@ -1,0 +1,25 @@
+<aspectj>
+<aspects>
+<aspect name="org.hcmus.tis.model.AccountDataOnDemand_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.AccountIntegrationTest_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.MemberInformationDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="org.hcmus.tis.model.AccountDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="org.hcmus.tis.model.MemberRoleDataOnDemand_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.MemberRoleIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="org.hcmus.tis.model.MemberInformationIntegrationTest_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.StudyClassIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="org.hcmus.tis.model.ProjectDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="org.hcmus.tis.model.StudyClassIntegrationTest_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.ProjectIntegrationTest_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.StudyClassDataOnDemand_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.StudyClassDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="org.hcmus.tis.model.MemberInformationDataOnDemand_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.MemberInformationIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="org.hcmus.tis.model.ProjectIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="org.hcmus.tis.model.ProjectDataOnDemand_Roo_Configurable"/>
+<aspect name="org.hcmus.tis.model.MemberRoleDataOnDemand_Roo_DataOnDemand"/>
+<aspect name="org.hcmus.tis.model.AccountIntegrationTest_Roo_IntegrationTest"/>
+<aspect name="org.hcmus.tis.model.MemberRoleIntegrationTest_Roo_Configurable"/>
+</aspects>
+</aspectj>
+
