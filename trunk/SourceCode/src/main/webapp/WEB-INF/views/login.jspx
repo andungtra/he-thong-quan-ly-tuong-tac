@@ -21,10 +21,10 @@
     <form name="f" action="${fn:escapeXml(form_url)}" method="POST">
       <div>
         <label for="j_username">
-          <spring:message code="security_login_form_name" />
+          <spring:message text="Email" />
         </label>
         <input id="j_username" type='text' name='j_username' style="width:150px" />
-        <spring:message code="security_login_form_name_message" var="name_msg" htmlEscape="false" />
+        <spring:message text="Enter your email" var="name_msg" htmlEscape="false" />
         <script type="text/javascript">
           <c:set var="sec_name_msg">
             <spring:escapeBody javaScriptEscape="true">${name_msg}</spring:escapeBody>
