@@ -4,7 +4,6 @@ import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
-import org.hcmus.tis.model.WorkItemContainer;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
@@ -16,6 +15,7 @@ import org.springframework.roo.addon.web.mvc.controller.converter.RooConversionS
 @RooConversionService
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
 			 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void installFormatters(FormatterRegistry registry) {
 		super.installFormatters(registry);

@@ -3,9 +3,7 @@ package org.hcmus.tis.controller;
 import org.hcmus.tis.model.Account;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/accounts")
 @Controller

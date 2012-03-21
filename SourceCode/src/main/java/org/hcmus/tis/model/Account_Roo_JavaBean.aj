@@ -47,4 +47,12 @@ privileged aspect Account_Roo_JavaBean {
         this.isAdmin = isAdmin;
     }
     
+    public Boolean Account.getIsEnable() {
+        return this.isEnable;
+    }
+    
+    public void Account.setIsEnable(Boolean isEnable) {
+        this.isEnable = isEnable;
+    }
+    
 }

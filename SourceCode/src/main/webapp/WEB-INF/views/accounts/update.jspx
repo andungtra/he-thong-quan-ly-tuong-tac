@@ -8,5 +8,6 @@
         <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk="/>
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" required="true" z="user-managed"/>
         <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>
+        <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" z="xkeW+/XFVMBztla9O588wHr+9Y8="/>
     </form:update>
 </div>
