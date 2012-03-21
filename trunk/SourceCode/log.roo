@@ -156,3 +156,4 @@ test mock --entity ~.model.Project
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-19 22:15:03
 test mock --entity ~.model.Account
 hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-21 13:31:59

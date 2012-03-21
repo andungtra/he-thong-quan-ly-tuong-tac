@@ -27,6 +27,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         setEmail(obj, index);
         setFirstName(obj, index);
         setIsAdmin(obj, index);
+        setIsEnable(obj, index);
         setLastName(obj, index);
         setPassword(obj, index);
         return obj;
@@ -48,6 +49,11 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     public void AccountDataOnDemand.setIsAdmin(Account obj, int index) {
         Boolean isAdmin = Boolean.TRUE;
         obj.setIsAdmin(isAdmin);
+    }
+    
+    public void AccountDataOnDemand.setIsEnable(Account obj, int index) {
+        Boolean isEnable = Boolean.TRUE;
+        obj.setIsEnable(isEnable);
     }
     
     public void AccountDataOnDemand.setLastName(Account obj, int index) {
