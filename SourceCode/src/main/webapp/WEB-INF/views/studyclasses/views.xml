@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="administrator" name="studyclasses/list">
+    <definition extends="content" name="studyclasses/list">
         <put-attribute name="body" value="/WEB-INF/views/studyclasses/list.jspx"/>
     </definition>
-<definition extends="administrator" name="studyclasses/show">
+<definition extends="content" name="studyclasses/show">
         <put-attribute name="body" value="/WEB-INF/views/studyclasses/show.jspx"/>
     </definition>
-<definition extends="administrator" name="studyclasses/create">
+<definition extends="content" name="studyclasses/create">
         <put-attribute name="body" value="/WEB-INF/views/studyclasses/create.jspx"/>
     </definition>
-<definition extends="administrator" name="studyclasses/update">
+<definition extends="content" name="studyclasses/update">
         <put-attribute name="body" value="/WEB-INF/views/studyclasses/update.jspx"/>
+    </definition>
+<definition extends="content" name="studyclasses/findStudyClassesByNameLike">
+        <put-attribute name="body" value="/WEB-INF/views/studyclasses/findStudyClassesByNameLike.jspx"/>
     </definition>
 </tiles-definitions>

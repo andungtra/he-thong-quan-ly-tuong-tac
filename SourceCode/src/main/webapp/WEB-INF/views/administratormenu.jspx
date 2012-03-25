@@ -7,11 +7,12 @@
     <spring:url value="/studyclasses?page=1&amp;size=${empty param.size ? 10 : param.size}" var="listClassUrl"></spring:url>
   <div class="menu">
     <div class="menu_sitemap"> <!-- TemplateBeginEditable name="Site map" --> For administrator<!-- TemplateEndEditable --> </div>
-    <div class="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
-      <div class="menu_menu_item_current"><a href="${listAccountUrl}">Account</a></div>
-      <div class="menu_menu_item"><a href="${listProjectUrl}">Project</a></div>
-      <div class="menu_menu_item"><a href="${listClassUrl }">Class</a></div>
-      <div class="menu_menu_item">Process</div>
+    <div class="h" id="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
+    <ul>
+      <li><a href="${listProjectUrl}">Project</a></li>
+      <li><a href="${listClassUrl }">Class</a></li>
+      <li><a href="ljl">Processes</a></li>
+      </ul>
       <!-- TemplateEndEditable --> </div>
   </div>
 </div>

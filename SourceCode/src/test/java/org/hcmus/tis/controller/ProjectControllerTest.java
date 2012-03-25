@@ -26,8 +26,8 @@ public class ProjectControllerTest {
 		ProjectController controller = new ProjectController();
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.when(Project.findAllProjects()).thenReturn(null);
-		Model model = new Mockito().mock(Model.class);
-		controller.findProjectsByNameLike("", model);
+		Model model =  Mockito.mock(Model.class);
+		controller.findProjectsQuickly("", model);
 		PowerMockito.verifyStatic();
 		Project.findAllProjects();		
 	}
@@ -39,10 +39,11 @@ public class ProjectControllerTest {
 		TypedQuery<Project> mockResult =  Mockito.mock(TypedQuery.class);
 		Mockito.when(mockResult.getResultList()).thenReturn(new Vector<Project>());
 		PowerMockito.when(Project.findProjectsByNameLike(name)).thenReturn(mockResult);
-		Model model = new Mockito().mock(Model.class);
-		controller.findProjectsByNameLike(name, model);
+		Model mockUIModel = Mockito.mock(Model.class);
+		controller.findProjectsQuickly(name, mockUIModel);
 		PowerMockito.verifyStatic();
 		Project.findProjectsByNameLike(name);
+		Mockito.verify(mockUIModel).addAttribute("query", name);
 	}
 
 }

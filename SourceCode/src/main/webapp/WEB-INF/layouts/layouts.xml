@@ -17,17 +17,19 @@
     <put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
   </definition>
   
-    <definition name="administrator" template="/WEB-INF/layouts/default.jspx">
+    <definition name="administrator" template="/WEB-INF/layouts/layout.jspx">
     <put-attribute name="header" value="/WEB-INF/views/administratorheader.jspx" />
     <put-attribute name="menu" value="/WEB-INF/views/menu.jspx" />
-        <put-attribute name="myMenu" value="/WEB-INF/views/administratormenu.jspx" />
+    <put-attribute name="myMenu" value="/WEB-INF/views/administratormenu.jspx" />
     <put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
   </definition>
-    <definition name="project" template="/WEB-INF/layouts/default.jspx">
+    <definition name="project" template="/WEB-INF/layouts/layout.jspx">
     <put-attribute name="header" value="/WEB-INF/views/projectheader.jspx" />
     <put-attribute name="menu" value="/WEB-INF/views/menu.jspx" />
         <put-attribute name="myMenu" value="/WEB-INF/views/projectmenu.jspx" />
     <put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
+  </definition>
+  <definition name="content" template="/WEB-INF/layouts/tabcontent.jspx">
   </definition>
 
 </tiles-definitions>

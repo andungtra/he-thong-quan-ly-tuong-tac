@@ -11,6 +11,7 @@
         <menu:category id="c_studyclass" z="6ca/Ja9XalHDG0FzqNxunXmxh4w=">
             <menu:item id="i_studyclass_new" messageCode="global_menu_new" url="/studyclasses?form" z="lF1SN7DpiGhQkf1+P+GQe5N0ea8="/>
             <menu:item id="i_studyclass_list" messageCode="global_menu_list" url="/studyclasses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="hotw/8ATUjKj21RsWe0QRvuKEDg="/>
+            <menu:item id="fi_studyclass_namelike" messageCode="global_menu_find" url="/studyclasses?find=ByNameLike&amp;form" z="uYkiAMfTETbBxHLhrS53fE94Owk="/>
         </menu:category>
         <menu:category id="c_account" z="/ObionklNVMvfxU5oSj2hEUJNu0=">
             <menu:item id="i_account_new" messageCode="global_menu_new" url="/accounts?form" z="7ISq6pJsfrDJexgk1yAmzNiIcp8="/>

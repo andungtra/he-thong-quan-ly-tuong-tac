@@ -156,4 +156,36 @@ test mock --entity ~.model.Project
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-19 22:15:03
 test mock --entity ~.model.Account
 hint
+<<<<<<< .mine
+focus --class ~.model.StudyClass
+finder list
+finder add --finderName findStudyClassesByNameLike
+web mvc finder all 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 00:25:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-20 09:14:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 09:25:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-20 09:45:57
+web mvc finder all 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 10:17:35
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-20 13:55:39
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 13:57:23
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-20 13:59:31
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 15:20:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-20 15:24:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-20 17:04:36
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-22 16:39:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-22 19:09:42
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-21 13:31:59
+>>>>>>> .r56
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-24 00:19:27
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-24 00:48:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-24 09:04:37
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-24 10:15:02
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-24 10:47:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-24 12:09:18
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-24 14:40:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-24 17:49:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-25 09:35:33
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-25 12:14:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-25 14:49:06
