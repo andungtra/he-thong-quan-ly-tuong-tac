@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="administrator" name="projects/list">
+<definition extends="content" name="projects/list">
         <put-attribute name="body" value="/WEB-INF/views/projects/list.jspx"/>
     </definition>
-<definition extends="project" name="projects/show">
+<definition extends="content" name="projects/show">
         <put-attribute name="body" value="/WEB-INF/views/projects/show.jspx"/>
     </definition>
-<definition extends="administrator" name="projects/create">
+<definition extends="content" name="projects/create">
         <put-attribute name="body" value="/WEB-INF/views/projects/create.jspx"/>
     </definition>
-<definition extends="project" name="projects/update">
+<definition extends="content" name="projects/update">
         <put-attribute name="body" value="/WEB-INF/views/projects/update.jspx"/>
     </definition>
-<definition extends="default" name="projects/findProjectsByNameLike">
+<definition extends="content" name="projects/findProjectsByNameLike">
         <put-attribute name="body" value="/WEB-INF/views/projects/findProjectsByNameLike.jspx"/>
     </definition>
 </tiles-definitions>

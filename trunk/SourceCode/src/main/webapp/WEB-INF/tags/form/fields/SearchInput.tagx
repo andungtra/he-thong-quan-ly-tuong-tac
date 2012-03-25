@@ -56,7 +56,9 @@
 	<jsp:directive.attribute name="z" type="java.lang.String"
 		required="false"
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-
+			<jsp:directive.attribute name="defaultValue" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="Specify the default value" />
 	<c:if test="${empty render or render}">
 
 		<c:if test="${empty type}">
@@ -101,7 +103,7 @@
 			<c:choose>
 				<c:when test="${disableFormBinding}">				
 					<input placeholder="Search project ..." id="_${sec_field}_id" name="${sec_field}"
-						type="${fn:escapeXml(type)}" style="margin: 0px 0px 0px 5px; padding: 0px;" />
+						type="${fn:escapeXml(type)}" style="margin: 0px 0px 0px 5px; padding: 0px;" value="${defaultValue }" />
 				</c:when>
 				<c:otherwise>
 					<form:input  id="_${sec_field}_id" path="${sec_field}"

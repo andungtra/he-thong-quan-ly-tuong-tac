@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-	<definition extends="default" name="accounts/list">
+<!-- 	<definition extends="default" name="accounts/list">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx" />
+	</definition> -->
+	<definition name="accounts/list" template="/WEB-INF/views/accounts/list.jspx">
 	</definition>
-	<definition extends="default" name="accounts/show">
+	<definition extends="content" name="accounts/show">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/show.jspx" />
 	</definition>
-	<definition extends="default" name="accounts/create">
+	<definition extends="content" name="accounts/create">
 		<put-attribute name="body"
 			value="/WEB-INF/views/accounts/create.jspx" />
 	</definition>
-	<definition extends="default" name="accounts/update">
+	<definition extends="content" name="accounts/update">
 		<put-attribute name="body"
 			value="/WEB-INF/views/accounts/update.jspx" />
 	</definition>
-	<definition extends="default" name="accounts/test">
+	<definition extends="content" name="accounts/test">
 		<put-attribute name="body"
 			value="/WEB-INF/views/accounts/test.jspx" />
 	</definition>

@@ -13,6 +13,7 @@
 		var="lRArrowUrl"></spring:url>
 	<spring:message code="security_login_as" var="loginAs"></spring:message>
 	<spring:message code="security_logout" var="logout"></spring:message>
+	<spring:url value="/administrator/homepage" var="administrator_url"></spring:url>
 	<div class="header_menu">
 		<nav class="header_menu_left">
 			<div class="header_menu_left_item" id="header_menu_first">
@@ -26,7 +27,7 @@
 					src="${lRArrowUrl}"></img>
 			</div>
 			<div class="header_menu_left_item">
-				<a href="#">${administrator }</a>
+				<a href="${administrator_url}">${administrator }</a>
 			</div>
 			<!--        <div class="header_menu_left_item" id="header_menu_search">
           <form>
