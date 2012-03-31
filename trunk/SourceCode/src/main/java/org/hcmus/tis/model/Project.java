@@ -3,9 +3,12 @@ package org.hcmus.tis.model;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -24,4 +27,34 @@ public class Project extends WorkItemContainer {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
     private Set<MemberInformation> memberInformations = new HashSet<MemberInformation>();
+    public static long  countProjectsByNameLike(String name){
+        if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
+        name = name.replace('*', '%');
+        if (name.charAt(0) != '%') {
+            name = "%" + name;
+        }
+        if (name.charAt(name.length() - 1) != '%') {
+            name = name + "%";
+        }
+    	String query = "SELECT count(*) FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)";
+    	EntityManager em = Project.entityManager();
+    	Query q = em.createQuery(query);
+    	q.setParameter("name", name);
+    	return (Long)q.getSingleResult();
+    	
+    }
+    public static TypedQuery<Project> findProjectsByNameLike(String name, int firstIndex, int maxSize) {
+        if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
+        name = name.replace('*', '%');
+        if (name.charAt(0) != '%') {
+            name = "%" + name;
+        }
+        if (name.charAt(name.length() - 1) != '%') {
+            name = name + "%";
+        }
+        EntityManager em = Project.entityManager();
+        TypedQuery<Project> q = em.createQuery("SELECT o FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)", Project.class).setFirstResult(firstIndex).setMaxResults(maxSize);
+        q.setParameter("name", name);
+        return q;
+    }
 }

@@ -16,6 +16,7 @@
 	<spring:url value="/resources/spring/Spring.js" var="spring_url" />
 	<spring:url value="/resources/spring/Spring-Dojo.js"
 		var="spring_dojo_url" />
+	<spring:url value="/resources/scripts/my-custom-tag.js" var="js_customtag_url"></spring:url>
 	<spring:url value="/resources/images/favicon.ico" var="favicon" />
 	<spring:url value="/resources/scripts/jquery-1.7.1.min.js" var="jquery_url"></spring:url>
 	<spring:url value="/resources/scripts/ui/jquery.ui.core.js"
@@ -51,5 +52,6 @@
 	<script src="${jquery_widget_url}" type="text/javascript"><!--jquery widget--></script>
 	<script src="${jquery_tab_url}" type="text/javascript"><!--jquery tab--></script>
 	<script src="${update_tab_url }" type="text/javascript"><!--update tab--></script>
+	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
 
 </jsp:root>

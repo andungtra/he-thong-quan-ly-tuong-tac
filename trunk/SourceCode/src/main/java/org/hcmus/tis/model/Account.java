@@ -1,6 +1,7 @@
 package org.hcmus.tis.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;

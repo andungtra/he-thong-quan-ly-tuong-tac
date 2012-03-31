@@ -367,3 +367,14 @@ fieldset th {
 	height: 11px;
 	width: 16px;
 }
+#quickSearchPanel{
+	overflow: hidden;
+	 background-color: #EEEEEE;
+}
+#quickSearchPanel .quickSearch_input{
+	float: left;
+	 padding: -10px;
+}
+#quickSearchPanel .quickSearch_button{
+	float: left;
+}

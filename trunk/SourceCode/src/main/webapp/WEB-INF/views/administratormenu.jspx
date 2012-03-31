@@ -11,6 +11,7 @@
     <ul>
       <li><a href="${listProjectUrl}">Project</a></li>
       <li><a href="${listClassUrl }">Class</a></li>
+        <li><a href="${listAccountUrl }">Account</a></li>
       <li><a href="ljl">Processes</a></li>
       </ul>
       <!-- TemplateEndEditable --> </div>
