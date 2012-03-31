@@ -5,12 +5,10 @@ package org.hcmus.tis.model;
 
 import java.util.List;
 import org.hcmus.tis.model.Project;
-import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.model.ProjectIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +20,6 @@ privileged aspect ProjectIntegrationTest_Roo_IntegrationTest {
     declare @type: ProjectIntegrationTest: @ContextConfiguration(locations = "classpath:/META-INF/spring/applicationContext*.xml");
     
     declare @type: ProjectIntegrationTest: @Transactional;
-    
-    @Autowired
-    private ProjectDataOnDemand ProjectIntegrationTest.dod;
     
     @Test
     public void ProjectIntegrationTest.testCountProjects() {

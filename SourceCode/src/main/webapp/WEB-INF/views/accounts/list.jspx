@@ -2,6 +2,9 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <page:quickfind listButton="false" finderName="quickFind" path="/accounts" id="ff_org_hcmus_tis_model_Account" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=">
+    	<table:SearchInput id="f_org_hcmus_tis_model_Account_name" disableFormBinding="true" field="query" label="search" max="50" min="1" required="true" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g=" defaultValue="${query}"></table:SearchInput>
+    </page:quickfind>
     <page:list id="pl_org_hcmus_tis_model_Account" items="${accounts}" z="T4vTKgpd9Ypn1wEWkXgjg2/tHd4=">
         <table:table data="${accounts}" id="l_org_hcmus_tis_model_Account" path="/accounts" z="eWRCkY8gmPJdZ7IjGwhobo2imkY=">
             <table:column id="c_org_hcmus_tis_model_Account_firstName" property="firstName" z="7wyYCEYRUkcTbDX0w+MFUHPABSs="/>

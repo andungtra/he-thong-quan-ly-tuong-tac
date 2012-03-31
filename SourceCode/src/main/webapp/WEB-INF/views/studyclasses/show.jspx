@@ -2,6 +2,7 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <page:quickfind  searchButton="false" finderName="quickFind" path="/studyclasses" id="ff_org_hcmus_tis_model_StudyClass" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4="></page:quickfind>
     <page:show id="ps_org_hcmus_tis_model_StudyClass" object="${studyclass}" path="/studyclasses" z="wTJD6yV4FvrRBsuKLQIIEGwwkGw=">
         <field:display field="name" id="s_org_hcmus_tis_model_StudyClass_name" object="${studyclass}" z="zFLqdkfajdVL70L7hzyC8Svwufg="/>
         <field:display field="description" id="s_org_hcmus_tis_model_StudyClass_description" object="${studyclass}" z="AuJCxntv3A1zc/OUKmkBxUHF80Q="/>

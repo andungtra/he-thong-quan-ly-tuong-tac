@@ -4,7 +4,8 @@
 <!-- 	<definition extends="default" name="accounts/list">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx" />
 	</definition> -->
-	<definition name="accounts/list" template="/WEB-INF/views/accounts/list.jspx">
+	<definition name="accounts/list" extends="content">
+	<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx"></put-attribute>
 	</definition>
 	<definition extends="content" name="accounts/show">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/show.jspx" />

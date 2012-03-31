@@ -23,7 +23,7 @@ $(function() {
 	function addFormSubmitHandler() {
 		var test = $("form");
 		$("form[method=GET]").bind('submit', function(event) {
-			var tabContent = $('#main').parent();
+			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
 			var query = $(this).serialize();
 			var url = $(this).attr('action') + '?' + query;
 			$(tabContent).load(url, function() {
@@ -34,7 +34,7 @@ $(function() {
 		});
 		
 		$("form[method=POST]").bind('submit', function(event) {
-			var tabContent = $('#main').parent();
+			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
 			var parameters = $(this).serializeArray();
 			var url = $(this).attr('action');;
 			$(tabContent).load(url,parameters, function() {

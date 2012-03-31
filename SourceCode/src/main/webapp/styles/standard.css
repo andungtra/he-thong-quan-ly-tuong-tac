@@ -354,3 +354,39 @@ fieldset th {
 	height: 11px;
 	width: 16px;
 }
+#quickSearchPanel{
+	overflow: hidden;
+	 background-color: #EEEEEE;
+}
+#quickSearchPanel .quickSearch_input{
+	float: right;
+	 padding: -10px;
+}
+#quickSearchPanel .quickSearch_button{
+	float: right;
+}
+#quickSearchPanel .buttonList{
+	float: left; margin: 0px 10px;
+}
+#quickSearchPanel .buttonList a img{
+	margin: 3px 5px;
+}
+#form_advanced_panel_link{
+	color: blue;
+	vertical-align: top;
+	margin: 5px 0px 15px 0px;
+}
+#form_advanced_panel_link:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+#form_advanced_panel_link img{
+	margin-left: 5px;
+	margin-bottom: -5px;
+}
+.hidden_arrow{
+	display: none;
+}
+.form_submit_button{
+	margin: 0px 20px 0px 0px;
+}

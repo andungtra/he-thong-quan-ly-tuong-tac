@@ -6,27 +6,34 @@
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:output omit-xml-declaration="yes" />
 
-	<jsp:directive.attribute name="id" type="java.lang.String"
-		required="true" rtexprvalue="true"
-		description="The identifier for this tag (do not change!)" />
-	<jsp:directive.attribute name="finderName" type="java.lang.String"
-		required="true" rtexprvalue="true" description="The finder name" />
-	<jsp:directive.attribute name="path" type="java.lang.String"
-		required="true" rtexprvalue="true"
-		description="Specify the relative URL path (with leading /)" />
-	<jsp:directive.attribute name="label" type="java.lang.String"
-		required="false" rtexprvalue="true"
-		description="The label used for this field, will default to a message bundle if not supplied" />
-	<jsp:directive.attribute name="render" type="java.lang.Boolean"
-		required="false" rtexprvalue="true"
-		description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
-	<jsp:directive.attribute name="openPane" type="java.lang.Boolean"
-		required="false" rtexprvalue="true"
-		description="Control if the title pane is opened or closed by default (default: true)" />
-	<jsp:directive.attribute name="z" type="java.lang.String"
-		required="false"
-		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+	<jsp:directive.attribute name="id" type="java.lang.String" required="true" rtexprvalue="true" description="The identifier for this tag (do not change!)" />
+	<jsp:directive.attribute name="finderName" type="java.lang.String"	required="true" rtexprvalue="true" description="The finder name" />
+	<jsp:directive.attribute name="path" type="java.lang.String"	required="true" rtexprvalue="true"	description="Specify the relative URL path (with leading /)" />
+	<jsp:directive.attribute name="label" type="java.lang.String"	required="false" rtexprvalue="true"	description="The label used for this field, will default to a message bundle if not supplied" />
+	<jsp:directive.attribute name="render" type="java.lang.Boolean"	required="false" rtexprvalue="true"	description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
+	<jsp:directive.attribute name="openPane" type="java.lang.Boolean"	required="false" rtexprvalue="true"	description="Control if the title pane is opened or closed by default (default: true)" />
+	<jsp:directive.attribute name="z" type="java.lang.String"	required="false"	description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+	<jsp:directive.attribute name="listButton" type="java.lang.Boolean"	required="false"	description="Indicate if display list button (default : true)" />
+	<jsp:directive.attribute name="createButton" type="java.lang.Boolean"	required="false" description="Indicate if display create button (default : true)" />
+	<jsp:directive.attribute name="searchButton" type="java.lang.Boolean"	required="false" description="Indicate if display quick search  (default : true)" />
+	<c:if test="${empty listButton}">
+		<c:set var="listButton" value="true"></c:set>
+	</c:if>
+	<c:if test="${empty createButton}">
+		<c:set var="createButton" value="true"></c:set>
+	</c:if>
+	<c:if test="${empty searchButton}">
+		<c:set var="searchButton" value="true"></c:set>
+	</c:if>
 	<spring:url value="/images/search.png" var="searchImgUrl"></spring:url>
+	<spring:url value="${path}" var="create_url">
+		<spring:param name="form" />
+	</spring:url>
+	<spring:url value="${path}" var="list_form_url">
+		<spring:param name="size" value="10"/>
+		<spring:param name="page" value="1"/>
+		</spring:url>
+	<spring:url value="/resources/images/list.png" var="list_image_url" />
 	<c:if test="${empty render or render}">
 		<c:if test="${empty label}">
 			<c:set var="entityClass" value="${fn:substringAfter(id,'ff_')}" />
@@ -38,35 +45,47 @@
 		<spring:message var="typeName"
 			code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label"
 			htmlEscape="false" />
+		    <spring:message var="typeNamePlural" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_list_label" htmlEscape="false" />
 		<spring:url value="${path}" var="form_url" />
-		<form:form action="${form_url}" method="GET">
-			<input type="hidden" name="find" value="${fn:escapeXml(finderName)}" />
-			<div style="overflow: hidden; background-color: #EEEEEE;">
-				<div style="float: left; padding: -10px;">
 
-					<jsp:doBody />
-				</div>
-				<div style="float: left;" class="submit"
-					id="${fn:escapeXml(id)}_${fn:escapeXml(finderName)}_submit">
-					<spring:message code="button_find" var="find_button"
-						htmlEscape="false" />
-					<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
-					<input id="proceed" type="submit" value=""
-						style="background-repeat:no-repeat; background-image:url('${searchImgUrl}'); ;margin: 0px; padding: 0px; width: 18px" />
-				</div>
-				<div style="float: right; margin: 0px 10px;">
-					<span class="new"> <spring:url value="${path}"
-							var="create_url">
-							<spring:param name="form" />
-						</spring:url> <a href="${create_url}"> <spring:url
+		<div id="quickSearchPanel">
+			<c:if test="${searchButton}">
+				<form:form action="${form_url}" method="GET">
+					<input type="hidden" name="find"
+						value="${fn:escapeXml(finderName)}" />
+					<div class="quickSearch_button"
+						id="${fn:escapeXml(id)}_${fn:escapeXml(finderName)}_submit">
+						<spring:message code="button_find" var="find_button"
+							htmlEscape="false" />
+						<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
+						<input id="proceed" type="submit" value=""
+							style="background-repeat:no-repeat; background-image:url('${searchImgUrl}'); ;margin: 0px; padding: 0px; width: 18px" />
+					</div>
+					<div class="quickSearch_input">
+
+						<jsp:doBody />
+					</div>
+				</form:form>
+			</c:if>
+			<div class="buttonList">
+				<span class="new"> <c:if test="${createButton}">
+						<a href="${create_url}"> <spring:url
 								value="/resources/images/add.png" var="create_img_url" /> <spring:message
 								arguments="${typeName}" code="global_menu_new" var="add_message"
 								htmlEscape="false" /> <img alt="${fn:escapeXml(add_message)}"
 							src="${create_img_url}" title="${fn:escapeXml(add_message)}" />
-					</a>
-					</span>
-				</div>
+						</a>
+					</c:if> <c:if test="${listButton}">
+						<spring:message arguments="${typeNamePlural}"
+							code="entity_list_all" var="list_label" htmlEscape="false" />
+						<a href="${list_form_url}" alt="${fn:escapeXml(list_label)}"
+							title="${fn:escapeXml(list_label)}"> <img
+							alt="${fn:escapeXml(list_label)}" class="image"
+							src="${list_image_url}" title="${fn:escapeXml(list_label)}" />
+						</a>
+					</c:if>
+				</span>
 			</div>
-		</form:form>
+		</div>
 	</c:if>
 </jsp:root>

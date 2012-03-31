@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.persistence.TypedQuery;
 
+import org.hcmus.tis.dto.Page;
 import org.hcmus.tis.model.StudyClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

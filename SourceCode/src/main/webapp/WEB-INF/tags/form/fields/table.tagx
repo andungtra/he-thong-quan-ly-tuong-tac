@@ -10,6 +10,7 @@
   <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
   <jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'show' link into table (default true)" />
   <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="parameters" type="java.util.Collection" required="false" rtexprvalue="true" description="parameter of query"/>
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 
@@ -43,7 +44,6 @@
     <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
     <c:set var="types" value="${fn:split(columnTypes, '&#9999;')}" scope="request" />
     <c:set var="patterns" value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
-
     <spring:eval var="colCounter" expression="1" />
 
     <table>
@@ -160,7 +160,7 @@
             <c:out value=" " />
           </c:if>
           <c:if test="${not empty maxPages}">
-            <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
+            <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" path="${path }" parameters="${parameters }" />
           </c:if>
         </td>
       </tr>
