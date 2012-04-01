@@ -44,13 +44,13 @@ LOCK TABLES `status` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `process`
+-- Table structure for table `project_process`
 --
 
-DROP TABLE IF EXISTS `process`;
+DROP TABLE IF EXISTS `project_process`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `process` (
+CREATE TABLE `project_process` (
   `ProcessID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`ProcessID`)
@@ -58,12 +58,12 @@ CREATE TABLE `process` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `process`
+-- Dumping data for table `project_process`
 --
 
-LOCK TABLES `process` WRITE;
-/*!40000 ALTER TABLE `process` DISABLE KEYS */;
-/*!40000 ALTER TABLE `process` ENABLE KEYS */;
+LOCK TABLES `project_process` WRITE;
+/*!40000 ALTER TABLE `project_process` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project_process` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `dependencytype` (
   KEY `fk_DependencyType_Process1` (`ProcessID`),
   KEY `fk_DependencyType_WorkItemType1` (`WorkItemTypeID1`),
   KEY `fk_DependencyType_WorkItemType2` (`WorkItemTypeID2`),
-  CONSTRAINT `fk_DependencyType_Process1` FOREIGN KEY (`ProcessID`) REFERENCES `process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_DependencyType_Process1` FOREIGN KEY (`ProcessID`) REFERENCES `project_process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_DependencyType_WorkItemType1` FOREIGN KEY (`WorkItemTypeID1`) REFERENCES `workitemtype` (`WorkItemTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_DependencyType_WorkItemType2` FOREIGN KEY (`WorkItemTypeID2`) REFERENCES `workitemtype` (`WorkItemTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -347,7 +347,7 @@ CREATE TABLE `workitemtype` (
   `Process_ProcessID` int(11) NOT NULL,
   PRIMARY KEY (`WorkItemTypeID`),
   KEY `fk_WorkItemType_Process1` (`Process_ProcessID`),
-  CONSTRAINT `fk_WorkItemType_Process1` FOREIGN KEY (`Process_ProcessID`) REFERENCES `process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_WorkItemType_Process1` FOREIGN KEY (`Process_ProcessID`) REFERENCES `project_process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -431,7 +431,7 @@ CREATE TABLE `project` (
   KEY `fk_Project_Calendar1` (`CalendarID`),
   CONSTRAINT `fk_Project_WorkItemContainer1` FOREIGN KEY (`ProjectID`) REFERENCES `workitemcontainer` (`WorkItemContainerID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Project_Class1` FOREIGN KEY (`ClassID`) REFERENCES `projectclass` (`ClassID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Project_Process1` FOREIGN KEY (`ProcessID`) REFERENCES `process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Project_Process1` FOREIGN KEY (`ProcessID`) REFERENCES `project_process` (`ProcessID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Project_Calendar1` FOREIGN KEY (`CalendarID`) REFERENCES `calendar` (`CalendarID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
