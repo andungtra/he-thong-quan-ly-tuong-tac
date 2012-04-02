@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RooWebScaffold(path = "accounts", formBackingObject = Account.class)
 public class AccountController {
-	@RequestMapping(value = "/test",produces = "text/html")
-    public String test() {     
+
+    @RequestMapping(value = "/test", produces = "text/html")
+    public String test() {
         return "accounts/test";
     }
 }

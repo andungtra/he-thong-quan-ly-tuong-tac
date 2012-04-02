@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_hcmus_tis_model_ProjectProcess" object="${projectprocess}" path="/projectprocesses" z="zPEfUGloIUafTqPdlkdVtB4bEQo=">
+        <field:display field="name" id="s_org_hcmus_tis_model_ProjectProcess_name" object="${projectprocess}" z="2rwUqhGTXpyplmxqAHHoETYyi+g="/>
+        <field:display field="description" id="s_org_hcmus_tis_model_ProjectProcess_description" object="${projectprocess}" z="j8ba5c55X2eGNNuDa3+7eys8d3I="/>
+    </page:show>
+</div>

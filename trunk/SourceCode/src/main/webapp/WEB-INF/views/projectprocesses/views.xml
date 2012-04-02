@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+	<definition extends="content" name="projectprocesses/list">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projectprocesses/list.jspx" />
+	</definition>
+	<definition extends="content" name="projectprocesses/show">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projectprocesses/show.jspx" />
+	</definition>
+	<definition extends="content" name="projectprocesses/create">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projectprocesses/create.jspx" />
+	</definition>
+	<definition extends="content" name="projectprocesses/update">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projectprocesses/update.jspx" />
+	</definition>
+</tiles-definitions>

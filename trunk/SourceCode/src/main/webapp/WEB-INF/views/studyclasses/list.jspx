@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:quickfind listButton="false" finderName="quickFind" path="/studyclasses" id="ff_org_hcmus_tis_model_StudyClass" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=">
-    <table:SearchInput id="f_org_hcmus_tis_model_StudyClass_name" disableFormBinding="true" field="query" label="search" max="50" min="1" required="true" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g=" defaultValue="${query}"></table:SearchInput>
+    <table:SearchInput type="search" placeholder="Search class ..." id="f_org_hcmus_tis_model_StudyClass_name" disableFormBinding="true" field="query" label="search" max="50" min="1" required="true" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g=" defaultValue="${query}"></table:SearchInput>
     </page:quickfind>
     <page:list id="pl_org_hcmus_tis_model_StudyClass" items="${studyclasses}" z="3I+xdcS42Ak8Chs0DAJ6Dl9ZCNc=">
         <table:table data="${studyclasses}" id="l_org_hcmus_tis_model_StudyClass" path="/studyclasses" z="brvBMDYIPpwZN24KEAVROo/nJig=">

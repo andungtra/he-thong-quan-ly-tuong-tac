@@ -8,6 +8,7 @@ import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
@@ -89,6 +90,30 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
+    public Converter<ProjectProcess, String> ApplicationConversionServiceFactoryBean.getProjectProcessToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.ProjectProcess, java.lang.String>() {
+            public String convert(ProjectProcess projectProcess) {
+                return new StringBuilder().append(projectProcess.getName()).append(" ").append(projectProcess.getDescription()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, ProjectProcess> ApplicationConversionServiceFactoryBean.getIdToProjectProcessConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.ProjectProcess>() {
+            public org.hcmus.tis.model.ProjectProcess convert(java.lang.Long id) {
+                return ProjectProcess.findProjectProcess(id);
+            }
+        };
+    }
+    
+    public Converter<String, ProjectProcess> ApplicationConversionServiceFactoryBean.getStringToProjectProcessConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.ProjectProcess>() {
+            public org.hcmus.tis.model.ProjectProcess convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), ProjectProcess.class);
+            }
+        };
+    }
+    
     public Converter<Long, StudyClass> ApplicationConversionServiceFactoryBean.getIdToStudyClassConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.StudyClass>() {
             public org.hcmus.tis.model.StudyClass convert(java.lang.Long id) {
@@ -118,6 +143,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getProjectToStringConverter());
         registry.addConverter(getIdToProjectConverter());
         registry.addConverter(getStringToProjectConverter());
+        registry.addConverter(getProjectProcessToStringConverter());
+        registry.addConverter(getIdToProjectProcessConverter());
+        registry.addConverter(getStringToProjectProcessConverter());
         registry.addConverter(getStudyClassToStringConverter());
         registry.addConverter(getIdToStudyClassConverter());
         registry.addConverter(getStringToStudyClassConverter());

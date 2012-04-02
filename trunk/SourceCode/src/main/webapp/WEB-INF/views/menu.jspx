@@ -28,5 +28,9 @@
         <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
             <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
+        <menu:category id="c_projectprocess" z="vLonDHtTfP5DFf0VP9ibzSKI/fQ=">
+            <menu:item id="i_projectprocess_new" messageCode="global_menu_new" url="/projectprocesses?form" z="C+qyUvLbdZv/GU9GxqlVwa6awG4="/>
+            <menu:item id="i_projectprocess_list" messageCode="global_menu_list" url="/projectprocesses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Mtpms2+lnzoZ3N1ByIKE7qd8fR8="/>
+        </menu:category>
     </menu:menu>
 </div>
