@@ -3,6 +3,8 @@
 
 package org.hcmus.tis.model;
 
+import java.util.Set;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
 
 privileged aspect StudyClass_Roo_JavaBean {
@@ -21,6 +23,14 @@ privileged aspect StudyClass_Roo_JavaBean {
     
     public void StudyClass.setDescription(String description) {
         this.description = description;
+    }
+    
+    public Set<Project> StudyClass.getProjects() {
+        return this.projects;
+    }
+    
+    public void StudyClass.setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
     
 }

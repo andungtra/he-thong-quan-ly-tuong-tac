@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.StudyClassController;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -86,6 +87,7 @@ privileged aspect StudyClassController_Roo_Controller {
     
     void StudyClassController.populateEditForm(Model uiModel, StudyClass studyClass) {
         uiModel.addAttribute("studyClass", studyClass);
+        uiModel.addAttribute("projects", Project.findAllProjects());
     }
     
     String StudyClassController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -2,10 +2,11 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:quickfind searchButton="false" createButton="false" finderName="quickFind" path="/studyclasses" id="ff_org_hcmus_tis_model_StudyClass" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4="></form:quickfind>
+    <form:quickfind createButton="false" finderName="quickFind" id="ff_org_hcmus_tis_model_StudyClass" path="/studyclasses" searchButton="false" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4="/>
     <form:create id="fc_org_hcmus_tis_model_StudyClass" modelAttribute="studyClass" path="/studyclasses" render="${empty dependencies}" z="vz6hs9wlaIOSKVgEmx2yTbhvEas=">
         <field:input field="name" id="c_org_hcmus_tis_model_StudyClass_name" required="true" z="user-managed"/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_StudyClass_description" z="user-managed"/>
+        <field:select field="projects" id="c_org_hcmus_tis_model_StudyClass_projects" itemValue="id" items="${projects}" multiple="true" path="/projects" z="+k3o/X1jHnc+CThgQbPbWwFfxBU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_StudyClass" render="${not empty dependencies}" z="haYBzcNwJTAf+LYKnvjbiSq87Q4="/>
 </div>

@@ -54,6 +54,9 @@
           <spring:message code="button_save" var="save_button" htmlEscape="false" />
           <spring:message code="button_save_and_continue" var="save_and_continue_button" htmlEscape="false" />
           <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
+          <c:if test="${modelAttribute.equals('projectProcess')}">
+          	<input id="upload" type="file" class="form_submit_button" value="Upload"/>
+          </c:if>
           <input id="proceed" type="submit" class="form_submit_button" value="${fn:escapeXml(save_button)}"/>
           <input id="proceed" type="submit" class="form_submit_button" value="${fn:escapeXml(save_and_continue_button)}"/>
         </div>

@@ -185,3 +185,12 @@ body {
 	!
 	important;
 }
+.btn
+{
+	float:right;
+	margin: 10px;
+}
+.btn:hover
+{
+	background-color: #ccc;
+}

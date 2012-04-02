@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -22,12 +21,13 @@ public class Project extends WorkItemContainer {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private StudyClass studyClass;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
     private Set<MemberInformation> memberInformations = new HashSet<MemberInformation>();
-    public static long  countProjectsByNameLike(String name){
+
+    @ManyToOne
+    private StudyClass studyClass;
+
+    public static long countProjectsByNameLike(String name) {
         if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
         name = name.replace('*', '%');
         if (name.charAt(0) != '%') {
@@ -36,14 +36,14 @@ public class Project extends WorkItemContainer {
         if (name.charAt(name.length() - 1) != '%') {
             name = name + "%";
         }
-    	String query = "SELECT count(*) FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)";
-    	EntityManager em = Project.entityManager();
-    	Query q = em.createQuery(query);
-    	q.setParameter("name", name);
-    	return (Long)q.getSingleResult();
-    	
+        String query = "SELECT count(*) FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)";
+        EntityManager em = Project.entityManager();
+        Query q = em.createQuery(query);
+        q.setParameter("name", name);
+        return (Long) q.getSingleResult();
     }
-    public static TypedQuery<Project> findProjectsByNameLike(String name, int firstIndex, int maxSize) {
+
+    public static TypedQuery<org.hcmus.tis.model.Project> findProjectsByNameLike(String name, int firstIndex, int maxSize) {
         if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
         name = name.replace('*', '%');
         if (name.charAt(0) != '%') {

@@ -18,20 +18,20 @@ privileged aspect Project_Roo_JavaBean {
         this.description = description;
     }
     
-    public StudyClass Project.getStudyClass() {
-        return this.studyClass;
-    }
-    
-    public void Project.setStudyClass(StudyClass studyClass) {
-        this.studyClass = studyClass;
-    }
-    
     public Set<MemberInformation> Project.getMemberInformations() {
         return this.memberInformations;
     }
     
     public void Project.setMemberInformations(Set<MemberInformation> memberInformations) {
         this.memberInformations = memberInformations;
+    }
+    
+    public StudyClass Project.getStudyClass() {
+        return this.studyClass;
+    }
+    
+    public void Project.setStudyClass(StudyClass studyClass) {
+        this.studyClass = studyClass;
     }
     
 }
