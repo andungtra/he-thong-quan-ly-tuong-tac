@@ -205,3 +205,6 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 00:10:46
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-31 00:30:07
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 15:54:59
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-02 08:46:36
+entity jpa --class ~.model.ProjectProcess
+web mvc all --package ~.controller

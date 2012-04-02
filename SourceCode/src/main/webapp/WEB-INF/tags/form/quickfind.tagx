@@ -25,7 +25,7 @@
 	<c:if test="${empty searchButton}">
 		<c:set var="searchButton" value="true"></c:set>
 	</c:if>
-	<spring:url value="/images/search.png" var="searchImgUrl"></spring:url>
+	<!--<spring:url value="/images/search.png" var="searchImgUrl"></spring:url>-->
 	<spring:url value="${path}" var="create_url">
 		<spring:param name="form" />
 	</spring:url>
@@ -53,6 +53,7 @@
 				<form:form action="${form_url}" method="GET">
 					<input type="hidden" name="find"
 						value="${fn:escapeXml(finderName)}" />
+						<!-- 
 					<div class="quickSearch_button"
 						id="${fn:escapeXml(id)}_${fn:escapeXml(finderName)}_submit">
 						<spring:message code="button_find" var="find_button"
@@ -61,6 +62,7 @@
 						<input id="proceed" type="submit" value=""
 							style="background-repeat:no-repeat; background-image:url('${searchImgUrl}'); ;margin: 0px; padding: 0px; width: 18px" />
 					</div>
+					 -->
 					<div class="quickSearch_input">
 
 						<jsp:doBody />

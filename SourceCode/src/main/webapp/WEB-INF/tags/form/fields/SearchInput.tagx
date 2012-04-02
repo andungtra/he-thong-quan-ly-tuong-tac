@@ -50,13 +50,16 @@
 	<jsp:directive.attribute name="type" type="java.lang.String"
 		required="false" rtexprvalue="true"
 		description="Set field type (default 'text', or 'password')" />
+	<jsp:directive.attribute name="placeholder" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="Set field placeholder (default 'search')" />
 	<jsp:directive.attribute name="render" type="java.lang.Boolean"
 		required="false" rtexprvalue="true"
 		description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
 	<jsp:directive.attribute name="z" type="java.lang.String"
 		required="false"
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-			<jsp:directive.attribute name="defaultValue" type="java.lang.String"
+	<jsp:directive.attribute name="defaultValue" type="java.lang.String"
 		required="false" rtexprvalue="true"
 		description="Specify the default value" />
 	<c:if test="${empty render or render}">
@@ -101,12 +104,15 @@
 
 		<div id="_${fn:escapeXml(id)}_id">
 			<c:choose>
-				<c:when test="${disableFormBinding}">				
-					<input placeholder="Search project ..." id="_${sec_field}_id" name="${sec_field}"
-						type="${fn:escapeXml(type)}" style="margin: 0px 0px 0px 5px; padding: 0px;" value="${defaultValue }" />
+				<c:when test="${disableFormBinding}">
+					<input placeholder="${fn:escapeXml(placeholder)}" results="10"
+						id="_${sec_field}_id" name="${sec_field}"
+						type="${fn:escapeXml(type)}"
+						style="margin: 0px 0px 0px 5px; padding: 0px;"
+						value="${defaultValue }" />
 				</c:when>
 				<c:otherwise>
-					<form:input  id="_${sec_field}_id" path="${sec_field}"
+					<form:input id="_${sec_field}_id" path="${sec_field}"
 						disabled="${disabled}" />
 					<br />
 					<form:errors cssClass="errors" id="_${sec_field}_error_id"
