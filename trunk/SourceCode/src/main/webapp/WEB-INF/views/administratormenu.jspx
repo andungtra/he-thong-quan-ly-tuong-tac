@@ -23,7 +23,7 @@
     	<div style="float: right">
     		<c:choose>
 				<c:when test="${pageContext['request'].userPrincipal != null}">
-					<div class="header_menu_right_item">
+					<div class="header_menu_right_item header_menu_right_item_border">
 						<spring:url value="/resources/j_spring_security_logout"
 							var="logout" />
 						<a href="${logout}"> <spring:message code="security_logout" /></a>
@@ -35,9 +35,7 @@
 				<c:otherwise>
 					<div class="header_menu_right_item">						
 						<a href="${login}">Login</a>
-					</div>
-					<div class="header_menu_right_item" id="header_menu_first">Welcome
-						to TIS</div>
+					</div>					
 				</c:otherwise>
 			</c:choose>
     	</div>

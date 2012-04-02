@@ -43,7 +43,7 @@ privileged aspect ProjectController_Roo_Controller {
     public String ProjectController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
-        return "projects/show";
+        return "projects/overview";
     }
     
     @RequestMapping(produces = "text/html")

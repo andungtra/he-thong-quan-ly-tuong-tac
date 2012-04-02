@@ -73,10 +73,13 @@ body {
 	margin: 0px;
 }
 
+.header_menu_right_item_border {
+	border-left: thin solid #fff;
+}
+
 .header_menu_right_item {
 	float: right;
-	border-left: thin solid #333;
-	padding: 2px 31px;
+	padding: 2px 10px;
 	margin: 0px;
 }
 
@@ -193,4 +196,51 @@ body {
 .btn:hover
 {
 	background-color: #ccc;
+}
+/* css for overview project*/
+.panel
+{
+	border: solid 1px #ccc;
+	border-radius : 4px;
+	margin: 10px;
+	padding: 10px;
+}
+
+.left-panel
+{
+	float: left;
+	width: 35%;
+}
+
+.right-panel
+{
+	float: right;
+	width: 60%;
+}
+
+#project-tab
+{
+	margin-top:-15px;
+	margin-bottom: 10px;
+}
+#project-tab li
+{	
+	border: solid 1px #ccc;
+	float: left;
+	list-style-type: none;
+	padding: 5px;
+	margin: 0px;
+	text-align: none;
+	color: #0067ff;
+}
+
+#project-tab a
+{
+	text-decoration:none;
+	color: #64bc0b;
+}
+
+#project-tab a:hover
+{
+	text-decoration:underline;
 }
