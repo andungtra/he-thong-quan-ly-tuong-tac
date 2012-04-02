@@ -14,7 +14,7 @@ $(function() {
 				load : function(event, ui) {
 					$(ui.panel).delegate('a', 'click', function(event) {						
 						$(ui.panel).load(this.href, function() {	
-							document.getElementById('sitemap').innerHTML =this.href;
+							//document.getElementById('sitemap').innerHTML =this.href;
 							addFormSubmitHandler();
 						});
 						event.preventDefault();

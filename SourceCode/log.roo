@@ -208,3 +208,21 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-02 08:46:36
 entity jpa --class ~.model.ProjectProcess
 web mvc all --package ~.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-02 10:59:04
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-02 11:52:28
+focus --class ~.model.StudyClass
+field set --fieldName projects --type ~.model.Project
+web mvc all --package ~.controller
+web mvc all --package ~.controller
+web mvc all --package ~.controller
+web mvc all --package ~.controller
+web mvc all --package ~.controller
+focus --class ~.model.Project
+web mvc all --package ~.controller
+entity jpa --class ~.model.Project
+web mvc all --package ~.controller
+focus --class ~.model.StudyClass
+field set --fieldName projects --type ~.model.Project --class ~.model.StudyClass --cardinality 
+// [failed] field reference --fieldName studyClass --type ~.model.StudyClass --class ~.model.Project --cardinality 
+// [failed] field reference --fieldName studyClass --type ~.model.StudyClass --class ~.model.Project --cardinality 
+field reference --fieldName studyClass --type ~.model.StudyClass --class ~.model.Project --cardinality 
