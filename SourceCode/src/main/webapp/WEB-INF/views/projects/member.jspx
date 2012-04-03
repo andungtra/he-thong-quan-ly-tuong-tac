@@ -9,7 +9,9 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<tab:project-tab id="${itemId}"></tab:project-tab>
 	<div style="clear: both; height: 10px;" />
-	
+	<page:quickfind finderName="quickFind" id="ff_org_hcmus_tis_model_Account" listButton="false" path="/accounts" z="user-managed">
+        <field:SearchInput defaultValue="${query }" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_Account_name" label="search" max="50" min="1" placeholder="Search member ..." required="false" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
+    </page:quickfind>
 	<page:list id="l_org_hcmus_tis_model_Project_memberInformation"
 		items="${project.memberInformations}" label="Member"
 		labelPlural="Members" openPane="true">

@@ -4,5 +4,47 @@
     <jsp:output omit-xml-declaration="yes"/>
     <tab:project-tab id="${itemId}"></tab:project-tab>
     <div style="clear: both;"/>
-    Task
+    <div class="panel task-left">
+    	Project Name
+    	<ul>
+    		<li>Release 1
+    			<ul>
+    				<li>Query 1</li>
+    				<li>Query 2</li>
+    			</ul>
+    		</li>
+    		<li>Release 2
+    			<ul>
+    				<li>Query 1</li>
+    				<li>Query 2</li>
+    			</ul>
+    		</li>
+    	</ul>
+    </div>
+    <div class="panel task-right">
+    	<table>
+    		<tr>
+    			<th>ID</th>
+    			<th>Name</th>
+    			<th>Due Date</th>
+    			<th>Priority</th>
+    			<th>Status</th>
+    		</tr>
+    		<tr>
+    			<td>1</td>
+    			<td>Create Project</td>
+    			<td>23/2/2012</td>
+    			<td>High</td>
+    			<td>Done</td>
+    		</tr>
+    		<tr>
+    			<td>2</td>
+    			<td>Create Template</td>
+    			<td>28/2/2012</td>
+    			<td>High</td>
+    			<td>On-going</td>
+    		</tr>
+    	</table>
+    </div> 
+    <div style="clear: both;"/> 
 </div>

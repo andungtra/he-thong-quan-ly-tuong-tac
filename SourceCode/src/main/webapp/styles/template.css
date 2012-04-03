@@ -244,3 +244,22 @@ body {
 {
 	text-decoration:underline;
 }
+
+.task-left
+{
+	float: left;
+	width: 20%;
+}
+
+.task-right
+{
+	float: right;
+	width: 70%;
+}
+
+table
+{
+	width: 100%;
+	border: none;
+}
+
