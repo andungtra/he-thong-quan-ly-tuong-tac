@@ -1,0 +1,11 @@
+<html>
+<body>
+<p>Welcome to<strong> TIS </strong>.</p>
+<p>You have invited to join to  <b>TIS</b>. You must active your account before you can use it.</p>
+<p> Please follow the special link below to active your account.<br />
+  <a href="${link}">${link}</a><br />
+  <br />
+Note: This link can only be used once. </p>
+</body>
+</body>
+</html>

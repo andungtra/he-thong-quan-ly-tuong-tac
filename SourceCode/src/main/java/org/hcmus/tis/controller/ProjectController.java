@@ -2,6 +2,10 @@ package org.hcmus.tis.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
@@ -18,7 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RooWebScaffold(path = "projects", formBackingObject = Project.class)
 @RooWebFinder
 public class ProjectController {
-
+	@RequestMapping(value = "/{id}", produces = "text/html")
+    public String show(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("project", Project.findProject(id));
+        uiModel.addAttribute("itemId", id);
+        return "projects/overview";
+    }
+	@RequestMapping(value = "/testlayout")
+	public String testProjectLayout(){
+		return "projects/testlayout";
+	}
 	@RequestMapping(value = "/{id}", produces = "text/html")
     public String show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("project", Project.findProject(id));       
@@ -76,10 +89,10 @@ public class ProjectController {
         return "projects/wiki";
     }
     
-    @RequestMapping(value = "/{id}/member", produces = "text/html")
-    public String member(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
-        uiModel.addAttribute("itemId", id);
+    @RequestMapping(value = "/{id}/members", produces = "text/html")
+    public String listMembers(@PathVariable("id") Long id, Model uiModel) {
+    	Set<MemberInformation> memberInformations = Project.findProject(id).getMemberInformations();
+    	uiModel.addAttribute("memberinformations", memberInformations);
         return "projects/member";
     }
     

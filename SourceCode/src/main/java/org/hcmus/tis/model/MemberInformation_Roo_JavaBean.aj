@@ -18,20 +18,20 @@ privileged aspect MemberInformation_Roo_JavaBean {
         this.account = account;
     }
     
-    public MemberRole MemberInformation.getMemberRole() {
-        return this.memberRole;
-    }
-    
-    public void MemberInformation.setMemberRole(MemberRole memberRole) {
-        this.memberRole = memberRole;
-    }
-    
     public Project MemberInformation.getProject() {
         return this.project;
     }
     
     public void MemberInformation.setProject(Project project) {
         this.project = project;
+    }
+    
+    public MemberRole MemberInformation.getMemberRole() {
+        return this.memberRole;
+    }
+    
+    public void MemberInformation.setMemberRole(MemberRole memberRole) {
+        this.memberRole = memberRole;
     }
     
 }

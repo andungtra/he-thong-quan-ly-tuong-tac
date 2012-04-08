@@ -4,10 +4,14 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.AccountController;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,16 +23,8 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect AccountController_Roo_Controller {
     
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String AccountController.create(@Valid Account account, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, account);
-            return "accounts/create";
-        }
-        uiModel.asMap().clear();
-        account.persist();
-        return "redirect:/accounts/" + encodeUrlPathSegment(account.getId().toString(), httpServletRequest);
-    }
+    @Autowired
+    AccountService AccountController.accountService;
     
     @RequestMapping(params = "form", produces = "text/html")
     public String AccountController.createForm(Model uiModel) {
@@ -38,7 +34,7 @@ privileged aspect AccountController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String AccountController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("account", Account.findAccount(id));
+        uiModel.addAttribute("account", accountService.findAccount(id));
         uiModel.addAttribute("itemId", id);
         return "accounts/show";
     }
@@ -48,11 +44,11 @@ privileged aspect AccountController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("accounts", Account.findAccountEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Account.countAccounts() / sizeNo;
+            uiModel.addAttribute("accounts", accountService.findAccountEntries(firstResult, sizeNo));
+            float nrOfPages = (float) accountService.countAllAccounts() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("accounts", Account.findAllAccounts());
+            uiModel.addAttribute("accounts", accountService.findAllAccounts());
         }
         return "accounts/list";
     }
@@ -64,20 +60,20 @@ privileged aspect AccountController_Roo_Controller {
             return "accounts/update";
         }
         uiModel.asMap().clear();
-        account.merge();
+        accountService.updateAccount(account);
         return "redirect:/accounts/" + encodeUrlPathSegment(account.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String AccountController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Account.findAccount(id));
+        populateEditForm(uiModel, accountService.findAccount(id));
         return "accounts/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String AccountController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Account account = Account.findAccount(id);
-        account.remove();
+        Account account = accountService.findAccount(id);
+        accountService.deleteAccount(account);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -86,6 +82,7 @@ privileged aspect AccountController_Roo_Controller {
     
     void AccountController.populateEditForm(Model uiModel, Account account) {
         uiModel.addAttribute("account", account);
+        uiModel.addAttribute("accountstatuses", Arrays.asList(AccountStatus.values()));
     }
     
     String AccountController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"><!--jquery widget--></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var validator = $("#activeForm").validate({
+				rules:{
+					firstName:{
+						required:true,
+					}
+					lastName :{
+						required:true,
+					}
+				},
+				message :{
+					firstName:{
+						required:"required",
+					}
+					
+				}
+			});
+		});
+	</script>
+	<util:panel title="Active Account" id="">
+	<spring:url value="/accounts/${account.id }" var="action_url"></spring:url>
+		<form:form method="PUT" action="${action_url}">
+		<input type="hidden" name="id" value="${account.id }"></input>
+		<input type="hidden" name="status" value="${account.status }"></input>
+		<input type="hidden" name="email" value="${account.email }"></input>
+			<input type="hidden" name="activeKey" value="${account.password }"></input>
+			<div>
+			
+				 <input
+					id="firstName"  name="firstName"  value="${account.firstName }"></input>
+					<label for="first_name">Fist Name * :</label>
+			</div>
+			<br />
+			<div>
+				<label for="lastName">Last Name * :</label> <input id="lastName" name="lastName"
+					 value="${account.lastName }"></input>
+			</div>
+			<br />
+			<div>
+				<label for="password">Password * :</label> <input type="password"
+					 id="password" name="password"></input>
+			</div>
+			<br />
+			<div>
+				<label for="retypePassword">Retype password *:</label> <input name="retypePassword"
+					id="retypePassword" 
+					type="password"></input>
+			</div>
+			<br /> <input type="submit" name="submit" value="Submit"></input>
+		</form:form>
+	</util:panel>
+</div>

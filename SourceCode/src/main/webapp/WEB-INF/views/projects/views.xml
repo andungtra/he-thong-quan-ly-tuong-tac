@@ -19,19 +19,19 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/overview.jspx" />
 	</definition>
+	<definition extends="project" name="projects/testlayout">
+	</definition>
 	<definition extends="content" name="projects/task">
-		<put-attribute name="body"
-			value="/WEB-INF/views/projects/task.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/projects/task.jspx" />
 	</definition>
 	<definition extends="content" name="projects/wiki">
-		<put-attribute name="body"
-			value="/WEB-INF/views/projects/wiki.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/projects/wiki.jspx" />
 	</definition>
 	<definition extends="content" name="projects/member">
 		<put-attribute name="body"
-			value="/WEB-INF/views/projects/member.jspx" />
+			value="/WEB-INF/views/memberinformations/list.jspx" />
 	</definition>
-	<definition extends="content" name="projects/calendar">
+	<definition extends="content" name="projects/calendar"> 
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/calendar.jspx" />
 	</definition>

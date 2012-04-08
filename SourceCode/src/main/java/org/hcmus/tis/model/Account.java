@@ -2,6 +2,8 @@ package org.hcmus.tis.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +13,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
+@RooJpaActiveRecord(finders = { "findAccountsByEmailEquals" })
 public class Account {
 
     @NotNull
@@ -36,10 +38,13 @@ public class Account {
     private Boolean isAdmin;
 
     @Value("false")
-    private Boolean isEnable;  
-    
-    public String toString()
-    {
-    	return email;
+    private Boolean isEnable;
+
+    @Enumerated
+    @NotNull
+    private AccountStatus status;
+
+    public String toString() {
+        return email;
     }
 }
