@@ -1,5 +1,6 @@
 package org.hcmus.tis.model;
 
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -15,13 +16,13 @@ public class MemberInformation {
 
     @NotNull
     @ManyToOne
-    private MemberRole memberRole;
+    private Project project;
 
     @NotNull
-    @ManyToOne
-    private Project project;
-    public String toString()
-    {
-    	return account.getEmail();
+    @Enumerated
+    private MemberRole memberRole;
+
+    public String toString() {
+        return account.getEmail();
     }
 }

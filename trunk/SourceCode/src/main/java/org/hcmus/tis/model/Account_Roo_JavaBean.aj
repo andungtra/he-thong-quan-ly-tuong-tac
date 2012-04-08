@@ -4,6 +4,7 @@
 package org.hcmus.tis.model;
 
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.AccountStatus;
 
 privileged aspect Account_Roo_JavaBean {
     
@@ -53,6 +54,14 @@ privileged aspect Account_Roo_JavaBean {
     
     public void Account.setIsEnable(Boolean isEnable) {
         this.isEnable = isEnable;
+    }
+    
+    public AccountStatus Account.getStatus() {
+        return this.status;
+    }
+    
+    public void Account.setStatus(AccountStatus status) {
+        this.status = status;
     }
     
 }

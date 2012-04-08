@@ -205,6 +205,35 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 00:10:46
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-31 00:30:07
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 15:54:59
+<<<<<<< .mine
+focus --class ~.model.Account
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-31 17:21:39
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 17:25:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-03-31 17:56:51
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-03-31 21:42:28
+entity jpa --class ~.model.AccountStatus --testAutomatically 
+enum type --class ~.model.AccountStatus
+enum constant --name inactive
+enum constant --name blocked
+enum constant --name active
+focus --class ~.model.Account
+field enum --type ~.model.AccountStatus --fieldName status
+// [failed] field enum --type ~.model.AccountStatus --fieldName status --notNull 
+email sender setup --hostServer smtp.gmail.com --username 0812642@gmail.com --password abcxyz123 --port 587 --protocol smtp --encoding utf-8
+email template setup --subject subject --from tis@gmail.com
+service --interface ~.service.EmailService 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-01 00:32:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-01 08:57:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-01 11:44:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-01 20:38:21
+service --interface ~.controller.AccountService --entity ~.model.Account 
+focus --class ~.model.Account
+finder list 
+finder add findAccountsByEmailEquals
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-02 00:29:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-02 23:14:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-02 23:21:50
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-02 08:46:36
 entity jpa --class ~.model.ProjectProcess
 web mvc all --package ~.controller
@@ -227,5 +256,33 @@ field set --fieldName projects --type ~.model.Project --class ~.model.StudyClass
 // [failed] field reference --fieldName studyClass --type ~.model.StudyClass --class ~.model.Project --cardinality 
 field reference --fieldName studyClass --type ~.model.StudyClass --class ~.model.Project --cardinality 
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-02 17:17:35
+<<<<<<< .mine
+>>>>>>> .r62
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-03 23:43:38
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-04 00:36:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-04 08:32:39
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-04 12:01:46
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-04 22:21:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-04 23:04:32
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-05 15:03:48
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-05 15:45:56
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-06 23:57:22
+focus --class ~.model.MemberInformation
+enum type --class org.hcmus.tis.model.MemberRole
+focus --class ~.model.MemberInformation
+// [failed] field enum --fieldName role --type ~.model.MemberRole --notNull 
+field enum --fieldName memberRole --type ~.model.MemberRole --notNull 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-07 00:02:15
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-07 00:02:27
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-07 00:05:17
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-08 21:39:00
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-08 21:40:21
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-08 21:47:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-08 21:50:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-08 21:54:55
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-08 22:53:55
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-05 15:05:53
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-05 15:17:17
+>>>>>>> .r64
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-08 23:58:19

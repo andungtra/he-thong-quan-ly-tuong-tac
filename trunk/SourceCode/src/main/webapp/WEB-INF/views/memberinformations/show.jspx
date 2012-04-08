@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_hcmus_tis_model_MemberInformation" object="${memberinformation}" path="/memberinformations" z="SeBXMS82ooI1d1nZUXGbcizQvKU=">
         <field:display field="account" id="s_org_hcmus_tis_model_MemberInformation_account" object="${memberinformation}" z="W05DzJaqmgMMUIDZgIGgMWyYfkc="/>
-        <field:display field="memberRole" id="s_org_hcmus_tis_model_MemberInformation_memberRole" object="${memberinformation}" z="61NxpaL+4mc1a/iessfLRnF41j4="/>
         <field:display field="project" id="s_org_hcmus_tis_model_MemberInformation_project" object="${memberinformation}" z="Yl1wiWZRIZ8dkhr+JFxve5eHHwA="/>
+        <field:display field="memberRole" id="s_org_hcmus_tis_model_MemberInformation_memberRole" object="${memberinformation}" z="61NxpaL+4mc1a/iessfLRnF41j4="/>
     </page:show>
 </div>

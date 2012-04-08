@@ -1,13 +1,17 @@
 package org.hcmus.tis.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.TypedQuery;
 
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.util.Parameter;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -22,16 +26,22 @@ import org.springframework.ui.Model;
 @PrepareForTest(Project.class)
 @MockStaticEntityMethods
 public class ProjectControllerTest {
+	private ProjectController aut;
+	private Model uiModel;
+	@Before
+	public void setUp(){
+		aut = new ProjectController();
+		uiModel = Mockito.mock(Model.class);
+		PowerMockito.mockStatic(Project.class);
+	}
 	@Test
 	public void testFindProjectsByNameLikeWhenNameEmpty() {
 		ProjectController controller = new ProjectController();
-		PowerMockito.mockStatic(Project.class);
 		PowerMockito.when(Project.findAllProjects()).thenReturn(null);
-		Model model =  Mockito.mock(Model.class);
-		controller.findProjectsQuickly("", model, 1, 2);
+		controller.findProjectsQuickly("", uiModel, 1, 2);
 		PowerMockito.verifyStatic();
 		Project.findProjectEntries(0, 2);
-		Mockito.verify(model).addAttribute(Mockito.eq("parameters"), Mockito.anyCollection());
+		Mockito.verify(uiModel).addAttribute(Mockito.eq("parameters"), Mockito.anyCollection());
 	}
 	@Test
 	public void testFindProjectByNameWhenNameNotNull(){
@@ -50,5 +60,14 @@ public class ProjectControllerTest {
 		Mockito.verify(mockUIModel).addAttribute("query", name);
 		Mockito.verify(mockUIModel).addAttribute(Mockito.eq("parameters"), Mockito.anyCollectionOf(Parameter.class));
 	}
-
+	@Test
+	public void testListMembers(){
+	
+		Project mockedProject = Mockito.mock(Project.class);
+		Mockito.doReturn(new HashSet<MemberInformation>()).when(mockedProject).getMemberInformations();
+		PowerMockito.when(Project.findProject((long)1)).thenReturn(mockedProject);
+		String result = aut.listMembers((long)1, uiModel);
+		
+		Mockito.verify(uiModel).addAttribute(Mockito.eq("memberinformations"), Mockito.anyCollection());
+	}
 }

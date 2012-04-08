@@ -12,6 +12,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountDataOnDemand;
+import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
@@ -22,6 +25,9 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     
     private List<Account> AccountDataOnDemand.data;
     
+    @Autowired
+    AccountService AccountDataOnDemand.accountService;
+    
     public Account AccountDataOnDemand.getNewTransientAccount(int index) {
         Account obj = new Account();
         setEmail(obj, index);
@@ -30,6 +36,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         setIsEnable(obj, index);
         setLastName(obj, index);
         setPassword(obj, index);
+        setStatus(obj, index);
         return obj;
     }
     
@@ -72,6 +79,11 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         obj.setPassword(password);
     }
     
+    public void AccountDataOnDemand.setStatus(Account obj, int index) {
+        AccountStatus status = AccountStatus.class.getEnumConstants()[0];
+        obj.setStatus(status);
+    }
+    
     public Account AccountDataOnDemand.getSpecificAccount(int index) {
         init();
         if (index < 0) {
@@ -82,14 +94,14 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         }
         Account obj = data.get(index);
         Long id = obj.getId();
-        return Account.findAccount(id);
+        return accountService.findAccount(id);
     }
     
     public Account AccountDataOnDemand.getRandomAccount() {
         init();
         Account obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Account.findAccount(id);
+        return accountService.findAccount(id);
     }
     
     public boolean AccountDataOnDemand.modifyAccount(Account obj) {
@@ -99,7 +111,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     public void AccountDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Account.findAccountEntries(from, to);
+        data = accountService.findAccountEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Account' illegally returned null");
         }
@@ -111,7 +123,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Account obj = getNewTransientAccount(i);
             try {
-                obj.persist();
+                accountService.saveAccount(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

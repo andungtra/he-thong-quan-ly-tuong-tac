@@ -263,6 +263,12 @@ table
 	border: none;
 }
 
+}
+.error
+{
+	float: none;
+	color: red;
+}
 
 .ui-tabs-nav 
 { 

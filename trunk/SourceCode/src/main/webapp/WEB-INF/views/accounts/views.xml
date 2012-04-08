@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-<!-- 	<definition extends="default" name="accounts/list">
-		<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx" />
-	</definition> -->
+	<!-- <definition extends="default" name="accounts/list"> <put-attribute 
+		name="body" value="/WEB-INF/views/accounts/list.jspx" /> </definition> -->
 	<definition name="accounts/list" extends="administrator">
-	<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx"></put-attribute>
 	</definition>
 	<definition extends="content" name="accounts/show">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/show.jspx" />
@@ -19,7 +18,9 @@
 			value="/WEB-INF/views/accounts/update.jspx" />
 	</definition>
 	<definition extends="content" name="accounts/test">
-		<put-attribute name="body"
-			value="/WEB-INF/views/accounts/test.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/accounts/test.jspx" />
+	</definition>
+	<definition extends="myaccount" name="accounts/active">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/active.jspx" />
 	</definition>
 </tiles-definitions>

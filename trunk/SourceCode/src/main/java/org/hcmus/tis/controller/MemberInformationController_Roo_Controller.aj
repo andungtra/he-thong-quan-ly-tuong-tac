@@ -5,14 +5,16 @@ package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.MemberInformationController;
-import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect MemberInformationController_Roo_Controller {
+    
+    @Autowired
+    AccountService MemberInformationController.accountService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String MemberInformationController.create(@Valid MemberInformation memberInformation, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -39,11 +44,8 @@ privileged aspect MemberInformationController_Roo_Controller {
     public String MemberInformationController.createForm(Model uiModel) {
         populateEditForm(uiModel, new MemberInformation());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (Account.countAccounts() == 0) {
+        if (accountService.countAllAccounts() == 0) {
             dependencies.add(new String[] { "account", "accounts" });
-        }
-        if (MemberRole.countMemberRoles() == 0) {
-            dependencies.add(new String[] { "memberrole", "memberroles" });
         }
         if (Project.countProjects() == 0) {
             dependencies.add(new String[] { "project", "projects" });
@@ -102,8 +104,8 @@ privileged aspect MemberInformationController_Roo_Controller {
     
     void MemberInformationController.populateEditForm(Model uiModel, MemberInformation memberInformation) {
         uiModel.addAttribute("memberInformation", memberInformation);
-        uiModel.addAttribute("accounts", Account.findAllAccounts());
-        uiModel.addAttribute("memberroles", MemberRole.findAllMemberRoles());
+        uiModel.addAttribute("accounts", accountService.findAllAccounts());
+        uiModel.addAttribute("memberroles", Arrays.asList(MemberRole.values()));
         uiModel.addAttribute("projects", Project.findAllProjects());
     }
     

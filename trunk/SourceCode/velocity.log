@@ -1,0 +1,6 @@
+2012-04-01 11:26:26,414 - ResourceManager : unable to find resource '' in any resource loader.
+2012-04-01 11:28:09,826 - ResourceManager : unable to find resource '/views/emails/account-confirmation.vm' in any resource loader.
+2012-04-01 11:36:16,726 - ResourceManager : unable to find resource 'account-confirmation.vm' in any resource loader.
+2012-04-01 11:43:23,597 - ResourceManager : unable to find resource 'account-confirmation.vm' in any resource loader.
+2012-04-01 15:18:15,423 - ResourceManager : unable to find resource 'account-confirmation.vm' in any resource loader.
+2012-04-01 15:27:36,171 - ResourceManager : unable to find resource 'account-confirmation.vm' in any resource loader.
