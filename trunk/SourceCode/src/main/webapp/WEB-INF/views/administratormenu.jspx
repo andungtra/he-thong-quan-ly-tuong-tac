@@ -40,13 +40,15 @@
 			</c:choose>
     	</div>
     <!-- TemplateEndEditable --> </div>
-    <div class="h" id="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
+    <div class="ui-tabs-nav" id="main_menu"> <!-- TemplateBeginEditable name="Menu" -->
     <ul>
-      <li><a href="${listProjectUrl}">Project</a></li>
-      <li><a href="${listClassUrl }">Class</a></li>
-        <li><a href="${listAccountUrl }">Account</a></li>
-      <li><a href="${listProcessUrl}">Process</a></li>
+      <li><a href="${listProjectUrl }">Project</a></li>
+      <li><a href="${listClassUrl   }">Class</a></li>
+      <li><a href="${listAccountUrl }">Account</a></li>
+      <li><a href="${listProcessUrl }">Process</a></li>
       </ul>
-      <!-- TemplateEndEditable --> </div>
+      <!-- TemplateEndEditable --> 
+    </div>
+    <div class="clear"/>
   </div>
 </div>

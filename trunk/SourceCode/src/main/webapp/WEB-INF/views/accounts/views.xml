@@ -4,7 +4,7 @@
 <!-- 	<definition extends="default" name="accounts/list">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx" />
 	</definition> -->
-	<definition name="accounts/list" extends="content">
+	<definition name="accounts/list" extends="administrator">
 	<put-attribute name="body" value="/WEB-INF/views/accounts/list.jspx"></put-attribute>
 	</definition>
 	<definition extends="content" name="accounts/show">

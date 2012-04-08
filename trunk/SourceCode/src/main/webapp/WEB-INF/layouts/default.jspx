@@ -24,7 +24,7 @@
 	    		</div>
 		    	<tiles:insertAttribute name="footer" ignore="true"/>
 		    </div>
-		    <tiles:insertAttribute name="menu" ignore="true" />   
+		    <!-- <tiles:insertAttribute name="menu" ignore="true" /> -->  
 		</div>
 	</body>
 </html>
