@@ -39,13 +39,6 @@ privileged aspect ProjectController_Roo_Controller {
         return "projects/create";
     }
     
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String ProjectController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("project", Project.findProject(id));
-        uiModel.addAttribute("itemId", id);
-        return "projects/overview";
-    }
-    
     @RequestMapping(produces = "text/html")
     public String ProjectController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         if (page != null || size != null) {

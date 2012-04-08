@@ -4,14 +4,13 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
-	<div id="project-tab">
+	<div id="menu_menu">
 		<ul>
 			<li><a href="../projects/${id}/overview">Overview</a></li>
 			<li><a href="../projects/${id}/task">Task</a></li>
 			<li><a href="../projects/${id}/wiki">Wiki</a></li>
 			<li><a href="../projects/${id}/member">Member</a></li>
 			<li><a href="../projects/${id}/calendar">Calendar</a></li>
-			<li><a href="../projects/${id}/activity">Activity</a></li>
 		</ul>
 	</div>
 </jsp:root>
