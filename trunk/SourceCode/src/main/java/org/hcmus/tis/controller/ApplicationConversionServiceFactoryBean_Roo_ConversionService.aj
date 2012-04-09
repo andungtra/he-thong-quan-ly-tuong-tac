@@ -6,7 +6,6 @@ package org.hcmus.tis.controller;
 import org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
-import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
@@ -59,14 +58,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.MemberInformation>() {
             public org.hcmus.tis.model.MemberInformation convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), MemberInformation.class);
-            }
-        };
-    }
-    
-    public Converter<String, MemberRole> ApplicationConversionServiceFactoryBean.getStringToMemberRoleConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.MemberRole>() {
-            public org.hcmus.tis.model.MemberRole convert(String id) {
-                return getObject().convert(getObject().convert(id, Long.class), MemberRole.class);
             }
         };
     }
@@ -134,8 +125,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getMemberInformationToStringConverter());
         registry.addConverter(getIdToMemberInformationConverter());
         registry.addConverter(getStringToMemberInformationConverter());
-        registry.addConverter(getMemberRoleToStringConverter());
-        registry.addConverter(getStringToMemberRoleConverter());
         registry.addConverter(getProjectToStringConverter());
         registry.addConverter(getIdToProjectConverter());
         registry.addConverter(getStringToProjectConverter());
