@@ -15,6 +15,7 @@ import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberInformationDataOnDemand;
 import org.hcmus.tis.model.MemberRole;
+import org.hcmus.tis.model.MemberRoleDataOnDemand;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private AccountDataOnDemand MemberInformationDataOnDemand.accountDataOnDemand;
+    
+    @Autowired
+    private MemberRoleDataOnDemand MemberInformationDataOnDemand.memberRoleDataOnDemand;
     
     @Autowired
     private ProjectDataOnDemand MemberInformationDataOnDemand.projectDataOnDemand;
@@ -48,7 +52,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     }
     
     public void MemberInformationDataOnDemand.setMemberRole(MemberInformation obj, int index) {
-        MemberRole memberRole = MemberRole.class.getEnumConstants()[0];
+        MemberRole memberRole = memberRoleDataOnDemand.getRandomMemberRole();
         obj.setMemberRole(memberRole);
     }
     

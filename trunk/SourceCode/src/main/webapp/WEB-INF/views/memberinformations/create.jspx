@@ -5,7 +5,7 @@
     <form:create id="fc_org_hcmus_tis_model_MemberInformation" modelAttribute="memberInformation" path="/memberinformations" render="${empty dependencies}" z="JCWsTfJij9jpyid7Zn4evw8H5AY=">
         <field:select field="account" id="c_org_hcmus_tis_model_MemberInformation_account" itemValue="id" items="${accounts}" path="/accounts" required="true" z="2KoTNIpMz6nvSG9baquLi249zzs="/>
         <field:select field="project" id="c_org_hcmus_tis_model_MemberInformation_project" itemValue="id" items="${projects}" path="/projects" required="true" z="Y8lzPNHcjhQLj4qg8XVD0KTYFgg="/>
-        <field:select field="memberRole" id="c_org_hcmus_tis_model_MemberInformation_memberRole" items="${memberroles}" path="memberroles" required="true" z="nw52uiFZiCaU19BWhkZV5R9BTSo="/>
+        <field:select field="memberRole" id="c_org_hcmus_tis_model_MemberInformation_memberRole" itemValue="id" items="${memberroles}" path="/memberroles" required="true" z="JVn7eIka4ah7zig1PA4DXG1VrhY="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_MemberInformation" render="${not empty dependencies}" z="bFynRunzWfQX2A63JDr1SBY6/NY="/>
 </div>

@@ -19,7 +19,7 @@ public class MemberInformation {
     private Project project;
 
     @NotNull
-    @Enumerated
+    @ManyToOne
     private MemberRole memberRole;
 
     public String toString() {

@@ -24,14 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProjectController {
 	@RequestMapping(value = "/{id}", produces = "text/html")
     public String show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
-        return "projects/show";
+        return "projects/home";
     }
-	@RequestMapping(value = "/testlayout")
-	public String testProjectLayout(){
-		return "projects/testlayout";
-	}
     @RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
     public String findProjectsQuickly(@RequestParam("query") String name, Model uiModel, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size) {
         int sizeNo = size == null ? 10 : size.intValue();
@@ -96,7 +91,7 @@ public class ProjectController {
         return "projects/calendar";
     }
     
-    @RequestMapping(value = "/{id}/activity", produces = "text/html")
+    @RequestMapping(value = "/{id}/workitems", produces = "text/html")
     public String activity(@PathVariable("id") Long id, Model uiModel) {
     	uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page" 
 	xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" 
-	xmlns:site="urn:jsptagdir:/WEB-INF/tags/map" 
 	xmlns:spring="http://www.springframework.org/tags" 
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	id="myMenu" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <spring:url value="/projects/${itemId }/overview" var="overviewUrl"></spring:url>
+    <spring:url value="/projects/${itemId }/workitems" var="taskUrl"></spring:url>
+    <spring:url value="/projects/${itemId }/calendar" var="calendarUrl"></spring:url>
+        <spring:url value="/projects/${itemId }/wiki" var="wikiUrl"></spring:url>
+    <spring:url value="/projects/${itemId }/members" var="membersUrl"></spring:url>
     <spring:url value="/administrator/homepage" var="administrator_url"></spring:url>
     <spring:url value="/login" var="login" />
     <spring:message code="security_login_as" var="loginAs"></spring:message>
@@ -36,8 +40,15 @@
 				</c:otherwise>
 			</c:choose>
     	</div>
-    <!-- TemplateEndEditable --> 
-    </div>
-    <site:project-tab id="${id}"></site:project-tab>
+    <!-- TemplateEndEditable --> </div>
+    <div class="h" id="menu_menu"> <!-- TemplateBeginEditable name="Menu" -->
+    <ul>
+      <li><a href="${overviewUrl}">Overview</a></li>
+      <li><a href="${taskUrl }">Task</a></li>
+              <li><a href="${calendarUrl }">Calendar</a></li>
+        <li><a href="${wikiUrl }">Wiki</a></li>
+      <li><a href="${membersUrl}">Members</a></li>
+      </ul>
+      <!-- TemplateEndEditable --> </div>
   </div>
 </div>
