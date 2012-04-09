@@ -290,3 +290,4 @@ field enum --fieldName memberRole --type ~.model.MemberRole --notNull
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-09 09:59:25
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-09 10:41:53
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-09 10:48:30
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-09 20:24:33

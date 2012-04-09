@@ -5,7 +5,7 @@
 		<put-attribute name="body" value="/WEB-INF/views/projects/list.jspx" />
 	</definition>
 	<definition extends="project" name="projects/show">
-		<put-attribute name="body" value="/WEB-INF/views/projects/show.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/projects/index.jspx" />
 	</definition>
 	<definition extends="administrator" name="projects/create">
 		<put-attribute name="body"
