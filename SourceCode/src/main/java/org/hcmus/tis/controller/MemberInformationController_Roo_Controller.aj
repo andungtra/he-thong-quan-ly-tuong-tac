@@ -5,7 +5,6 @@ package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -49,6 +48,9 @@ privileged aspect MemberInformationController_Roo_Controller {
         }
         if (Project.countProjects() == 0) {
             dependencies.add(new String[] { "project", "projects" });
+        }
+        if (MemberRole.countMemberRoles() == 0) {
+            dependencies.add(new String[] { "memberrole", "memberroles" });
         }
         uiModel.addAttribute("dependencies", dependencies);
         return "memberinformations/create";
@@ -105,7 +107,7 @@ privileged aspect MemberInformationController_Roo_Controller {
     void MemberInformationController.populateEditForm(Model uiModel, MemberInformation memberInformation) {
         uiModel.addAttribute("memberInformation", memberInformation);
         uiModel.addAttribute("accounts", accountService.findAllAccounts());
-        uiModel.addAttribute("memberroles", Arrays.asList(MemberRole.values()));
+        uiModel.addAttribute("memberroles", MemberRole.findAllMemberRoles());
         uiModel.addAttribute("projects", Project.findAllProjects());
     }
     

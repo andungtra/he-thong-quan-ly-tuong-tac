@@ -19,7 +19,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/overview.jspx" />
 	</definition>
-	<definition extends="project" name="projects/testlayout">
+	<definition extends="project" name="projects/home">
 	</definition>
 	<definition extends="content" name="projects/task">
 		<put-attribute name="body" value="/WEB-INF/views/projects/task.jspx" />
