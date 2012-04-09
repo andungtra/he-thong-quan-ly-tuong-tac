@@ -26,7 +26,7 @@ public class ProjectController {
     public String show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
-        return "projects/overview";
+        return "projects/show";
     }
 	@RequestMapping(value = "/testlayout")
 	public String testProjectLayout(){
