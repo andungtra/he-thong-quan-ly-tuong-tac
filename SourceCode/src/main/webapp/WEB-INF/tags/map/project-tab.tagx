@@ -1,16 +1,47 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 	<jsp:output omit-xml-declaration="yes" />
+	<spring:url
+		value="/accounts?page=1&amp;size=${empty param.size ? 10 : param.size}"
+		var="listAccountUrl" />
+	<spring:url
+		value="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}"
+		var="listProjectUrl" />
+	<spring:url
+		value="/studyclasses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+		var="listClassUrl" />
+	<spring:url
+		value="/projectprocesses?page=1&amp;size=${empty param.size ? 10 : param.size}"
+		var="listProcessUrl" />
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
-	<div id="menu_menu">
-		<ul>
-			<li><a href="../projects/${id}/overview">Overview</a></li>
-			<li><a href="../projects/${id}/task">Task</a></li>
-			<li><a href="../projects/${id}/wiki">Wiki</a></li>
-			<li><a href="../projects/${id}/member">Member</a></li>
-			<li><a href="../projects/${id}/calendar">Calendar</a></li>
-		</ul>
-	</div>
+
+	<c:choose>
+		<c:when test="${id>0}">
+			<div id="menu_menu">
+				<ul>
+					<li><a href="../projects/${id}/overview">Overview</a></li>
+					<li><a href="../projects/${id}/task">Task</a></li>
+					<li><a href="../projects/${id}/wiki">Wiki</a></li>
+					<li><a href="../projects/${id}/members">Member</a></li>
+					<li><a href="../projects/${id}/calendar">Calendar</a></li>
+				</ul>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div id="menu_menu">
+				<ul>
+					<li><a href="${listProjectUrl }">Project</a></li>
+					<li><a href="${listClassUrl   }">Class</a></li>
+					<li><a href="${listAccountUrl }">Account</a></li>
+					<li><a href="${listProcessUrl }">Process</a></li>
+				</ul>
+			</div>
+		</c:otherwise>
+
+	</c:choose>
+
+
 </jsp:root>
