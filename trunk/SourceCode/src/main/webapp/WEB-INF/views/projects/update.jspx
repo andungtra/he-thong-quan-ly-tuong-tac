@@ -2,12 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-     <form:quickfind id="ff_org_hcmus_tis_model_Project" finderName="quickFind" path="/projects" searchButton="false"></form:quickfind>
     <form:update id="fu_org_hcmus_tis_model_Project" modelAttribute="project" path="/projects" versionField="Version" z="VltzOKzzRvDk+3kwSwdSPTsWC0Q=">
-        <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
-        <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
-        <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="false" z="user-managed"/>
-        <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" required="false" z="user-managed"/>
+        <field:textarea field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="AJZ/E47lJnDi4PB7RVs+1RP5gZk="/>
+        <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
+        <field:input field="description" id="c_org_hcmus_tis_model_Project_description" z="0H5DcLgvQ0+fZobvXSfnQagUWlM="/>
         <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="6KobXDiw9fv0CHTLXKKkTTvnU1U="/>
+        <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
     </form:update>
 </div>

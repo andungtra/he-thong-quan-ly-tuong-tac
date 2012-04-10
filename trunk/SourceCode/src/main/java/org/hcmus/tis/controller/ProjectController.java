@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.util.Parameter;
@@ -22,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RooWebScaffold(path = "projects", formBackingObject = Project.class)
 @RooWebFinder
 public class ProjectController {
-	@RequestMapping(value = "/{id}", produces = "text/html")
+
+    @RequestMapping(value = "/{id}", produces = "text/html")
     public String show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("itemId", id);
-        return "projects/home";
+        return "projects/show";
     }
+
     @RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
     public String findProjectsQuickly(@RequestParam("query") String name, Model uiModel, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size) {
         int sizeNo = size == null ? 10 : size.intValue();
@@ -55,46 +56,39 @@ public class ProjectController {
     public String findProjectsByNameLike(String name, Model uiModel) {
         return "projects/list";
     }
-       
+
     @RequestMapping(value = "/{id}/overview", produces = "text/html")
     public String overview(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
+        uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
         return "projects/overview";
     }
-    
+
     @RequestMapping(value = "/{id}/task", produces = "text/html")
     public String task(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
+        uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
         return "projects/task";
     }
-    
+
     @RequestMapping(value = "/{id}/wiki", produces = "text/html")
     public String wiki(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
+        uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
         return "projects/wiki";
     }
-    
+
     @RequestMapping(value = "/{id}/members", produces = "text/html")
     public String listMembers(@PathVariable("id") Long id, Model uiModel) {
-    	Set<MemberInformation> memberInformations = Project.findProject(id).getMemberInformations();
-    	uiModel.addAttribute("memberinformations", memberInformations);
+        Set<MemberInformation> memberInformations = Project.findProject(id).getMemberInformations();
+        uiModel.addAttribute("memberinformations", memberInformations);
         return "projects/member";
     }
-    
+
     @RequestMapping(value = "/{id}/calendar", produces = "text/html")
     public String calendar(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
+        uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
         return "projects/calendar";
-    }
-    
-    @RequestMapping(value = "/{id}/workitems", produces = "text/html")
-    public String activity(@PathVariable("id") Long id, Model uiModel) {
-    	uiModel.addAttribute("project", Project.findProject(id));
-        uiModel.addAttribute("itemId", id);
-        return "projects/activity";
     }
 }

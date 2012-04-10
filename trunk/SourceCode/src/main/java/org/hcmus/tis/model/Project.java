@@ -18,8 +18,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord(finders = { "findProjectsByNameLike" })
 public class Project extends WorkItemContainer {
-
-    private String description;
+	private String description;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
     private Set<MemberInformation> memberInformations = new HashSet<MemberInformation>();

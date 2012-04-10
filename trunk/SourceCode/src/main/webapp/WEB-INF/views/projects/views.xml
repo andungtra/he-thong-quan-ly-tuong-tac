@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-	<definition extends="administrator" name="projects/list">
+	<definition extends="content" name="projects/list">
 		<put-attribute name="body" value="/WEB-INF/views/projects/list.jspx" />
 	</definition>
 	<definition extends="project" name="projects/show">
-		<put-attribute name="body" value="/WEB-INF/views/projects/index.jspx" />
+		<put-attribute name="body" value="/WEB-INF/views/projects/show.jspx" />
 	</definition>
-	<definition extends="administrator" name="projects/create">
+	<definition extends="content" name="projects/create">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/create.jspx" />
 	</definition>
@@ -15,11 +15,13 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/update.jspx" />
 	</definition>
+	<definition extends="content" name="projects/findProjectsByNameLike">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projects/findProjectsByNameLike.jspx" />
+	</definition>
 	<definition extends="content" name="projects/overview">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/overview.jspx" />
-	</definition>
-	<definition extends="project" name="projects/home">
 	</definition>
 	<definition extends="content" name="projects/task">
 		<put-attribute name="body" value="/WEB-INF/views/projects/task.jspx" />
@@ -31,16 +33,8 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/memberinformations/list.jspx" />
 	</definition>
-	<definition extends="content" name="projects/calendar"> 
+	<definition extends="content" name="projects/calendar">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/calendar.jspx" />
-	</definition>
-	<definition extends="content" name="projects/activity">
-		<put-attribute name="body"
-			value="/WEB-INF/views/projects/activity.jspx" />
-	</definition>
-	<definition extends="content" name="projects/findProjectsByNameLike">
-		<put-attribute name="body"
-			value="/WEB-INF/views/projects/findProjectsByNameLike.jspx" />
 	</definition>
 </tiles-definitions>
