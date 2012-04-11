@@ -7,10 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectController;
-import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
-import org.hcmus.tis.model.StudyClass;
-import org.hcmus.tis.model.WorkItemContainer;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +18,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect ProjectController_Roo_Controller {
-    
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String ProjectController.create(@Valid Project project, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, project);
-            return "projects/create";
-        }
-        uiModel.asMap().clear();
-        project.persist();
-        return "redirect:/projects/" + encodeUrlPathSegment(project.getId().toString(), httpServletRequest);
-    }
     
     @RequestMapping(params = "form", produces = "text/html")
     public String ProjectController.createForm(Model uiModel) {
@@ -78,13 +64,6 @@ privileged aspect ProjectController_Roo_Controller {
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/projects";
-    }
-    
-    void ProjectController.populateEditForm(Model uiModel, Project project) {
-        uiModel.addAttribute("project", project);
-        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
-        uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
-        uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
     }
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
