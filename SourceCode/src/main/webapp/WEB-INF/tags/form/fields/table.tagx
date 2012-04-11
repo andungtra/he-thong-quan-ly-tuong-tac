@@ -60,8 +60,10 @@
           <th>Show</th>
           </c:if>
           <c:if test="${update}">
+            <c:if test="${!path.contains('projects')}">
             <th>Update</th>
             <spring:eval var="colCounter" expression="colCounter  + 1" />
+            </c:if>
           </c:if>
           <c:if test="${delete}">
             <th>Delete</th>
@@ -113,9 +115,12 @@
           </td>
           </c:if>
           <c:if test="${update}">
+          <c:if test="${!path.contains('projects')}">
             <td class="utilbox">
               <spring:url value="${path}/${itemId}" var="update_form_url">
+              
                 <spring:param name="form" />
+                
               </spring:url>
               <spring:url value="/resources/images/update.png" var="update_image_url" />
               <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" />
@@ -123,6 +128,7 @@
                 <img alt="${fn:escapeXml(update_label)}" class="image" src="${update_image_url}" title="${fn:escapeXml(update_label)}" />
               </a>
             </td>
+            </c:if>
           </c:if>
           <c:if test="${delete}">
             <td class="utilbox">

@@ -27,6 +27,7 @@
 					<li><a href="../projects/${id}/wiki">Wiki</a></li>
 					<li><a href="../projects/${id}/members">Member</a></li>
 					<li><a href="../projects/${id}/calendar">Calendar</a></li>
+					<li><a href="../projects/${id}?form">Setting</a></li>
 				</ul>
 			</div>
 		</c:when>
