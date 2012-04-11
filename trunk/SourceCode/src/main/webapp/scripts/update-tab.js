@@ -14,8 +14,8 @@ $(function() {
 				load : function(event, ui) {
 					$(ui.panel).delegate('a', 'click', function(event) {
 						var url = this.href;
-						if (url.indexOf('/projects/') != -1) {
-							//alert(url);
+						alert(url);
+						if (url.indexOf('/projects/') != -1) {							
 							location.open(url);
 						} else {
 							$(ui.panel).load(this.href, function() {
