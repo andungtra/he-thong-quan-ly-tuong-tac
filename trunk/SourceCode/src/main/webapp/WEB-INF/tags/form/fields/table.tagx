@@ -13,6 +13,7 @@
   <jsp:directive.attribute name="parameters" type="java.util.Collection" required="false" rtexprvalue="true" description="parameter of query"/>
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
+  <jsp:directive.attribute name="link" type="java.lang.String" required="false" rtexprvalue="true" description="link" />
 
   <c:if test="${empty render or render}">
 
@@ -51,19 +52,19 @@
         <tr>
           <c:forTokens items="${columnLabels}" delims="${'&#9999;'}" var="columnHeading">
             <th>
-              <c:out value="${columnHeading}" />
+             <c:out value="${columnHeading}" />
               <spring:eval var="colCounter" expression="colCounter  + 1" />
             </th>
           </c:forTokens>
           <c:if test="${show }">
-          <th></th>
+          <th>Show</th>
           </c:if>
           <c:if test="${update}">
-            <th></th>
+            <th>Update</th>
             <spring:eval var="colCounter" expression="colCounter  + 1" />
           </c:if>
           <c:if test="${delete}">
-            <th></th>
+            <th>Delete</th>
             <spring:eval var="colCounter" expression="colCounter  + 1" />
           </c:if>
         </tr>
@@ -95,7 +96,9 @@
               <c:if test="${columnMaxLength ge 0}">
                 <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
               </c:if>
-              <c:out value="${colTxt}" />
+              <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
+              <spring:url value="${path}/${itemId}" var="show_form_url" />
+              <a href="${show_form_url}"><c:out value="${colTxt}" /></a>
             </td>
           </c:forTokens>
           <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>

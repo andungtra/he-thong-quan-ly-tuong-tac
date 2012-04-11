@@ -303,3 +303,10 @@ field reference --fieldName memberRole --type ~.model.MemberRole --notNull
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-09 22:20:37
 web mvc scaffold --class ~.controller.MemberRoleController --backingType ~.model.MemberRole
 web mvc scaffold --class ~.controller.MemberRoleController --backingType ~.model.MemberRole
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-10 09:23:37
+entity jpa --class ~.model.Project
+web mvc all --package org.hcmus.tis.controller
+web mvc all --package org.hcmus.tis.controller
+entity jpa --class ~.model.Project
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-10 10:09:21

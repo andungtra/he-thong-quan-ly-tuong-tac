@@ -250,7 +250,7 @@ table thead {
 
 table a:link {color: #303030;}
 
-.utilbox {width: 18px;}
+.utilbox {width: 18px;text-align: center}
 
 caption {
 	caption-side: top;
@@ -316,7 +316,6 @@ fieldset th {
 	color:#777777;
 	padding:2px 7px;
 	font-size:11px;
-	text-transform:uppercase;
 	font-weight:bold;
 	height:24px;
 }
