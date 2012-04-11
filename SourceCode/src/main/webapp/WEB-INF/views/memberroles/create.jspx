@@ -3,8 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_org_hcmus_tis_model_MemberRole" modelAttribute="memberRole" path="/memberroles" render="${empty dependencies}" z="txHjXltaTa9GAfiTEzXfeS0HAZQ=">
-        <field:textarea field="name" id="c_org_hcmus_tis_model_MemberRole_name" required="true" z="mTcSG1svDiijeCuPyrwl+DLhPi4="/>
-        <field:input field="description" id="c_org_hcmus_tis_model_MemberRole_description" z="+gqPHVexj1dAqYxfhnaAYISFmQs="/>
+        <field:input field="name" id="c_org_hcmus_tis_model_MemberRole_name" required="true" z="nptcFRBkFp+Z0ZL7FQ6PwjTCq+k="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_MemberRole" render="${not empty dependencies}" z="+RfNHrGUQ42haU+3dLTDQdcmvKU="/>
 </div>
