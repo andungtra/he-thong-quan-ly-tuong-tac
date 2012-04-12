@@ -5,12 +5,10 @@ package org.hcmus.tis.model;
 
 import java.util.List;
 import org.hcmus.tis.model.MemberInformation;
-import org.hcmus.tis.model.MemberInformationDataOnDemand;
 import org.hcmus.tis.model.MemberInformationIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +20,6 @@ privileged aspect MemberInformationIntegrationTest_Roo_IntegrationTest {
     declare @type: MemberInformationIntegrationTest: @ContextConfiguration(locations = "classpath:/META-INF/spring/applicationContext*.xml");
     
     declare @type: MemberInformationIntegrationTest: @Transactional;
-    
-    @Autowired
-    private MemberInformationDataOnDemand MemberInformationIntegrationTest.dod;
     
     @Test
     public void MemberInformationIntegrationTest.testCountMemberInformations() {

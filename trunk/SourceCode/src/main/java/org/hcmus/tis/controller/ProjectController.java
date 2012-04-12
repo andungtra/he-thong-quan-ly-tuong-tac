@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -38,10 +37,12 @@ public class ProjectController {
 		}
 		uiModel.asMap().clear();
 		project.persist();
-		// return "redirect:/projects/" +
-		// encodeUrlPathSegment(project.getId().toString(), httpServletRequest);
-		uiModel.addAttribute("projects", Project.findAllProjects());
-		return "redirect:/projects/list";
+		uiModel.addAttribute("projectId", project.getId());
+		return "projects/gotoproject";
+		 //return "redirect:/projects/ID/" +
+		 //encodeUrlPathSegment(project.getId().toString(), httpServletRequest);
+		//uiModel.addAttribute("projects", Project.findAllProjects());
+		//return "redirect:/projects/list";
 	}
 
 	void populateEditForm(Model uiModel, Project project) {
@@ -53,7 +54,7 @@ public class ProjectController {
 				WorkItemContainer.findAllWorkItemContainers());
 	}
 
-	@RequestMapping(value = "/{id}", produces = "text/html")
+	@RequestMapping(value = "ID/{id}", produces = "text/html")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
 		return "projects/show";
@@ -114,16 +115,13 @@ public class ProjectController {
 		uiModel.addAttribute("itemId", id);
 		return "projects/wiki";
 	}
-
-	@RequestMapping(value = "/{id}/members", produces = "text/html")
-	public String listMembers(@PathVariable("id") Long id, Model uiModel) {
-		Set<MemberInformation> memberInformations = Project.findProject(id)
-				.getMemberInformations();
-		uiModel.addAttribute("memberinformations", memberInformations);
-		return "projects/member";
-	}
-
-	@RequestMapping(value = "/{id}/calendar", produces = "text/html")
+    @RequestMapping(value = "/{id}/members", produces = "text/html")
+    public String listMembers(@PathVariable("id") Long id, Model uiModel) {
+        Set<MemberInformation> memberInformations = Project.findProject(id).getMemberInformations();
+        uiModel.addAttribute("memberinformations", memberInformations);
+        uiModel.addAttribute("projectId", id);
+        return "projects/member";
+    }	@RequestMapping(value = "/{id}/calendar", produces = "text/html")
 	public String calendar(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("project", Project.findProject(id));
 		uiModel.addAttribute("itemId", id);

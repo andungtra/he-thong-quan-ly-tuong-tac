@@ -44,17 +44,6 @@ privileged aspect MemberInformation_Roo_Jpa_ActiveRecord {
     }
     
     @Transactional
-    public void MemberInformation.remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            MemberInformation attached = MemberInformation.findMemberInformation(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
-    
-    @Transactional
     public void MemberInformation.flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();

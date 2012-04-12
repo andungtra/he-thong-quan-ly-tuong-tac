@@ -17,17 +17,22 @@
 		var="listProcessUrl" />
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
-
+	<spring:url value="/projects/${id}/overview" var="projectOverview" />
+	<spring:url value="/projects/${id}/task" var="projectTask" />
+	<spring:url value="/projects/${id}/wiki" var="projectWiki" />
+	<spring:url value="/projects/${id}/members" var="projectMember" />
+	<spring:url value="/projects/${id}/calendar" var="projectCalendar" />
+	<spring:url value="/projects/${id}?form" var="projectSetting" />
 	<c:choose>
 		<c:when test="${id>0}">
 			<div id="menu_menu">
 				<ul>
-					<li><a href="../projects/${id}/overview">Overview</a></li>
-					<li><a href="../projects/${id}/task">Task</a></li>
-					<li><a href="../projects/${id}/wiki">Wiki</a></li>
-					<li><a href="../projects/${id}/members">Member</a></li>
-					<li><a href="../projects/${id}/calendar">Calendar</a></li>
-					<li><a href="../projects/${id}?form">Setting</a></li>
+					<li><a href="${projectOverview}">Overview</a></li>
+					<li><a href="${projectTask}">Task</a></li>
+					<li><a href="${projectWiki}">Wiki</a></li>
+					<li><a href="${projectMember}">Member</a></li>
+					<li><a href="${projectCalendar}">Calendar</a></li>
+					<li><a href="${projectSetting}">Setting</a></li>
 				</ul>
 			</div>
 		</c:when>

@@ -1,8 +1,12 @@
 package org.hcmus.tis.model;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
+import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,5 +50,14 @@ public class Account {
 
     public String toString() {
         return email;
+    }
+    public static Collection<Account> findAccount(String email, int firstIndex, int maxResult){
+    	email = "%" + email + "%";
+    	String queryString = "SELECT account FROM Account AS account WHERE account.email LIKE :email";
+    	TypedQuery<Account> query = entityManager().createQuery(queryString, Account.class);
+    	query.setParameter("email", email);
+    	query.setFirstResult(firstIndex);
+    	query.setMaxResults(maxResult);
+    	return query.getResultList();
     }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/resources/scripts/jquery.ui.widget.js"
+		var="widget_url"></spring:url>
+	<spring:url value="/resources/scripts/ui/jquery.ui.position.js"
+		var="position_url"></spring:url>
+	<spring:url value="/resources/scripts/ui/jquery.ui.autocomplete.js"
+		var="autocomplete_url"></spring:url>
+	<spring:url value="/accounts" var="search_url"></spring:url>
+	<spring:url value="/memberinformations" var="create_url"></spring:url>
+	<script type="text/javascript" src="${widget_url }">
+	<!--dadfs-->
+		
+	</script>
+	<script type="text/javascript" src="${position_url }"></script>
+	<script type="text/javascript" src="${autocomplete_url }"></script>
+	<style>
+.ui-autocomplete-loading {
+	background: white url('images/ui-anim_basic_16x16.gif') right center
+		no-repeat;
+}
+</style>
+	<SCRIPT type="text/javascript">
+		$(function() {
+			$("#email").autocomplete({
+				source : "${search_url}",
+				minLength : 2
+			});
+		});
+	</SCRIPT>
+	<form:form action="${create_url }" method="PUT">
+		<input type="hidden" name="redirectUrl" value="${redirectUrl }" />
+		<input type="hidden" name="project"
+			value="${memberInformation.project.id }" />
+			<input type="hidden" name="memberInformation"
+			value="${memberInformation.id }" />
+		<input type="hidden" name="account"
+			value="${memberInformation.account.id }"/>
+			<table>
+			<tr>
+				<td><label for="email"> Account : </label></td>
+				<td><input disabled="disabled" type="text" id="email" name="email" value="${memberInformation.account.email }"></input></td>
+			</tr>
+			<tr>
+				<td>Role</td>
+				<td><c:forEach items="${memberRoles }" var="memberRole">
+				<c:choose>
+					<c:when test="${memberRole.id == memberInformation.memberRole.id }">
+						<input type="radio" checked="checked"  name="memberRole" value="${memberRole.id }">${memberRole.name
+							}</input>
+						<br />
+						</c:when>
+						<c:otherwise>
+						<input type="radio"  name="memberRole" value="${memberRole.id }">${memberRole.name
+							}</input>
+						<br />
+						</c:otherwise>
+				</c:choose>
+					</c:forEach></td>
+			</tr>
+		</table>
+			<INPUT type="submit" value="Save" />
+	</form:form>
+</div>
