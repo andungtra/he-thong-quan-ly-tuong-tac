@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
@@ -25,7 +26,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Account.class)
+@MockStaticEntityMethods
 public class AccountControllerTest {
 	private Account spyAccount;
 	private AccountController aut;
@@ -187,6 +190,17 @@ public class AccountControllerTest {
 		String result = aut.active(updatedAccount, activeKey, uiModel);
 		Mockito.verify(mockedAccountService, Mockito.times(0)).updateAccount(Mockito.any(Account.class));
 		Assert.assertEquals("accounts/activeFailure", result);		
+	}
+	@Test
+	public void testFindAccount(){
+		PowerMockito.mockStatic(Account.class);
+		String term = "term";
+		TypedQuery<Account> mockedQuery = Mockito.mock(TypedQuery.class);
+		//PowerMockito.doReturn(mockedQuery).when(Account.findAccount(Mockito.eq(term), Mockito.anyInt(), Mockito.anyInt()));
+		aut.findAccount(term);
+		
+		PowerMockito.verifyStatic();
+		Account.findAccount(Mockito.eq(term), Mockito.anyInt(), Mockito.anyInt());
 	}
 
 }

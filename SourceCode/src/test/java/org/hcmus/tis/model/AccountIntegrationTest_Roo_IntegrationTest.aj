@@ -4,7 +4,6 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
-import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.AccountIntegrationTest;
 import org.hcmus.tis.service.AccountService;
 import org.junit.Assert;
@@ -22,9 +21,6 @@ privileged aspect AccountIntegrationTest_Roo_IntegrationTest {
     declare @type: AccountIntegrationTest: @ContextConfiguration(locations = "classpath:/META-INF/spring/applicationContext*.xml");
     
     declare @type: AccountIntegrationTest: @Transactional;
-    
-    @Autowired
-    private AccountDataOnDemand AccountIntegrationTest.dod;
     
     @Autowired
     AccountService AccountIntegrationTest.accountService;

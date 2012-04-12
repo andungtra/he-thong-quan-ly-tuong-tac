@@ -57,5 +57,14 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 			}
 		};
 	}
+	public Converter<MemberRole, String> getMemberRoleToStringConverter(){
+		return new Converter<MemberRole, String>() {
+			
+			@Override
+			public String convert(MemberRole arg0) {
+				return arg0.getName();
+			}
+		};
+	}
 
 }

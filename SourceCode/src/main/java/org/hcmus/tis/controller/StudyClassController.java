@@ -11,6 +11,7 @@ import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,5 +53,12 @@ public class StudyClassController {
         response.setTotal(Integer.valueOf((int) users.getTotalPages()).toString());
         response.setPage(Integer.valueOf(users.getNumber() + 1).toString());
         return response;
+    }
+    
+    @RequestMapping(value = "/ID/{id}", produces = "text/html")
+    public String showClass(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("studyclass", StudyClass.findStudyClass(id));
+        uiModel.addAttribute("itemId", id);
+        return "studyclasses/show";
     }
 }

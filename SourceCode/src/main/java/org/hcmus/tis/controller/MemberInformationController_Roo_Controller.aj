@@ -4,10 +4,7 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.hcmus.tis.controller.MemberInformationController;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
@@ -15,10 +12,8 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
@@ -27,34 +22,6 @@ privileged aspect MemberInformationController_Roo_Controller {
     
     @Autowired
     AccountService MemberInformationController.accountService;
-    
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String MemberInformationController.create(@Valid MemberInformation memberInformation, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, memberInformation);
-            return "memberinformations/create";
-        }
-        uiModel.asMap().clear();
-        memberInformation.persist();
-        return "redirect:/memberinformations/" + encodeUrlPathSegment(memberInformation.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String MemberInformationController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new MemberInformation());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (accountService.countAllAccounts() == 0) {
-            dependencies.add(new String[] { "account", "accounts" });
-        }
-        if (Project.countProjects() == 0) {
-            dependencies.add(new String[] { "project", "projects" });
-        }
-        if (MemberRole.countMemberRoles() == 0) {
-            dependencies.add(new String[] { "memberrole", "memberroles" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
-        return "memberinformations/create";
-    }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String MemberInformationController.show(@PathVariable("id") Long id, Model uiModel) {
@@ -77,31 +44,10 @@ privileged aspect MemberInformationController_Roo_Controller {
         return "memberinformations/list";
     }
     
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String MemberInformationController.update(@Valid MemberInformation memberInformation, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, memberInformation);
-            return "memberinformations/update";
-        }
-        uiModel.asMap().clear();
-        memberInformation.merge();
-        return "redirect:/memberinformations/" + encodeUrlPathSegment(memberInformation.getId().toString(), httpServletRequest);
-    }
-    
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String MemberInformationController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, MemberInformation.findMemberInformation(id));
         return "memberinformations/update";
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String MemberInformationController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        MemberInformation memberInformation = MemberInformation.findMemberInformation(id);
-        memberInformation.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/memberinformations";
     }
     
     void MemberInformationController.populateEditForm(Model uiModel, MemberInformation memberInformation) {

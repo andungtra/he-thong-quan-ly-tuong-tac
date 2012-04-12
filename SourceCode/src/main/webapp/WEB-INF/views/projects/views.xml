@@ -31,10 +31,14 @@
 	</definition>
 	<definition extends="content" name="projects/member">
 		<put-attribute name="body"
-			value="/WEB-INF/views/memberinformations/list.jspx" />
+			value="/WEB-INF/views/projects/member.jspx" />
 	</definition>
 	<definition extends="content" name="projects/calendar">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/calendar.jspx" />
+	</definition>
+	<definition extends="content" name="projects/gotoproject">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projects/gotoproject.jspx" />
 	</definition>
 </tiles-definitions>

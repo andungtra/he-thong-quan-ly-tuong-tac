@@ -63,14 +63,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<MemberRole, String> ApplicationConversionServiceFactoryBean.getMemberRoleToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.MemberRole, java.lang.String>() {
-            public String convert(MemberRole memberRole) {
-                return new StringBuilder().append(memberRole.getName()).toString();
-            }
-        };
-    }
-    
     public Converter<Long, MemberRole> ApplicationConversionServiceFactoryBean.getIdToMemberRoleConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.MemberRole>() {
             public org.hcmus.tis.model.MemberRole convert(java.lang.Long id) {

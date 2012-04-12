@@ -1,12 +1,18 @@
 package org.hcmus.tis.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.collections.map.HashedMap;
+import org.hcmus.tis.dto.AutoCompleteDto;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.MemberInformation;
+import org.hcmus.tis.model.MemberRole;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService;
@@ -20,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/accounts")
 @Controller
@@ -83,5 +90,20 @@ public class AccountController {
             return "accounts/home";
         }
         return "accounts/activeFailure";
+    }
+    @RequestMapping(params = "term")
+    public @ResponseBody Collection<String> findAccount(String term){
+    	Collection<Account> accounts = Account.findAccount(term, 0, 50);
+    	Collection<String> result = new ArrayList<String>();
+    	for(Account account : accounts){
+    		result.add(account.getEmail());
+    	}
+    	return result;
+    }
+    @RequestMapping(value = "/ID/{id}", produces = "text/html")
+    public String showAccount(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("account", accountService.findAccount(id));
+        uiModel.addAttribute("itemId", id);
+        return "accounts/show";
     }
 }
