@@ -1,3 +1,4 @@
+var addLinkHanlder = true;
 $(function() {
 	$("#menu_menu").tabs(
 			{
@@ -8,48 +9,55 @@ $(function() {
 										+ "If this wouldn't be a demo.");
 					},
 					success : function() {
-						addFormSubmitHandler();
+						addTabFormSubmitHandler();
 					}
 				},
 				load : function(event, ui) {
-					$(ui.panel).delegate('a', 'click', function(event) {
-						var url = this.href;
-						/*alert(url);*/
-						if (url.indexOf('TIS/projects/ID') != -1) {							
-							location.open(url);
-						} else {
-							$(ui.panel).load(this.href, function() {
-								addFormSubmitHandler();
-							});
-							event.preventDefault();
-						}
-					});
+					if (addLinkHanlder) {
+						$(ui.panel).off('click', 'a', tabLinkClickHandler);
+						$(ui.panel).on('click', 'a', {
+							ui : ui
+						}, tabLinkClickHandler);
+					}
 				}
 			});
-
-	function addFormSubmitHandler() {
-		var test = $("form");
-		$("form[method=GET]").bind('submit', function(event) {
-			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-			var query = $(this).serialize();
-			var url = $(this).attr('action') + '?' + query;
-			$(tabContent).load(url, function() {
-				addFormSubmitHandler();
-			}).change();
-			event.preventDefault();
-
+});
+function tabLinkClickHandler(event) {
+	var url = this.href;
+	alert(url);
+	if (url.indexOf('TIS/projects/ID') != -1) {
+		location.open(url);
+	} else {
+		$(event.data.ui.panel).load(this.href, function() {
+			addTabFormSubmitHandler();
 		});
-
-		$("form[method=POST]").bind('submit', function(event) {
-			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-			var parameters = $(this).serializeArray();
-			var url = $(this).attr('action');
-			$(tabContent).load(url, parameters, function() {
-				addFormSubmitHandler();
-			}).change();
-			event.preventDefault();
-
-		})
-
+		event.preventDefault();
 	}
-})
+}
+
+function addTabFormSubmitHandler() {
+	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
+	addFormSubmitHandler(tabContent);
+
+}
+function addFormSubmitHandler(resultReceiver) {
+	$("form[method=GET]").bind('submit', function(event) {
+		var query = $(this).serialize();
+		var url = $(this).attr('action') + '?' + query;
+		$(resultReceiver).load(url, function() {
+			addFormSubmitHandler();
+		}).change();
+		event.preventDefault();
+
+	});
+
+	$("form[method=POST]").bind('submit', function(event) {
+		var parameters = $(this).serializeArray();
+		var url = $(this).attr('action');
+		$(resultReceiver).load(url, parameters, function() {
+			addFormSubmitHandler();
+		}).change();
+		event.preventDefault();
+
+	})
+}
