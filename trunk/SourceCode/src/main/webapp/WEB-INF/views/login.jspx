@@ -2,7 +2,7 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   <spring:message code="security_login_title" var="title" htmlEscape="false" />
-  <util:panel id="title" title="${title}">
+  <util:fixpanel id="title" title="${title}">
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
@@ -21,10 +21,10 @@
     <form name="f" action="${fn:escapeXml(form_url)}" method="POST">
       <div>
         <label for="j_username">
-          <spring:message text="Email" />
+          <spring:message code="security_login_form_email" />
         </label>
         <input id="j_username" type='text' name='j_username' style="width:150px" />
-        <spring:message text="Enter your email" var="name_msg" htmlEscape="false" />
+        <spring:message code="security_login_form_email_message" var="name_msg" htmlEscape="false" />
         <script type="text/javascript">
           <c:set var="sec_name_msg">
             <spring:escapeBody javaScriptEscape="true">${name_msg}</spring:escapeBody>
@@ -46,6 +46,10 @@
           Spring.addDecoration(new Spring.ElementDecoration({elementId : "j_password", widgetType : "dijit.form.ValidationTextBox", widgetAttrs : {promptMessage: "${sec_pwd_msg}", required : true}})); 
         </script>
       </div>
+      <div>
+      	<input id="j_remember" name="j_remember" type="checkbox" value="Remember" checked="checked" />
+        <label for="j_remember">Remember</label>
+      </div>
       <br />
       <div class="submit">
         <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
@@ -55,6 +59,6 @@
         <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
       </div>
     </form>
-  </util:panel>
+  </util:fixpanel>
 </div>
 

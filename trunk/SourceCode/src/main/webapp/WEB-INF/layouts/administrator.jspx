@@ -22,8 +22,7 @@
 		    <div id="main">
 		      <div class="content">
 	    		<tiles:insertAttribute name="body"/> 
-	    		</div>
-		    	<tiles:insertAttribute name="footer" ignore="true"/>
+	    		</div>		    	
 		    </div>
 		</div>
 	</body>

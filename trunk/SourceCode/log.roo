@@ -319,3 +319,10 @@ web mvc all --package org.hcmus.tis.controller
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-11 23:05:49
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-11 23:23:28
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-12 00:15:57
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-13 16:26:44
+focus --class ~.model.Account
+field boolean --fieldName isAccountNonExpired
+field boolean --fieldName isCredentialsNonExpired
+field boolean --fieldName isAccountNonLocked
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-14 00:21:46
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-14 06:19:56

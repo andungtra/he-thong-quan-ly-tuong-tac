@@ -39,7 +39,7 @@ public class ProjectController {
 		project.persist();
 		uiModel.addAttribute("projectId", project.getId());
 		return "projects/gotoproject";
-		 //return "redirect:/projects/ID/" +
+		//return "redirect:/projects/ID/"+project.getId();
 		 //encodeUrlPathSegment(project.getId().toString(), httpServletRequest);
 		//uiModel.addAttribute("projects", Project.findAllProjects());
 		//return "redirect:/projects/list";
@@ -57,6 +57,8 @@ public class ProjectController {
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
+		Project p = Project.findProject(id);
+		uiModel.addAttribute("itemName", p.getName());
 		return "projects/show";
 	}
 

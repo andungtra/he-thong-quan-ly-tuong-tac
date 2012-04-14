@@ -3,18 +3,7 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url
-		value="/accounts?page=1&amp;size=${empty param.size ? 10 : param.size}"
-		var="listAccountUrl" />
-	<spring:url
-		value="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}"
-		var="listProjectUrl" />
-	<spring:url
-		value="/studyclasses?page=1&amp;size=${empty param.size ? 10 : param.size}"
-		var="listClassUrl" />
-	<spring:url
-		value="/projectprocesses?page=1&amp;size=${empty param.size ? 10 : param.size}"
-		var="listProcessUrl" />
+	
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
 	<spring:url value="/projects/${id}/overview" var="projectOverview" />
@@ -23,31 +12,16 @@
 	<spring:url value="/projects/${id}/members" var="projectMember" />
 	<spring:url value="/projects/${id}/calendar" var="projectCalendar" />
 	<spring:url value="/projects/${id}?form" var="projectSetting" />
-	<c:choose>
-		<c:when test="${id>0}">
-			<div id="menu_menu">
-				<ul>
-					<li><a href="${projectOverview}">Overview</a></li>
-					<li><a href="${projectTask}">Task</a></li>
-					<li><a href="${projectWiki}">Wiki</a></li>
-					<li><a href="${projectMember}">Member</a></li>
-					<li><a href="${projectCalendar}">Calendar</a></li>
-					<li><a href="${projectSetting}">Setting</a></li>
-				</ul>
-			</div>
-		</c:when>
-		<c:otherwise>
-			<div id="menu_menu">
-				<ul>
-					<li><a href="${listProjectUrl }">Project</a></li>
-					<li><a href="${listClassUrl   }">Class</a></li>
-					<li><a href="${listAccountUrl }">Account</a></li>
-					<li><a href="${listProcessUrl }">Process</a></li>
-				</ul>
-			</div>
-		</c:otherwise>
 
-	</c:choose>
-
+	<div id="menu_menu">
+		<ul>
+			<li><a href="${projectOverview}">Overview</a></li>
+			<li><a href="${projectTask}">Task</a></li>			
+			<li><a href="${projectMember}">Member</a></li>
+			<li><a href="${projectCalendar}">Calendar</a></li>
+			<li><a href="${projectWiki}">Wiki</a></li>
+			<li><a href="${projectSetting}">Setting</a></li>
+		</ul>
+	</div>
 
 </jsp:root>

@@ -6,36 +6,29 @@
 <tiles-definitions>
 
 	<definition name="default" template="/WEB-INF/layouts/default.jspx">
-		<put-attribute name="header"
-			value="/WEB-INF/views/administratorheader.jspx" />
-		<put-attribute name="menu" value="/WEB-INF/views/menu.jspx" />
-		<put-attribute name="myMenu"
-			value="/WEB-INF/views/administratormenu.jspx" />
-		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
+		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
 	</definition>
 
 	<definition name="public" template="/WEB-INF/layouts/default.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
-		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
 
 	<definition name="administrator" template="/WEB-INF/layouts/layout.jspx">
-		<put-attribute name="header"
-			value="/WEB-INF/views/administratorheader.jspx" />
-		<put-attribute name="myMenu"
-			value="/WEB-INF/views/administratormenu.jspx" />
-		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
+		<put-attribute name="myMenu" value="/WEB-INF/views/administratormenu.jspx" />
 	</definition>
 
 	<definition name="project" template="/WEB-INF/layouts/layout.jspx">
-		<put-attribute name="header" value="/WEB-INF/views/projectheader.jspx" />
 		<put-attribute name="myMenu" value="/WEB-INF/views/projectmenu.jspx" />
-		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
+
+	<definition name="user" template="/WEB-INF/layouts/layout.jspx">
+		<put-attribute name="myMenu" value="/WEB-INF/views/usermenu.jspx" />
+	</definition>
+	
 	<definition name="content" template="/WEB-INF/layouts/tabcontent.jspx">
 	</definition>
+
 	<definition name="myaccount" template="/WEB-INF/layouts/myaccount.jspx">
-	<put-attribute name="footer" value="/WEB-INF/views/footer.jspx"></put-attribute>
 	</definition>
 
 </tiles-definitions>

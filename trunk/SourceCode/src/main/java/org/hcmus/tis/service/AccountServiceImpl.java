@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService, ServletContextAware  
 		}
 		account.persist();
 		Map model = new HashMap();
-		model.put("link", Setting.getServerURL() +  servletContext.getContextPath() + "/accounts/" + account.getId().toString() + "?activekey=" + account.getPassword());
+		model.put("link", Setting.getServerURL() +  servletContext.getContextPath() + "/accounts/" + account.getId().toString() + "?activeKey=" + account.getPassword());
 		emailService.sendEmail(account.getEmail(), "account-confirmation.vm",
 				model, "welcome to TIS");
 	}

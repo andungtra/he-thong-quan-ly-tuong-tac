@@ -17,10 +17,22 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/accounts/update.jspx" />
 	</definition>
-	<definition extends="content" name="accounts/test">
-		<put-attribute name="body" value="/WEB-INF/views/accounts/test.jspx" />
+	<definition extends="user" name="accounts/home">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/home.jspx" />
+	</definition>
+	<definition extends="content" name="accounts/projects">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/projects.jspx" />
 	</definition>
 	<definition extends="myaccount" name="accounts/active">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/active.jspx" />
+	</definition>
+	<definition extends="myaccount" name="accounts/invalidactive">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/invalidactive.jspx" />
+	</definition>
+	<definition extends="myaccount" name="accounts/activeFailure">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/invalidactive.jspx" />
+	</definition>
+	<definition extends="content" name="accounts/redirect">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/redirect.jspx" />
 	</definition>
 </tiles-definitions>
