@@ -32,5 +32,17 @@
             <menu:item id="i_projectprocess_new" messageCode="global_menu_new" url="/projectprocesses?form" z="C+qyUvLbdZv/GU9GxqlVwa6awG4="/>
             <menu:item id="i_projectprocess_list" messageCode="global_menu_list" url="/projectprocesses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Mtpms2+lnzoZ3N1ByIKE7qd8fR8="/>
         </menu:category>
+        <menu:category id="c_priority" z="ZcX/cssHh6Fl+sRlMnxa97/iW+8=">
+            <menu:item id="i_priority_new" messageCode="global_menu_new" url="/prioritys?form" z="DF5RBYmnL4QyO4jhzd+OPuKiizU="/>
+            <menu:item id="i_priority_list" messageCode="global_menu_list" url="/prioritys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="y0coRrF8OwmLRpIZ/SOQiOlKuY0="/>
+        </menu:category>
+        <menu:category id="c_workitem" z="3hUW+6YBuxVPs3LjDnH7J/KSX3I=">
+            <menu:item id="i_workitem_new" messageCode="global_menu_new" url="/workitems?form" z="bOVDVkGxZ0kgyDdcTTZ+EO8ncqo="/>
+            <menu:item id="i_workitem_list" messageCode="global_menu_list" url="/workitems?page=1&amp;size=${empty param.size ? 10 : param.size}" z="rck5jCFn8N/ETjJ1RP+R0rvq6k4="/>
+        </menu:category>
+        <menu:category id="c_workitemtype" z="7HybYCghm81JXlIIxTCXwC3seBY=">
+            <menu:item id="i_workitemtype_new" messageCode="global_menu_new" url="/workitemtypes?form" z="sZJDE0vCIaF2XlsFGOBD0jhxNbQ="/>
+            <menu:item id="i_workitemtype_list" messageCode="global_menu_list" url="/workitemtypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="alWppUCxGbbtDyekPlbVe1B3reQ="/>
+        </menu:category>
     </menu:menu>
 </div>

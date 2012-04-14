@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RooWebScaffold(path = "projectprocesses", formBackingObject = ProjectProcess.class)
 public class ProjectProcessController {
-	@RequestMapping(value = "/ID/{id}", produces = "text/html")
+
+    @RequestMapping(value = "/ID/{id}", produces = "text/html")
     public String showProcess(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("projectprocess", ProjectProcess.findProjectProcess(id));
         uiModel.addAttribute("itemId", id);

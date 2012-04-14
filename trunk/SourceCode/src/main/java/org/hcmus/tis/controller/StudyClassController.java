@@ -54,7 +54,7 @@ public class StudyClassController {
         response.setPage(Integer.valueOf(users.getNumber() + 1).toString());
         return response;
     }
-    
+
     @RequestMapping(value = "/ID/{id}", produces = "text/html")
     public String showClass(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("studyclass", StudyClass.findStudyClass(id));

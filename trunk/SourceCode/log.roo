@@ -319,6 +319,33 @@ web mvc all --package org.hcmus.tis.controller
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-11 23:05:49
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-11 23:23:28
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-12 00:15:57
+<<<<<<< .mine
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-12 23:33:47
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-13 00:38:04
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-13 21:43:07
+entity jpa --class org.hcmus.tis.model.WorkItemType
+entity jpa --class org.hcmus.tis.model.WorkItemType --testAutomatically 
+field string name
+// [failed] field string name --notNull
+field reference --fieldName projectProcess --type ~.model.ProjectProcess --notNull 
+field string additionalFieldsDefine
+entity jpa --class org.hcmus.tis.model.WorkItem --testAutomatically 
+field string --fieldName title --notNull --sizeMin 1 --sizeMax 50
+field string --fieldName description
+field date --fieldName dateCreated --type java.util.Date --notNull 
+field string additionalFields
+entity jpa --class org.hcmus.tis.model.Priority --testAutomatically 
+field string --fieldName name --notNull --sizeMin 1 --sizeMax 50
+focus --class ~.model.WorkItem
+field reference --fieldName priority --type ~.model.Priority --notNull 
+field reference --fieldName workItemContainer --type ~.model.WorkItemContainer --notNull 
+field reference --fieldName workItemType --type ~.model.WorkItemType --notNull 
+field reference --fieldName author --type ~.model.Account --notNull 
+field reference --fieldName asignee --type ~.model.MemberInformation
+web mvc all --package org.hcmus.tis.controller
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-14 00:25:06
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-13 16:26:44
 focus --class ~.model.Account
 field boolean --fieldName isAccountNonExpired
@@ -326,3 +353,6 @@ field boolean --fieldName isCredentialsNonExpired
 field boolean --fieldName isAccountNonLocked
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-14 00:21:46
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-14 06:19:56
+>>>>>>> .r74
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-14 15:15:57
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-14 17:31:08

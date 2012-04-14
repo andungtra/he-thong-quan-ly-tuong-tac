@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_hcmus_tis_model_WorkItem" items="${workitems}" z="rhXEI6N2CgKst1Vm4/Auez4bo3Q=">
+        <table:table data="${workitems}" id="l_org_hcmus_tis_model_WorkItem" path="/workitems" z="DQx9IyKT8rtFqFFmUFJnRkmCQb8=">
+            <table:column id="c_org_hcmus_tis_model_WorkItem_title" property="title" z="U9Lqa96WZsJ2ml86Cvq8KsolvWI="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItem_description" property="description" z="ojjccL8MeMe493Va/8aw2PxmVIc="/>
+            <table:column date="true" dateTimePattern="${workItem_datecreated_date_format}" id="c_org_hcmus_tis_model_WorkItem_dateCreated" property="dateCreated" z="PMdLGY3UzCq+IhTSmvRx/RT+8kc="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItem_additionalFields" property="additionalFields" z="I98QYBWfWMCTtz+kDZ9KTp6SV1o="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItem_priority" property="priority" z="8QWCmRuM5gHXK7ZHTAiJNUxCtQ4="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItem_workItemContainer" property="workItemContainer" z="1s359K0LfIqCWpJCxaMgjLzw+BY="/>
+        </table:table>
+    </page:list>
+</div>
