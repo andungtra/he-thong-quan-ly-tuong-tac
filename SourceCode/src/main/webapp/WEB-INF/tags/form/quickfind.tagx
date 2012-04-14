@@ -72,7 +72,7 @@
 			<div class="buttonList">
 				<span class="new"> <c:if test="${createButton}">
 						<a href="${create_url}">						 
-							<spring:url value="/resources/images/add.png" var="create_img_url" />
+							<spring:url value="/resources/images/add16.png" var="create_img_url" />
 							<spring:message arguments="${typeName}" code="global_menu_new" var="add_message" htmlEscape="false" /> 
 							<button>
 								<img alt="${fn:escapeXml(add_message)}" src="${create_img_url}" title="${fn:escapeXml(add_message)}" />Add new

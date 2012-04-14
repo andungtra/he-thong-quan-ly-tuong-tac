@@ -4,12 +4,11 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:quickfind createButton="false" finderName="quickFind" id="ff_org_hcmus_tis_model_Account" path="/accounts" searchButton="false" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4="/>
     <form:create id="fc_org_hcmus_tis_model_Account" modelAttribute="account" path="/accounts" render="${empty dependencies}" z="51areJweFb49LDDKpSccRCKedRk=">
-        <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk="/>
         <c:if test="${not empty existedEmail }">
-        <div style="color: red">Email have been used.</div>
+            <div style="color: red">Email have been used.</div>
         </c:if>
         <c:if test="${not empty sendEmailError }">
-        <div style="color: red">there was an error sending the email.</div>
+            <div style="color: red">there was an error sending the email.</div>
         </c:if>
         <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
         <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
@@ -19,8 +18,9 @@
         </util:advancedpanel>
         <field:textarea field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
         <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false" z="user-managed"/>
-        <field:select render="false" field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" z="user-managed"/>
-        <input type="hidden" name="status" value="${accountstatuses[0] }"/>
+        <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>
+        <input name="status" type="hidden" value="${accountstatuses[0] }"/>
+        <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Account" render="${not empty dependencies}" z="fLrZinEv2B+MMHZGxO2gZySAXIA="/>
 </div>

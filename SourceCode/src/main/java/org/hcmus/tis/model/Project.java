@@ -1,5 +1,7 @@
 package org.hcmus.tis.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -55,5 +57,17 @@ public class Project extends WorkItemContainer {
         TypedQuery<Project> q = em.createQuery("SELECT o FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)", Project.class).setFirstResult(firstIndex).setMaxResults(maxSize);
         q.setParameter("name", name);
         return q;
+    }
+    
+    public static Collection<org.hcmus.tis.model.Project> findProjectsByAccount(long AccountID) {
+        EntityManager em = Project.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery("SELECT o FROM MemberInformation AS o WHERE o.account.id = (:id)",MemberInformation.class);
+        q.setParameter("id", AccountID);
+        Collection<MemberInformation> listID = q.getResultList();
+        ArrayList<org.hcmus.tis.model.Project> rs = new ArrayList<Project>();
+        for (MemberInformation info : listID) {			
+			rs.add(info.getProject());
+		}
+        return rs;
     }
 }

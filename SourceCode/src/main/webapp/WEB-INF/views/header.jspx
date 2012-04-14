@@ -1,1 +1,40 @@
-<div></div>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu"
+	xmlns:tab="urn:jsptagdir:/WEB-INF/tags/map"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" id="myMenu" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/" var="home"/>
+	<spring:url value="/login" var="login" />
+	<spring:message code="security_login_as" var="loginAs"></spring:message>
+	<spring:message code="security_logout" var="logout"></spring:message>
+	<div class="menu">
+		<div class="menu_sitemap">
+			<!-- TemplateBeginEditable name="Site map" -->
+			<div style="float: left"><a href="${home}">Home</a></div>
+			<div style="float: right">
+				<c:choose>
+					<c:when test="${pageContext['request'].userPrincipal != null}">
+						<div class="header_menu_right_item header_menu_right_item_border">
+							<spring:url value="/logout"
+								var="logout" />
+							<a href="${logout}"> <spring:message code="security_logout" /></a>
+						</div>
+						<div class="header_menu_right_item" id="header_menu_first">
+							${loginAs } <a href="#">${pageContext['request'].userPrincipal.name}</a>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="header_menu_right_item">
+							<a href="${login}">Login</a>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<!-- TemplateEndEditable -->
+		</div>
+		<div class="clear" />
+	</div>
+</div>

@@ -2,6 +2,7 @@
 body {
 	margin: 0px 0px;
 	padding: 0px;
+	background-color: #ccc;
 }
 
 .bodycontent {
@@ -275,23 +276,24 @@ table
 	clear:both;
 }
 
-a
+td a
 {
 	text-decoration: none;
+	font-weight: bold;
 }
 
-a:hover
+td a:hover
 {
 	text-decoration: underline;
 }
 
 button
 {
-	padding-top: 4px;
+	padding: 2px;
+	margin-bottom:5px;
 	font-weight: bold;
 	background-color: #eee;
 	border: solid 1px #ccc;
-	border-radius:4px;
 	color: #666;
 }
 
@@ -300,9 +302,49 @@ button:hover
 	background-color: #ccc;
 	border-color: #bbb;
 	color: #333;
+	
 }
 
 .command
 {
 	text-align: center;
+}
+
+#wrapper {
+	width: 1000px;
+	min-height:620px;
+	margin: auto;	
+	overflow:hidden;
+	display:block;
+	background-color: #fff;	
+	border: solid 1px #aaa;
+	border-top:none;
+}
+
+input[type="search"]
+{
+	height: 30px;
+	width: 200px;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover
+{
+	background-color: #ccc;
+}
+.fix-panel
+{
+	border: solid 1px #aaa;
+	margin-bottom: 10px;
+}
+.panel-title
+{
+	background-color: #ddd;
+	padding-left: 20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	border-bottom: solid 1px #aaa;
+}
+.panel-content
+{
+	padding: 10px;
 }
