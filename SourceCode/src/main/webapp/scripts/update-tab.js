@@ -11,32 +11,41 @@ $(function() {
 					},
 				},
 				load : function(event, ui) {
-					$(ui.panel).off('click', 'a', tabLinkClickHandler);
 					if (isAddLinkHanlder) {
-						$(ui.panel).on('click', 'a', {
-							ui : ui
-						}, tabLinkClickHandler);
+						addLinkClickHanlder(ui.panel, ui.panel);
 					}
-					removeFormSubmitHandler(ui.panel);
 					if(isAddFormSubmitHandler){
 					addFormSubmitHandler(ui.panel, ui.panel);
 					}
+					isAddLinkHanlder = true;
+					isAddFormSubmitHandler = true;
+				},
+				spinner: 'Retrieving data...',
+				select : function(event, ui){
+					$(ui.panel).off('click', '**');
+					$(ui.panel).off('submit', '**');
 				}
 			});
 });
+function addLinkClickHanlder(container, target){
+	$(container).on('click', 'a', {target:target}, linkClickHandler);
+}
+function removeLinkClickHanlder(container){
+	$(container).off('click', 'a', linkClickHandler);
+}
 function removeFormSubmitHandler(container){
 	$(container).off('submit', 'form',formSubmitHandler);
 }
-function tabLinkClickHandler(event) {
+function linkClickHandler(event) {
 	var url = this.href;
 	alert(url);
 	if (url.indexOf('TIS/projects/ID') != -1) {
 		location.open(url);
 	} else {
-		$(event.data.ui.panel).load(this.href, function() {
+		$(event.data.target).load(this.href, function() {
 /*			addTabFormSubmitHandler();*/
 		});
-		event.preventDefault(event.data.ui.panel, event.data.ui.panel);
+		event.preventDefault();
 	}
 }
 
