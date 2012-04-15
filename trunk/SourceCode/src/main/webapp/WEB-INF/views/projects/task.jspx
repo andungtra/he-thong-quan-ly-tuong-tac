@@ -31,10 +31,10 @@
     	isAddLinkHanlder = false;
     	isAddFormSubmitHandler = false;
     	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-    	$(tabContent).off('click','a', tabLinkClickHandler);
+    	$(tabContent).off('click','a', linkClickHandler);
     	$(tabContent).on('click','a', function(event){
     		var url = this.href;
-    		alert('jflsdjlsdj' + url);
+    		alert(url);
     		if (url.indexOf('TIS/projects/ID') != -1) {		
     			location.open(url);
 
@@ -46,7 +46,6 @@
  
     		}
     	});
-    	removeFormSubmitHandler(tabContent);
     	addFormSubmitHandler('#workitem_content', '#workitem_content');
     });
   </script>
