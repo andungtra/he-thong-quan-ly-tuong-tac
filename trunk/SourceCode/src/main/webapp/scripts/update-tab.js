@@ -1,4 +1,5 @@
-var addLinkHanlder = true;
+var isAddLinkHanlder = true;
+var isAddFormSubmitHandler = true;
 $(function() {
 	$("#menu_menu").tabs(
 			{
@@ -8,20 +9,24 @@ $(function() {
 								"Couldn't load this tab. We'll try to fix this as soon as possible. "
 										+ "If this wouldn't be a demo.");
 					},
-					success : function() {
-						addTabFormSubmitHandler();
-					}
 				},
 				load : function(event, ui) {
-					if (addLinkHanlder) {
-						$(ui.panel).off('click', 'a', tabLinkClickHandler);
+					$(ui.panel).off('click', 'a', tabLinkClickHandler);
+					if (isAddLinkHanlder) {
 						$(ui.panel).on('click', 'a', {
 							ui : ui
 						}, tabLinkClickHandler);
 					}
+					removeFormSubmitHandler(ui.panel);
+					if(isAddFormSubmitHandler){
+					addFormSubmitHandler(ui.panel, ui.panel);
+					}
 				}
 			});
 });
+function removeFormSubmitHandler(container){
+	$(container).off('submit', 'form',formSubmitHandler);
+}
 function tabLinkClickHandler(event) {
 	var url = this.href;
 	alert(url);
@@ -29,35 +34,35 @@ function tabLinkClickHandler(event) {
 		location.open(url);
 	} else {
 		$(event.data.ui.panel).load(this.href, function() {
-			addTabFormSubmitHandler();
+/*			addTabFormSubmitHandler();*/
 		});
-		event.preventDefault();
+		event.preventDefault(event.data.ui.panel, event.data.ui.panel);
 	}
 }
 
-function addTabFormSubmitHandler() {
+/*function addTabFormSubmitHandler() {
 	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
 	addFormSubmitHandler(tabContent);
 
+}*/
+function addFormSubmitHandler(container, resultReceiver) {
+	$(container).on('submit', 'form', {resultReceiver:resultReceiver}, formSubmitHandler);
 }
-function addFormSubmitHandler(resultReceiver) {
-	$("form[method=GET]").bind('submit', function(event) {
+function formSubmitHandler(event){
+	var resultReceiver = event.data.resultReceiver;
+	var test = $(this).attr('method');
+	if($(this).attr('method').toLowerCase() == 'get'){
 		var query = $(this).serialize();
 		var url = $(this).attr('action') + '?' + query;
 		$(resultReceiver).load(url, function() {
-			addFormSubmitHandler();
 		}).change();
 		event.preventDefault();
-
-	});
-
-	$("form[method=POST]").bind('submit', function(event) {
+	}
+	if($(this).attr('method').toLowerCase() == 'post'){
 		var parameters = $(this).serializeArray();
 		var url = $(this).attr('action');
 		$(resultReceiver).load(url, parameters, function() {
-			addFormSubmitHandler();
 		}).change();
 		event.preventDefault();
-
-	})
+	}
 }
