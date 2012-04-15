@@ -28,7 +28,8 @@
     });
     $(function (){
     	debugger;
-    	addLinkHanlder = false;
+    	isAddLinkHanlder = false;
+    	isAddFormSubmitHandler = false;
     	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
     	$(tabContent).off('click','a', tabLinkClickHandler);
     	$(tabContent).on('click','a', function(event){
@@ -45,6 +46,8 @@
  
     		}
     	});
+    	removeFormSubmitHandler(tabContent);
+    	addFormSubmitHandler('#workitem_content', '#workitem_content');
     });
   </script>
 	<link href="${dynatree_css_url }" rel="stylesheet" type="text/css"
