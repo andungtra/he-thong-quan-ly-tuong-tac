@@ -2,7 +2,7 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   <spring:message code="security_login_title" var="title" htmlEscape="false" />
-  <util:fixpanel id="title" title="${title}">
+  <util:fixpanel id="title" title="${title}" width="500px">
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
