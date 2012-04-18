@@ -39,7 +39,7 @@
 	<jsp:directive.attribute name="z" type="java.lang.String"
 		required="false"
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-	<jsp:directive.attribute name="link" type="java.lang.String"
+	<jsp:directive.attribute name="typeLink" type="java.lang.String"
 		required="false" rtexprvalue="true" description="link" />
 
 	<c:if test="${empty render or render}">
@@ -88,7 +88,9 @@
 								var="colCounter" expression="colCounter  + 1" /></th>
 					</c:forTokens>
 					<c:if test="${show }">
-						<th>Show</th>
+						<c:if test="${!path.contains('accounts')}">
+							<th>Show</th>
+						</c:if>
 					</c:if>
 					<c:if test="${update}">
 						<c:if test="${!path.contains('projects')}">
@@ -130,19 +132,20 @@
 							</c:choose> <c:if test="${columnMaxLength ge 0}">
 								<c:set value="${fn:substring(colTxt, 0, columnMaxLength)}"
 									var="colTxt" />
-							</c:if> <c:choose>
-								<c:when test="${column eq 'name'}">
-									<c:set var="itemId">
-										<spring:eval expression="item[typeIdFieldName]" />
-									</c:set>
+							</c:if> <c:set var="itemId">
+								<spring:eval expression="item[typeIdFieldName]" />
+							</c:set> <c:choose>
+								<c:when test="${typeLink eq 'update'}">
+									<spring:url value="${path}/${itemId}?form" var="show_form_url" />
+								</c:when>
+								<c:otherwise>
 									<spring:url value="${path}/ID/${itemId}" var="show_form_url" />
+								</c:otherwise>
+							</c:choose> <c:choose>
+								<c:when test="${column eq 'name'}">
 									<a href="${show_form_url}"><c:out value="${colTxt}" /></a>
 								</c:when>
 								<c:when test="${column eq 'email'}">
-									<c:set var="itemId">
-										<spring:eval expression="item[typeIdFieldName]" />
-									</c:set>
-									<spring:url value="${path}/ID/${itemId}" var="show_form_url" />
 									<a href="${show_form_url}"><c:out value="${colTxt}" /></a>
 								</c:when>
 								<c:otherwise>
@@ -154,16 +157,18 @@
 						<spring:eval expression="item[typeIdFieldName]" />
 					</c:set>
 					<c:if test="${show}">
-						<td class="utilbox"><spring:url value="${path}/ID/${itemId}"
-								var="show_form_url" /> <spring:url
-								value="/resources/images/show.png" var="show_image_url" /> <spring:message
-								arguments="${typeName}" code="entity_show" var="show_label"
-								htmlEscape="false" /> <a href="${show_form_url}"
-							alt="${fn:escapeXml(show_label)}"
-							title="${fn:escapeXml(show_label)}"> <img
-								alt="${fn:escapeXml(show_label)}" class="image"
-								src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
-						</a></td>
+						<c:if test="${!path.contains('accounts')}">
+							<td class="utilbox"><spring:url value="${path}/ID/${itemId}"
+									var="show_form_url" /> <spring:url
+									value="/resources/images/show.png" var="show_image_url" /> <spring:message
+									arguments="${typeName}" code="entity_show" var="show_label"
+									htmlEscape="false" /> <a href="${show_form_url}"
+								alt="${fn:escapeXml(show_label)}"
+								title="${fn:escapeXml(show_label)}"> <img
+									alt="${fn:escapeXml(show_label)}" class="image"
+									src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
+							</a></td>
+						</c:if>
 					</c:if>
 					<c:if test="${update}">
 						<c:if test="${!path.contains('projects')}">

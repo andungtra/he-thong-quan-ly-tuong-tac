@@ -3,6 +3,7 @@ package org.hcmus.tis.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
@@ -125,9 +126,10 @@ public class AccountController {
 	}
 	
 	@RequestMapping(value = "/{id}/home", produces = "text/html")
-	public String home(@PathVariable("id") Long id, Model uiModel) {
+	public String home(@PathVariable("id") Long id, Model uiModel, HttpSession session) {
 		uiModel.addAttribute("account", accountService.findAccount(id));
 		uiModel.addAttribute("itemId", id);
+		session.setAttribute("account", accountService.findAccount(id));
 		return "accounts/home";
 		//return "accounts/redirect";
 	}
@@ -151,5 +153,11 @@ public class AccountController {
         //uiModel.addAttribute("itemId", id);
         //return "accounts/show";
 		return "accounts/redirect";
+    }
+	
+	@RequestMapping(value = "/{id}", params = "userform", produces = "text/html")
+    public String userupdateForm(@PathVariable("id") Long id, Model uiModel) {
+        populateEditForm(uiModel, accountService.findAccount(id));
+        return "accounts/user-update";
     }
 }

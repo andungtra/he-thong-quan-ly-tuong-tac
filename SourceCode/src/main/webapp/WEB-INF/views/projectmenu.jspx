@@ -5,6 +5,7 @@
 	xmlns:tab="urn:jsptagdir:/WEB-INF/tags/map"
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" id="myMenu" version="2.0">
+	<jsp:directive.page import="org.hcmus.tis.model.Account"/>
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url value="/administrator/homepage" var="administrator_url"></spring:url>
@@ -17,9 +18,9 @@
 			<!-- TemplateBeginEditable name="Site map" -->
 			<div id="sitemap" style="float: left">
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<a href="${administrator_url}">Administrator</a>
+					<a href="${administrator_url}">Administrator</a> >>
 				</sec:authorize>
-				<a href="${administrator_url}">${itemName}</a>
+				${itemName}
 			</div>
 			<div style="float: right">
 				<c:choose>
@@ -30,7 +31,9 @@
 							<a href="${logout}"> <spring:message code="security_logout" /></a>
 						</div>
 						<div class="header_menu_right_item" id="header_menu_first">
-							${loginAs } <a href="#">${pageContext['request'].userPrincipal.name}</a>
+							<spring:url value="/accounts/${sessionScope['account'].id}?userform" var="info" />
+							${loginAs } <a href="${info}">${sessionScope["account"].firstName} </a>
+							<!-- <a href="#">${pageContext['request'].userPrincipal.name}</a>  -->
 						</div>
 					</c:when>
 					<c:otherwise>
