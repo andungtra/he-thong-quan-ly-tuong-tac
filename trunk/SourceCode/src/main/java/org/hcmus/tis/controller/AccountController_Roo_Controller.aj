@@ -32,13 +32,6 @@ privileged aspect AccountController_Roo_Controller {
         return "accounts/create";
     }
     
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String AccountController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("account", accountService.findAccount(id));
-        uiModel.addAttribute("itemId", id);
-        return "accounts/show";
-    }
-    
     @RequestMapping(produces = "text/html")
     public String AccountController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         if (page != null || size != null) {

@@ -11,6 +11,7 @@ import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -72,7 +73,9 @@ public class AccountController {
 		Account oldAccount = accountService.findAccount(account.getId());
 		if (oldAccount.getPassword().compareTo(activeKey) == 0
 				&& oldAccount.getStatus() == AccountStatus.INACTIVE) {
-			oldAccount.setPassword(account.getPassword());
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			String encodePassword = encoder.encodePassword(account.getPassword(), null);
+			oldAccount.setPassword(encodePassword) ;
 			oldAccount.setFirstName(account.getFirstName());
 			oldAccount.setLastName(account.getLastName());
 			oldAccount.setStatus(AccountStatus.ACTIVE);
@@ -98,9 +101,10 @@ public class AccountController {
 
 	@RequestMapping(value = "/ID/{id}", produces = "text/html")
 	public String showAccount(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("account", accountService.findAccount(id));
-		uiModel.addAttribute("itemId", id);
-		return "accounts/show";
+		//uiModel.addAttribute("account", accountService.findAccount(id));
+		//uiModel.addAttribute("itemId", id);
+		//return "accounts/show";
+		return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/home", produces = "text/html")
@@ -125,6 +129,7 @@ public class AccountController {
 		uiModel.addAttribute("account", accountService.findAccount(id));
 		uiModel.addAttribute("itemId", id);
 		return "accounts/home";
+		//return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/{id}/projects", produces = "text/html")
@@ -139,4 +144,12 @@ public class AccountController {
 	public String redirect() {
 		return "accounts/redirect";
 	}
+	
+	@RequestMapping(value = "/{id}", produces = "text/html")
+    public String show(@PathVariable("id") Long id, Model uiModel) {
+        //uiModel.addAttribute("account", accountService.findAccount(id));
+        //uiModel.addAttribute("itemId", id);
+        //return "accounts/show";
+		return "accounts/redirect";
+    }
 }

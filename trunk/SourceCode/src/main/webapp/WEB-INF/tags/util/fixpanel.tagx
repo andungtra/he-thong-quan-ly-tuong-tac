@@ -19,7 +19,10 @@
 	<jsp:directive.attribute name="z" type="java.lang.String"
 		required="false"
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-
+	<jsp:directive.attribute name="width" type="java.lang.String"
+		rtexprvalue="true"
+		description="width of panel" />
+		
 	<c:if test="${empty render or render}">
 		<c:if test="${empty openPane}">
 			<c:set value="true" var="openPane" />
@@ -37,7 +40,7 @@
 			<spring:escapeBody javaScriptEscape="true">${title}</spring:escapeBody>
 		</c:set>
 
-		<div class="fix-panel">
+		<div class="fix-panel" style="width: ${width}">
 			<div class="panel-title">${title}</div>
 			<div class="panel-content">
 				<jsp:doBody />
