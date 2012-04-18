@@ -6,7 +6,7 @@
         <table:SearchInput defaultValue="${query}" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_Account_name" label="search" max="50" min="1" placeholder="Search account ..." required="true" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
     </page:quickfind>
     <page:list id="pl_org_hcmus_tis_model_Account" items="${accounts}" z="T4vTKgpd9Ypn1wEWkXgjg2/tHd4=">
-        <table:table data="${accounts}" id="l_org_hcmus_tis_model_Account" path="/accounts" z="eWRCkY8gmPJdZ7IjGwhobo2imkY=">
+        <table:table data="${accounts}" id="l_org_hcmus_tis_model_Account" path="/accounts" z="eWRCkY8gmPJdZ7IjGwhobo2imkY=" typeLink="update">
             <table:column id="c_org_hcmus_tis_model_Account_email" property="email" z="user-managed"/>
             <table:column id="c_org_hcmus_tis_model_Account_firstName" property="firstName" z="user-managed"/>
             <table:column id="c_org_hcmus_tis_model_Account_lastName" property="lastName" z="user-managed"/>

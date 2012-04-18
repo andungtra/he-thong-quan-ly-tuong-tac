@@ -35,4 +35,7 @@
 	<definition extends="content" name="accounts/redirect">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/redirect.jspx" />
 	</definition>
+	<definition extends="default" name="accounts/user-update">
+		<put-attribute name="body" value="/WEB-INF/views/accounts/user-update.jspx" />
+	</definition>
 </tiles-definitions>

@@ -5,6 +5,7 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:sec="http://www.springframework.org/security/tags"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" id="myMenu" version="2.0">
+	<jsp:directive.page import="org.hcmus.tis.model.Account"/>
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url value="/account/home" var="home"></spring:url>
@@ -31,8 +32,10 @@
 								var="logout" />
 							<a href="${logout}"> <spring:message code="security_logout" /></a>
 						</div>
-						<div class="header_menu_right_item" id="header_menu_first">
-							${loginAs } <a href="#">${pageContext['request'].userPrincipal.name}</a>
+						<div class="header_menu_right_item" id="header_menu_first">						
+							<spring:url value="/accounts/${sessionScope['account'].id}?userform" var="info" />
+							${loginAs } <a href="${info}">${sessionScope["account"].firstName} </a>
+							<!-- <a href="#">${pageContext['request'].userPrincipal.name}</a> -->
 						</div>
 					</c:when>
 					<c:otherwise>
