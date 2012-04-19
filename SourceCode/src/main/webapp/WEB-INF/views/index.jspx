@@ -2,13 +2,13 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   <spring:message var="app_name" code="application_name" htmlEscape="false" />
-  <spring:message var="title" code="welcome_titlepane" arguments="${app_name}" htmlEscape="false" />
-  <util:fixpanel id="title" title="${title}">
+  
+  <util:fixpanel id="title" title="Welcome">
     <h3>
       <spring:message code="welcome_h3" arguments="${app_name}" />
     </h3>
     <p>
-      <spring:message code="welcome_text" />
+      TIS is COLLABORATIVE DEVELOPMENT ENVIRONMENTS base on web, provide tool for manager project, schedule, member, source ...
     </p>
   </util:fixpanel>
 </div>

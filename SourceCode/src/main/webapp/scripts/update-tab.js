@@ -38,7 +38,7 @@ function removeFormSubmitHandler(container){
 }
 function linkClickHandler(event) {
 	var url = this.href;
-	alert(url);
+	//alert(url);
 	if (url.indexOf('TIS/projects/ID') != -1) {
 		location.open(url);
 	} else {

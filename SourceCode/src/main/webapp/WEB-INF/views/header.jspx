@@ -9,9 +9,10 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url value="/" var="home"/>
 	<spring:url value="/login" var="login" />
-	<spring:url value="/administrator/homepage" var="administrator_url"></spring:url>
-	<spring:message code="security_login_as" var="loginAs"></spring:message>
-	<spring:message code="security_logout" var="logout"></spring:message>
+	<spring:url value="/resources/j_spring_security_logout"	var="logout" />
+	<spring:url value="/administrator/homepage" var="administrator_url"/>
+	<spring:message code="security_login_as" var="loginAs"/>
+
 	<div class="menu">
 		<div class="menu_sitemap">
 			<!-- TemplateBeginEditable name="Site map" -->
@@ -24,9 +25,7 @@
 			<div style="float: right">
 				<c:choose>
 					<c:when test="${pageContext['request'].userPrincipal != null}">
-						<div class="header_menu_right_item header_menu_right_item_border">
-							<spring:url value="/logout"
-								var="logout" />
+						<div class="header_menu_right_item header_menu_right_item_border">							
 							<a href="${logout}"> <spring:message code="security_logout" /></a>
 						</div>
 						<div class="header_menu_right_item" id="header_menu_first">

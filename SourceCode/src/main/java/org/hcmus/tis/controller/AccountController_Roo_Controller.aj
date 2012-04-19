@@ -6,14 +6,12 @@ package org.hcmus.tis.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.hcmus.tis.controller.AccountController;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,17 +42,6 @@ privileged aspect AccountController_Roo_Controller {
             uiModel.addAttribute("accounts", accountService.findAllAccounts());
         }
         return "accounts/list";
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String AccountController.update(@Valid Account account, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, account);
-            return "accounts/update";
-        }
-        uiModel.asMap().clear();
-        accountService.updateAccount(account);
-        return "redirect:/accounts/" + encodeUrlPathSegment(account.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
