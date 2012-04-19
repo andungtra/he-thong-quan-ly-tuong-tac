@@ -160,4 +160,30 @@ public class AccountController {
         populateEditForm(uiModel, accountService.findAccount(id));
         return "accounts/user-update";
     }
+	
+    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+    public String update(@Valid Account account, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            populateEditForm(uiModel, account);
+            return "accounts/update";
+        }
+        uiModel.asMap().clear();
+        accountService.updateAccount(account);
+        return "redirect:/accounts/home" ;
+    }
+    
+    @RequestMapping(value = "/edit",method = RequestMethod.PUT, produces = "text/html")
+    public String userupdate(@Valid Account account, String firstName, String lastName, String email, Model uiModel, HttpServletRequest httpServletRequest) {
+        Account exist = Account.getAccountbyEmail(email);
+        if(account.getEmail()!=email && exist!=null)
+        {
+        	uiModel.addAttribute("error","Email is exist");
+        	return "accounts/user-update";
+        }
+        account.setFirstName(firstName);
+        account.setLastName(lastName);
+        account.setEmail(email);
+        accountService.updateAccount(account);
+        return "redirect:/accounts/home" ;
+    }
 }
