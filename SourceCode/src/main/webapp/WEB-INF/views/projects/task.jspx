@@ -67,10 +67,14 @@
 		var="datatables_js"></spring:url>
 	<spring:url value="/workitems/listWorkItemByProject"
 		var="server_source"></spring:url>
-		<spring:url value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css" var="workitem_content_css"></spring:url>
+	<spring:url
+		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
+		var="workitem_content_css"></spring:url>
 	<style type="text/css" title="currentStyle">
 @import "${demo_table_css}";
+
 @import "${workitem_content_css}";
+
 .dataTables_info {
 	padding-top: 0;
 }
@@ -98,30 +102,71 @@
 		
 	</script>
 	<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() {
-			debugger;
-			$('#work_item_list').dataTable({
-				"bProcessing" : true,
-				"bServerSide" : true,
-				"sAjaxSource" : "${server_source}",
-				"fnServerParams" : function(aoData) {
-					aoData.push({
-						"name" : "projectId",
-						"value" : "${itemId}"
-					});
-				},
-				"aoColumns" : [ {
-					"mDataProp" : "lName"
-				}, {
-					"mDataProp" : "sType"
-				}, {
-					"mDataProp" : "sStatus"
-				}, ],
-				"bJQueryUI" : true,
-				"sPaginationType" : "full_numbers",
-				"sDom" : '&lt;"H"lfr&gt;t&lt;"F"ip&gt;'
+		$(document)
+				.ready(
+						function() {
+							debugger;
+							$('#work_item_list')
+									.dataTable(
+											{
+												"bProcessing" : true,
+												"bServerSide" : true,
+												"sAjaxSource" : "${server_source}",
+												"fnServerParams" : function(
+														aoData) {
+													aoData.push({
+														"name" : "projectId",
+														"value" : "${itemId}"
+													});
+												},
+												"aoColumns" : [ {
+													"mDataProp" : null,
+													"bSortable" : false
+												}, {
+													"mDataProp" : "lName"
+												}, {
+													"mDataProp" : "sType"
+												}, {
+													"mDataProp" : "sStatus"
+												}, ],
+												"bJQueryUI" : true,
+												"sPaginationType" : "full_numbers",
+												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;lfr&gt;t&lt;"F"ip&gt;',
+												"fnCreatedRow" : function(nRow,
+														aData, iDataIndex) {
+													if (iDataIndex == 0) {
+														$(
+																"#work_item_list thead tr:first-child input[type=checkbox]")
+																.attr(
+																		'checked',
+																		null);
+													}
+													$(nRow.firstChild)
+															.html(
+																	'<input type="checkbox"/>');
+												}
 
-			});
+											});
+						});
+		$(function() {
+			$('.datatable_buttons')
+					.html(
+							'<a href="#" style="padding:5px">New</a><a style="padding:5px" href="#">Delete</a>');
+		});
+		$(function() {
+			var test = $('#work_item_list thead tr th:first-child');
+			$('#work_item_list thead tr:first-child input[type=checkbox]')
+					.on(
+							'click',
+							function() {
+								var selected = null;
+								if ($(this).attr('checked') != null) {
+									selected = "selected";
+								}
+								$(
+										'#work_item_list tbody tr td:first-child input[type=checkbox]')
+										.attr('checked', selected);
+							});
 		});
 	</script>
 	<link href="${dynatree_css_url }" rel="stylesheet" type="text/css"
@@ -205,6 +250,7 @@
 			class="display disable-a-handler" id="work_item_list">
 			<thead>
 				<tr>
+					<th width="5%"><input type="checkbox" /></th>
 					<th width="50%">Title</th>
 					<th>Type</th>
 					<th>Status</th>
