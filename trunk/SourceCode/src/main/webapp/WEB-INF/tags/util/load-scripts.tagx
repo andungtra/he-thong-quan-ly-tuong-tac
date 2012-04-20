@@ -27,6 +27,8 @@
 		var="jquery_tab_url"></spring:url>
 	<spring:url value="/${jquery_theme }" var="jquery_theme_url"></spring:url>
 	<spring:url value="/resources/scripts/update-tab.js" var="update_tab_url"></spring:url>
+	<spring:url value="/resources/scripts/ui//jquery-ui-1.8.18.custom.js"
+		var="jquery_all_url"></spring:url>
 	<link rel="stylesheet" type="text/css" href="${tundra_url}" />
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${roo_css_url}" />
@@ -53,5 +55,7 @@
 	<script src="${jquery_tab_url}" type="text/javascript"><!--jquery tab--></script>
 	<script src="${update_tab_url }" type="text/javascript"><!--update tab--></script>
 	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
+	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
+	<script src="${jquery_all_url }" type="text/javascript"><!--my cus--></script>
 
 </jsp:root>

@@ -6,6 +6,7 @@
         <menu:category id="c_project" z="u0PzRIwMDmEv/J6b8vbKakXGIdQ=">
             <menu:item id="i_project_new" messageCode="global_menu_new" url="/projects?form" z="1BazRC1rLnod0a+MpP1flWTvehA="/>
             <menu:item id="i_project_list" messageCode="global_menu_list" url="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}" z="GHL05c3Rvr+eKDgRCk3Ttak0W+g="/>
+            <menu:item id="fi_project_namelike" messageCode="global_menu_find" url="/projects?find=ByNameLike&amp;form" z="F1okaSAgXeWYfAMHs1Pfsu9okCk="/>
         </menu:category>
         <menu:category id="c_studyclass" z="6ca/Ja9XalHDG0FzqNxunXmxh4w=">
             <menu:item id="i_studyclass_new" messageCode="global_menu_new" url="/studyclasses?form" z="lF1SN7DpiGhQkf1+P+GQe5N0ea8="/>
@@ -42,6 +43,14 @@
         <menu:category id="c_workitemtype" z="7HybYCghm81JXlIIxTCXwC3seBY=">
             <menu:item id="i_workitemtype_new" messageCode="global_menu_new" url="/workitemtypes?form" z="sZJDE0vCIaF2XlsFGOBD0jhxNbQ="/>
             <menu:item id="i_workitemtype_list" messageCode="global_menu_list" url="/workitemtypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="alWppUCxGbbtDyekPlbVe1B3reQ="/>
+        </menu:category>
+        <menu:category id="c_workitemstatus" z="WAPMtVaF2x8c+tJP8/lBazs2OoI=">
+            <menu:item id="i_workitemstatus_new" messageCode="global_menu_new" url="/workitemstatuses?form" z="kcYaBdZW9EgHVrcEjFq/FpKGj50="/>
+            <menu:item id="i_workitemstatus_list" messageCode="global_menu_list" url="/workitemstatuses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="vMx8lN8YzJx7o4Z1OntMZ5Uyk3I="/>
+        </menu:category>
+        <menu:category id="c_iteration" z="8kYzkkUqlZ8YU+UuKpoAE7ZcgPo=">
+            <menu:item id="i_iteration_new" messageCode="global_menu_new" url="/iterations?form" z="XtXZUV+eevRublI8GnEBgWQPAbo="/>
+            <menu:item id="i_iteration_list" messageCode="global_menu_list" url="/iterations?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FMRcCOlk6n7UQFBmcuueyTSnrrY="/>
         </menu:category>
     </menu:menu>
 </div>

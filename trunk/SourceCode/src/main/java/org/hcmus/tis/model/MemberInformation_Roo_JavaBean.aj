@@ -34,4 +34,12 @@ privileged aspect MemberInformation_Roo_JavaBean {
         this.memberRole = memberRole;
     }
     
+    public Boolean MemberInformation.getDeleted() {
+        return this.deleted;
+    }
+    
+    public void MemberInformation.setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+    
 }

@@ -6,11 +6,12 @@
         <field:display field="title" id="s_org_hcmus_tis_model_WorkItem_title" object="${workitem}" z="kGeygrNX8VR7sRR+89acCCHFpQ4="/>
         <field:display field="description" id="s_org_hcmus_tis_model_WorkItem_description" object="${workitem}" z="OkRbHvTZwTg9eHyHS4hKBOvpjcg="/>
         <field:display date="true" dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="s_org_hcmus_tis_model_WorkItem_dateCreated" object="${workitem}" z="s1NDaguqgdpF8+X70FyJroqrMMQ="/>
-        <field:display field="additionalFields" id="s_org_hcmus_tis_model_WorkItem_additionalFields" object="${workitem}" z="eOxtQodVR4M3KWyB3x3rhIbsRkg="/>
+        <field:display render="false" field="additionalFields" id="s_org_hcmus_tis_model_WorkItem_additionalFields" object="${workitem}" z="eOxtQodVR4M3KWyB3x3rhIbsRkg="/>
         <field:display field="priority" id="s_org_hcmus_tis_model_WorkItem_priority" object="${workitem}" z="GWqaVhQJnEIAY698qvXTHPliL4w="/>
-        <field:display field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" object="${workitem}" z="blpMrBnr250YvANmaq0X+ZMA9Bk="/>
-        <field:display field="workItemType" id="s_org_hcmus_tis_model_WorkItem_workItemType" object="${workitem}" z="o64wCOj4SMawq2HxMZR465UY54s="/>
-        <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workitem}" z="9V7KDtLDr6N53jlI8UcH4CGOnYE="/>
+        <field:display label="Container" field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" object="${workitem}" z="blpMrBnr250YvANmaq0X+ZMA9Bk="/>
+        <field:display label="Type" field="workItemType" id="s_org_hcmus_tis_model_WorkItem_workItemType" object="${workitem}" z="o64wCOj4SMawq2HxMZR465UY54s="/>
         <field:display field="asignee" id="s_org_hcmus_tis_model_WorkItem_asignee" object="${workitem}" z="Gh6OIJpxasrlbrfWQFU+ogOnEGU="/>
+        <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workitem}" z="9V7KDtLDr6N53jlI8UcH4CGOnYE="/>
+        <field:display field="status" id="s_org_hcmus_tis_model_WorkItem_status" object="${workitem}" z="chE+pRBiDHXZHre9KieANEoUSnc="/>
     </page:show>
 </div>

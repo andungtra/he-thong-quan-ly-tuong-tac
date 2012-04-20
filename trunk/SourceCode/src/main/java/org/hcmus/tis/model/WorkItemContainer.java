@@ -18,4 +18,5 @@ public abstract class WorkItemContainer {
 
     @ManyToOne
     private org.hcmus.tis.model.WorkItemContainer parentContainer;
+    public abstract Project getParentProjectOrMyself();
 }

@@ -5,6 +5,7 @@ package org.hcmus.tis.controller;
 
 import org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Priority;
@@ -12,8 +13,10 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.service.AccountService;
+import org.hcmus.tis.service.IterationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
@@ -25,6 +28,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     AccountService ApplicationConversionServiceFactoryBean.accountService;
+    
+    @Autowired
+    IterationService ApplicationConversionServiceFactoryBean.iterationService;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -42,10 +48,26 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<MemberInformation, String> ApplicationConversionServiceFactoryBean.getMemberInformationToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.MemberInformation, java.lang.String>() {
-            public String convert(MemberInformation memberInformation) {
-                return new StringBuilder().toString();
+    public Converter<Iteration, String> ApplicationConversionServiceFactoryBean.getIterationToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.Iteration, java.lang.String>() {
+            public String convert(Iteration iteration) {
+                return new StringBuilder().append(iteration.getName()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, Iteration> ApplicationConversionServiceFactoryBean.getIdToIterationConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Iteration>() {
+            public org.hcmus.tis.model.Iteration convert(java.lang.Long id) {
+                return iterationService.findIteration(id);
+            }
+        };
+    }
+    
+    public Converter<String, Iteration> ApplicationConversionServiceFactoryBean.getStringToIterationConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Iteration>() {
+            public org.hcmus.tis.model.Iteration convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), Iteration.class);
             }
         };
     }
@@ -186,10 +208,26 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<WorkItemType, String> ApplicationConversionServiceFactoryBean.getWorkItemTypeToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItemType, java.lang.String>() {
-            public String convert(WorkItemType workItemType) {
-                return new StringBuilder().append(workItemType.getName()).append(" ").append(workItemType.getAdditionalFieldsDefine()).toString();
+    public Converter<WorkItemStatus, String> ApplicationConversionServiceFactoryBean.getWorkItemStatusToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItemStatus, java.lang.String>() {
+            public String convert(WorkItemStatus workItemStatus) {
+                return new StringBuilder().append(workItemStatus.getName()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, WorkItemStatus> ApplicationConversionServiceFactoryBean.getIdToWorkItemStatusConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.WorkItemStatus>() {
+            public org.hcmus.tis.model.WorkItemStatus convert(java.lang.Long id) {
+                return WorkItemStatus.findWorkItemStatus(id);
+            }
+        };
+    }
+    
+    public Converter<String, WorkItemStatus> ApplicationConversionServiceFactoryBean.getStringToWorkItemStatusConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.WorkItemStatus>() {
+            public org.hcmus.tis.model.WorkItemStatus convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), WorkItemStatus.class);
             }
         };
     }
@@ -214,6 +252,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getAccountToStringConverter());
         registry.addConverter(getIdToAccountConverter());
         registry.addConverter(getStringToAccountConverter());
+        registry.addConverter(getIterationToStringConverter());
+        registry.addConverter(getIdToIterationConverter());
+        registry.addConverter(getStringToIterationConverter());
         registry.addConverter(getMemberInformationToStringConverter());
         registry.addConverter(getIdToMemberInformationConverter());
         registry.addConverter(getStringToMemberInformationConverter());
@@ -235,6 +276,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getWorkItemToStringConverter());
         registry.addConverter(getIdToWorkItemConverter());
         registry.addConverter(getStringToWorkItemConverter());
+        registry.addConverter(getWorkItemStatusToStringConverter());
+        registry.addConverter(getIdToWorkItemStatusConverter());
+        registry.addConverter(getStringToWorkItemStatusConverter());
         registry.addConverter(getWorkItemTypeToStringConverter());
         registry.addConverter(getIdToWorkItemTypeConverter());
         registry.addConverter(getStringToWorkItemTypeConverter());

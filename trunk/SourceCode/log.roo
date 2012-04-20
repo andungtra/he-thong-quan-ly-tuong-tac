@@ -359,5 +359,63 @@ field boolean --fieldName isAccountNonLocked
 >>>>>>> .r74
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-14 15:15:57
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-14 17:31:08
+<<<<<<< .mine
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-15 14:44:59
+entity jpa --class org.hcmus.tis.model.WorkItemStatus --testAutomatically
+field string --fieldName name --notNull --sizeMin 1 --sizeMax 50
+focus --class ~.model.WorkItem
+field reference --fieldName status --type ~.model.WorkItemStatus --notNull 
+web mvc all --package org.hcmus.tis.controller
+// [failed] entity jpa --class org.hcmus.tis.model.Release --extends 
+// [failed] entity jpa --class org.hcmus.tis.model.Release --extends ~.model.WorkItemContainer --testAutomatically 
+entity jpa --class org.hcmus.tis.model.Iteration --extends ~.model.WorkItemContainer --testAutomatically 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-15 17:27:21
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 10:09:19
+web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 11:42:16
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 11:42:32
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 12:17:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 22:14:22
+focus --class ~.model.WorkItemContainer
+field reference --fieldName parent --type ~.model.WorkItemContainer
+service --interface org.hcmus.tis.service.Iteration --entity ~.model.Iteration
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 22:43:35
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 22:43:47
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 22:44:27
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 22:44:36
+service --entity ~.model.Iteration --interface org.hcmus.tis.service.IterationService
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 22:47:17
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 22:48:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 22:49:12
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 22:49:21
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 23:14:24
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 23:14:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-16 23:14:55
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-16 23:18:07
+focus --class ~.model.Iteration
+finder list 
+finder add findIterationsByParentContainer
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-17 00:32:56
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-17 00:33:08
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-17 00:47:58
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-17 21:55:06
+focus --class ~.model.WorkItem
+finder list 
+finder add findWorkItemsByWorkItemContainer
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-17 23:08:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-17 23:08:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-18 00:24:03
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-18 10:31:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-18 12:10:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-18 13:59:38
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-18 15:19:38
+=======
 >>>>>>> .r75
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-18 20:43:13
+>>>>>>> .r79
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-19 14:29:33
+focus --class ~.model.MemberInformation
+field boolean --fieldName deleted --value false
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-19 17:46:46
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-19 21:17:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-20 00:25:24

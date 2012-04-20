@@ -16,6 +16,9 @@ privileged aspect WorkItemContainer_Roo_Jpa_ActiveRecord {
     
     public static final EntityManager WorkItemContainer.entityManager() {
         EntityManager em = new WorkItemContainer() {
+            public org.hcmus.tis.model.Project getParentProjectOrMyself() {
+                throw new UnsupportedOperationException();
+            }
         }.entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;

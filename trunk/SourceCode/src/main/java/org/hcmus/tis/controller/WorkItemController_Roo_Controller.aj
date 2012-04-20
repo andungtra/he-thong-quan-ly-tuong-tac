@@ -4,8 +4,6 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.WorkItemController;
@@ -13,10 +11,9 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
-import org.hcmus.tis.service.AccountService;
 import org.joda.time.format.DateTimeFormat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,9 +26,6 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemController_Roo_Controller {
     
-    @Autowired
-    AccountService WorkItemController.accountService;
-    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String WorkItemController.create(@Valid WorkItem workItem, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -41,26 +35,6 @@ privileged aspect WorkItemController_Roo_Controller {
         uiModel.asMap().clear();
         workItem.persist();
         return "redirect:/workitems/" + encodeUrlPathSegment(workItem.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String WorkItemController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new WorkItem());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (Priority.countPrioritys() == 0) {
-            dependencies.add(new String[] { "priority", "prioritys" });
-        }
-        if (WorkItemContainer.countWorkItemContainers() == 0) {
-            dependencies.add(new String[] { "workitemcontainer", "workitemcontainers" });
-        }
-        if (WorkItemType.countWorkItemTypes() == 0) {
-            dependencies.add(new String[] { "workitemtype", "workitemtypes" });
-        }
-        if (accountService.countAllAccounts() == 0) {
-            dependencies.add(new String[] { "account", "accounts" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
-        return "workitems/create";
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
@@ -120,10 +94,10 @@ privileged aspect WorkItemController_Roo_Controller {
     void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {
         uiModel.addAttribute("workItem", workItem);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("accounts", accountService.findAllAccounts());
         uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("prioritys", Priority.findAllPrioritys());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
+        uiModel.addAttribute("workitemstatuses", WorkItemStatus.findAllWorkItemStatuses());
         uiModel.addAttribute("workitemtypes", WorkItemType.findAllWorkItemTypes());
     }
     

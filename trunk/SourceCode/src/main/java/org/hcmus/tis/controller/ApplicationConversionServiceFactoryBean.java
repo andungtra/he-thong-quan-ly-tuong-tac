@@ -1,9 +1,11 @@
 package org.hcmus.tis.controller;
 
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.model.WorkItemType;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
@@ -66,5 +68,19 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 			}
 		};
 	}
+    public Converter<MemberInformation, String> getMemberInformationToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.MemberInformation, java.lang.String>() {
+            public String convert(MemberInformation memberInformation) {
+                return memberInformation.getAccount().getEmail();
+            }
+        };
+    }
+    public Converter<WorkItemType, String> getWorkItemTypeToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItemType, java.lang.String>() {
+            public String convert(WorkItemType workItemType) {
+                return workItemType.getName();
+            }
+        };
+    }
 
 }

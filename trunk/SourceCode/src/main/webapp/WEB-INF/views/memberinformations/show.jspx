@@ -6,5 +6,6 @@
         <field:display field="account" id="s_org_hcmus_tis_model_MemberInformation_account" object="${memberinformation}" z="W05DzJaqmgMMUIDZgIGgMWyYfkc="/>
         <field:display field="project" id="s_org_hcmus_tis_model_MemberInformation_project" object="${memberinformation}" z="Yl1wiWZRIZ8dkhr+JFxve5eHHwA="/>
         <field:display field="memberRole" id="s_org_hcmus_tis_model_MemberInformation_memberRole" object="${memberinformation}" z="61NxpaL+4mc1a/iessfLRnF41j4="/>
+        <field:display field="deleted" id="s_org_hcmus_tis_model_MemberInformation_deleted" object="${memberinformation}" z="DSVU/woJJgFs8kM2fgNjJG4CZes="/>
     </page:show>
 </div>

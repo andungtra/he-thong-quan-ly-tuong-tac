@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="workitemstatuses/list">
+        <put-attribute name="body" value="/WEB-INF/views/workitemstatuses/list.jspx"/>
+    </definition>
+<definition extends="default" name="workitemstatuses/show">
+        <put-attribute name="body" value="/WEB-INF/views/workitemstatuses/show.jspx"/>
+    </definition>
+<definition extends="default" name="workitemstatuses/create">
+        <put-attribute name="body" value="/WEB-INF/views/workitemstatuses/create.jspx"/>
+    </definition>
+<definition extends="default" name="workitemstatuses/update">
+        <put-attribute name="body" value="/WEB-INF/views/workitemstatuses/update.jspx"/>
+    </definition>
+</tiles-definitions>
