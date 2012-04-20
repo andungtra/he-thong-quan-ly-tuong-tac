@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_hcmus_tis_model_WorkItemStatus" items="${workitemstatuses}" z="3FigHVKHGEkq2H2A3FPIieFFCXs=">
+        <table:table data="${workitemstatuses}" id="l_org_hcmus_tis_model_WorkItemStatus" path="/workitemstatuses" z="Ir5Ey/FJyiNcnTDNKN/ALcBbHYg=">
+            <table:column id="c_org_hcmus_tis_model_WorkItemStatus_name" property="name" z="h5P0zydIu7d8r8k7JxCbcFvtv3s="/>
+        </table:table>
+    </page:list>
+</div>

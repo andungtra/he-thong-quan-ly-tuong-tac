@@ -41,6 +41,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     public MemberInformation MemberInformationDataOnDemand.getNewTransientMemberInformation(int index) {
         MemberInformation obj = new MemberInformation();
         setAccount(obj, index);
+        setDeleted(obj, index);
         setMemberRole(obj, index);
         setProject(obj, index);
         return obj;
@@ -49,6 +50,11 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     public void MemberInformationDataOnDemand.setAccount(MemberInformation obj, int index) {
         Account account = accountDataOnDemand.getRandomAccount();
         obj.setAccount(account);
+    }
+    
+    public void MemberInformationDataOnDemand.setDeleted(MemberInformation obj, int index) {
+        Boolean deleted = Boolean.TRUE;
+        obj.setDeleted(deleted);
     }
     
     public void MemberInformationDataOnDemand.setMemberRole(MemberInformation obj, int index) {

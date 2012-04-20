@@ -4,11 +4,11 @@
 package org.hcmus.tis.model;
 
 import java.util.Date;
-import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 
 privileged aspect WorkItem_Roo_JavaBean {
@@ -69,11 +69,11 @@ privileged aspect WorkItem_Roo_JavaBean {
         this.workItemType = workItemType;
     }
     
-    public Account WorkItem.getAuthor() {
+    public MemberInformation WorkItem.getAuthor() {
         return this.author;
     }
     
-    public void WorkItem.setAuthor(Account author) {
+    public void WorkItem.setAuthor(MemberInformation author) {
         this.author = author;
     }
     
@@ -83,6 +83,14 @@ privileged aspect WorkItem_Roo_JavaBean {
     
     public void WorkItem.setAsignee(MemberInformation asignee) {
         this.asignee = asignee;
+    }
+    
+    public WorkItemStatus WorkItem.getStatus() {
+        return this.status;
+    }
+    
+    public void WorkItem.setStatus(WorkItemStatus status) {
+        this.status = status;
     }
     
 }

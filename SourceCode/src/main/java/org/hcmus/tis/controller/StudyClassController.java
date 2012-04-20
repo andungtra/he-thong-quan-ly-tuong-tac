@@ -1,12 +1,7 @@
 package org.hcmus.tis.controller;
 
 import java.util.List;
-import org.hcmus.tis.dto.JqgridResponse;
-import org.hcmus.tis.dto.Page;
-import org.hcmus.tis.dto.PageRequest;
-import org.hcmus.tis.dto.StudyClassDTO;
 import org.hcmus.tis.model.StudyClass;
-import org.hcmus.tis.util.StudyClassMapper;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -32,27 +27,6 @@ public class StudyClassController {
         }
         uiModel.addAttribute("query", query);
         return "studyclasses/list";
-    }
-
-    public JqgridResponse<org.hcmus.tis.dto.StudyClassDTO> getFilteredRecords(String filters, PageRequest pageRequest) {
-        return null;
-    }
-
-    @RequestMapping(value = "/records", produces = "application/json")
-    @ResponseBody
-    public JqgridResponse<org.hcmus.tis.dto.StudyClassDTO> records(@RequestParam("_search") Boolean search, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows, @RequestParam(value = "sidx", required = false) String sidx, @RequestParam(value = "sord", required = false) String sord) {
-        PageRequest pageRequest = new PageRequest(page - 1, rows);
-        if (search == true) {
-            return getFilteredRecords(filters, pageRequest);
-        }
-        Page<StudyClass> users = StudyClass.findAll(pageRequest);
-        List<StudyClassDTO> userDtos = StudyClassMapper.map(users);
-        JqgridResponse<StudyClassDTO> response = new JqgridResponse<StudyClassDTO>();
-        response.setRows(userDtos);
-        response.setRecords(Long.valueOf(users.getTotalElements()).toString());
-        response.setTotal(Integer.valueOf((int) users.getTotalPages()).toString());
-        response.setPage(Integer.valueOf(users.getNumber() + 1).toString());
-        return response;
     }
 
     @RequestMapping(value = "/ID/{id}", produces = "text/html")

@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import org.hcmus.tis.model.Account;
-import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberInformationDataOnDemand;
 import org.hcmus.tis.model.Priority;
@@ -22,6 +20,8 @@ import org.hcmus.tis.model.PriorityDataOnDemand;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemDataOnDemand;
+import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.model.WorkItemStatusDataOnDemand;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.WorkItemTypeDataOnDemand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,10 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     private MemberInformationDataOnDemand WorkItemDataOnDemand.memberInformationDataOnDemand;
     
     @Autowired
-    private AccountDataOnDemand WorkItemDataOnDemand.accountDataOnDemand;
+    private PriorityDataOnDemand WorkItemDataOnDemand.priorityDataOnDemand;
     
     @Autowired
-    private PriorityDataOnDemand WorkItemDataOnDemand.priorityDataOnDemand;
+    private WorkItemStatusDataOnDemand WorkItemDataOnDemand.workItemStatusDataOnDemand;
     
     @Autowired
     private WorkItemTypeDataOnDemand WorkItemDataOnDemand.workItemTypeDataOnDemand;
@@ -55,6 +55,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         setDateCreated(obj, index);
         setDescription(obj, index);
         setPriority(obj, index);
+        setStatus(obj, index);
         setTitle(obj, index);
         setWorkItemContainer(obj, index);
         setWorkItemType(obj, index);
@@ -72,7 +73,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     }
     
     public void WorkItemDataOnDemand.setAuthor(WorkItem obj, int index) {
-        Account author = accountDataOnDemand.getRandomAccount();
+        MemberInformation author = memberInformationDataOnDemand.getRandomMemberInformation();
         obj.setAuthor(author);
     }
     
@@ -89,6 +90,11 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     public void WorkItemDataOnDemand.setPriority(WorkItem obj, int index) {
         Priority priority = priorityDataOnDemand.getRandomPriority();
         obj.setPriority(priority);
+    }
+    
+    public void WorkItemDataOnDemand.setStatus(WorkItem obj, int index) {
+        WorkItemStatus status = workItemStatusDataOnDemand.getRandomWorkItemStatus();
+        obj.setStatus(status);
     }
     
     public void WorkItemDataOnDemand.setTitle(WorkItem obj, int index) {

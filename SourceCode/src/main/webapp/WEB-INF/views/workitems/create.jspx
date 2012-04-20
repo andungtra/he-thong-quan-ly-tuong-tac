@@ -3,15 +3,19 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_org_hcmus_tis_model_WorkItem" modelAttribute="workItem" path="/workitems" render="${empty dependencies}" z="lIpA0z3+K6Z01pdxlb7sWDTJ8c8=">
-        <field:textarea field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="1jPqDl8Okr+/WdInI+W5ESLK1gA="/>
-        <field:input field="description" id="c_org_hcmus_tis_model_WorkItem_description" z="+yPjRo9jvcyXnFI4NdViIcvRXlo="/>
-        <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" required="true" z="ChcVP/cjccZSumoFEs3lWGvVSe4="/>
-        <field:input render="false" field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" z="user-managed"/>
-        <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="WmHVVNRJ+6ixlnib66TIZEvS2nw="/>
-        <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
-        <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" required="true" z="SD1vwIHvvIAm5xUGEB8kLtOkGZs="/>
-        <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${accounts}" path="/accounts" required="true" z="XYT7WiOvMslGx9nS2xwEFOCpdX4="/>
-        <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="SznRAOke4U5ObP7A5ssJBIbylhc="/>
+        <field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="user-managed"/>
+        <field:textarea field="description" id="c_org_hcmus_tis_model_WorkItem_description" z="user-managed"/>
+        <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" render="false" required="true" z="user-managed"/>
+        <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="user-managed"/>
+        <field:select label="Iteration" field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="user-managed"/>
+        <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
+        <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="user-managed"/>
+        <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
+        <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="user-managed"/>
+        <input name="workItemType" type="hidden" value="${workItemTypeId }"/>
+        <input name="projectId" type="hidden" value="${projectId }"/>
+        <input name="author" type="hidden" value="${memberInformationId }"/>
+        <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" render="false" z="user-managed"/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}" z="odQx4dt7HLwtd52tC6qnL/i9IR4="/>
+    <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}" z="user-managed"/>
 </div>

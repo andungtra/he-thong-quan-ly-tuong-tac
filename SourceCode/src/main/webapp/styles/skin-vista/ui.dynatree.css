@@ -9,8 +9,6 @@ ul.dynatree-container
 	padding: 3px;
 	margin: 0; /* issue 201 */
 
-	background-color: white;
-
 	overflow: auto;
 }
 

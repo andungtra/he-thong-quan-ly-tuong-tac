@@ -56,7 +56,7 @@ public class Project extends WorkItemContainer {
         EntityManager em = Project.entityManager();
         TypedQuery<Project> q = em.createQuery("SELECT o FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:name)", Project.class).setFirstResult(firstIndex).setMaxResults(maxSize);
         q.setParameter("name", name);
-        return q;
+        return q;    
     }
     
     public static Collection<org.hcmus.tis.model.Project> findProjectsByAccount(long AccountID) {
@@ -69,5 +69,8 @@ public class Project extends WorkItemContainer {
 			rs.add(info.getProject());
 		}
         return rs;
+    }
+    public Project getParentProjectOrMyself(){
+    	return this;
     }
 }

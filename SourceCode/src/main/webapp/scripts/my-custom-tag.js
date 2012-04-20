@@ -1,11 +1,11 @@
 $(function(){
 		$('#form_advanced_panel').hide();
 			$('#form_advanced_panel_link').click(function(event){
-			toggle(this);
+				togglecustom(this);
 			event.preventDefault();
 	});
 	});
-	function toggle(obj){
+	function togglecustom(obj){
 		if($(obj).filter('.show').length > 0){
 			$('#form_advanced_panel').show('blind');
 		}else{

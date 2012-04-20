@@ -15,45 +15,172 @@
 		var="dynatree_url"></spring:url>
 	<spring:url value="/resources/styles/skin-vista/ui.dynatree.css"
 		var="dynatree_css_url"></spring:url>
-		<spring:url value="/workitems?form" var="workitemform_url"></spring:url>
-	<script type="text/javascript" src="${jquery_ui }"><!-- aa -->	</script>
-	<script type="text/javascript" src="${jquery_cookie }">	<!-- jquery cookie -->	
+
+	<script type="text/javascript" src="${jquery_ui }">
+	<!-- aa -->
+		
 	</script>
-	<script type="text/javascript" src="${dynatree_url }"><!-- jquery dynatree -->		
+	<script type="text/javascript" src="${jquery_cookie }">
+	<!-- jquery cookie -->
+		
+	</script>
+	<script type="text/javascript" src="${dynatree_url }">
+	<!-- jquery dynatree -->
+		
 	</script>
 	<script type="text/javascript">
-    $(function(){
-      $("#project_tree").dynatree({
-      });
-    });
-    $(function (){
-    	debugger;
-    	isAddLinkHanlder = false;
-    	isAddFormSubmitHandler = false;
-    	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-    	$(tabContent).off('click','a', linkClickHandler);
-    	$(tabContent).on('click','a', function(event){
-    		var url = this.href;
-    		alert(url);
-    		if (url.indexOf('TIS/projects/ID') != -1) {		
-    			location.open(url);
+		$(function() {
+			$("#project_tree").dynatree({});
+		});
+		$(function() {
+			debugger;
+			isAddLinkHanlder = false;
+			isAddFormSubmitHandler = false;
+			$('#workitem_content').on('click', '#work_item_list_paginate a',
+					function(event) {
+						event.stopImmediatePropagation();
+					})
+			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
+			$(tabContent).off('click', 'a', linkClickHandler);
+			$(tabContent).on('click', 'a', function(event) {
+				var url = this.href;
+				alert(url);
+				if (url.indexOf('TIS/projects/ID') != -1) {
+					location.open(url);
 
-    		} else {
-    			$('#workitem_content').load(this.href, function() {
-    				
-    			}).change();
-    			event.preventDefault();
- 
-    		}
-    	});
-    	addFormSubmitHandler('#workitem_content', '#workitem_content');
-    });
-  </script>
+				} else {
+					$('#workitem_content').load(this.href, function() {
+
+					}).change();
+					event.preventDefault();
+
+				}
+			});
+			addFormSubmitHandler('#workitem_content', '#workitem_content');
+		});
+	</script>
+	<spring:url value="/resources/media/css/demo_page.css"
+		var="demo_page_css"></spring:url>
+	<spring:url value="/resources/media/css/table_jui.css"
+		var="demo_table_css"></spring:url>
+	<spring:url value="/resources/media/js/jquery.dataTables.js"
+		var="datatables_js"></spring:url>
+	<spring:url value="/workitems/listWorkItemByProject"
+		var="server_source"></spring:url>
+		<spring:url value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css" var="workitem_content_css"></spring:url>
+	<style type="text/css" title="currentStyle">
+@import "${demo_table_css}";
+@import "${workitem_content_css}";
+.dataTables_info {
+	padding-top: 0;
+}
+
+.dataTables_paginate {
+	padding-top: 0;
+}
+
+.css_right {
+	float: right;
+}
+
+#example_wrapper .fg-toolbar {
+	font-size: 0.8em
+}
+
+#theme_links span {
+	float: left;
+	padding: 2px 10px;
+}
+</style>
+	<script type="text/javascript" language="javascript"
+		src="${datatables_js }">
+	<!--daa-->
+		
+	</script>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			debugger;
+			$('#work_item_list').dataTable({
+				"bProcessing" : true,
+				"bServerSide" : true,
+				"sAjaxSource" : "${server_source}",
+				"fnServerParams" : function(aoData) {
+					aoData.push({
+						"name" : "projectId",
+						"value" : "${itemId}"
+					});
+				},
+				"aoColumns" : [ {
+					"mDataProp" : "lName"
+				}, {
+					"mDataProp" : "sType"
+				}, {
+					"mDataProp" : "sStatus"
+				}, ],
+				"bJQueryUI" : true,
+				"sPaginationType" : "full_numbers",
+				"sDom" : '&lt;"H"lfr&gt;t&lt;"F"ip&gt;'
+
+			});
+		});
+	</script>
 	<link href="${dynatree_css_url }" rel="stylesheet" type="text/css"
 		id="skinSheet" />
+	<script type="text/javascript">
+		$(function() {
+			// BUTTON
+			debugger;
+			$('.fg-button').hover(
+					function() {
+						$(this).removeClass('ui-state-default').addClass(
+								'ui-state-focus');
+					},
+					function() {
+						$(this).removeClass('ui-state-focus').addClass(
+								'ui-state-default');
+					});
+
+			// MENU	
+			$(document).ready(function() {
+
+				$(".signin").click(function(e) {
+					e.stopImmediatePropagation();
+					$("fieldset#signin_menu").toggle();
+					$(".signin").toggleClass("menu-open");
+				});
+
+				$("fieldset#signin_menu").mouseup(function() {
+					return false
+				});
+				$(document).mouseup(function(e) {
+					if ($(e.target).parent("a.signin").length == 0) {
+						$(".signin").removeClass("menu-open");
+						$("fieldset#signin_menu").hide();
+					}
+				});
+
+			});
+		});
+	</script>
+	<spring:url value="/resources/styles/dropdownmenu/task.css"
+		var="task_css"></spring:url>
+	<link href="${task_css }" rel="stylesheet" type="text/css"
+		id="skinSheet" />
+	<div id="container">
+		<div id="topnav" class="topnav">
+			<a href="#" class="signin"> <span>Create work item</span>
+			</a>
+		</div>
+		<fieldset id="signin_menu">
+			<spring:url value="/workitems?form" var="workitemform_url">
+				<spring:param name="projectId" value="${itemId}"></spring:param>
+				<spring:param name="workItemTypeId" value="1"></spring:param>
+			</spring:url>
+			<a href="${workitemform_url}">User story</a>
+		</fieldset>
+	</div>
 	<div style="clear: both;" />
-	<div ><a href="${workitemform_url }" style="border: thin; color: blue; padding: 5px;">Create workitem</a></div>
-	<div id="project_tree" class="panel task-left">
+	<div id="project_tree" class="task-left">
 		<ul id="treeData" style="display: none;">
 			<li id="id1" title="Look, a tool tip!" class="folder">iteration
 				1
@@ -70,32 +197,25 @@
 				</ul>
 			</li>
 			<li><a href="">all bug</a></li>
-			<li>all user story</li>
+			<li><a href="">all work item</a></li>
 		</ul>
 	</div>
-	<div id="workitem_content" class="panel task-right">
-		<table>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Due Date</th>
-				<th>Priority</th>
-				<th>Status</th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>Create Project</td>
-				<td>23/2/2012</td>
-				<td>High</td>
-				<td>Done</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>Create Template</td>
-				<td>28/2/2012</td>
-				<td>High</td>
-				<td>On-going</td>
-			</tr>
+	<div id="workitem_content" class="task-right">
+		<table cellpadding="0" cellspacing="0" border="0"
+			class="display disable-a-handler" id="work_item_list">
+			<thead>
+				<tr>
+					<th width="50%">Title</th>
+					<th>Type</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="2" class="dataTables_empty">Loading data from
+						server</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 	<div style="clear: both;" />

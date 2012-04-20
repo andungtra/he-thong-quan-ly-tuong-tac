@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_hcmus_tis_model_Iteration" items="${iterations}" z="1lGIvB5WvHWmz1PVl+tempmjRqc=">
+        <table:table data="${iterations}" id="l_org_hcmus_tis_model_Iteration" path="/iterations" z="OIAnzxwQ3yGEtyLRu12t8/1YufQ=">
+            <table:column id="c_org_hcmus_tis_model_Iteration_name" property="name" z="hZEcqhHTjhgWWKQXODi8f4iVjB0="/>
+            <table:column id="c_org_hcmus_tis_model_Iteration_parentContainer" property="parentContainer" z="zYx2SGywSfWxxlKWATP5Xf0KMgA="/>
+        </table:table>
+    </page:list>
+</div>

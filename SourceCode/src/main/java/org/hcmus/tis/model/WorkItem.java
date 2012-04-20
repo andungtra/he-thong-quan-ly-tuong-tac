@@ -2,6 +2,7 @@ package org.hcmus.tis.model;
 
 import java.util.Date;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
+@RooJpaActiveRecord(finders = { "findWorkItemsByWorkItemContainer" })
 public class WorkItem {
 
     @NotNull
@@ -22,7 +23,6 @@ public class WorkItem {
 
     private String description;
 
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date dateCreated;
@@ -43,8 +43,17 @@ public class WorkItem {
 
     @NotNull
     @ManyToOne
-    private Account author;
+    private MemberInformation author;
 
     @ManyToOne
     private MemberInformation asignee;
+
+    @NotNull
+    @ManyToOne
+    private WorkItemStatus status;
+
+    @PrePersist
+    void prePersit() {
+        this.dateCreated = new Date();
+    }
 }
