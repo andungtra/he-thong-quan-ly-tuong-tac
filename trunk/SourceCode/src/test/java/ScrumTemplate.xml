@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xProjectProcess identity="waterfall" name="Waterfall" xmlns="http://www.w3schools.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
+	<xWorkItems>
+		<xWorkItem refName="requirement" name="Requirement">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields>
+				<xField refName="risk" name="Risk" type="Integer">
+				</xField>
+				<xField refName="difficulty" name="Difficulty" type="Integer"></xField>
+				<xField refName="costToComplete" name="Cost to complete" type="Integer"></xField>
+			</xAddionalFields>
+		</xWorkItem>
+		<xWorkItem name="Defect" refName="defect">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields>
+				<xField name="Severity" type="String" refName="severity"></xField>
+				<xField name="Environment" type="String" refName="environment"></xField>
+				<xField name="type" type="String" refName="type"></xField>
+			</xAddionalFields>
+		</xWorkItem>
+	</xWorkItems>
+	<xDescription>Des</xDescription>
+</xProjectProcess>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<xProjectProcess identity="scrum" name="Scrum" xmlns="http://www.w3schools.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
+	<xWorkItems>
+		<xWorkItem refName="userStory" name="User story">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields>
+				<xField refName="storyPoint" name="Story point" type="Integer">
+				</xField>
+				<xField refName="difficulty" name="Difficulty" type="Integer"></xField>
+			</xAddionalFields>
+		</xWorkItem>
+		<xWorkItem name="bug" refName="Bug">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields>
+				<xField name="Severity" type="String" refName="severity"></xField>
+				<xField name="Environment" type="String" refName="environment"></xField>
+				<xField name="type" type="String" refName="type"></xField>
+			</xAddionalFields>
+		</xWorkItem>
+	</xWorkItems>
+	<xDescription>Des</xDescription>
+</xProjectProcess>

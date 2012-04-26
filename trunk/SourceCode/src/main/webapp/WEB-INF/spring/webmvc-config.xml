@@ -78,6 +78,4 @@
       </list>
     </property>
   </bean>
-<bean class="org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
-	
-</beans>
+  </beans>

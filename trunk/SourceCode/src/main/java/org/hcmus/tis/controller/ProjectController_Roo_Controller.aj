@@ -4,6 +4,8 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectController;
@@ -22,6 +24,14 @@ privileged aspect ProjectController_Roo_Controller {
     @RequestMapping(params = "form", produces = "text/html")
     public String ProjectController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Project());
+        List<String[]> dependencies = new ArrayList<String[]>();
+        if (projectProcessService.countAllProjectProcesses() == 0) {
+            dependencies.add(new String[] { "projectprocess", "projectprocesses" });
+        }
+        if (projectProcessService.countAllProjectProcesses() == 0) {
+            dependencies.add(new String[] { "projectprocess", "projectprocesses" });
+        }
+        uiModel.addAttribute("dependencies", dependencies);
         return "projects/create";
     }
     

@@ -26,17 +26,6 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemController_Roo_Controller {
     
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String WorkItemController.create(@Valid WorkItem workItem, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, workItem);
-            return "workitems/create";
-        }
-        uiModel.asMap().clear();
-        workItem.persist();
-        return "redirect:/workitems/" + encodeUrlPathSegment(workItem.getId().toString(), httpServletRequest);
-    }
-    
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String WorkItemController.show(@PathVariable("id") Long id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
@@ -89,6 +78,7 @@ privileged aspect WorkItemController_Roo_Controller {
     
     void WorkItemController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("workItem_datecreated_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("workItem_duedate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {

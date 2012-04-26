@@ -129,6 +129,7 @@
 												}, {
 													"mDataProp" : "sStatus"
 												}, ],
+												"aaSorting": [[ 2, "desc" ]],
 												"bJQueryUI" : true,
 												"sPaginationType" : "full_numbers",
 												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;lfr&gt;t&lt;"F"ip&gt;',
@@ -213,15 +214,19 @@
 		id="skinSheet" />
 	<div id="container">
 		<div id="topnav" class="topnav">
-			<a href="#" class="signin"> <span>Create work item</span>
+			<a href="#" class="signin"> <span>Create</span>
 			</a>
 		</div>
 		<fieldset id="signin_menu">
-			<spring:url value="/workitems?form" var="workitemform_url">
-				<spring:param name="projectId" value="${itemId}"></spring:param>
-				<spring:param name="workItemTypeId" value="1"></spring:param>
-			</spring:url>
-			<a href="${workitemform_url}">User story</a>
+			<ul>
+				<c:forEach items="${workItemTypes }" var="workItemType">
+					<li><spring:url value="/workitems?form" var="workitemform_url">
+							<spring:param name="projectId" value="${itemId}"></spring:param>
+							<spring:param name="workItemTypeId" value="${workItemType.id }"></spring:param>
+						</spring:url> <a href="${workitemform_url}">${workItemType.name }</a></li>
+				</c:forEach>
+			</ul>
+
 		</fieldset>
 	</div>
 	<div style="clear: both;" />

@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -26,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RooWebScaffold(path = "projects", formBackingObject = Project.class)
 @RooWebFinder
 public class ProjectController {
-
+	@Autowired
+	private ProjectProcessService projectProcessService;
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@Valid Project project, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -44,6 +48,7 @@ public class ProjectController {
         uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
+        uiModel.addAttribute("projectProcesses", ProjectProcess.findAllProjectProcesses());
     }
 
     @RequestMapping(value = "ID/{id}", produces = "text/html")
@@ -94,6 +99,7 @@ public class ProjectController {
     public String task(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("project", Project.findProject(id));
         uiModel.addAttribute("itemId", id);
+        uiModel.addAttribute("workItemTypes", Project.findProject(id).getProjectProcess().getWorkItemTypes());
         return "projects/task";
     }
 

@@ -23,9 +23,13 @@ public class IterationImplTest {
 
 	@Test
 	public void testGetParentProject() {
-		Iteration iteration  = Iteration.findIteration((long)2);
+		Iteration iteration = new Iteration();
+		Iteration parentIteration = new Iteration();
+		iteration.setParentContainer(parentIteration);
+		Project project = new Project();
+		parentIteration.setParentContainer(project);
 		Project result = aut.getParentProject(iteration);
-		Assert.assertNotNull(result);
+		Assert.assertEquals(project, result);
 	}
 
 }

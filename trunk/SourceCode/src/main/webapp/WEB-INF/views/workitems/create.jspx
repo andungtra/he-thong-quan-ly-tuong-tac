@@ -7,15 +7,25 @@
         <field:textarea field="description" id="c_org_hcmus_tis_model_WorkItem_description" z="user-managed"/>
         <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" render="false" required="true" z="user-managed"/>
         <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="user-managed"/>
-        <field:select label="Iteration" field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="user-managed"/>
+        <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" label="Iteration" path="/workitemcontainers" required="true" z="user-managed"/>
         <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
         <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="user-managed"/>
         <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
         <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="user-managed"/>
-        <input name="workItemType" type="hidden" value="${workItemTypeId }"/>
+        <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
+        <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine">
+            <label> ${fieldDefine.refName } :
+        	<input name="${fieldDefine.refName }"/>
+                <br/>
+                <br/>
+            </label>
+        </c:forEach>
+        <input name="workItemType" type="hidden" value="${workItemType.id }"/>
         <input name="projectId" type="hidden" value="${projectId }"/>
         <input name="author" type="hidden" value="${memberInformationId }"/>
         <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" render="false" z="user-managed"/>
+        <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false" z="user-managed"/>
+        <field:input field="objectFactory" id="c_org_hcmus_tis_model_WorkItem_objectFactory" render="false" z="user-managed"/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}" z="user-managed"/>
 </div>

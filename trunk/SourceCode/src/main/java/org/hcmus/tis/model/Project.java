@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -27,6 +29,9 @@ public class Project extends WorkItemContainer {
 
     @ManyToOne
     private StudyClass studyClass;
+    @ManyToOne
+    @NotNull
+    private ProjectProcess projectProcess;
 
     public static long countProjectsByNameLike(String name) {
         if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
@@ -73,4 +78,12 @@ public class Project extends WorkItemContainer {
     public Project getParentProjectOrMyself(){
     	return this;
     }
+
+	public ProjectProcess getProjectProcess() {
+		return projectProcess;
+	}
+
+	public void setProjectProcess(ProjectProcess projectProcess) {
+		this.projectProcess = projectProcess;
+	}
 }

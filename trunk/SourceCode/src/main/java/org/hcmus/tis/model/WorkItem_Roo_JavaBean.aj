@@ -4,6 +4,7 @@
 package org.hcmus.tis.model;
 
 import java.util.Date;
+import javax.xml.bind.JAXBContext;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
@@ -12,6 +13,14 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 
 privileged aspect WorkItem_Roo_JavaBean {
+    
+    public JAXBContext WorkItem.getJaxbContext() {
+        return this.jaxbContext;
+    }
+    
+    public void WorkItem.setJaxbContext(JAXBContext jaxbContext) {
+        this.jaxbContext = jaxbContext;
+    }
     
     public String WorkItem.getTitle() {
         return this.title;
@@ -91,6 +100,14 @@ privileged aspect WorkItem_Roo_JavaBean {
     
     public void WorkItem.setStatus(WorkItemStatus status) {
         this.status = status;
+    }
+    
+    public Date WorkItem.getDueDate() {
+        return this.dueDate;
+    }
+    
+    public void WorkItem.setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
     
 }

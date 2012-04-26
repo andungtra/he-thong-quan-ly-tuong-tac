@@ -5,6 +5,7 @@
     <form:create id="fc_org_hcmus_tis_model_Project" modelAttribute="project" path="/projects" render="${empty dependencies}" z="yuVhe5bkyoWEi35MNMgMsoTd/EE=">
         <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
+         <field:select label="Process" field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectProcesses}" path="/projectProcesses" z="?"/>
         <util:advancedpanel title="Advanced">
             <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
             <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>

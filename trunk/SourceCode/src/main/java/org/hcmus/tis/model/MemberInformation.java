@@ -8,7 +8,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.transaction.annotation.Transactional;
 
 @RooJavaBean
-@RooJpaActiveRecord
+@RooJpaActiveRecord(finders = { "findMemberInformationsByAccountAndProject" })
 public class MemberInformation {
 
     @ManyToOne
@@ -39,8 +39,7 @@ public class MemberInformation {
             this.getProject().getMemberInformations().remove(this);
         }
         if (this.entityManager.contains(this)) {
-           // this.entityManager.remove(this);
-        	this.setDeleted(true);
+            this.setDeleted(true);
         } else {
             MemberInformation attached = MemberInformation.findMemberInformation(this.getId());
             attached.setDeleted(true);

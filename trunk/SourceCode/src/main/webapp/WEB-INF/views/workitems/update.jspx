@@ -6,12 +6,15 @@
         <field:textarea field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="1jPqDl8Okr+/WdInI+W5ESLK1gA="/>
         <field:input field="description" id="c_org_hcmus_tis_model_WorkItem_description" z="+yPjRo9jvcyXnFI4NdViIcvRXlo="/>
         <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" z="VJqa+Kjs7vYlHAbLGSrQLQ+xHuA="/>
-        <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" z="FCGAb/BsIblG25PY9f+z96c3YUs="/>
         <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="WmHVVNRJ+6ixlnib66TIZEvS2nw="/>
         <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
         <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" required="true" z="SD1vwIHvvIAm5xUGEB8kLtOkGZs="/>
         <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="SznRAOke4U5ObP7A5ssJBIbylhc="/>
         <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" required="true" z="oTFjjs2EhB1F+z1c9baMM56ZWxU="/>
         <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="i/A6b2s+m/21/Wy/dBgqpuZrzRQ="/>
+        <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
+        <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItem_jaxbContext" z="hj5H+z77LIi05wr/DC8c2XSGGM8="/>
+        <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" z="FCGAb/BsIblG25PY9f+z96c3YUs="/>
+        <field:input field="objectFactory" id="c_org_hcmus_tis_model_WorkItem_objectFactory" z="cdtFOgoTrkyCL1VJJ69lhJ04zlM="/>
     </form:update>
 </div>
