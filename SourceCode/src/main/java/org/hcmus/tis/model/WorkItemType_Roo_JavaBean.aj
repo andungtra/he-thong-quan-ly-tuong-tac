@@ -3,6 +3,7 @@
 
 package org.hcmus.tis.model;
 
+import javax.xml.bind.JAXBContext;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemType;
 
@@ -30,6 +31,14 @@ privileged aspect WorkItemType_Roo_JavaBean {
     
     public void WorkItemType.setAdditionalFieldsDefine(String additionalFieldsDefine) {
         this.additionalFieldsDefine = additionalFieldsDefine;
+    }
+    
+    public JAXBContext WorkItemType.getJaxbContext() {
+        return this.jaxbContext;
+    }
+    
+    public void WorkItemType.setJaxbContext(JAXBContext jaxbContext) {
+        this.jaxbContext = jaxbContext;
     }
     
 }

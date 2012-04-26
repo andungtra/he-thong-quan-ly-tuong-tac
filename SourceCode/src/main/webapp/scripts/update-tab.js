@@ -1,5 +1,6 @@
 var isAddLinkHanlder = true;
 var isAddFormSubmitHandler = true;
+var panel = null;
 $(function() {
 	$("#menu_menu").tabs(
 			{
@@ -11,6 +12,7 @@ $(function() {
 					},
 				},
 				load : function(event, ui) {
+					panel = ui.panel;
 					if (isAddLinkHanlder) {
 						addLinkClickHanlder(ui.panel, ui.panel);
 					}

@@ -3,7 +3,9 @@
 
 package org.hcmus.tis.model;
 
+import java.util.Collection;
 import org.hcmus.tis.model.ProjectProcess;
+import org.hcmus.tis.model.WorkItemType;
 
 privileged aspect ProjectProcess_Roo_JavaBean {
     
@@ -21,6 +23,30 @@ privileged aspect ProjectProcess_Roo_JavaBean {
     
     public void ProjectProcess.setDescription(String description) {
         this.description = description;
+    }
+    
+    public byte[] ProjectProcess.getProcessTemplateFile() {
+        return this.processTemplateFile;
+    }
+    
+    public void ProjectProcess.setProcessTemplateFile(byte[] processTemplateFile) {
+        this.processTemplateFile = processTemplateFile;
+    }
+    
+    public String ProjectProcess.getUniqueName() {
+        return this.uniqueName;
+    }
+    
+    public void ProjectProcess.setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
+    }
+    
+    public Collection<WorkItemType> ProjectProcess.getWorkItemTypes() {
+        return this.workItemTypes;
+    }
+    
+    public void ProjectProcess.setWorkItemTypes(Collection<WorkItemType> workItemTypes) {
+        this.workItemTypes = workItemTypes;
     }
     
 }

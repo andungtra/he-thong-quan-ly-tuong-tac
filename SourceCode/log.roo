@@ -419,3 +419,102 @@ field boolean --fieldName deleted --value false
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-19 17:46:46
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-19 21:17:42
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-20 00:25:24
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-21 09:42:06
+service --entity ~.model.ProjectProcess --interface org.hcmus.tis.service.ProjectProcessService
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-21 11:45:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-21 22:26:46
+focus --class ~.model.WorkItem
+field date --fieldName dueDate --type java.util.Date
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-21 23:52:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:25:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:31:50
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:32:03
+focus --class ~.model.ProjectProcess
+// [failed] field string --fieldName identity --notNull
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:36:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:41:12
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:41:39
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:41:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:44:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:44:52
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:45:33
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:45:41
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:45:55
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:46:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:46:30
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:46:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:46:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:47:04
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:47:11
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:47:27
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:47:31
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:47:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:47:57
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:48:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:48:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:48:37
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:49:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:50:00
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 16:50:07
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 16:50:27
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 17:17:38
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 17:17:51
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 17:19:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-22 17:21:10
+focus --class ~.model.ProjectProcess
+// [failed] field string --fieldName identity --notNull 
+field string --fieldName uniqueName --notNull 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-22 17:47:17
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 11:31:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-23 12:16:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 15:17:16
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-23 15:23:48
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 20:26:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-23 21:48:20
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 22:15:02
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-23 23:18:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 23:18:15
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-23 23:19:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-23 23:19:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 00:05:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 10:03:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 10:11:47
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 10:11:55
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 12:06:51
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 14:40:53
+focus --class ~.model.Project
+// [failed] field reference --fieldName projectProcess --type ~.model.ProjectProcess --notNull 
+// [failed] web mvc all --package org.hcmus.tis.controller
+// [failed] web mvc all --package org.hcmus.tis.controller
+// [failed] web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 14:58:35
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 14:58:51
+// [failed] web mvc all --package org.hcmus.tis.controller
+// [failed] web mvc scaffold --backingType ~.model.Project --class ~.controller.ProjectController
+// [failed] web mvc scaffold --backingType ~.model.Project --class ~.controller.ProjectController
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 15:16:52
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 15:17:55
+// [failed] web mvc scaffold --backingType ~.model.Project --class ~.controller.ProjectController
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 15:30:11
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 20:49:04
+hint
+// [failed] web mvc all --package org.hcmus.tis.controller
+// [failed] web mvc all --package org.hcmus.tis.controller
+// [failed] web mvc all --package org.hcmus.tis.controller
+focus --class ~.model.ProjectProcess
+field reference --fieldName projectProcess --type ~.model.ProjectProcess --notNull 
+focus --class ~.model.Project
+// [failed] field reference --fieldName projectProcess --type ~.model.ProjectProcess --notNull 
+// [failed] field reference --fieldName projectProcess --type ~.model.ProjectProcess --notNull 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 22:03:02
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 22:03:15
+hint
+focus --class ~.model.MemberInformation
+finder list --depth 2
+finder add --finderName findMemberInformationsByAccountAndProject
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 00:26:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-25 06:49:08
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 11:13:16
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-26 15:26:10
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-26 17:17:22

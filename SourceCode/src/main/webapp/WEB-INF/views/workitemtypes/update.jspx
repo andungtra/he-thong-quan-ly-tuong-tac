@@ -6,5 +6,6 @@
         <field:textarea field="name" id="c_org_hcmus_tis_model_WorkItemType_name" required="true" z="gEa9eIvRqsim5JRj+YUR4mvQQIg="/>
         <field:select field="projectProcess" id="c_org_hcmus_tis_model_WorkItemType_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="2Oq3vJFBNiaHra2oJeEDOtcgpuQ="/>
         <field:input field="additionalFieldsDefine" id="c_org_hcmus_tis_model_WorkItemType_additionalFieldsDefine" z="r1N0P6qr1RUrZ4C9AALDYKtV0QU="/>
+        <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItemType_jaxbContext" z="qgyKztZ6E1ZHQJN8HENGn0nPS20="/>
     </form:update>
 </div>

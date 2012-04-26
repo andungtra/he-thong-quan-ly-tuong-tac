@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_hcmus_tis_model_WorkItem" object="${workitem}" path="/workitems" z="lC/dccXLoVPP5D5b7xbKnNcUqbE=">
         <field:display field="title" id="s_org_hcmus_tis_model_WorkItem_title" object="${workitem}" z="kGeygrNX8VR7sRR+89acCCHFpQ4="/>
         <field:display field="description" id="s_org_hcmus_tis_model_WorkItem_description" object="${workitem}" z="OkRbHvTZwTg9eHyHS4hKBOvpjcg="/>
         <field:display date="true" dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="s_org_hcmus_tis_model_WorkItem_dateCreated" object="${workitem}" z="s1NDaguqgdpF8+X70FyJroqrMMQ="/>
-        <field:display render="false" field="additionalFields" id="s_org_hcmus_tis_model_WorkItem_additionalFields" object="${workitem}" z="eOxtQodVR4M3KWyB3x3rhIbsRkg="/>
+        <div id="s_org_hcmus_tis_model_WorkItem_additionalFields"/>
         <field:display field="priority" id="s_org_hcmus_tis_model_WorkItem_priority" object="${workitem}" z="GWqaVhQJnEIAY698qvXTHPliL4w="/>
-        <field:display label="Container" field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" object="${workitem}" z="blpMrBnr250YvANmaq0X+ZMA9Bk="/>
-        <field:display label="Type" field="workItemType" id="s_org_hcmus_tis_model_WorkItem_workItemType" object="${workitem}" z="o64wCOj4SMawq2HxMZR465UY54s="/>
+        <field:display field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" label="Container" object="${workitem}" z="user-managed"/>
+        <field:display field="workItemType" id="s_org_hcmus_tis_model_WorkItem_workItemType" label="Type" object="${workitem}" z="user-managed"/>
         <field:display field="asignee" id="s_org_hcmus_tis_model_WorkItem_asignee" object="${workitem}" z="Gh6OIJpxasrlbrfWQFU+ogOnEGU="/>
         <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workitem}" z="9V7KDtLDr6N53jlI8UcH4CGOnYE="/>
         <field:display field="status" id="s_org_hcmus_tis_model_WorkItem_status" object="${workitem}" z="chE+pRBiDHXZHre9KieANEoUSnc="/>
+        <field:display date="true" dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="s_org_hcmus_tis_model_WorkItem_dueDate" object="${workitem}" z="kwQKiYOTwiszEZr0DUdGcnPq2e8="/>
+        <field:display render="false" field="jaxbContext" id="s_org_hcmus_tis_model_WorkItem_jaxbContext" object="${workitem}" z="user-managed"/>
+        <field:display render="false" field="objectFactory" id="s_org_hcmus_tis_model_WorkItem_objectFactory" object="${workitem}" z="user-managed"/>
+        <c:forEach items="${workitem.additionFields}" var="field">
+        	<p>${field.name } : ${field.value }</p>
+        </c:forEach>
     </page:show>
 </div>

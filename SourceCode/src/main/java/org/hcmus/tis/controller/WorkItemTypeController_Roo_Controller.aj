@@ -9,8 +9,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.WorkItemTypeController;
-import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.service.ProjectProcessService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemTypeController_Roo_Controller {
+    
+    @Autowired
+    ProjectProcessService WorkItemTypeController.projectProcessService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String WorkItemTypeController.create(@Valid WorkItemType workItemType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -37,7 +41,7 @@ privileged aspect WorkItemTypeController_Roo_Controller {
     public String WorkItemTypeController.createForm(Model uiModel) {
         populateEditForm(uiModel, new WorkItemType());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (ProjectProcess.countProjectProcesses() == 0) {
+        if (projectProcessService.countAllProjectProcesses() == 0) {
             dependencies.add(new String[] { "projectprocess", "projectprocesses" });
         }
         uiModel.addAttribute("dependencies", dependencies);
@@ -94,7 +98,7 @@ privileged aspect WorkItemTypeController_Roo_Controller {
     
     void WorkItemTypeController.populateEditForm(Model uiModel, WorkItemType workItemType) {
         uiModel.addAttribute("workItemType", workItemType);
-        uiModel.addAttribute("projectprocesses", ProjectProcess.findAllProjectProcesses());
+        uiModel.addAttribute("projectprocesses", projectProcessService.findAllProjectProcesses());
     }
     
     String WorkItemTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.w3schools.com" xmlns="http://www.w3schools.com"
+	elementFormDefault="qualified">
+	<xs:simpleType name="xBuildInType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="String"></xs:enumeration>
+			<xs:enumeration value="Integer"></xs:enumeration>
+			<xs:enumeration value="Double"></xs:enumeration>
+			<xs:enumeration value="DateTime"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="xWorkItems">
+		<xs:sequence>
+			<xs:element name="xWorkItem" maxOccurs="unbounded" type="xWorkItem"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xWorkItem">
+		<xs:sequence>
+			<xs:element name="xPreDefinedFields" type="xPreDefinedFields"></xs:element>
+			<xs:element name="xAddionalFields" type="xAddionalFields"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="refName" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="xPreDefinedFields">
+		<xs:sequence>
+			<xs:element name="xField" type="xField" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xAddionalFields">
+		<xs:sequence>
+			<xs:element name="xField" type="xField" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xChoices">
+		<xs:sequence>
+			<xs:element name="xChoice" maxOccurs="unbounded" type="xs:string">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="xField">
+		<xs:all>
+			<xs:element name="xChoices" minOccurs="0" type="xChoices">
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="refName" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="type" type="xBuildInType" use="required"></xs:attribute>
+		<xs:attribute name="defaultvalue" type="xs:string"></xs:attribute>
+		<xs:attribute name="regex" type="xs:string"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="xProjectProcess">
+		<xs:sequence>
+			<xs:element name="xWorkItems" type="xWorkItems"></xs:element>
+			<xs:element name="xDescription"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="identity" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+	<xs:element name="xProjectProcess" type="xProjectProcess"></xs:element>
+		<xs:complexType name="xFieldImpl" mixed="true">
+		<xs:attribute name="ref" use="required"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="xAdditionalFieldsImpl">
+		<xs:sequence>
+			<xs:element name="xField" maxOccurs="unbounded" minOccurs="0" type="xFieldImpl"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="xAdditionalFields" type="xAdditionalFieldsImpl"></xs:element>
+</xs:schema>

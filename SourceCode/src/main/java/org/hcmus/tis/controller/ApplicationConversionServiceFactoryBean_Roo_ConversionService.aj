@@ -17,6 +17,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.IterationService;
+import org.hcmus.tis.service.ProjectProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
@@ -31,6 +32,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     IterationService ApplicationConversionServiceFactoryBean.iterationService;
+    
+    @Autowired
+    ProjectProcessService ApplicationConversionServiceFactoryBean.projectProcessService;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -147,7 +151,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<ProjectProcess, String> ApplicationConversionServiceFactoryBean.getProjectProcessToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.ProjectProcess, java.lang.String>() {
             public String convert(ProjectProcess projectProcess) {
-                return new StringBuilder().append(projectProcess.getName()).append(" ").append(projectProcess.getDescription()).toString();
+                return new StringBuilder().append(projectProcess.getName()).append(" ").append(projectProcess.getDescription()).append(" ").append(projectProcess.getUniqueName()).toString();
             }
         };
     }
@@ -155,7 +159,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, ProjectProcess> ApplicationConversionServiceFactoryBean.getIdToProjectProcessConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.ProjectProcess>() {
             public org.hcmus.tis.model.ProjectProcess convert(java.lang.Long id) {
-                return ProjectProcess.findProjectProcess(id);
+                return projectProcessService.findProjectProcess(id);
             }
         };
     }
@@ -187,7 +191,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<WorkItem, String> ApplicationConversionServiceFactoryBean.getWorkItemToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItem, java.lang.String>() {
             public String convert(WorkItem workItem) {
-                return new StringBuilder().append(workItem.getTitle()).append(" ").append(workItem.getDescription()).append(" ").append(workItem.getDateCreated()).append(" ").append(workItem.getAdditionalFields()).toString();
+                return new StringBuilder().append(workItem.getJaxbContext()).append(" ").append(workItem.getTitle()).append(" ").append(workItem.getDescription()).append(" ").append(workItem.getDateCreated()).toString();
             }
         };
     }

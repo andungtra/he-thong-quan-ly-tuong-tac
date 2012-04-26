@@ -1,14 +1,20 @@
 package org.hcmus.tis.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.bind.JAXBException;
 
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.WorkItemDto;
+import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Field;
+import org.hcmus.tis.model.FieldDefine;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
@@ -17,6 +23,9 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.model.xml.ObjectFactory;
+import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
+import org.hcmus.tis.model.xml.XFieldImpl;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,16 +41,27 @@ public class WorkItemController {
 
 	@RequestMapping(params = "form", produces = "text/html")
 	public String createForm(Long projectId, Long workItemTypeId,
-			String redirectUrl, Model uiModel) {
+			String redirectUrl, Model uiModel, Principal principal)
+			throws NotPermissionException {
 		WorkItem workItem = new WorkItem();
-		Project project = new Project();
-		project.setId(projectId);
+		Project project = Project.findProject(projectId);
 		workItem.setWorkItemContainer(project);
 		populateEditFormCustomly(uiModel, workItem, (long) 1);
 		List<String[]> dependencies = new ArrayList<String[]>();
-		uiModel.addAttribute("workItemTypeId", workItemTypeId);
+		WorkItemType workItemType = WorkItemType
+				.findWorkItemType(workItemTypeId);
+		uiModel.addAttribute("workItemType", workItemType);
 		uiModel.addAttribute("projectId", projectId);
-		uiModel.addAttribute("memberInformationId", (long) 1);
+		String name = principal.getName();
+		Account loginAccount = Account.findAccountsByEmailEquals(name)
+				.getSingleResult();
+		MemberInformation memberInformation = MemberInformation
+				.findMemberInformationsByAccountAndProject(loginAccount,
+						project).getSingleResult();
+		if (memberInformation == null) {
+			throw new NotPermissionException();
+		}
+		uiModel.addAttribute("memberInformationId", memberInformation.getId());
 		if (Priority.countPrioritys() == 0) {
 			dependencies.add(new String[] { "priority", "prioritys" });
 		}
@@ -79,14 +99,37 @@ public class WorkItemController {
 				WorkItemStatus.findAllWorkItemStatuses());
 	}
 
+	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
+	public String create(@Valid WorkItem workItem, BindingResult bindingResult,
+			Model uiModel, HttpServletRequest httpServletRequest)
+			throws JAXBException {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, workItem);
+			return "workitems/create";
+		}
+		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
+				.getWorkItemType().getId());
+		List<Field> fields = new ArrayList<Field>();
+		for(FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()){
+			Field field = new Field();
+			field.setName(fieldDefine.getRefName());
+			field.setValue(httpServletRequest.getParameter(fieldDefine.getRefName()));
+			fields.add(field);
+		}
+		workItem.setAdditionFiels(fields);
+		uiModel.asMap().clear();
+		workItem.persist();
+		return "redirect:/workitems/"
+				+ encodeUrlPathSegment(workItem.getId().toString(),
+						httpServletRequest);
+	}
+
 	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
 			"iDisplayStart", "iDisplayLength", "sEcho" })
 	@ResponseBody
 	public DtReply listWorkItemByProject(Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho) {
-		for (int index = 0; index < 100000000; ++index) {
-
-		}
+			int iDisplayLength, String sEcho, int iSortCol_0,
+			String sSortDir_0, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		reply.setiTotalRecords((int) WorkItem.countWorkItems());

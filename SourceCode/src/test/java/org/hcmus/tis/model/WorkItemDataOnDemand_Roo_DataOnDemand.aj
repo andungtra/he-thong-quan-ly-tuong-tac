@@ -54,6 +54,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         setAuthor(obj, index);
         setDateCreated(obj, index);
         setDescription(obj, index);
+        setDueDate(obj, index);
         setPriority(obj, index);
         setStatus(obj, index);
         setTitle(obj, index);
@@ -85,6 +86,11 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     public void WorkItemDataOnDemand.setDescription(WorkItem obj, int index) {
         String description = "description_" + index;
         obj.setDescription(description);
+    }
+    
+    public void WorkItemDataOnDemand.setDueDate(WorkItem obj, int index) {
+        Date dueDate = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        obj.setDueDate(dueDate);
     }
     
     public void WorkItemDataOnDemand.setPriority(WorkItem obj, int index) {
