@@ -7,11 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectController;
 import org.hcmus.tis.model.Project;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,9 +23,6 @@ privileged aspect ProjectController_Roo_Controller {
     public String ProjectController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Project());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (projectProcessService.countAllProjectProcesses() == 0) {
-            dependencies.add(new String[] { "projectprocess", "projectprocesses" });
-        }
         if (projectProcessService.countAllProjectProcesses() == 0) {
             dependencies.add(new String[] { "projectprocess", "projectprocesses" });
         }
@@ -47,17 +42,6 @@ privileged aspect ProjectController_Roo_Controller {
             uiModel.addAttribute("projects", Project.findAllProjects());
         }
         return "projects/list";
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String ProjectController.update(@Valid Project project, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, project);
-            return "projects/update";
-        }
-        uiModel.asMap().clear();
-        project.merge();
-        return "redirect:/projects/" + encodeUrlPathSegment(project.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")

@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
+import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
 import org.hcmus.tis.model.WorkItemContainer;
@@ -34,6 +35,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
         setDescription(obj, index);
         setName(obj, index);
         setParentContainer(obj, index);
+        setProjectProcess(obj, index);
         setStudyClass(obj, index);
         return obj;
     }
@@ -54,6 +56,11 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     public void ProjectDataOnDemand.setParentContainer(Project obj, int index) {
         WorkItemContainer parentContainer = null;
         obj.setParentContainer(parentContainer);
+    }
+    
+    public void ProjectDataOnDemand.setProjectProcess(Project obj, int index) {
+        ProjectProcess projectProcess = null;
+        obj.setProjectProcess(projectProcess);
     }
     
     public void ProjectDataOnDemand.setStudyClass(Project obj, int index) {

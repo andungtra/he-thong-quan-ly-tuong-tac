@@ -3,5 +3,12 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <table:datatable aoColumns="name,description" id="tbprocess" path="/projectprocesses" thead="Name, Description"/>
-    
+    <div id="pl_org_hcmus_tis_model_ProjectProcess">
+        <div id="l_org_hcmus_tis_model_ProjectProcess">
+            <div id="c_org_hcmus_tis_model_ProjectProcess_name" />
+            <div id="c_org_hcmus_tis_model_ProjectProcess_description" />
+            <div id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" />
+            <div id="c_org_hcmus_tis_model_ProjectProcess_uniqueName" />
+        </div>
+    </div>
 </div>

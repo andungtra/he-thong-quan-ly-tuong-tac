@@ -63,6 +63,7 @@ public class ProjectController {
     public String show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("itemId", id);
         Project p = Project.findProject(id);
+        uiModel.addAttribute("project", p);
         uiModel.addAttribute("itemName", p.getName());
         return "projects/show";
     }
@@ -153,4 +154,16 @@ public class ProjectController {
 		}		
 		return reply;
 	}
+    
+    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+    public String update(@Valid Project project, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            populateEditForm(uiModel, project);
+            return "projects/update";
+        }
+        uiModel.asMap().clear();
+        project.merge();
+        uiModel.addAttribute("projects", Project.findAllProjects());    
+        return "projects/list";
+    }
 }

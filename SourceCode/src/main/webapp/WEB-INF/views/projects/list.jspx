@@ -3,5 +3,13 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <table:datatable aoColumns="name,parentContainer,description" id="tbproject" path="/projects" thead="Name,ParentContainer,Description"/>
-    
+    <div id="pl_org_hcmus_tis_model_Project">
+        <div id="l_org_hcmus_tis_model_Project">
+            <div id="c_org_hcmus_tis_model_Project_name" />
+            <div id="c_org_hcmus_tis_model_Project_parentContainer" />
+            <div id="c_org_hcmus_tis_model_Project_projectProcess" />
+            <div id="c_org_hcmus_tis_model_Project_description" />
+            <div id="c_org_hcmus_tis_model_Project_studyClass"/>
+        </div>
+    </div>
 </div>

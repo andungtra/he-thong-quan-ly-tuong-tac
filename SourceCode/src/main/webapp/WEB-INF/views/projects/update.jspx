@@ -8,5 +8,6 @@
         <field:input field="description" id="c_org_hcmus_tis_model_Project_description" z="0H5DcLgvQ0+fZobvXSfnQagUWlM="/>
         <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="6KobXDiw9fv0CHTLXKKkTTvnU1U="/>
         <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
+        <field:select field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="RtYHYGN7PFWC0YJisGpaT3tVlyw="/>
     </form:update>
 </div>
