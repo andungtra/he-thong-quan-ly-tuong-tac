@@ -17,15 +17,14 @@
 	<div class="menu">
 		<div class="menu_sitemap">
 			<!-- TemplateBeginEditable name="Site map" -->
-			<div style="float: left">
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<a href="${administrator_url}">Administrator</a>
-				</sec:authorize>
+			<div style="float: left">				
 				<c:if test="${pageContext['request'].userPrincipal != null}">
 					<spring:url value="/accounts/home" var="home" />
 					<a href="${home}">Home</a>
 				</c:if>
-
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<a href="${administrator_url}">Admin</a>
+				</sec:authorize>
 			</div>
 			<div style="float: right">
 				<c:choose>

@@ -1,6 +1,11 @@
 package org.hcmus.tis.controller;
 
 import java.util.List;
+
+import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.StudyClassDTO;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
@@ -35,4 +40,23 @@ public class StudyClassController {
         uiModel.addAttribute("itemId", id);
         return "studyclasses/show";
     }
+    
+    @RequestMapping(value = "mList", params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mList( int iDisplayStart,int iDisplayLength, String sEcho) {		
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) StudyClass.countStudyClasses());
+		reply.setiTotalDisplayRecords((int)   StudyClass.countStudyClasses());
+		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,iDisplayLength);
+		for (StudyClass item : list) {
+			StudyClassDTO dto = new StudyClassDTO();
+			dto.DT_RowId = item.getId();
+			dto.setName(item.getName());			
+			dto.setDescription(item.getDescription());
+			
+			reply.getAaData().add(dto);
+		}		
+		return reply;
+	}
 }

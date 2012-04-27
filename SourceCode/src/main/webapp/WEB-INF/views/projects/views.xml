@@ -4,7 +4,7 @@
 	<definition extends="content" name="projects/list">
 		<put-attribute name="body" value="/WEB-INF/views/projects/list.jspx" />
 	</definition>
-	<definition extends="project" name="projects/show">
+	<definition extends="content" name="projects/show">
 		<put-attribute name="body" value="/WEB-INF/views/projects/show.jspx" />
 	</definition>
 	<definition extends="content" name="projects/create">

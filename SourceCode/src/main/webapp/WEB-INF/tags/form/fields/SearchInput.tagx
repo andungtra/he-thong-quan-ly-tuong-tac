@@ -102,7 +102,7 @@
 			<spring:escapeBody javaScriptEscape="true">${field}</spring:escapeBody>
 		</c:set>
 
-		<div id="_${fn:escapeXml(id)}_id">
+		<div id="_${fn:escapeXml(id)}_id" class="search">
 			<c:choose>
 				<c:when test="${disableFormBinding}">
 					<input placeholder="${fn:escapeXml(placeholder)}" results="10"

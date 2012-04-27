@@ -6,10 +6,15 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/projects")
 @Controller
@@ -40,7 +46,9 @@ public class ProjectController {
         uiModel.asMap().clear();
         project.persist();
         uiModel.addAttribute("projectId", project.getId());
-        return "projects/gotoproject";
+        //return "projects/gotoproject";
+        uiModel.addAttribute("projects", Project.findAllProjects());
+        return "projects/list";
     }
 
     void populateEditForm(Model uiModel, Project project) {
@@ -124,4 +132,25 @@ public class ProjectController {
         uiModel.addAttribute("itemId", id);
         return "projects/calendar";
     }
+    
+    @RequestMapping(value = "mList", params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mList( int iDisplayStart,int iDisplayLength, String sEcho) {		
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) Project.countProjects());
+		reply.setiTotalDisplayRecords((int)  Project.countProjects());
+		List<Project> list = Project.findProjectEntries(iDisplayStart,iDisplayLength);
+		for (Project item : list) {
+			ProjectDTO dto = new ProjectDTO();
+			dto.DT_RowId=item.getId();
+			dto.setName(item.getName());
+			if(item.getParentContainer()!=null)
+				dto.setParentContainer(item.getParentContainer().getName());
+			dto.setDescription(item.getDescription());
+					
+			reply.getAaData().add(dto);
+		}		
+		return reply;
+	}
 }

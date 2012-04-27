@@ -2,14 +2,6 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:quickfind finderName="quickFind" id="ff_org_hcmus_tis_model_StudyClass" listButton="false" path="/studyclasses" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=">
-        <table:SearchInput defaultValue="${query}" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_StudyClass_name" label="search" max="50" min="1" placeholder="Search class ..." required="true" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
-    </page:quickfind>
-    <page:list id="pl_org_hcmus_tis_model_StudyClass" items="${studyclasses}" z="3I+xdcS42Ak8Chs0DAJ6Dl9ZCNc=">
-        <table:table data="${studyclasses}" id="l_org_hcmus_tis_model_StudyClass" path="/studyclasses" z="brvBMDYIPpwZN24KEAVROo/nJig=">
-            <table:column id="c_org_hcmus_tis_model_StudyClass_name" property="name" z="gl6HsWvAsdy2CYaC5G/HKKlqtsM="/>
-            <table:column id="c_org_hcmus_tis_model_StudyClass_description" property="description" z="pokh3XgSj89IEnVxG3YdIHJwDfk="/>
-            <table:column id="c_org_hcmus_tis_model_StudyClass_projects" property="projects" z="vrtpxETTR2Kl1twWosoTZ7USxFU="/>
-        </table:table>
-    </page:list>
+    <table:datatable aoColumns="name,description" id="tbclass" path="/studyclasses" thead="Name,Description"/>
+    
 </div>

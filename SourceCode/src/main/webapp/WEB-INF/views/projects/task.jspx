@@ -250,7 +250,7 @@
 			<li><a href="">all work item</a></li>
 		</ul>
 	</div>
-	<div id="workitem_content" class="task-right">
+	<div id="workitem_content" class="task-right table_content">
 		<table cellpadding="0" cellspacing="0" border="0"
 			class="display disable-a-handler" id="work_item_list">
 			<thead>

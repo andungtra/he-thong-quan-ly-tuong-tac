@@ -2,7 +2,7 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   
-  <util:fixpanel id="title" title="Login" width="500px">
+  <util:fixpanel id="title" title="Login" width="400px">
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
@@ -19,11 +19,11 @@
     </c:if>
     <spring:url value="/resources/j_spring_security_check" var="form_url" />
     <form name="f" action="${fn:escapeXml(form_url)}" method="POST">
+    <div class="tbcontent">
       <div>
-        <label for="j_username">
-          <spring:message code="security_login_form_email" />
-        </label>
-        <input id="j_username" type='text' name='j_username' style="width:150px" />
+        <label>Email</label> 
+        <input id="j_username" type='text' name='j_username' />
+        
         <spring:message code="security_login_form_email_message" var="name_msg" htmlEscape="false" />
         <script type="text/javascript">
           <c:set var="sec_name_msg">
@@ -34,10 +34,9 @@
       </div>
       <br />
       <div>
-        <label for="j_password">
-          <spring:message code="security_login_form_password" />
-        </label>
-        <input id="j_password" type='password' name='j_password' style="width:150px" />
+        <label>Password</label>
+        <input id="j_password" type='password' name='j_password'/>
+        	
         <spring:message code="security_login_form_password_message" var="pwd_msg" htmlEscape="false" />
         <script type="text/javascript">
           <c:set var="sec_pwd_msg">
@@ -46,11 +45,9 @@
           Spring.addDecoration(new Spring.ElementDecoration({elementId : "j_password", widgetType : "dijit.form.ValidationTextBox", widgetAttrs : {promptMessage: "${sec_pwd_msg}", required : true}})); 
         </script>
       </div>
-      <div>
-      	<input id="j_remember" name="j_remember" type="checkbox" value="Remember" checked="checked" />
-        <label for="j_remember">Remember</label>
-      </div>
+      <div class="clear"/>
       <br />
+      </div>
       <div class="submit">
         <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
         <spring:message code="button_submit" var="submit_label" htmlEscape="false" />

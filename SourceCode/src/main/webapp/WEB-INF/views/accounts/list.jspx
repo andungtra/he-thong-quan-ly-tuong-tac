@@ -2,17 +2,6 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:quickfind finderName="quickFind" id="ff_org_hcmus_tis_model_Account" listButton="false" path="/accounts" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=">
-        <table:SearchInput defaultValue="${query}" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_Account_name" label="search" max="50" min="1" placeholder="Search account ..." required="true" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
-    </page:quickfind>
-    <page:list id="pl_org_hcmus_tis_model_Account" items="${accounts}" z="T4vTKgpd9Ypn1wEWkXgjg2/tHd4=">
-        <table:table data="${accounts}" id="l_org_hcmus_tis_model_Account" path="/accounts" typeLink="update" z="user-managed">
-            <table:column id="c_org_hcmus_tis_model_Account_email" property="email" z="user-managed"/>
-            <table:column id="c_org_hcmus_tis_model_Account_firstName" property="firstName" z="user-managed"/>
-            <table:column id="c_org_hcmus_tis_model_Account_lastName" property="lastName" z="user-managed"/>
-            <table:column id="c_org_hcmus_tis_model_Account_password" property="password" render="false" z="user-managed"/>
-            <table:column id="c_org_hcmus_tis_model_Account_isAdmin" property="isAdmin" z="user-managed"/>
-            <table:column id="c_org_hcmus_tis_model_Account_isEnable" property="isEnable" z="w31eamA+8QWRMMplszU0/Gqmp/s="/>
-        </table:table>
-    </page:list>
+    <table:datatable aoColumns="firstName,lastName,email,status" id="tbaccount" path="/accounts" thead="First Name, Last Name, Email, Status"/>
+    
 </div>
