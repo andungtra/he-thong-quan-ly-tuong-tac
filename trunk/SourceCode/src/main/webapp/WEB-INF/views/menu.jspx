@@ -6,6 +6,7 @@
         <menu:category id="c_project" z="u0PzRIwMDmEv/J6b8vbKakXGIdQ=">
             <menu:item id="i_project_new" messageCode="global_menu_new" url="/projects?form" z="1BazRC1rLnod0a+MpP1flWTvehA="/>
             <menu:item id="i_project_list" messageCode="global_menu_list" url="/projects?page=1&amp;size=${empty param.size ? 10 : param.size}" z="GHL05c3Rvr+eKDgRCk3Ttak0W+g="/>
+            <menu:item id="fi_project_namelike" messageCode="global_menu_find" url="/projects?find=ByNameLike&amp;form" z="F1okaSAgXeWYfAMHs1Pfsu9okCk="/>
         </menu:category>
         <menu:category id="c_studyclass" z="6ca/Ja9XalHDG0FzqNxunXmxh4w=">
             <menu:item id="i_studyclass_new" messageCode="global_menu_new" url="/studyclasses?form" z="lF1SN7DpiGhQkf1+P+GQe5N0ea8="/>

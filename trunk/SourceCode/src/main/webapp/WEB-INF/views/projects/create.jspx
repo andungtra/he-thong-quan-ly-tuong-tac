@@ -5,12 +5,13 @@
     <form:create id="fc_org_hcmus_tis_model_Project" modelAttribute="project" path="/projects" render="${empty dependencies}" width="500px" z="user-managed">
         <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
-         <field:select label="Process" field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectProcesses}" path="/projectProcesses" z="?"/>
+        <field:select field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="RtYHYGN7PFWC0YJisGpaT3tVlyw="/>
         <util:advancedpanel title="Advanced">
             <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
             <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         </util:advancedpanel>
-        <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="6KobXDiw9fv0CHTLXKKkTTvnU1U="/>
+        <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="user-managed" render="false"/>
+        <input type="hidden" name="c_org_hcmus_tis_model_Project_memberInformations" value="${project.memberInformations}"/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Project" render="${not empty dependencies}" z="oUwFVkWRLSvnxKFthMXtrdbKIJU="/>
 </div>

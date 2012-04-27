@@ -426,3 +426,13 @@ tr:hover td
 	text-align: right;
 	width: 120px;
 }
+
+.quicklinks
+{
+	padding-bottom: 20px;
+}
+
+.fix-panel
+{
+	border: solid 1px #ccc;	
+}

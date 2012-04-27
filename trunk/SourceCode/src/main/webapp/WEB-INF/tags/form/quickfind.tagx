@@ -78,25 +78,11 @@
 								New
 							</button>
 						</a>
-					</c:if> <c:if test="${listButton}">
-						<spring:message arguments="${typeNamePlural}"
-							code="entity_list_all" var="list_label" htmlEscape="false" />
-						<a href="${list_form_url}" alt="${fn:escapeXml(list_label)}"
-							title="${fn:escapeXml(list_label)}"> <img
-							alt="${fn:escapeXml(list_label)}" class="image"
-							src="${list_image_url}" title="${fn:escapeXml(list_label)}" />
+					</c:if> <c:if test="${listButton}">						
+						<a href="${list_form_url}"> 
+							<button>List</button>
 						</a>
 					</c:if>
-				</span>
-				<span>
-					<button>
-						Show
-					</button>
-				</span>
-				<span>
-					<button>
-						Delete
-					</button>
 				</span>
 			</div>
 		</div>
