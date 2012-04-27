@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
 
 import org.hcmus.tis.dto.DtReply;
-import org.hcmus.tis.dto.WorkItemDto;
+import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Field;
 import org.hcmus.tis.model.FieldDefine;
@@ -137,7 +137,7 @@ public class WorkItemController {
 		List<WorkItem> workItems = WorkItem.findWorkItemEntries(iDisplayStart,
 				iDisplayLength);
 		for (WorkItem workItem : workItems) {
-			WorkItemDto workItemDto = new WorkItemDto();
+			WorkItemDTO workItemDto = new WorkItemDTO();
 			workItemDto.setlName("<a href='/TIS/workitems/" + workItem.getId()
 					+ "'>" + workItem.getTitle() + "</a>");
 			workItemDto.setsStatus(workItem.getStatus().getName());

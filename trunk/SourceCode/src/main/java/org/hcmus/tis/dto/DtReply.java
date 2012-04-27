@@ -8,7 +8,7 @@ public class DtReply {
 	private int iTotalDisplayRecords;
 	private String sEcho;
 	private String sColumns;
-	private List<WorkItemDto> aaData = new ArrayList<WorkItemDto>();
+	private List<Object> aaData = new ArrayList<Object>();
 	public int getiTotalRecords() {
 		return iTotalRecords;
 	}
@@ -33,10 +33,10 @@ public class DtReply {
 	public void setsColumns(String sColumns) {
 		this.sColumns = sColumns;
 	}
-	public List<WorkItemDto> getAaData() {
+	public List<Object> getAaData() {
 		return aaData;
 	}
-	public void setAaData(List<WorkItemDto> aaData) {
+	public void setAaData(List<Object> aaData) {
 		this.aaData = aaData;
 	}
 }

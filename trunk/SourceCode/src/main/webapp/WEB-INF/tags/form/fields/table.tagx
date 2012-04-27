@@ -79,33 +79,29 @@
 			value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
 		<spring:eval var="colCounter" expression="1" />
 
-		<table>
+<spring:url value="/resources/scripts/dynatree/jquery-ui.custom.js"
+		var="jquery_ui"/>
+	
+
+	<script type="text/javascript" src="${jquery_ui }">
+	<!-- aa -->
+		
+	</script>
+	
+		<table class="tb">
 			<thead>
 				<tr>
+					<th><input type="checkbox" /></th>
 					<c:forTokens items="${columnLabels}" delims="${'&#9999;'}"
 						var="columnHeading">
 						<th><c:out value="${columnHeading}" /> <spring:eval
 								var="colCounter" expression="colCounter  + 1" /></th>
-					</c:forTokens>
-					<c:if test="${show }">
-						<c:if test="${!path.contains('accounts')}">
-							<th>Show</th>
-						</c:if>
-					</c:if>
-					<c:if test="${update}">
-						<c:if test="${!path.contains('projects')}">
-							<th>Update</th>
-							<spring:eval var="colCounter" expression="colCounter  + 1" />
-						</c:if>
-					</c:if>
-					<c:if test="${delete}">
-						<th>Delete</th>
-						<spring:eval var="colCounter" expression="colCounter  + 1" />
-					</c:if>
+					</c:forTokens>					
 				</tr>
 			</thead>
 			<c:forEach items="${data}" var="item">
 				<tr>
+					<td><input type="checkbox" /></td>
 					<c:forTokens items="${columnProperties}" delims="${'&#9999;'}"
 						var="column" varStatus="num">
 						<c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
@@ -216,7 +212,8 @@
 				</tr>
 			</c:forEach>
 			<tr class="footer">
-				<td colspan="${colCounter}"><c:if
+				<td colspan="${colCounter}">
+					<c:if
 						test="${empty create or create}">
 						<span class="new"> <spring:url value="${path}"
 								var="create_url">
@@ -224,10 +221,12 @@
 							</spring:url>
 						</span>
 						<c:out value=" " />
-					</c:if> <c:if test="${not empty maxPages}">
+					</c:if> 
+					<c:if test="${not empty maxPages}">
 						<util:pagination maxPages="${maxPages}" page="${param.page}"
 							size="${param.size}" path="${path }" parameters="${parameters }" />
-					</c:if></td>
+					</c:if>
+				</td>
 			</tr>
 		</table>
 

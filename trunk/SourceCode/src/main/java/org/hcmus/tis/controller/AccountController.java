@@ -2,9 +2,15 @@ package org.hcmus.tis.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import org.hcmus.tis.dto.AccountDTO;
+import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Project;
@@ -102,10 +108,10 @@ public class AccountController {
 
 	@RequestMapping(value = "/ID/{id}", produces = "text/html")
 	public String showAccount(@PathVariable("id") Long id, Model uiModel) {
-		//uiModel.addAttribute("account", accountService.findAccount(id));
-		//uiModel.addAttribute("itemId", id);
-		//return "accounts/show";
-		return "accounts/redirect";
+		uiModel.addAttribute("account", accountService.findAccount(id));
+		uiModel.addAttribute("itemId", id);
+		return "accounts/show";
+		//return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/home", produces = "text/html")
@@ -186,4 +192,25 @@ public class AccountController {
         accountService.updateAccount(account);
         return "redirect:/accounts/home" ;
     }
+    
+    @RequestMapping(value = "mList", params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mList( int iDisplayStart,int iDisplayLength, String sEcho) {		
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) Account.countAccounts());
+		reply.setiTotalDisplayRecords((int) Account.countAccounts());
+		List<Account> list = Account.findAccountEntries(iDisplayStart,iDisplayLength);
+		for (Account item : list) {
+			AccountDTO dto = new AccountDTO();
+			dto.DT_RowId = item.getId();
+			dto.setFirstName(item.getFirstName());
+			dto.setLastName(item.getLastName());
+			dto.setEmail(item.getEmail());
+			dto.setStatus(item.getStatus().name());
+					
+			reply.getAaData().add(dto);
+		}		
+		return reply;
+	}
 }

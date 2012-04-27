@@ -1,6 +1,7 @@
 package org.hcmus.tis.dto;
 
-public class WorkItemDto {
+public class WorkItemDTO {
+	public long DT_RowId;	
 	private String lName;
 	public String getlName() {
 		return lName;

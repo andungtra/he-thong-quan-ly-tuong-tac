@@ -2,6 +2,7 @@ package org.hcmus.tis.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
@@ -9,7 +10,9 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-
+import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.xml.XProjectProcess;
 import org.hcmus.tis.service.ProjectProcessService;
@@ -22,34 +25,65 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/projectprocesses")
 @Controller
 @RooWebScaffold(path = "projectprocesses", formBackingObject = ProjectProcess.class)
 public class ProjectProcessController {
-    @RequestMapping(value = "/ID/{id}", produces = "text/html")
-    public String showProcess(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("projectprocess", ProjectProcess.findProjectProcess(id));
-        uiModel.addAttribute("itemId", id);
-        return "projectprocesses/show";
-    }
-    @RequestMapping(method=RequestMethod.POST, produces = "text/html")
-    public String create(Model uiModel, MultipartFile multipartFile, HttpServletRequest httpServletRequest) throws IOException, JAXBException{
-    	if(multipartFile == null){
-    		return null;
-    	}
-    	byte[] templateFile = multipartFile.getBytes();
-    	InputStream inputStream = multipartFile.getInputStream();
-    	JAXBContext context = JAXBContext.newInstance("org.hcmus.tis.model.xml");
-/*		Unmarshaller umMarshaller = context.createUnmarshaller();
-		StreamSource source = new StreamSource(inputStream);
-		JAXBElement<XProjectProcess> element = umMarshaller.unmarshal(source, XProjectProcess.class);
-		XProjectProcess xProjectProcess = element.getValue();*/
-		
+	@RequestMapping(value = "/ID/{id}", produces = "text/html")
+	public String showProcess(@PathVariable("id") Long id, Model uiModel) {
+		uiModel.addAttribute("projectprocess",
+				ProjectProcess.findProjectProcess(id));
+		uiModel.addAttribute("itemId", id);
+		return "projectprocesses/show";
+	}
+
+	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
+	public String create(Model uiModel, MultipartFile multipartFile,
+			HttpServletRequest httpServletRequest) throws IOException,
+			JAXBException {
+		if (multipartFile == null) {
+			return null;
+		}
+		byte[] templateFile = multipartFile.getBytes();
+		InputStream inputStream = multipartFile.getInputStream();
+		JAXBContext context = JAXBContext
+				.newInstance("org.hcmus.tis.model.xml");
+		/*
+		 * Unmarshaller umMarshaller = context.createUnmarshaller();
+		 * StreamSource source = new StreamSource(inputStream);
+		 * JAXBElement<XProjectProcess> element = umMarshaller.unmarshal(source,
+		 * XProjectProcess.class); XProjectProcess xProjectProcess =
+		 * element.getValue();
+		 */
+
 		ProjectProcess projectProcess = projectProcessService.createProjectProcess(templateFile);
 		uiModel.addAttribute("projectprocess", projectProcess);
-        uiModel.addAttribute("itemId", projectProcess.getId());
-        return "redirect:/projectprocesses/" + encodeUrlPathSegment(projectProcess.getId().toString(), httpServletRequest);
-    }
+		uiModel.addAttribute("itemId", projectProcess.getId());
+		return "redirect:/projectprocesses/"+ encodeUrlPathSegment(projectProcess.getId().toString(),
+						httpServletRequest);
+	}
+
+	@RequestMapping(value = "mList", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho) {
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) ProjectProcess.countProjectProcesses());
+		reply.setiTotalDisplayRecords((int) ProjectProcess
+				.countProjectProcesses());
+		List<ProjectProcess> list = ProjectProcess.findProjectProcessEntries(
+				iDisplayStart, iDisplayLength);
+		for (ProjectProcess item : list) {
+			ProjectDTO dto = new ProjectDTO();
+			dto.DT_RowId = item.getId();
+			dto.setName(item.getName());
+			dto.setDescription(item.getDescription());
+			reply.getAaData().add(dto);
+		}
+		return reply;
+	}
 }

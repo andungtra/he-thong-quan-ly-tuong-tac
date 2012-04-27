@@ -289,12 +289,12 @@ td a:hover
 
 button
 {
-	padding: 2px;
-	margin-bottom:5px;
+	padding: 4px;
 	font-weight: bold;
-	background-color: #eee;
+	background-color: #ddd;
 	border: solid 1px #ccc;
-	color: #666;
+	color: #666;	
+	border-radius:2px;
 }
 
 button:hover
@@ -320,16 +320,33 @@ button:hover
 	border: solid 1px #aaa;
 	border-top:none;
 }
+.search
+{
+	padding: 4px;
+}
+
 
 input[type="search"]
 {
-	height: 30px;
+	height: 25px;
 	width: 200px;
+}
+
+input[type="submit"], input[type="reset"]
+{
+	padding: 4px;
+	font-weight: bold;
+	background-color: #ddd;
+	border: solid 1px #ccc;
+	color: #666;	
+	border-radius:2px;	
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover
 {
 	background-color: #ccc;
+	border-color: #bbb;
+	color: #333;
 }
 .fix-panel
 {
@@ -356,16 +373,56 @@ input[type="submit"]:hover, input[type="reset"]:hover
 	font-weight: bold;
 }
 
-.label
+label
 {
-	float:left;
-	width: 200px;
+	text-align:right;
+	width: 120px;
 	font-weight: bold;
+	display: inline-block;
+	padding-right: 10px;
 }
 
-.input
+.input input
 {
-	float: left;
-	width: 200px;
-	padding-bottom: 10px;
+	width: 250px !important;
+	height: 25px;	
+}
+.submit
+{
+	text-align: center;
+}
+th
+{
+	text-align: left;	
+}
+
+.datatable_buttons
+{
+	float:left;
+}
+
+#tbproject_info
+{
+	width: 400px;
+}
+#quickSearchPanel
+{
+	border-radius : 4px 4px 0 0;
+	border: solid 1px #ccc;
+	border-bottom: none;
+}
+
+tr:hover td
+{
+	background-color: #88B6D9  !important;
+	cursor: pointer;
+}
+
+#form_advanced_panel_link
+{
+	color: #333;
+	font-weight : bold;
+	margin-left:10px;	
+	text-align: right;
+	width: 120px;
 }

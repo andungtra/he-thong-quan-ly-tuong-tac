@@ -5,7 +5,14 @@ import java.io.Serializable;
 public class StudyClassDTO implements Serializable {
 	private String name;
 	private String description;
+	public long DT_RowId;	
 	private long id;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -18,11 +25,4 @@ public class StudyClassDTO implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-
 }

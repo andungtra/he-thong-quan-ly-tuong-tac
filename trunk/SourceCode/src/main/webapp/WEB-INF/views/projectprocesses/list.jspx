@@ -2,15 +2,6 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:quickfind finderName="quickFind" id="ff_org_hcmus_tis_model_ProjectProcess" listButton="false" path="/projectprocesses" z="user-managed">
-        <table:SearchInput defaultValue="${query }" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_ProjectProcess_name" label="search" max="50" min="1" placeholder="Search process ..." required="false" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
-    </page:quickfind>
-    <page:list id="pl_org_hcmus_tis_model_ProjectProcess" items="${projectprocesses}" z="Nx4LYSZt9sjeSlX27vQnGdoj1p8=">
-        <table:table data="${projectprocesses}" id="l_org_hcmus_tis_model_ProjectProcess" path="/projectprocesses" z="WIOq3+Fopw4Ax438OKLc4eo81gA=">
-            <table:column id="c_org_hcmus_tis_model_ProjectProcess_name" property="name" z="+gNtl11xJ7EAt9WVxZtS3C2Vln4="/>
-            <table:column id="c_org_hcmus_tis_model_ProjectProcess_description" property="description" z="orRP57MNucdm+yCJgYKp16kPYHg="/>
-            <table:column id="c_org_hcmus_tis_model_ProjectProcess_uniqueName" property="uniqueName" z="IvSw4zCvyzMFOWIKvh99LkVIl24="/>
-            <table:column render="false" id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" property="processTemplateFile" z="vcyY7xzTqn3dkXTx50zQgpku4WU="/>
-        </table:table>
-    </page:list>
+    <table:datatable aoColumns="name,description" id="tbprocess" path="/projectprocesses" thead="Name, Description"/>
+    
 </div>
