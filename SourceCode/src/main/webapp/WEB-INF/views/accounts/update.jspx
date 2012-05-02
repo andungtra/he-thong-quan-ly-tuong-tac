@@ -16,8 +16,9 @@
             <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" z="xkeW+/XFVMBztla9O588wHr+9Y8="/>
             <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" required="true" z="owbY1C8IrXlZMcTtr+dy5QuSF4Q="/>
         </sec:authorize>
-        <field:input disabled="true" field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="user-managed"/>
+        <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" render="false" required="true" validationMessageCode="field_invalid_email" z="user-managed"/>
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
+        <input name="email" type="hidden" value="${account.email}"/>
         <input name="password" type="hidden" value="${account.password}"/>
     </form:update>
 </div>

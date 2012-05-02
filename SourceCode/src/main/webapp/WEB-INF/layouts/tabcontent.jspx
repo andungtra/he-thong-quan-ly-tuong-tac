@@ -5,6 +5,7 @@
 	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <util:load-scripts />
 	<div class="content">
 		<tiles:insertAttribute name="body" />
 	</div>

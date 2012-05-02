@@ -13,11 +13,13 @@
 		<page:show create="false" delete="false"
 			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
 			path="/projects" update="false" z="user-managed">
+			<field:display field="name" id="s_org_hcmus_tis_model_Project_name"
+				object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI=" />
+				
 			<field:display field="description"
 				id="s_org_hcmus_tis_model_Project_description" object="${project}"
 				z="wdUFcebJjkZc28b97a5kBc7qxx8=" />
-			<field:display field="name" id="s_org_hcmus_tis_model_Project_name"
-				object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI=" />
+							
 			<field:display field="parentContainer"
 				id="s_org_hcmus_tis_model_Project_parentContainer"
 				label="Parent project" object="${project}" z="user-managed" />
@@ -39,18 +41,18 @@
 
 	<div class="right-panel">
 		<util:fixpanel title="Overdue" id="">
-			<ul>
+			<ul class="overdue">
 				<li>Overdue 1</li>
 				<li>Overdue 2</li>
 				<li>Overdue 3</li>
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="In due" id="">
-			<ul>
-				<li>In due 1</li>
-				<li>In due 2</li>
-				<li>In due 3</li>
+		<util:fixpanel title="Due next week" id="">
+			<ul class="due">
+				<li>Due 1</li>
+				<li>Due 2</li>
+				<li>Due 3</li>
 			</ul>
 		</util:fixpanel>
 	</div>

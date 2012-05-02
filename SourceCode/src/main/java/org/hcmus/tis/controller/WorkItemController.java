@@ -110,10 +110,11 @@ public class WorkItemController {
 		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
-		for(FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()){
+		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {
 			Field field = new Field();
 			field.setName(fieldDefine.getRefName());
-			field.setValue(httpServletRequest.getParameter(fieldDefine.getRefName()));
+			field.setValue(httpServletRequest.getParameter(fieldDefine
+					.getRefName()));
 			fields.add(field);
 		}
 		workItem.setAdditionFiels(fields);
@@ -137,12 +138,15 @@ public class WorkItemController {
 		List<WorkItem> workItems = WorkItem.findWorkItemEntries(iDisplayStart,
 				iDisplayLength);
 		for (WorkItem workItem : workItems) {
-			WorkItemDTO workItemDto = new WorkItemDTO();
-			workItemDto.setlName("<a href='/TIS/workitems/" + workItem.getId()
-					+ "'>" + workItem.getTitle() + "</a>");
-			workItemDto.setsStatus(workItem.getStatus().getName());
-			workItemDto.setsType(workItem.getWorkItemType().getName());
-			reply.getAaData().add(workItemDto);
+			if (workItem.getWorkItemContainer().getId().equals(projectId)) {
+				WorkItemDTO workItemDto = new WorkItemDTO();
+				workItemDto.setlName("<a href='/TIS/workitems/"
+						+ workItem.getId() + "'>" + workItem.getTitle()
+						+ "</a>");
+				workItemDto.setsStatus(workItem.getStatus().getName());
+				workItemDto.setsType(workItem.getWorkItemType().getName());
+				reply.getAaData().add(workItemDto);
+			}
 		}
 		return reply;
 	}

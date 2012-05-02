@@ -210,13 +210,13 @@ body {
 .left-panel
 {
 	float: left;
-	width: 35%;
+	width: 40%;
 }
 
 .right-panel
 {
 	float: right;
-	width: 60%;
+	width: 55%;
 }
 
 #project-tab
@@ -350,15 +350,17 @@ input[type="submit"]:hover, input[type="reset"]:hover
 }
 .fix-panel
 {
-	border: solid 1px #aaa;
+	border:none !important;
 	margin-bottom: 10px;
 	margin-left :auto;
 	margin-right: auto;
 }
 .panel-title
 {
-	background-color: #ddd;
-	padding-left: 20px;
+	background-color:#FFF;
+	font-weight:bold;
+	color:#333;
+	font-size:16px;
 	padding-top:5px;
 	padding-bottom:5px;
 	border-bottom: solid 1px #aaa;
@@ -435,4 +437,77 @@ tr:hover td
 .fix-panel
 {
 	border: solid 1px #ccc;	
+}
+
+.welcome
+{
+	margin: auto;
+	margin-top: 50px;
+	border-radius:4px;
+	padding: 30px;
+	padding-top:300px;
+	color: #433334;
+	background-image:url("../images/bg.png");
+	width: 500px;
+	text-align: center; 
+	font-weight: bold;
+	color: #FFF;
+}
+
+.welcome a
+{
+	font-weight:bold;
+	color:#333;
+	text-decoration: none;
+}
+
+.welcome a:hover
+{	
+	text-decoration: underline;
+}
+
+.login
+{
+	margin: auto;
+	margin-top: 100px;
+	border-radius:4px;
+	padding: 30px;
+	padding-top:50px;
+	width: 500px; 
+	height:300px;
+	font-weight: bold;
+	text-align:center;
+	background-color: #87b6d9;
+	color: #345643;
+}
+
+.login form
+{
+	width: 100%;
+	text-align: center;
+}
+
+.login .title
+{
+	font-size: 38px;
+	color: #FFF;
+	font-weight: bold;
+	text-align: left;
+}
+
+.login label
+{
+	padding-left: 10px;
+	color: #345643;
+}
+
+.overdue li
+{
+	color: red;
+	padding: 3px;
+}
+.due li
+{
+	color: blue;
+	padding: 3px;
 }

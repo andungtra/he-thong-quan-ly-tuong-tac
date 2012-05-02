@@ -9,14 +9,10 @@
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
 	</definition>
 
-	<definition name="public" template="/WEB-INF/layouts/default.jspx">
-		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
-	</definition>
 
 	<definition name="administrator" template="/WEB-INF/layouts/layout.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
-		<put-attribute name="myMenu"
-			value="/WEB-INF/views/administratormenu.jspx" />
+		<put-attribute name="myMenu" value="/WEB-INF/views/administratormenu.jspx" />
 	</definition>
 
 	<definition name="project" template="/WEB-INF/layouts/layout.jspx">
@@ -35,9 +31,6 @@
 	<definition name="myaccount" template="/WEB-INF/layouts/myaccount.jspx">
 	</definition>
 
-	<definition name="test" template="/WEB-INF/layouts/layout.jspx">
-		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
-	</definition>
 	<definition name="calendar" template="/WEB-INF/layouts/calendar.jspx">
 	</definition>
 

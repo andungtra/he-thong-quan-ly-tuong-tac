@@ -20,6 +20,9 @@
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id" />
 
+	<jsp:directive.attribute name="goto" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="The server source" />
+		
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
 		var="datatables_js" />
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -131,7 +134,10 @@
 		 $(function() {
 			$('.datatable_buttons')
 					.html(
-							'<button onclick="fnew()">New</button><button onclick="fshow()">Show</button><button onclick="fdel()">Delete</button>'); 
+							'<button onclick="fnew()">New</button>'
+							+'<button onclick="fshow()">Show</button>'
+							+'<button onclick="fgoto()">Goto</button>'
+							+'<button onclick="fdel()">Delete</button>'); 
 			
 			
 		}); 
@@ -173,6 +179,20 @@
 				//alert(url);
 				//window.location=url;
 				$(panel).load(url, function() {});
+			}
+		}
+		
+		function fgoto(){
+			//debugger;
+			var s = $('#${id} tbody tr td:first-child input:checked');
+			var c = $('#${id} tbody tr td:first-child input:checked').length;
+			
+			if(c>0){
+				var idtr = $(s.parent().parent()[0]).attr('id');
+				var url="${lShow}"+idtr;
+				//alert(url);
+				window.location=url;
+				
 			}
 		}
 		

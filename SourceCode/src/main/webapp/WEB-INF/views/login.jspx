@@ -2,7 +2,8 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   
-  <util:fixpanel id="title" title="Login" width="400px">
+  <div class="login">
+  <div class="title">Login</div>
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
@@ -18,7 +19,7 @@
       </p>
     </c:if>
     <spring:url value="/resources/j_spring_security_check" var="form_url" />
-    <form name="f" action="${fn:escapeXml(form_url)}" method="POST">
+    <form name="f" action="${fn:escapeXml(form_url)}" method="POST" >
     <div class="tbcontent">
       <div>
         <label>Email</label> 
@@ -56,6 +57,6 @@
         <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
       </div>
     </form>
-  </util:fixpanel>
+  </div>
 </div>
 
