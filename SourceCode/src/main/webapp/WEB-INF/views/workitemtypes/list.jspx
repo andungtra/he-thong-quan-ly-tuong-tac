@@ -8,6 +8,7 @@
             <table:column id="c_org_hcmus_tis_model_WorkItemType_projectProcess" property="projectProcess" z="8iuaB6TLH6M5f/+YE7lZcV92oL4="/>
             <table:column id="c_org_hcmus_tis_model_WorkItemType_additionalFieldsDefine" property="additionalFieldsDefine" z="2L+8qXAZJXMRJbHD8x+TsWivvxk="/>
             <table:column id="c_org_hcmus_tis_model_WorkItemType_jaxbContext" property="jaxbContext" z="KVfKZdau76+NhmkzXbXyBbrufFY="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItemType_refName" property="refName" z="v3Xs3dCzSoyCR2Ickp+cOFOGLHc="/>
         </table:table>
     </page:list>
 </div>

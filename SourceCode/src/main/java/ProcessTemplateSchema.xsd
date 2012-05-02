@@ -25,12 +25,14 @@
 	</xs:complexType>
 	<xs:complexType name="xPreDefinedFields">
 		<xs:sequence>
-			<xs:element name="xField" type="xField" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="xField" type="xField" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="xAddionalFields">
 		<xs:sequence>
-			<xs:element name="xField" type="xField" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="xField" type="xField" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="xChoices">
@@ -40,10 +42,11 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="xField">
-		<xs:all>
+		<xs:choice>
 			<xs:element name="xChoices" minOccurs="0" type="xChoices">
 			</xs:element>
-		</xs:all>
+			<xs:element name="xDefaultValue" type="xs:string"></xs:element>
+		</xs:choice>
 		<xs:attribute name="refName" type="xs:string" use="required"></xs:attribute>
 		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
 		<xs:attribute name="type" type="xBuildInType" use="required"></xs:attribute>
@@ -59,12 +62,13 @@
 		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
 	</xs:complexType>
 	<xs:element name="xProjectProcess" type="xProjectProcess"></xs:element>
-		<xs:complexType name="xFieldImpl" mixed="true">
+	<xs:complexType name="xFieldImpl" mixed="true">
 		<xs:attribute name="ref" use="required"></xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="xAdditionalFieldsImpl">
 		<xs:sequence>
-			<xs:element name="xField" maxOccurs="unbounded" minOccurs="0" type="xFieldImpl"></xs:element>
+			<xs:element name="xField" maxOccurs="unbounded" minOccurs="0"
+				type="xFieldImpl"></xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:element name="xAdditionalFields" type="xAdditionalFieldsImpl"></xs:element>

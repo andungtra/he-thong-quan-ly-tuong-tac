@@ -15,8 +15,15 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 		<xWorkItem name="Defect" refName="defect">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
-				<xField name="Severity" type="String" refName="severity"></xField>
-				<xField name="Environment" type="String" refName="environment"></xField>
+				<xField name="Severity" type="String" refName="severity">
+					<xChoices>
+						<xChoice>High</xChoice>
+						<xChoice>Low</xChoice>
+					</xChoices>
+				</xField>
+				<xField name="Environment" type="String" refName="environment">
+					<xDefaultValue>fas</xDefaultValue>
+				</xField>
 				<xField name="type" type="String" refName="type"></xField>
 			</xAddionalFields>
 		</xWorkItem>

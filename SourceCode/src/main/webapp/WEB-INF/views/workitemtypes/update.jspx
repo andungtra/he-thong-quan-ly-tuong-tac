@@ -7,5 +7,6 @@
         <field:select field="projectProcess" id="c_org_hcmus_tis_model_WorkItemType_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="2Oq3vJFBNiaHra2oJeEDOtcgpuQ="/>
         <field:input field="additionalFieldsDefine" id="c_org_hcmus_tis_model_WorkItemType_additionalFieldsDefine" z="r1N0P6qr1RUrZ4C9AALDYKtV0QU="/>
         <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItemType_jaxbContext" z="qgyKztZ6E1ZHQJN8HENGn0nPS20="/>
+        <field:input field="refName" id="c_org_hcmus_tis_model_WorkItemType_refName" required="true" z="LJl4QIQRZU3YjpS3t1t1Iv5zUHY="/>
     </form:update>
 </div>

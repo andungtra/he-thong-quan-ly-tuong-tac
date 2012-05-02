@@ -28,6 +28,7 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
         setAdditionalFieldsDefine(obj, index);
         setName(obj, index);
         setProjectProcess(obj, index);
+        setRefName(obj, index);
         return obj;
     }
     
@@ -47,6 +48,11 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
     public void WorkItemTypeDataOnDemand.setProjectProcess(WorkItemType obj, int index) {
         ProjectProcess projectProcess = null;
         obj.setProjectProcess(projectProcess);
+    }
+    
+    public void WorkItemTypeDataOnDemand.setRefName(WorkItemType obj, int index) {
+        String refName = "refName_" + index;
+        obj.setRefName(refName);
     }
     
     public WorkItemType WorkItemTypeDataOnDemand.getSpecificWorkItemType(int index) {

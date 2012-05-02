@@ -1,15 +1,22 @@
 package org.hcmus.tis.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.dto.WorkItemDTO;
+import org.hcmus.tis.model.Event;
+import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
@@ -56,7 +63,9 @@ public class ProjectController {
         uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
-        uiModel.addAttribute("projectProcesses", ProjectProcess.findAllProjectProcesses());
+        uiModel.addAttribute("projectprocesses", ProjectProcess.findAllProjectProcesses());
+        List<ProjectProcess> test = ProjectProcess.findAllProjectProcesses();
+        int size = test.size();
     }
 
     @RequestMapping(value = "ID/{id}", produces = "text/html")
@@ -68,6 +77,12 @@ public class ProjectController {
         return "projects/show";
     }
 
+    @RequestMapping(value = "{id}", produces = "text/html")
+    public String showhomepage(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("itemId", id);
+        return "projects/homepage";
+    }
+    
     @RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
     public String findProjectsQuickly(@RequestParam("query") String name, Model uiModel, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size) {
         int sizeNo = size == null ? 10 : size.intValue();
@@ -126,7 +141,24 @@ public class ProjectController {
         uiModel.addAttribute("projectId", id);
         return "projects/member";
     }
-
+    @RequestMapping(value = "/{id}/calendar/{memberIds}")
+    @ResponseBody
+    public DSRestResponse getProjectCalendar(Long id, String memberIds){
+    	DSRestResponse restResponse = new DSRestResponse();
+    	restResponse.setResponse(new DSResponse());
+    	restResponse.getResponse().setStatus(0);
+    	restResponse.getResponse().setData(new ArrayList<Object>());
+    	Date beginDate = new Date();
+    	Date endDate = new Date(beginDate.getTime() + 1000 * 60 * 50);
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    	EventTest eventTest = new EventTest();
+    	eventTest.setName("name");
+    	eventTest.setDescription("des");
+    	eventTest.setStartDate(simpleDateFormat.format(beginDate));
+    	eventTest.setEndDate(simpleDateFormat.format(endDate));
+    	restResponse.getResponse().getData().add(eventTest);
+    	return restResponse;
+    }
     @RequestMapping(value = "/{id}/calendar", produces = "text/html")
     public String calendar(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("project", Project.findProject(id));

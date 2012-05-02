@@ -84,6 +84,7 @@ public class ProjectProcessServiceImplTest {
 		assertEquals("waterfall", projectProcess.getUniqueName());
 		assertEquals("Waterfall", projectProcess.getName());
 		assertEquals(2, projectProcess.getWorkItemTypes().size());
+		assertEquals("requirement", projectProcess.getWorkItemTypes().get(0).getRefName());
 	}
 
 }
