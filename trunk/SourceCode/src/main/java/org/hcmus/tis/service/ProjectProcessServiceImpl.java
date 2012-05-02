@@ -47,6 +47,7 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
 		for(XWorkItem xWorkItem : xWorkItems){
 			WorkItemType workItemType = new WorkItemType();
 			workItemType.setName(xWorkItem.getName());
+			workItemType.setRefName(xWorkItem.getRefName());
 			workItemType.setProjectProcess(projectProcess);		
 			ObjectFactory objectFactory = new ObjectFactory();
 			XAdditionalFieldsImpl fieldsImpl =  objectFactory.createXAdditionalFieldsImpl();

@@ -7,5 +7,6 @@
         <field:display field="projectProcess" id="s_org_hcmus_tis_model_WorkItemType_projectProcess" object="${workitemtype}" z="FLJwudunNMk7JxJ4C2UVyxZ5IQw="/>
         <field:display field="additionalFieldsDefine" id="s_org_hcmus_tis_model_WorkItemType_additionalFieldsDefine" object="${workitemtype}" z="tKsO9A5oNBOqw+DqPNMY5oltrxQ="/>
         <field:display field="jaxbContext" id="s_org_hcmus_tis_model_WorkItemType_jaxbContext" object="${workitemtype}" z="Nsb07wk39N9KHv9ejReJQsBmuN8="/>
+        <field:display field="refName" id="s_org_hcmus_tis_model_WorkItemType_refName" object="${workitemtype}" z="YmlLRN9kesK5jnBbsFzXiobY63s="/>
     </page:show>
 </div>

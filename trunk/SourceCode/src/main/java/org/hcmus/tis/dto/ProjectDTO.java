@@ -1,12 +1,10 @@
 package org.hcmus.tis.dto;
 
 public class ProjectDTO {
-	public long DT_RowId;	
+	public long DT_RowId;
 	private String name;
 	private String parentContainer;
 	private String description;
-	
-
 	public String getName() {
 		return name;
 	}
@@ -25,5 +23,4 @@ public class ProjectDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 }

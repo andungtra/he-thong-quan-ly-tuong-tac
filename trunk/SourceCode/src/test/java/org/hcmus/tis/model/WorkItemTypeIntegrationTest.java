@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -18,8 +19,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.roo.addon.test.RooIntegrationTest;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -27,31 +30,39 @@ import org.xml.sax.SAXException;
 @RooIntegrationTest(entity = WorkItemType.class)
 public class WorkItemTypeIntegrationTest {
 	private WorkItemType aut;
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		aut = new WorkItemType();
 	}
-    @Test
-    public void testMarkerMethod() {
-    }
+
 	@Test
-	public void testGetAdditionalFieldsArray() throws ParserConfigurationException, SAXException, IOException, TransformerException, JAXBException {
-		File xmlFile = new File("src/test/java/AdditionalFieldsImpl.xml");
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document document = builder.parse(xmlFile);
-		 DOMSource domSource = new DOMSource(document);
-		 StringWriter writer = new StringWriter();
-	       StreamResult result = new StreamResult(writer);
-	       TransformerFactory tf = TransformerFactory.newInstance();
-	       Transformer transformer = tf.newTransformer();
-	       transformer.transform(domSource, result);
-	       String xmlString = writer.toString();
-	       aut.setAdditionalFieldsDefine(xmlString);
-	       JAXBContext jaxbContext = JAXBContext.newInstance("org.hcmus.tis.model.xml");
-	       aut.setJaxbContext(jaxbContext);
-	       List<FieldDefine> additionalFiels = aut.getAdditionalFieldDefines();
-	       assertEquals(3, additionalFiels.size());
-	       assertEquals("difficult", additionalFiels.get(1).getRefName());
+	public void testMarkerMethod() {
+	}
+
+	@Test
+	public void testGetAdditionalFieldDefines()
+			throws ParserConfigurationException, SAXException, IOException,
+			TransformerException, JAXBException {
+		File xmlFile = new File("src/test/java/ScrumTemplate.xml");
+		RandomAccessFile templateFile = new RandomAccessFile(
+				"src/test/java/ScrumTemplate.xml", "r");
+		byte[] b = new byte[(int) templateFile.length()];
+		templateFile.read(b);
+		ProjectProcess projectProcess = new ProjectProcess();
+		projectProcess.setProcessTemplateFile(b);
+		JAXBContext jaxbContext = JAXBContext.newInstance("org.hcmus.tis.model.xml");
+		aut.setJaxbContext(jaxbContext);
+		aut.setRefName("defect");
+		WorkItemType spyWorkItemType = Mockito.spy(aut);
+		Mockito.doReturn(projectProcess).when(spyWorkItemType).getProjectProcess();
+		
+		List<FieldDefine> additionalFiels = spyWorkItemType.getAdditionalFieldDefines();
+		assertEquals(3, additionalFiels.size());
+		assertEquals("environment", additionalFiels.get(1).getRefName());
+		assertEquals("defaultvalue", additionalFiels.get(1).getDefaultValue());
+		Assert.assertNotNull(additionalFiels.get(0).getChoices());
+		assertEquals(2, additionalFiels.get(0).getChoices().size());
+		assertEquals("Critical", additionalFiels.get(0).getChoices().get(0));
 	}
 }

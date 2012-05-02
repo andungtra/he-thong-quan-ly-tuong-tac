@@ -1,0 +1,42 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/isomorphic/system/modules/ISC_Core.js"
+		var="isc_core_url" />
+	<script src="${isc_core_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/system/modules/ISC_Foundation.js"
+		var="isc_foundation_url" />
+	<script src="${isc_foundation_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/system/modules/ISC_Containers.js"
+		var="isc_containers_url" />
+	<script src="${isc_containers_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/system/modules/ISC_Grids.js"
+		var="isc_grids_url" />
+	<script src="${isc_grids_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/system/modules/ISC_Forms.js"
+		var="isc_forms_url" />
+	<script src="${isc_forms_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/system/modules/ISC_DataBinding.js"
+		var="isc_databinding_url" />
+	<script src="${isc_databinding_url }" type="text/javascript"><!--isc core--></script>
+		<spring:url value="/isomorphic/system/modules/ISC_Calendar.js"
+		var="isc_calendar_url" />
+	<script src="${isc_calendar_url }" type="text/javascript"><!--isc core--></script>
+
+	<spring:url value="/isomorphic/skins/SmartClient/load_skin.js"
+		var="load_skin_url" />
+		<script src="${load_skin_url }" type="text/javascript"><!--isc core--></script>
+	<script type="text/javascript">
+		debugger;
+		var x;
+	</script>
+
+</jsp:root>

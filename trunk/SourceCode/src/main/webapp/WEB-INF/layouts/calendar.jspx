@@ -1,0 +1,47 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:tiles="http://tiles.apache.org/tags-tiles"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util">
+
+<jsp:output doctype-root-element="HTML"
+	doctype-system="about:legacy-compat" />
+
+<jsp:directive.page contentType="text/html;charset=UTF-8" />
+<jsp:directive.page pageEncoding="UTF-8" />
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+</head>
+<body>
+</body>
+<util:load-calendar-scripts></util:load-calendar-scripts>
+<spring:url value="/projects/1/calendar/fsfsfs" var="data_url"></spring:url>
+<script type="text/javascript">
+debugger;
+isc.RestDataSource.create({
+	dataURL :'${data_url}',
+	ID:'restDataSource',
+	dataFormat: "json",
+    fields:[
+            {name:"id", primaryKey: true, type: "sequence"},
+            {name:"name"},
+            {name:"description"},
+            {name:"startDate", type: "datetime"},
+            {name:"endDate", type: "datetime"}
+        ],
+});
+isc.Calendar.create({
+    ID: "eventCalendar", 
+    dataSource: restDataSource, autoFetchData: true
+});
+restDataSource.fetchData(null, function(dsResponse, data) {
+	var z = 2;
+});
+var x = eventCalendar.data.getLength();
+var y = eventCalendar.data;
+var z = y.get(0);
+var ga = y.get(1);
+</script>
+</html>

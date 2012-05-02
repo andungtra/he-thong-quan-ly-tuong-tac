@@ -1,12 +1,10 @@
 package org.hcmus.tis.dto;
 
 public class AccountDTO {
-	public long DT_RowId;	
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String status;
-	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -31,5 +29,5 @@ public class AccountDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	public long DT_RowId;
 }

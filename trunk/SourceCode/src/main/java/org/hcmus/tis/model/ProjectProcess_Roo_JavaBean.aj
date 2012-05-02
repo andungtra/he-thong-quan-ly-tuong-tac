@@ -3,7 +3,7 @@
 
 package org.hcmus.tis.model;
 
-import java.util.Collection;
+import java.util.List;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemType;
 
@@ -41,11 +41,11 @@ privileged aspect ProjectProcess_Roo_JavaBean {
         this.uniqueName = uniqueName;
     }
     
-    public Collection<WorkItemType> ProjectProcess.getWorkItemTypes() {
+    public List<WorkItemType> ProjectProcess.getWorkItemTypes() {
         return this.workItemTypes;
     }
     
-    public void ProjectProcess.setWorkItemTypes(Collection<WorkItemType> workItemTypes) {
+    public void ProjectProcess.setWorkItemTypes(List<WorkItemType> workItemTypes) {
         this.workItemTypes = workItemTypes;
     }
     

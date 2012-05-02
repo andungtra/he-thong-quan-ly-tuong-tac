@@ -1,6 +1,7 @@
 package org.hcmus.tis.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -37,6 +38,6 @@ public class ProjectProcess {
     private String uniqueName;
 
     @OneToMany(mappedBy = "projectProcess", cascade = CascadeType.ALL)
-    private Collection<WorkItemType> workItemTypes;
+    private List<WorkItemType> workItemTypes;
 
 }

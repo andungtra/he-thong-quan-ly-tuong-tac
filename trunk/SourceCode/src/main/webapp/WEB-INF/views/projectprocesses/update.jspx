@@ -6,8 +6,7 @@
         <field:textarea field="name" id="c_org_hcmus_tis_model_ProjectProcess_name" required="true" z="DOcMhxTlsXTy+sWvtIq+wenGIKk="/>
         <field:input field="description" id="c_org_hcmus_tis_model_ProjectProcess_description" z="Z51VOfKTVQPHUfwRPn9TMptb+gc="/>
         <field:input field="uniqueName" id="c_org_hcmus_tis_model_ProjectProcess_uniqueName" required="true" z="1ovcrW6cUvnGXCLZV5NkF33IfX4="/>
+        <field:textarea field="processTemplateFile" id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" required="true" z="Co0Zp74S5ipGjUqGTz2eopZZYc8="/>
         <field:simple field="workItemTypes" id="c_org_hcmus_tis_model_ProjectProcess_workItemTypes" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Type" z="XJkdexxi89GR97uKvxqtHVSwCqM="/>
-        <field:textarea field="processTemplateFile" id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" required="true" z="Co0Zp74S5ipGjUqGTz2eopZZYc8=" render="false"/>
-        <input type="hidden" name="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" value="${projectProcess.processTemplateFile}"/>
     </form:update>
 </div>

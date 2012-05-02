@@ -1,5 +1,7 @@
 package org.hcmus.tis.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,11 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
+import org.hcmus.tis.model.xml.XChoices;
+import org.hcmus.tis.model.xml.XField;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.hcmus.tis.model.xml.XProjectProcess;
+import org.hcmus.tis.model.xml.XWorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -28,6 +34,9 @@ public class WorkItemType {
     @NotNull
     @Size(min = 1, max = 50)
     private String name;
+    
+    @NotNull
+    private String refName;
 
     @NotNull
     @ManyToOne
@@ -37,16 +46,37 @@ public class WorkItemType {
     
 	public List<FieldDefine> getAdditionalFieldDefines() throws JAXBException{
 		Unmarshaller unMarshaller = jaxbContext.createUnmarshaller();
-		StringReader stringReader = new StringReader(additionalFieldsDefine);
-		StreamSource streamSource = new StreamSource(stringReader);
-		XAdditionalFieldsImpl xAdditionalFields =  unMarshaller.unmarshal(streamSource, XAdditionalFieldsImpl.class).getValue();
+		InputStream inputStream = new ByteArrayInputStream(this.getProjectProcess().getProcessTemplateFile());
+		StreamSource streamSource = new StreamSource(inputStream);
+		XProjectProcess xProjectProcess =  unMarshaller.unmarshal(streamSource, XProjectProcess.class).getValue();
 		List<FieldDefine> result = new ArrayList<FieldDefine>();
-		for(XFieldImpl xFieldImpl : xAdditionalFields.getXField()){
+		XWorkItem currentXWorkItem = null;
+		for(XWorkItem xWorkItem : xProjectProcess.getXWorkItems().getXWorkItem()){
+			if(xWorkItem.getRefName().compareTo(refName) == 0){
+				currentXWorkItem = xWorkItem;
+				break;
+			}
+		}
+		for(XField xField : currentXWorkItem.getXAddionalFields().getXField()){
 			FieldDefine fieldDefine = new FieldDefine();
-			fieldDefine.setRefName(xFieldImpl.getRef());
+			fieldDefine.setRefName(xField.getRefName());
+			fieldDefine.setName(xField.getName());
+			fieldDefine.setDefaultValue(xField.getXDefaultValue());
+			if(xField.getXChoices() != null){
+				fieldDefine.setChoices(new ArrayList<String>());
+				for(String choice : xField.getXChoices().getXChoice()){
+					fieldDefine.getChoices().add(choice);
+				}
+			}
 			result.add(fieldDefine);
 		}
 		return result;
+	}
+	public String getRefName() {
+		return refName;
+	}
+	public void setRefName(String refName) {
+		this.refName = refName;
 	}
 	@javax.persistence.Transient
 	@Autowired

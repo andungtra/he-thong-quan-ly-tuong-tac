@@ -518,3 +518,32 @@ finder add --finderName findMemberInformationsByAccountAndProject
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 11:13:16
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-26 15:26:10
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-26 17:17:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-27 13:30:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-27 15:39:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-27 23:58:41
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-28 00:32:50
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 10:01:31
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 10:08:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 10:08:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 13:00:23
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 13:05:50
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 14:41:23
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 15:46:51
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 16:12:33
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 16:32:58
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 16:50:56
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 17:00:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 17:04:53
+hint
+entity jpa --class org.hcmus.tis.model.Calendar --testAutomatically 
+entity jpa --class org.hcmus.tis.model.Event --testAutomatically 
+field string --fieldName name --notNull
+field string --fieldName description
+field date --fieldName startDate --type java.util.Date --notNull 
+field date --fieldName endDate --type java.util.Date --notNull 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 18:13:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 21:35:43
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 22:32:36

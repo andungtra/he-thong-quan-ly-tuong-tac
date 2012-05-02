@@ -79,7 +79,6 @@ public class WorkItemControllerTest {
 		List<FieldDefine> fieldDefines = new ArrayList<FieldDefine>();
 		FieldDefine fieldDefine = new FieldDefine();
 		fieldDefine.setRefName("name");
-		fieldDefine.setValue("value");
 		fieldDefines.add(fieldDefine);
 		WorkItemType mockedWorkItemType = Mockito.mock(WorkItemType.class);
 		Mockito.doReturn(fieldDefines).when(mockedWorkItemType).getAdditionalFieldDefines();
