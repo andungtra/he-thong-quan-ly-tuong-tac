@@ -40,7 +40,7 @@
     <spring:message arguments="${label}" code="entity_show" var="title_msg" htmlEscape="false" />
     <util:fixpanel id="${id}" title="${title_msg}" openPane="${openPane}">
       <c:choose>
-        <c:when test="${not empty object}">
+        <c:when test="${not empty object or object eq ""}">
           <jsp:doBody />
           <div class="quicklinks">
             <span>
@@ -96,7 +96,7 @@
           </div>
         </c:when>
         <c:otherwise>
-          <spring:message arguments="${label}" code="entity_not_found_single" />
+          <!--  <spring:message arguments="${label}" code="entity_not_found_single" />  -->
         </c:otherwise>
       </c:choose>
     </util:fixpanel>

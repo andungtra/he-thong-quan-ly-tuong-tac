@@ -8,7 +8,7 @@
 		required="true" rtexprvalue="true"
 		description="The identifier for this tag (do not change!)" />
 	<jsp:directive.attribute name="title" type="java.lang.String"
-		required="true" rtexprvalue="true"
+		required="false" rtexprvalue="true"
 		description="The page title (required)" />
 	<jsp:directive.attribute name="render" type="java.lang.Boolean"
 		required="false" rtexprvalue="true"
@@ -20,9 +20,8 @@
 		required="false"
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 	<jsp:directive.attribute name="width" type="java.lang.String"
-		rtexprvalue="true"
-		description="width of panel" />
-		
+		rtexprvalue="true" description="width of panel" />
+
 	<c:if test="${empty render or render}">
 		<c:if test="${empty openPane}">
 			<c:set value="true" var="openPane" />
@@ -41,7 +40,9 @@
 		</c:set>
 
 		<div class="fix-panel" style="width: ${width}">
-			<div class="panel-title">${title}</div>
+			<c:if test="${not empty title}">
+				<div class="panel-title">${title}</div>
+			</c:if>
 			<div class="panel-content">
 				<jsp:doBody />
 			</div>

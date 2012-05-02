@@ -23,13 +23,13 @@
 	<definition extends="content" name="accounts/projects">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/projects.jspx" />
 	</definition>
-	<definition extends="myaccount" name="accounts/active">
+	<definition extends="default" name="accounts/active">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/active.jspx" />
 	</definition>
-	<definition extends="myaccount" name="accounts/invalidactive">
+	<definition extends="default" name="accounts/invalidactive">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/invalidactive.jspx" />
 	</definition>
-	<definition extends="myaccount" name="accounts/activeFailure">
+	<definition extends="default" name="accounts/activeFailure">
 		<put-attribute name="body" value="/WEB-INF/views/accounts/invalidactive.jspx" />
 	</definition>
 	<definition extends="content" name="accounts/redirect">
