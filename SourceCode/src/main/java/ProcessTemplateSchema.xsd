@@ -4,10 +4,10 @@
 	elementFormDefault="qualified">
 	<xs:simpleType name="xBuildInType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="String"></xs:enumeration>
-			<xs:enumeration value="Integer"></xs:enumeration>
-			<xs:enumeration value="Double"></xs:enumeration>
-			<xs:enumeration value="DateTime"></xs:enumeration>
+			<xs:enumeration value="string"></xs:enumeration>
+			<xs:enumeration value="number"></xs:enumeration>
+			<xs:enumeration value="digits"></xs:enumeration>
+			<xs:enumeration value="date"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="xWorkItems">
@@ -51,6 +51,7 @@
 		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
 		<xs:attribute name="type" type="xBuildInType" use="required"></xs:attribute>
 		<xs:attribute name="defaultvalue" type="xs:string"></xs:attribute>
+		<xs:attribute name="requied" type="xs:boolean"></xs:attribute>
 		<xs:attribute name="regex" type="xs:string"></xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="xProjectProcess">

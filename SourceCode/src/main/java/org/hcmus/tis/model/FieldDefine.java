@@ -4,6 +4,8 @@ import java.util.List;
 
 public class FieldDefine {
 	private String refName;
+	private boolean required;
+	private BuildInType type;
 	private String name;
 	private String defaultValue;
 	private List<String> choices;
@@ -30,5 +32,17 @@ public class FieldDefine {
 	}
 	public void setChoices(List<String> choices) {
 		this.choices = choices;
+	}
+	public boolean isRequired() {
+		return required;
+	}
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+	public BuildInType getType() {
+		return type;
+	}
+	public void setType(BuildInType type) {
+		this.type = type;
 	}
 }

@@ -6,25 +6,25 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 		<xWorkItem refName="userStory" name="User story">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
-				<xField refName="storyPoint" name="Story point" type="Integer">
+				<xField refName="storyPoint" name="Story point" type="digits">
 				</xField>
-				<xField refName="difficulty" name="Difficulty" type="Integer"></xField>
+				<xField refName="difficulty" name="Difficulty" type="digits"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 		<xWorkItem name="bug" refName="Bug">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
-				<xField name="Severity" type="String" refName="severity">
+				<xField name="Severity" type="string" refName="severity">
 					<xChoices>
 						<xChoice>Critical</xChoice>
 						<xChoice>Normal</xChoice>
 						<xChoice>Minor</xChoice>
 					</xChoices>
 				</xField>
-				<xField name="Environment" type="String" refName="environment">
+				<xField name="Environment" type="string" refName="environment">
 					<xDefaultValue>My environment</xDefaultValue>
 				</xField>
-				<xField name="type" type="String" refName="type"></xField>
+				<xField name="type" type="number" refName="type" requied="true"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 	</xWorkItems>

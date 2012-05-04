@@ -30,6 +30,7 @@ import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,7 +39,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RooWebScaffold(path = "workitems", formBackingObject = WorkItem.class)
 public class WorkItemController {
-
+    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+    public String update(@Valid WorkItem workItem, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) throws JAXBException {
+        if (bindingResult.hasErrors()) {
+            populateEditForm(uiModel, workItem);
+            return "workitems/update";
+        }
+        WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
+				.getWorkItemType().getId());
+		List<Field> fields = new ArrayList<Field>();
+		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {
+			Field field = new Field();
+			field.setName(fieldDefine.getRefName());
+			field.setValue(httpServletRequest.getParameter(fieldDefine
+					.getRefName()));
+			fields.add(field);
+		}
+		workItem.setAdditionFiels(fields);
+        uiModel.asMap().clear();
+        workItem.merge();
+        return "redirect:/workitems/" + encodeUrlPathSegment(workItem.getId().toString(), httpServletRequest);
+    }
 	@RequestMapping(params = "form", produces = "text/html")
 	public String createForm(Long projectId, Long workItemTypeId,
 			String redirectUrl, Model uiModel, Principal principal)
@@ -46,11 +67,11 @@ public class WorkItemController {
 		WorkItem workItem = new WorkItem();
 		Project project = Project.findProject(projectId);
 		workItem.setWorkItemContainer(project);
-		populateEditFormCustomly(uiModel, workItem, (long) 1);
-		List<String[]> dependencies = new ArrayList<String[]>();
 		WorkItemType workItemType = WorkItemType
 				.findWorkItemType(workItemTypeId);
-		uiModel.addAttribute("workItemType", workItemType);
+		workItem.setWorkItemType(workItemType);
+		populateEditFormCustomly(uiModel, workItem);
+		List<String[]> dependencies = new ArrayList<String[]>();
 		uiModel.addAttribute("projectId", projectId);
 		String name = principal.getName();
 		Account loginAccount = Account.findAccountsByEmailEquals(name)
@@ -72,9 +93,13 @@ public class WorkItemController {
 		uiModel.addAttribute("dependencies", dependencies);
 		return "workitems/create";
 	}
-
-	void populateEditFormCustomly(Model uiModel, WorkItem workItem,
-			Long projectId) {
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String updateForm(@PathVariable("id") Long id, Model uiModel) {
+    	WorkItem workItem = WorkItem.findWorkItem(id);
+        populateEditFormCustomly(uiModel, workItem);
+        return "workitems/update";
+    }
+	void populateEditFormCustomly(Model uiModel, WorkItem workItem) {
 		uiModel.addAttribute("workItem", workItem);
 		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("memberinformations",
@@ -97,6 +122,7 @@ public class WorkItemController {
 		uiModel.addAttribute("workitemcontainers", containers);
 		uiModel.addAttribute("workitemstatuses",
 				WorkItemStatus.findAllWorkItemStatuses());
+		uiModel.addAttribute("workItemType", workItem.getWorkItemType());
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -141,7 +167,7 @@ public class WorkItemController {
 			if (workItem.getWorkItemContainer().getId().equals(projectId)) {
 				WorkItemDTO workItemDto = new WorkItemDTO();
 				workItemDto.setlName("<a href='/TIS/workitems/"
-						+ workItem.getId() + "'>" + workItem.getTitle()
+						+ workItem.getId() + "?form'>" + workItem.getTitle()
 						+ "</a>");
 				workItemDto.setsStatus(workItem.getStatus().getName());
 				workItemDto.setsType(workItem.getWorkItemType().getName());
