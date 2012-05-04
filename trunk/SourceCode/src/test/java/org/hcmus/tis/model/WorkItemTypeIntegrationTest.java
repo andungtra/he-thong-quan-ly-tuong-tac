@@ -60,7 +60,10 @@ public class WorkItemTypeIntegrationTest {
 		List<FieldDefine> additionalFiels = spyWorkItemType.getAdditionalFieldDefines();
 		assertEquals(3, additionalFiels.size());
 		assertEquals("environment", additionalFiels.get(1).getRefName());
+		assertEquals(true, additionalFiels.get(1).isRequired());
+		assertEquals(false, additionalFiels.get(0).isRequired());
 		assertEquals("defaultvalue", additionalFiels.get(1).getDefaultValue());
+		assertEquals(BuildInType.string, additionalFiels.get(1).getType());
 		Assert.assertNotNull(additionalFiels.get(0).getChoices());
 		assertEquals(2, additionalFiels.get(0).getChoices().size());
 		assertEquals("Critical", additionalFiels.get(0).getChoices().get(0));

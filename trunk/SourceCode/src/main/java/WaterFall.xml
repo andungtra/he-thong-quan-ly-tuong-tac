@@ -6,25 +6,25 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 		<xWorkItem refName="requirement" name="Requirement">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
-				<xField refName="risk" name="Risk" type="Integer">
+				<xField refName="risk" name="Risk" type="digits" requied="true">
 				</xField>
-				<xField refName="difficulty" name="Difficulty" type="Integer"></xField>
-				<xField refName="costToComplete" name="Cost to complete" type="Integer"></xField>
+				<xField refName="difficulty" name="Difficulty" type="digits"></xField>
+				<xField refName="costToComplete" name="Cost to complete" type="number"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 		<xWorkItem name="Defect" refName="defect">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
-				<xField name="Severity" type="String" refName="severity">
+				<xField name="Severity" type="string" refName="severity">
 					<xChoices>
 						<xChoice>High</xChoice>
 						<xChoice>Low</xChoice>
 					</xChoices>
 				</xField>
-				<xField name="Environment" type="String" refName="environment">
+				<xField name="Environment" type="string" refName="environment">
 					<xDefaultValue>fas</xDefaultValue>
 				</xField>
-				<xField name="type" type="String" refName="type"></xField>
+				<xField name="type" type="string" refName="type"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 	</xWorkItems>
