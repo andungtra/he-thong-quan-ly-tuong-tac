@@ -18,23 +18,21 @@
 		var="spring_dojo_url" />
 	<spring:url value="/resources/scripts/my-custom-tag.js" var="js_customtag_url"></spring:url>
 	<spring:url value="/resources/images/favicon.ico" var="favicon" />
-	<spring:url value="/resources/scripts/jquery-1.7.1.min.js" var="jquery_url"></spring:url>
-	<spring:url value="/resources/scripts/ui/jquery.ui.core.js"
-		var="jquery_core_url"></spring:url>
-	<spring:url value="/resources/scripts/ui/jquery.ui.widget.js"
-		var="jquery_widget_url"></spring:url>
-	<spring:url value="/resources/scripts/ui/jquery.ui.tabs.js"
-		var="jquery_tab_url"></spring:url>
+	<spring:url value="/resources/scripts/jquery-1.7.2.min.js" var="jquery_url"></spring:url>
 	<spring:url value="/${jquery_theme }" var="jquery_theme_url"></spring:url>
 	<spring:url value="/resources/scripts/update-tab.js" var="update_tab_url"></spring:url>
-	<spring:url value="/resources/scripts/ui//jquery-ui-1.8.18.custom.js"
+	<spring:url value="/resources/scripts/jquery-ui-1.8.20.custom.min.js"
 		var="jquery_all_url"></spring:url>
+		<spring:url value="/resources/scripts/jquery.loadmask.min.js" var="mask_js_url"></spring:url>
+				<spring:url value="/resources/styles/jquery.loadmask.css" var="mask_css_url"></spring:url>
 	<link rel="stylesheet" type="text/css" href="${tundra_url}" />
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${roo_css_url}" />
 		<link rel="stylesheet" type="text/css" href="${jquery_theme_url }"/>
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${my_css_url}" />
+		<link rel="stylesheet" type="text/css" media="screen"
+		href="${mask_css_url}" />
 	<link rel="SHORTCUT ICON" href="${favicon}" />
 
 	<!-- Get the user local from the page context (it was set by Spring MVC's locale resolver) -->
@@ -50,12 +48,9 @@
 	<script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
 	<script language="JavaScript" type="text/javascript">dojo.require("dojo.parser");</script>
 	<script src="${jquery_url}" lang="JavaScript" type="text/javascript"><!--jquery--></script>
-	<script src="${jquery_core_url}" type="text/javascript"><!--jquery ui core--></script>
-	<script src="${jquery_widget_url}" type="text/javascript"><!--jquery widget--></script>
-	<script src="${jquery_tab_url}" type="text/javascript"><!--jquery tab--></script>
 	<script src="${update_tab_url }" type="text/javascript"><!--update tab--></script>
 	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
-	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
 	<script src="${jquery_all_url }" type="text/javascript"><!--my cus--></script>
+		<script src="${mask_js_url }" type="text/javascript"><!--mask--></script>
 
 </jsp:root>
