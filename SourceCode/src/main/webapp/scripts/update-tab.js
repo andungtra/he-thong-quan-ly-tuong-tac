@@ -1,6 +1,5 @@
-var isAddLinkHanlder = true;
-var isAddFormSubmitHandler = true;
 var panel = null;
+// create ui tab.
 $(function() {
 	$("#menu_menu").tabs(
 			{
@@ -10,68 +9,60 @@ $(function() {
 								"Couldn't load this tab. We'll try to fix this as soon as possible. "
 										+ "If this wouldn't be a demo.");
 					},
+					beforeSend : function(jqXHR, settings){
+						$(panel).mask("Loading...");
+					}
 				},
 				load : function(event, ui) {
 					panel = ui.panel;
-					if (isAddLinkHanlder) {
-						addLinkClickHanlder(ui.panel, ui.panel);
-					}
-					if(isAddFormSubmitHandler){
-					addFormSubmitHandler(ui.panel, ui.panel);
-					}
-					isAddLinkHanlder = true;
-					isAddFormSubmitHandler = true;
 				},
-				spinner: 'Retrieving data...',
-				select : function(event, ui){
-					$(ui.panel).off('click', '**');
-					$(ui.panel).off('submit', '**');
-				}
 			});
 });
-function addLinkClickHanlder(container, target){
-	$(container).on('click', 'a', {target:target}, linkClickHandler);
-}
-function removeLinkClickHanlder(container){
-	$(container).off('click', 'a', linkClickHandler);
-}
-function removeFormSubmitHandler(container){
-	$(container).off('submit', 'form',formSubmitHandler);
-}
-function linkClickHandler(event) {
-	var url = this.href;
-	//alert(url);
-	if (url.indexOf('TIS/projects/ID') != -1) {
-		location.open(url);
-	} else {
-		$(event.data.target).load(this.href, function() {
-/*			addTabFormSubmitHandler();*/
+// hook global link click event.
+$(function() {
+	$('#menu_menu').on('click', 'a', function(event) {
+		var url = this.href;
+		$(panel).load(this.href, function() {
 		});
-		event.preventDefault();
-	}
+		return false;
+	});
+});
+// hook global form submit event
+$(function(){
+	$('#menu_menu').on('submit', 'form', function(event) {
+		formSubmitHandler(event, panel);
+	});
+});
+function removeFormSubmitHandler(container) {
+	$(container).off('submit', 'form', formSubmitHandler);
 }
 
-/*function addTabFormSubmitHandler() {
-	var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-	addFormSubmitHandler(tabContent);
-
-}*/
+/*
+ * function addTabFormSubmitHandler() { var tabContent =
+ * $('div:not(.ui-tabs-hide) > #main').parent();
+ * addFormSubmitHandler(tabContent); }
+ */
 function addFormSubmitHandler(container, resultReceiver) {
-	$(container).on('submit', 'form', {resultReceiver:resultReceiver}, formSubmitHandler);
+	$(container).on('submit', 'form', {
+		resultReceiver : resultReceiver
+	}, formSubmitHandler);
 }
-function formSubmitHandler(event){
-	var resultReceiver = event.data.resultReceiver;
-	var test = $(this).attr('method');
-	if($(this).attr('method').toLowerCase() == 'get'){
+function formSubmitHandler(event, receiver) {
+	var resultReceiver = receiver;
+	if(resultReceiver == null){
+		resultReceiver = event.data.resultReceiver;
+	}
+	var form = $(event.target)
+	if (form.attr('method').toLowerCase() == 'get') {
 		var query = $(this).serialize();
-		var url = $(this).attr('action') + '?' + query;
+		var url = form.attr('action') + '?' + query;
 		$(resultReceiver).load(url, function() {
 		}).change();
 		event.preventDefault();
 	}
-	if($(this).attr('method').toLowerCase() == 'post'){
-		var parameters = $(this).serializeArray();
-		var url = $(this).attr('action');
+	if (form.attr('method').toLowerCase() == 'post') {
+		var parameters = form.serializeArray();
+		var url = form.attr('action');
 		$(resultReceiver).load(url, parameters, function() {
 		}).change();
 		event.preventDefault();

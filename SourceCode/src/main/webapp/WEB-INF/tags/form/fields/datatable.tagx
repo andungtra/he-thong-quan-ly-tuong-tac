@@ -22,7 +22,7 @@
 
 	<jsp:directive.attribute name="goto" type="java.lang.Boolean"
 		required="false" rtexprvalue="true" description="The server source" />
-		
+
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
 		var="datatables_js" />
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -45,7 +45,7 @@
 	<spring:url
 		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
 		var="workitem_content_css" />
-	<spring:url value="${path}/" var="lDelete"/>
+	<spring:url value="${path}/" var="lDelete" />
 	<spring:url value="${path}/" var="lShow" />
 	<spring:url value="${path}/mList" var="source" />
 	<spring:url value="${path}?form" var="lNew" />
@@ -60,36 +60,9 @@
 @import "${workitem_content_css}";
 </style>
 
-	
+
 
 	<SCRIPT type="text/javascript">
-	$(function() {
-		//debugger;
-		//isAddLinkHanlder = false;
-		//isAddFormSubmitHandler = false;
-		$('#table').on('click', '#tb_paginate a',
-				function(event) {
-					event.stopImmediatePropagation();
-				})
-		var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-		$(tabContent).off('click', 'a', linkClickHandler);
-		$(tabContent).on('click', 'a', function(event) {
-			var url = this.href;
-			alert(url);
-			if (url.indexOf('/ID/') != -1) {
-				location.open(url);
-
-			} else {
-				$('#table').load(this.href, function() {
-
-				}).change();
-				event.preventDefault();
-
-			}
-		});
-		addFormSubmitHandler('#table', '#table');
-	});	
-	
 		$(document)
 				.ready(
 						function() {
@@ -143,7 +116,6 @@
 		}); 
 		
 		$(function() {
-			var test = $('#${id} thead tr th:first-child');
 			$('#${id} thead tr:first-child input[type=checkbox]')
 					.on(
 							'click',
@@ -157,9 +129,17 @@
 										.attr('checked', selected);
 							});
 		});
+		$(function() {
+			debugger;
+			var x  = $('#${id}');
+			$('#table_${id}').on('click', '.dataTables_paginate a',
+					function(event) {
+						event.stopImmediatePropagation();
+					});
+		});	
 		
 	</SCRIPT>
-	
+
 	<script type="text/javascript">
 		var oTable;
 		function fnew(){
@@ -220,7 +200,7 @@
 			debugger;			
 		}
 	</script>
-	<div id="table" class="table_content">
+	<div id="table_${id }" class="table_content">
 		<TABLE id="${id}" cellpadding="0" cellspacing="0" border="0"
 			class="display disable-a-handler">
 
@@ -237,5 +217,6 @@
 				</tr>
 			</TBODY>
 		</TABLE>
+		<a>fdsfsds</a>
 	</div>
 </jsp:root>

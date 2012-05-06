@@ -34,14 +34,11 @@
 		});
 		$(function() {
 			debugger;
-			isAddLinkHanlder = false;
-			isAddFormSubmitHandler = false;
 			$('#workitem_content').on('click', '#work_item_list_paginate a',
 					function(event) {
 						event.stopImmediatePropagation();
 					})
 			var tabContent = $('div:not(.ui-tabs-hide) > #main').parent();
-			$(tabContent).off('click', 'a', linkClickHandler);
 			$(tabContent).on('click', 'a', function(event) {
 				var url = this.href;
 				alert(url);

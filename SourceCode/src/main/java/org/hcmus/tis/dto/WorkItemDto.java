@@ -23,4 +23,5 @@ public class WorkItemDTO {
 	}
 	private String sStatus;
 	private String sType;
+
 }
