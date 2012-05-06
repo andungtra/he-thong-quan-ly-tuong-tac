@@ -10,8 +10,9 @@
 	<spring:url value="/accounts/${id}/projects" var="projects" />
 	<div id="menu_menu">
 		<ul>
-			<li><a href="${projects}">Projects</a></li>
-
+			<li><a href="${projects}">Dash Board</a></li>
+			<li><a href="${projects}">My Calendar</a></li>
+			<li><a href="${projects}">My Project</a></li>
 		</ul>
 	</div>
 </jsp:root>

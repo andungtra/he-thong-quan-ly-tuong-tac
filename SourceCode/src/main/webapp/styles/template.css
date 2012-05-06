@@ -312,7 +312,6 @@ button:hover
 
 #wrapper {
 	width: 1000px;
-	min-height:620px;
 	margin: auto;	
 	overflow:hidden;
 	display:block;
@@ -510,4 +509,7 @@ tr:hover td
 {
 	color: blue;
 	padding: 3px;
+}
+#menu_menu .ui-tabs-panel{
+	min-height: 500px;
 }
