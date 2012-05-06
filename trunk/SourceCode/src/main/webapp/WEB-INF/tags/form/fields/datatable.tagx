@@ -144,8 +144,10 @@
 		var oTable;
 		function fnew(){
 			//debugger;
-			$(panel).load("${lNew}", function() {});
-			
+			$(panel).load("${lNew}", function() {
+				$(panel).unmask();
+			});
+			$(panel).mask('Loading ...');
 		}
 		
 		function fshow(){
@@ -156,9 +158,10 @@
 			if(c>0){
 				var idtr = $(s.parent().parent()[0]).attr('id');
 				var url="${lShow}"+idtr+"?form";
-				//alert(url);
-				//window.location=url;
-				$(panel).load(url, function() {});
+				$(panel).load(url, function() {
+					$(panel).unmask();
+				});
+				$(panel).mask('Loading ...');
 			}
 		}
 		
