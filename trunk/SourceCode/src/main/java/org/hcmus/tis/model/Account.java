@@ -2,11 +2,19 @@ package org.hcmus.tis.model;
 
 import java.util.Collection;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -50,7 +58,14 @@ public class Account implements java.io.Serializable {
     @Enumerated
     @NotNull
     private AccountStatus status;
-
+    
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(updatable=false)
+    private Calendar calendar;
+    @PrePersist
+    public void prePersit(){
+    	setCalendar(new Calendar());
+    }
     public String toString() {
         return email;
     }
@@ -71,4 +86,10 @@ public class Account implements java.io.Serializable {
         query.setParameter("email", email);
         return query.getSingleResult();
     }
+	public Calendar getCalendar() {
+		return calendar;
+	}
+	protected void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
+	}
 }

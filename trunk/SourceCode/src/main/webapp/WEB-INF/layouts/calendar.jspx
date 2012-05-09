@@ -36,12 +36,5 @@ isc.Calendar.create({
     ID: "eventCalendar", 
     dataSource: restDataSource, autoFetchData: true
 });
-restDataSource.fetchData(null, function(dsResponse, data) {
-	var z = 2;
-});
-var x = eventCalendar.data.getLength();
-var y = eventCalendar.data;
-var z = y.get(0);
-var ga = y.get(1);
 </script>
 </html>

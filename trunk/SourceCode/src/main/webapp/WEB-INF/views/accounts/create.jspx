@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
-	xmlns:form="urn:jsptagdir:/WEB-INF/tags/form"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
-	<jsp:directive.page contentType="text/html;charset=UTF-8" />
-	<jsp:output omit-xml-declaration="yes" />
-	<form:quickfind createButton="false" finderName="quickFind"
-		id="ff_org_hcmus_tis_model_Account" path="/accounts"
-		searchButton="false" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=" />
-	<form:create id="fc_org_hcmus_tis_model_Account"
-		modelAttribute="account" path="/accounts"
-		render="${empty dependencies}" z="51areJweFb49LDDKpSccRCKedRk=">
-		<c:if test="${not empty existedEmail }">
-			<div style="color: red">Email have been used.</div>
-		</c:if>
-		<c:if test="${not empty sendEmailError }">
-			<div style="color: red">there was an error sending the email.</div>
-		</c:if>
-		<field:input field="firstName"
-			id="c_org_hcmus_tis_model_Account_firstName" required="true"
-			z="user-managed" />
-		<field:input field="lastName"
-			id="c_org_hcmus_tis_model_Account_lastName" required="true"
-			z="user-managed" />
-
-		<field:textarea field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed" />
-		<field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false"	z="user-managed" />
-		<field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false"	z="user-managed" />
-		<input name="status" type="hidden" value="${accountstatuses[0] }" />
-		<field:input field="email" id="c_org_hcmus_tis_model_Account_email"	min="1" required="true" validationMessageCode="field_invalid_email"	z="qIGXRPvJPq9QUgnUCWNKhHtGCOk=" />
-		<util:advancedpanel title="Advanced">
-			<field:checkbox field="isAdmin"	id="c_org_hcmus_tis_model_Account_isAdmin"	z="BQqr5Xgnm5hBWX8GunBO3PIDMAM=" />
-			<input name="password" type="hidden" value="dummypassword" />
-		</util:advancedpanel>
-	</form:create>
-	<form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Account" render="${not empty dependencies}" 	z="fLrZinEv2B+MMHZGxO2gZySAXIA=" />
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:quickfind createButton="false" finderName="quickFind" id="ff_org_hcmus_tis_model_Account" path="/accounts" searchButton="false" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4="/>
+    <form:create id="fc_org_hcmus_tis_model_Account" modelAttribute="account" path="/accounts" render="${empty dependencies}" z="51areJweFb49LDDKpSccRCKedRk=">
+        <c:if test="${not empty existedEmail }">
+            <div style="color: red">Email have been used.</div>
+        </c:if>
+        <c:if test="${not empty sendEmailError }">
+            <div style="color: red">there was an error sending the email.</div>
+        </c:if>
+        <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
+        <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
+        <field:textarea field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
+        <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false" z="user-managed"/>
+        <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>
+        <input name="status" type="hidden" value="${accountstatuses[0] }"/>
+        <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk="/>
+        <util:advancedpanel title="Advanced">
+            <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>
+            <input name="password" type="hidden" value="dummypassword"/>
+        </util:advancedpanel>
+        <field:select field="calendar" id="c_org_hcmus_tis_model_Account_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" required="true" z="user-managed"/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Account" render="${not empty dependencies}" z="fLrZinEv2B+MMHZGxO2gZySAXIA="/>
 </div>
