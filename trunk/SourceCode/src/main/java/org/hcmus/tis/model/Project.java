@@ -35,7 +35,6 @@ public class Project extends WorkItemContainer {
     private ProjectProcess projectProcess;
 
     @Enumerated
-    @NotNull
     private ProjectStatus status;
     
     public static long countProjectsByNameLike(String name) {
