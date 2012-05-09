@@ -15,26 +15,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 </head>
 <body>
+<tiles:insertAttribute name="body"/>
 </body>
-<util:load-calendar-scripts></util:load-calendar-scripts>
-<spring:url value="/projects/1/calendar/fsfsfs" var="data_url"></spring:url>
-<script type="text/javascript">
-debugger;
-isc.RestDataSource.create({
-	dataURL :'${data_url}',
-	ID:'restDataSource',
-	dataFormat: "json",
-    fields:[
-            {name:"id", primaryKey: true, type: "sequence"},
-            {name:"name"},
-            {name:"description"},
-            {name:"startDate", type: "datetime"},
-            {name:"endDate", type: "datetime"}
-        ],
-});
-isc.Calendar.create({
-    ID: "eventCalendar", 
-    dataSource: restDataSource, autoFetchData: true
-});
-</script>
 </html>
