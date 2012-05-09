@@ -47,6 +47,12 @@
 	<jsp:directive.attribute name="redirectUrl" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
 
+	<jsp:directive.attribute name="paramName" type="java.lang.String"
+		required="false" rtexprvalue="true" description="The server source" />
+		
+	<jsp:directive.attribute name="paramValue" type="java.lang.String"
+		required="false" rtexprvalue="true" description="The server source" />
+		
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
 		var="datatables_js" />
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -89,7 +95,7 @@
 		$(document)
 				.ready(
 						function() {
-							//debugger;
+							debugger;
 							
 							$('#${id}').on('click', '#${id} tbody tr td',
 									function(event) {									
@@ -98,12 +104,18 @@
 										//show(id);
 									});
 							
-							oTable= $("#${id}")
+							oTable= $("#${id}")							
 									.dataTable(
 											{
 												"bProcessing" : true,
 												"bServerSide" : true,
-												"sAjaxSource" : "${source}",												
+												"sAjaxSource" : "${source}",	
+												"fnServerParams" : function(aoData){
+													aoData.push({
+														"name": "${paramName}",
+														"value": "${paramValue}"
+													});
+												},												
 												"aoColumns" : ${ao},
 												"bJQueryUI" : true,												
 												"sPaginationType" : "full_numbers",
@@ -124,7 +136,7 @@
 
 											});		
 							
-							
+							debugger;
 	                         
 						});
 		 $(function() {
