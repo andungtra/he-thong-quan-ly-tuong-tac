@@ -8,8 +8,8 @@
             <table:column id="c_org_hcmus_tis_model_WorkItem_description" property="description" z="ojjccL8MeMe493Va/8aw2PxmVIc="/>
             <table:column date="true" dateTimePattern="${workItem_datecreated_date_format}" id="c_org_hcmus_tis_model_WorkItem_dateCreated" property="dateCreated" z="PMdLGY3UzCq+IhTSmvRx/RT+8kc="/>
             <table:column id="c_org_hcmus_tis_model_WorkItem_jaxbContext" property="jaxbContext" z="7IVNMlx2mzbLkFlQcl79GtS4OwY="/>
-            <table:column id="c_org_hcmus_tis_model_WorkItem_additionalFields" property="additionalFields" z="I98QYBWfWMCTtz+kDZ9KTp6SV1o="/>
             <table:column id="c_org_hcmus_tis_model_WorkItem_objectFactory" property="objectFactory" z="cbr4wW+jHlxyxDsGNR24q04qFVo="/>
+            <table:column date="true" dateTimePattern="${workItem_datelastedit_date_format}" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit" property="dateLastEdit" z="lhCB1dQRapnLx87uxHTkwi64joU="/>
         </table:table>
     </page:list>
 </div>

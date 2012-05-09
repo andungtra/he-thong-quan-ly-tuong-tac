@@ -14,10 +14,11 @@
         <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workitem}" z="9V7KDtLDr6N53jlI8UcH4CGOnYE="/>
         <field:display field="status" id="s_org_hcmus_tis_model_WorkItem_status" object="${workitem}" z="chE+pRBiDHXZHre9KieANEoUSnc="/>
         <field:display date="true" dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="s_org_hcmus_tis_model_WorkItem_dueDate" object="${workitem}" z="kwQKiYOTwiszEZr0DUdGcnPq2e8="/>
-        <field:display render="false" field="jaxbContext" id="s_org_hcmus_tis_model_WorkItem_jaxbContext" object="${workitem}" z="user-managed"/>
-        <field:display render="false" field="objectFactory" id="s_org_hcmus_tis_model_WorkItem_objectFactory" object="${workitem}" z="user-managed"/>
+        <field:display field="jaxbContext" id="s_org_hcmus_tis_model_WorkItem_jaxbContext" object="${workitem}" render="false" z="user-managed"/>
+        <field:display field="objectFactory" id="s_org_hcmus_tis_model_WorkItem_objectFactory" object="${workitem}" render="false" z="user-managed"/>
         <c:forEach items="${workitem.additionFields}" var="field">
-        	<p>${field.name } : ${field.value }</p>
+            <p>${field.name } : ${field.value }</p>
         </c:forEach>
+        <field:display date="true" dateTimePattern="${workItem_datelastedit_date_format}" field="dateLastEdit" id="s_org_hcmus_tis_model_WorkItem_dateLastEdit" object="${workitem}" z="nQznSQhVkOXE88sYJkQ3ttQRH6g="/>
     </page:show>
 </div>

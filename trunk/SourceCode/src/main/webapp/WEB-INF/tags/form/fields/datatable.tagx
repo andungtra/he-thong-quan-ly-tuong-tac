@@ -69,9 +69,9 @@
 	<spring:url
 		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
 		var="workitem_content_css" />
-<spring:url value="${path}" var="path" />
-	<spring:url value="${source}" var="source" />	<spring:url value="${path}?form" var="lNew" />
-
+	<spring:url value="${path}" var="path" />
+	<spring:url value="${source}" var="source" />	
+	<c:set var="lNew" value="${path}?form"/>
 	<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false}' />
 	<c:forTokens items="${aoColumns}" var="column" delims="{,}">
 		<c:set var="ao" value='${ao},{"mDataProp" :"${column}"}' />
