@@ -70,8 +70,8 @@
 		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
 		var="workitem_content_css" />
 	<spring:url value="${path}" var="path" />
-	<spring:url value="${source}" var="source" />	
-	<c:set var="lNew" value="${path}?form"/>
+	<spring:url value="${source}" var="source" />
+	<c:set var="lNew" value="${path}?form" />
 	<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false}' />
 	<c:forTokens items="${aoColumns}" var="column" delims="{,}">
 		<c:set var="ao" value='${ao},{"mDataProp" :"${column}"}' />
@@ -128,7 +128,7 @@
 	                         
 						});
 		 $(function() {
-			 debugger;
+			//debugger;
 			var bt = "";
 			if('${fnew}' != '')
 				bt = bt+ '<button onclick="fnew()">New</button>';
@@ -163,7 +163,7 @@
 							});
 		});
 		$(function() {
-			debugger;
+			//debugger;
 			var x  = $('#${id}');
 			$('#table_${id}').on('click', '.dataTables_paginate a',
 					function(event) {
@@ -214,7 +214,7 @@
 			        	} 
 			    });
 			}
-			debugger;
+			//debugger;
 		}
 		function fshow(){
 			//debugger;
@@ -266,7 +266,7 @@
 			        	} 
 			    });
 			}
-			debugger;			
+			//debugger;			
 		}
 	</script>
 	<div id="table_${id }" class="table_content">

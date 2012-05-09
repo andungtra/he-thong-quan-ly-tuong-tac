@@ -92,7 +92,7 @@ form {
         <div id="c_org_hcmus_tis_model_ProjectProcess_uniqueName"/>
         <div id="c_org_hcmus_tis_model_ProjectProcess_workItemTypes"/>
         <div id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile"/>
-        <field:checkbox field="isDeleted" id="c_org_hcmus_tis_model_ProjectProcess_isDeleted" z="7LaoD4VWKxW+r/n9tJEdAYah8Uc="/>
+        <div id="c_org_hcmus_tis_model_ProjectProcess_isDeleted"/>
     </div>
     <div id="d_org_hcmus_tis_model_ProjectProcess"/>
 </div>

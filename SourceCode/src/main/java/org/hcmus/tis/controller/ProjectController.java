@@ -264,7 +264,7 @@ public class ProjectController {
 			lst = Project.findAllProjects();
 		}
 		for (Project project : lst) {
-			if (project.getStatus().equals(ProjectStatus.DELETED))
+			if (project.getStatus()!=null && project.getStatus().equals(ProjectStatus.DELETED))
 				lst.remove(project);
 		}
 		uiModel.addAttribute("projects", lst);
