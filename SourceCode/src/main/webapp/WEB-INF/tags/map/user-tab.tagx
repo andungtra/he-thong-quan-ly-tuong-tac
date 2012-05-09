@@ -8,10 +8,12 @@
 		required="true" rtexprvalue="true" description="The id of project" />
 
 	<spring:url value="/accounts/${id}/projects" var="projects" />
+	<spring:url value = "/accounts/${id }/dashboard" var="dashboard"/>
+	<spring:url value = "/accounts/${id }/dumpcalendar" var="calendar"/>
 	<div id="menu_menu">
 		<ul>
-			<li><a href="${projects}">Dash Board</a></li>
-			<li><a href="${projects}">My Calendar</a></li>
+			<li><a href="${dashboard}">Dash Board</a></li>
+			<li><a href="${calendar}">My Calendar</a></li>
 			<li><a href="${projects}">My Project</a></li>
 		</ul>
 	</div>

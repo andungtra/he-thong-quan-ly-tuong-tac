@@ -10,5 +10,6 @@
         <field:display field="isAdmin" id="s_org_hcmus_tis_model_Account_isAdmin" object="${account}" z="user-managed"/>
         <field:display field="isEnable" id="s_org_hcmus_tis_model_Account_isEnable" object="${account}" z="3B3pQVlU1HbqRT1bhATbZebscI4="/>
         <field:display field="status" id="s_org_hcmus_tis_model_Account_status" object="${account}" z="user-managed"/>
+        <field:display field="calendar" id="s_org_hcmus_tis_model_Account_calendar" object="${account}" render="false" z="user-managed"/>
     </page:show>
 </div>

@@ -19,6 +19,10 @@ $(function() {
 					$(panel).unmask();
 					$(ui.panel).mask('Loading ...');
 					panel = ui.panel;
+				},
+				load : function(event, ui){
+					var x;
+					$(ui.panel).unmask();
 				}
 			});
 });

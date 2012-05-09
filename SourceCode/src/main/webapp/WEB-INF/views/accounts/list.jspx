@@ -7,14 +7,15 @@
     source="/accounts/mList" 
     thead="First Name, Last Name, Email, Status"
     fdelete="true" fnew="true" fshow="true" fgoto="true"/>
-    <div id="pl_org_hcmus_tis_model_Account" >
-        <div id="l_org_hcmus_tis_model_Account" >
-            <div id="c_org_hcmus_tis_model_Account_firstName" />
-            <div id="c_org_hcmus_tis_model_Account_lastName" />
-            <div id="c_org_hcmus_tis_model_Account_email" />
-            <div id="c_org_hcmus_tis_model_Account_password" />
-            <div id="c_org_hcmus_tis_model_Account_isAdmin" />
-            <div id="c_org_hcmus_tis_model_Account_isEnable" />
+    <div id="pl_org_hcmus_tis_model_Account">
+        <div id="l_org_hcmus_tis_model_Account">
+            <div id="c_org_hcmus_tis_model_Account_firstName"/>
+            <div id="c_org_hcmus_tis_model_Account_lastName"/>
+            <div id="c_org_hcmus_tis_model_Account_email"/>
+            <div id="c_org_hcmus_tis_model_Account_password"/>
+            <div id="c_org_hcmus_tis_model_Account_isAdmin"/>
+            <div id="c_org_hcmus_tis_model_Account_isEnable"/>
+            <table:column id="c_org_hcmus_tis_model_Account_calendar" property="calendar" z="+oMDtfC3+JjkP3FOGR8YtI8XUZI="/>
         </div>
     </div>
 </div>

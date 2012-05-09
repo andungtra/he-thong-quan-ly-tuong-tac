@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.AccountController;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -37,6 +38,7 @@ privileged aspect AccountController_Roo_Controller {
     void AccountController.populateEditForm(Model uiModel, Account account) {
         uiModel.addAttribute("account", account);
         uiModel.addAttribute("accountstatuses", Arrays.asList(AccountStatus.values()));
+        uiModel.addAttribute("calendars", Calendar.findAllCalendars());
     }
     
     String AccountController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

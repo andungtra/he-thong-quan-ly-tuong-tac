@@ -1,24 +1,33 @@
 package org.hcmus.tis.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.hcmus.tis.dto.AccountDTO;
+import org.hcmus.tis.dto.DSResponse;
+import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.Calendar;
+import org.hcmus.tis.model.Event;
+import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
-import org.hibernate.engine.Status;
+import org.hibernate.mapping.Array;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -153,6 +162,11 @@ public class AccountController {
 		return "accounts/projects";
 	}
 
+	@RequestMapping(value = "/{id}/dashboard", produces = "text/html")
+	public String showDashBoard(@PathVariable("id") Long id, Model uiModel) {
+		return "accounts/dashboard";
+	}
+
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho" })
 	@ResponseBody
@@ -250,6 +264,81 @@ public class AccountController {
 			}
 		}
 		return reply;
+	}
+
+	@RequestMapping(value = "/{id}/dumpcalendar")
+	public String showDumpCalendar(@PathVariable("id") Long id, Model uiModel) {
+		uiModel.addAttribute("id", id);
+		return "accounts/dumpcalendar";
+	}
+
+	@RequestMapping(value = "/{id}/calendar")
+	public String showCalendar(@PathVariable("id") Long id, Model uiModel) {
+		uiModel.addAttribute("id", id);
+		return "accounts/calendar";
+	}
+
+	@RequestMapping(value = "/{id}/calendar/events")
+	@ResponseBody
+	public DSRestResponse getEvents(@PathVariable("id") Long id) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		Account account = Account.findAccount(id);
+		List<Object> datas = new ArrayList<Object>();
+		for(Event event : account.getCalendar().getEvents()){
+			datas.add(event);
+		}
+		restResponse.getResponse().setStatus(0);
+		restResponse.getResponse().setData(datas);
+		return restResponse;
+	}
+
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=add"})
+	@ResponseBody
+	public DSRestResponse creatEvent(@PathVariable("id") Long accountId, @Valid Event event, BindingResult bindingResult) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		if(bindingResult.hasErrors()){
+			restResponse.getResponse().setStatus(1);
+		}
+		event.setCalendars(new ArrayList<Calendar>());
+		Calendar calender = Account.findAccount(accountId).getCalendar();
+		calender.getEvents().add(event);
+		event.persist();
+		List<Object> data = new ArrayList<Object>();
+		data.add(event);
+		restResponse.getResponse().setData(data);
+		return restResponse;
+	}
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=update"})
+	@ResponseBody
+	public DSRestResponse updateEvent(@PathVariable("id") Long accountId, Long id, @Valid Event event, BindingResult bindingResult) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		event.setId(id);
+		if(bindingResult.hasErrors()){
+			restResponse.getResponse().setStatus(1);
+		}
+		Event managedEvent = event.merge();
+		List<Object> data = new ArrayList<Object>();
+		data.add(managedEvent);
+		restResponse.getResponse().setData(data);
+		return restResponse;
+	}
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=remove"})
+	@ResponseBody
+	public DSRestResponse deleteEvent(@PathVariable("id") Long accountId, Long id) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		Event event = Event.findEvent(id);
+		for(Calendar calendar : event.getCalendars()){
+			calendar.getEvents().remove(event);
+		}
+		event.remove();
+		List<Object> data = new ArrayList<Object>();
+		data.add(event);
+		restResponse.getResponse().setData(data);
+		return restResponse;
 	}
 
 	@RequestMapping(produces = "text/html")

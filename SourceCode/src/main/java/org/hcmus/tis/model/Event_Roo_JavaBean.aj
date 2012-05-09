@@ -3,7 +3,9 @@
 
 package org.hcmus.tis.model;
 
+import java.util.Collection;
 import java.util.Date;
+import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
 
 privileged aspect Event_Roo_JavaBean {
@@ -38,6 +40,14 @@ privileged aspect Event_Roo_JavaBean {
     
     public void Event.setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+    
+    public Collection<Calendar> Event.getCalendars() {
+        return this.calendars;
+    }
+    
+    public void Event.setCalendars(Collection<Calendar> calendars) {
+        this.calendars = calendars;
     }
     
 }
