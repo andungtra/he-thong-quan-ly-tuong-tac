@@ -2,6 +2,7 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:tab="urn:jsptagdir:/WEB-INF/tags/map"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
@@ -9,48 +10,24 @@
 	<spring:url value="/resources/images/update.png" var="update_image_url"></spring:url>
 	<spring:url value="/resources/images/create.png" var="create_image_url"></spring:url>
 	<spring:url value="/memberinformations" var="object_url"></spring:url>
+	<spring:url
+		value="/memberinformations?form&amp;projectId=${projectId}&amp;redirectUrl=/projects/${projectId}/members"
+		var="lAdd"></spring:url>
+	<spring:url
+		value="/memberinformations?${memberinformation.id}&amp;redirectUrl=/projects/${projectId}/members"
+		var="lDelete"></spring:url>
+	<spring:url value="/memberinformations" var="update_url">
+		<!-- <spring:param name="fromProjectForm"></spring:param> -->
+	</spring:url>
+	<c:set var="redirectUrl" value="/projects/${projectId}/members"></c:set>
+	<spring:url value="/memberinformations" var="remove_url" />
 
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both; height: 10px;" />
-	<div style="overflow: hidden;">
-		<a
-			href="${object_url }?form&amp;projectId=${projectId}&amp;redirectUrl=/projects/${projectId}/members"><img
-			src="${create_image_url }" /></a>
-	</div>
-	<TABLE>
-		<THEAD>
-			<TR>
-				<TH>Account</TH>
-				<TH>Role</TH>
-				<TH></TH>
-			</TR>
-		</THEAD>
-		<TBODY>
-			<c:forEach items="${memberinformations }" var="memberinformation">
-				<tr>
-					<td>${memberinformation.account.email }</td>
-					<td>${memberinformation.memberRole.name }</td>
-					<td>
-						<div class="quicklinks">
-							<span> <form:form method="DELETE"
-									action="${object_url}/${memberinformation.id}">
-									<input type="hidden" name="redirectUrl"
-										value="//projects/${projectId}/members" />
-									<input type="image" class="image" src="${delete_image_url }"
-										title="Delete member"
-										onclick="return confirm('Do you want to delete?')"></input>
-								</form:form> <spring:url value="/memberinformations/${ memberinformation.id}"
-									var="update_url">
-									<spring:param name="fromProjectForm"></spring:param>
-									<spring:param name="redirectUrl" value="/projects/${projectId}/members"></spring:param>
-								</spring:url>
-							</span> <span> <a href="${update_url }"><img
-									src="${update_image_url }" title="Update member" /></a>
-							</span>
-						</div>
-					</td>
-				</tr>
-			</c:forEach>
-		</TBODY>
-	</TABLE>
+
+	<table:datatable aoColumns="name,memberRole" id="tbmember"
+		path="memberinformations"
+		source="/memberinformations/mList/${projectId}"
+		thead="Name, Member Role" fadd="${lAdd}" fupdate="${update_url}"
+		fremove="${remove_url}" redirectUrl="${redirectUrl}" />
 </div>

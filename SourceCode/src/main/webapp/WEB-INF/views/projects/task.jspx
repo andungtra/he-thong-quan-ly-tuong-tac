@@ -129,7 +129,7 @@
 												"aaSorting": [[ 2, "desc" ]],
 												"bJQueryUI" : true,
 												"sPaginationType" : "full_numbers",
-												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;lfr&gt;t&lt;"F"ip&gt;',
+												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;',
 												"fnCreatedRow" : function(nRow,
 														aData, iDataIndex) {
 													if (iDataIndex == 0) {

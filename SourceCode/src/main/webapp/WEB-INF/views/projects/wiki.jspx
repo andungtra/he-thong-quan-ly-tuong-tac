@@ -3,5 +3,5 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <a href="/TIS/projects?form">fdads</a>
-        <util:load-calendar-scripts></util:load-calendar-scripts>
+    
 </div>

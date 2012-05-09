@@ -1,6 +1,10 @@
 package org.hcmus.tis.model;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -45,4 +49,15 @@ public class MemberInformation {
             attached.setDeleted(true);
         }
     }
+
+	public static List<MemberInformation> findMemberInformationsByProject(Project project) {
+		// TODO Auto-generated method stub
+        if (project == null) throw new IllegalArgumentException("The project argument is required");
+        EntityManager em = MemberInformation.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery("SELECT o FROM MemberInformation AS o WHERE o.project = :project", MemberInformation.class);
+      
+        q.setParameter("project", project);
+        return q.getResultList();
+	
+	}
 }

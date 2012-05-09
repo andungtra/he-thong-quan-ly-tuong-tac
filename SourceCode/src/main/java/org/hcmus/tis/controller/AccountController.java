@@ -10,8 +10,10 @@ import javax.validation.Valid;
 
 import org.hcmus.tis.dto.AccountDTO;
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
@@ -147,6 +149,29 @@ public class AccountController {
 		return "accounts/projects";
 	}
 
+	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mListProject(int iDisplayStart, int iDisplayLength, String sEcho, HttpSession session) {
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) Project.countProjects());
+		reply.setiTotalDisplayRecords((int) Project.countProjects());
+		Account acc = (Account) session.getAttribute("account");
+		List<MemberInformation> list = MemberInformation.findMemberInformationEntries(iDisplayStart,iDisplayLength);
+		for (MemberInformation item : list) {
+			if(item.getAccount().getEmail().equals(acc.getEmail())){
+				ProjectDTO dto = new ProjectDTO();
+				dto.DT_RowId = item.getId();
+				dto.setName("<a href='//TIS/projects/"+item.getProject().getId()+"'>"+item.getProject().getName()+"</a>");				
+				dto.setDescription(item.getProject().getDescription());
+				reply.getAaData().add(dto);
+			}
+			
+		}
+		return reply;
+	}
+	
 	@RequestMapping(value = "/redirect", produces = "text/html")
 	public String redirect() {
 		return "accounts/redirect";
