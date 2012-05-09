@@ -18,6 +18,7 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
+import org.hibernate.engine.Status;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/accounts")
@@ -82,8 +84,9 @@ public class AccountController {
 		if (oldAccount.getPassword().compareTo(activeKey) == 0
 				&& oldAccount.getStatus() == AccountStatus.INACTIVE) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-			String encodePassword = encoder.encodePassword(account.getPassword(), null);
-			oldAccount.setPassword(encodePassword) ;
+			String encodePassword = encoder.encodePassword(
+					account.getPassword(), null);
+			oldAccount.setPassword(encodePassword);
 			oldAccount.setFirstName(account.getFirstName());
 			oldAccount.setLastName(account.getLastName());
 			oldAccount.setStatus(AccountStatus.ACTIVE);
@@ -112,7 +115,7 @@ public class AccountController {
 		uiModel.addAttribute("account", accountService.findAccount(id));
 		uiModel.addAttribute("itemId", id);
 		return "accounts/show";
-		//return "accounts/redirect";
+		// return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/home", produces = "text/html")
@@ -121,24 +124,25 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/email/{email}", produces = "text/html")
-	public String homepage(@PathVariable("email") String email,Model uiModel) {
-		
-		if(!email.endsWith(".com"))
-			email = email+".com";
+	public String homepage(@PathVariable("email") String email, Model uiModel) {
+
+		if (!email.endsWith(".com"))
+			email = email + ".com";
 		Account acc = Account.getAccountbyEmail(email);
-		if(acc!=null)
-			return "redirect:/accounts/"+ acc.getId()+"/home";
+		if (acc != null)
+			return "redirect:/accounts/" + acc.getId() + "/home";
 		else
 			return "../login";
 	}
-	
+
 	@RequestMapping(value = "/{id}/home", produces = "text/html")
-	public String home(@PathVariable("id") Long id, Model uiModel, HttpSession session) {
+	public String home(@PathVariable("id") Long id, Model uiModel,
+			HttpSession session) {
 		uiModel.addAttribute("account", accountService.findAccount(id));
 		uiModel.addAttribute("itemId", id);
 		session.setAttribute("account", accountService.findAccount(id));
 		return "accounts/home";
-		//return "accounts/redirect";
+		// return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/{id}/projects", produces = "text/html")
@@ -152,89 +156,138 @@ public class AccountController {
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho" })
 	@ResponseBody
-	public DtReply mListProject(int iDisplayStart, int iDisplayLength, String sEcho, HttpSession session) {
+	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
+			String sEcho, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		reply.setiTotalRecords((int) Project.countProjects());
 		reply.setiTotalDisplayRecords((int) Project.countProjects());
 		Account acc = (Account) session.getAttribute("account");
-		List<MemberInformation> list = MemberInformation.findMemberInformationEntries(iDisplayStart,iDisplayLength);
+		List<MemberInformation> list = MemberInformation
+				.findMemberInformationEntries(iDisplayStart, iDisplayLength);
 		for (MemberInformation item : list) {
-			if(item.getAccount().getEmail().equals(acc.getEmail())){
+			if (item.getAccount().getEmail().equals(acc.getEmail())) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='//TIS/projects/"+item.getProject().getId()+"'>"+item.getProject().getName()+"</a>");				
+				dto.setName("<a href='//TIS/projects/"
+						+ item.getProject().getId() + "'>"
+						+ item.getProject().getName() + "</a>");
 				dto.setDescription(item.getProject().getDescription());
 				reply.getAaData().add(dto);
 			}
-			
+
 		}
 		return reply;
 	}
-	
+
 	@RequestMapping(value = "/redirect", produces = "text/html")
 	public String redirect() {
 		return "accounts/redirect";
 	}
-	
+
 	@RequestMapping(value = "/{id}", produces = "text/html")
-    public String show(@PathVariable("id") Long id, Model uiModel) {
-        //uiModel.addAttribute("account", accountService.findAccount(id));
-        //uiModel.addAttribute("itemId", id);
-        //return "accounts/show";
+	public String show(@PathVariable("id") Long id, Model uiModel) {
+		// uiModel.addAttribute("account", accountService.findAccount(id));
+		// uiModel.addAttribute("itemId", id);
+		// return "accounts/show";
 		return "accounts/redirect";
-    }
-	
+	}
+
 	@RequestMapping(value = "/{id}", params = "userform", produces = "text/html")
-    public String userupdateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, accountService.findAccount(id));
-        return "accounts/user-update";
-    }
-	
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid Account account, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, account);
-            return "accounts/update";
-        }
-        uiModel.asMap().clear();
-        accountService.updateAccount(account);
-        return "redirect:/accounts/home" ;
-    }
-    
-    @RequestMapping(value = "/edit",method = RequestMethod.PUT, produces = "text/html")
-    public String userupdate(@Valid Account account, String firstName, String lastName, String email, Model uiModel, HttpServletRequest httpServletRequest) {
-        Account exist = Account.getAccountbyEmail(email);
-        if(account.getEmail()!=email && exist!=null)
-        {
-        	uiModel.addAttribute("error","Email is exist");
-        	return "accounts/user-update";
-        }
-        account.setFirstName(firstName);
-        account.setLastName(lastName);
-        account.setEmail(email);
-        accountService.updateAccount(account);
-        return "redirect:/accounts/home" ;
-    }
-    
-    @RequestMapping(value = "mList", params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	public String userupdateForm(@PathVariable("id") Long id, Model uiModel) {
+		populateEditForm(uiModel, accountService.findAccount(id));
+		return "accounts/user-update";
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	public String update(@Valid Account account, BindingResult bindingResult,
+			Model uiModel, HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, account);
+			return "accounts/update";
+		}
+		uiModel.asMap().clear();
+		accountService.updateAccount(account);
+		return "redirect:/accounts/home";
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "text/html")
+	public String userupdate(@Valid Account account, String firstName,
+			String lastName, String email, Model uiModel,
+			HttpServletRequest httpServletRequest) {
+		Account exist = Account.getAccountbyEmail(email);
+		if (account.getEmail() != email && exist != null) {
+			uiModel.addAttribute("error", "Email is exist");
+			return "accounts/user-update";
+		}
+		account.setFirstName(firstName);
+		account.setLastName(lastName);
+		account.setEmail(email);
+		accountService.updateAccount(account);
+		return "redirect:/accounts/home";
+	}
+
+	@RequestMapping(value = "mList", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho" })
 	@ResponseBody
-	public DtReply mList( int iDisplayStart,int iDisplayLength, String sEcho) {		
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		reply.setiTotalRecords((int) Account.countAccounts());
 		reply.setiTotalDisplayRecords((int) Account.countAccounts());
-		List<Account> list = Account.findAccountEntries(iDisplayStart,iDisplayLength);
+		List<Account> list = Account.findAccountEntries(iDisplayStart,
+				iDisplayLength);
 		for (Account item : list) {
-			AccountDTO dto = new AccountDTO();
-			dto.DT_RowId = item.getId();
-			dto.setFirstName(item.getFirstName());
-			dto.setLastName(item.getLastName());
-			dto.setEmail(item.getEmail());
-			dto.setStatus(item.getStatus().name());
-					
-			reply.getAaData().add(dto);
-		}		
+			if (!item.getStatus().equals(AccountStatus.DELETED)) {
+				AccountDTO dto = new AccountDTO();
+				dto.DT_RowId = item.getId();
+				dto.setFirstName(item.getFirstName());
+				dto.setLastName(item.getLastName());
+				dto.setEmail(item.getEmail());
+				dto.setStatus(item.getStatus().name());
+
+				reply.getAaData().add(dto);
+			}
+		}
 		return reply;
 	}
+
+	@RequestMapping(produces = "text/html")
+	public String list(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
+		List<Account> lst = null;
+		if (page != null || size != null) {
+			int sizeNo = size == null ? 10 : size.intValue();
+			final int firstResult = page == null ? 0 : (page.intValue() - 1)
+					* sizeNo;
+			lst = accountService.findAccountEntries(firstResult, sizeNo);
+			float nrOfPages = (float) accountService.countAllAccounts()
+					/ sizeNo;
+			uiModel.addAttribute(
+					"maxPages",
+					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
+							: nrOfPages));
+		} else {
+			lst = accountService.findAllAccounts();
+		}
+		for (Account account : lst) {
+			if (account.getStatus().equals(AccountStatus.DELETED))
+				lst.remove(account);
+		}
+		uiModel.addAttribute("accounts", lst);
+		return "accounts/list";
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        Account account = accountService.findAccount(id);
+        account.setStatus(AccountStatus.DELETED);
+        account.merge();
+        uiModel.asMap().clear();
+        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+        return "redirect:/accounts"; 
+    }
 }

@@ -46,6 +46,14 @@ privileged aspect WorkItem_Roo_JavaBean {
         this.dateCreated = dateCreated;
     }
     
+    public Date WorkItem.getDateLastEdit() {
+        return this.dateLastEdit;
+    }
+    
+    public void WorkItem.setDateLastEdit(Date dateLastEdit) {
+        this.dateLastEdit = dateLastEdit;
+    }
+    
     public String WorkItem.getAdditionalFields() {
         return this.additionalFields;
     }

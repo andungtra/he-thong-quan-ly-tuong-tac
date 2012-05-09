@@ -6,6 +6,7 @@ package org.hcmus.tis.model;
 import java.util.Set;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 
 privileged aspect Project_Roo_JavaBean {
@@ -32,6 +33,14 @@ privileged aspect Project_Roo_JavaBean {
     
     public void Project.setStudyClass(StudyClass studyClass) {
         this.studyClass = studyClass;
+    }
+    
+    public ProjectStatus Project.getStatus() {
+        return this.status;
+    }
+    
+    public void Project.setStatus(ProjectStatus status) {
+        this.status = status;
     }
     
 }

@@ -2,6 +2,7 @@ package org.hcmus.tis.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -56,6 +57,10 @@ public class WorkItemController {
 			fields.add(field);
 		}
 		workItem.setAdditionFiels(fields);
+		
+		Date date = new Date();		
+		workItem.setDateLastEdit(date);
+		
         uiModel.asMap().clear();
         workItem.merge();
         return "redirect:/workitems/" + encodeUrlPathSegment(workItem.getId().toString(), httpServletRequest);
@@ -144,6 +149,10 @@ public class WorkItemController {
 			fields.add(field);
 		}
 		workItem.setAdditionFiels(fields);
+		
+		Date date = new Date();		
+		workItem.setDateLastEdit(date);
+		
 		uiModel.asMap().clear();
 		workItem.persist();
 		return "redirect:/workitems/"

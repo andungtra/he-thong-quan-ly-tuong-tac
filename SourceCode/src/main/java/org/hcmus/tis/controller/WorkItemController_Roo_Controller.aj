@@ -59,6 +59,7 @@ privileged aspect WorkItemController_Roo_Controller {
     
     void WorkItemController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("workItem_datecreated_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("workItem_datelastedit_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("workItem_duedate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     

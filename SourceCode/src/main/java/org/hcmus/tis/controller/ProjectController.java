@@ -20,6 +20,7 @@ import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
+import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
@@ -136,10 +137,10 @@ public class ProjectController {
 		for (WorkItem workItem : workItemsList) {
 			if (workItem.getWorkItemContainer().getId().equals(id)) {
 				if (workItem.getDueDate() != null) {
-					
+
 					Calendar dueTime = Calendar.getInstance();
 					dueTime.setTime(workItem.getDueDate());
-					long due = dueTime.get(Calendar.DAY_OF_YEAR);					
+					long due = dueTime.get(Calendar.DAY_OF_YEAR);
 					if (due < now)
 						overdues.add(workItem);
 					else
@@ -147,7 +148,7 @@ public class ProjectController {
 				}
 			}
 		}
-		
+
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
 		uiModel.addAttribute("itemId", id);
@@ -241,4 +242,44 @@ public class ProjectController {
 		uiModel.addAttribute("projects", Project.findAllProjects());
 		return "projects/list";
 	}
+
+	@RequestMapping(produces = "text/html")
+	public String list(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
+		List<Project> lst = null;
+		if (page != null || size != null) {
+			int sizeNo = size == null ? 10 : size.intValue();
+			final int firstResult = page == null ? 0 : (page.intValue() - 1)
+					* sizeNo;
+			lst = Project.findProjectEntries(firstResult, sizeNo);
+
+			float nrOfPages = (float) Project.countProjects() / sizeNo;
+			uiModel.addAttribute(
+					"maxPages",
+					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
+							: nrOfPages));
+		} else {
+			lst = Project.findAllProjects();
+		}
+		for (Project project : lst) {
+			if (project.getStatus().equals(ProjectStatus.DELETED))
+				lst.remove(project);
+		}
+		uiModel.addAttribute("projects", lst);
+		return "projects/list";
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        Project project = Project.findProject(id);
+        project.setStatus(ProjectStatus.DELETED);
+        project.merge();
+        //project.remove();
+        uiModel.asMap().clear();
+        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+        return "redirect:/projects";
+    }
 }

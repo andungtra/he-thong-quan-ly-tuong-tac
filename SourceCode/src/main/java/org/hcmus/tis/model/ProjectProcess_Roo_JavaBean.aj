@@ -49,4 +49,12 @@ privileged aspect ProjectProcess_Roo_JavaBean {
         this.workItemTypes = workItemTypes;
     }
     
+    public boolean ProjectProcess.isIsDeleted() {
+        return this.isDeleted;
+    }
+    
+    public void ProjectProcess.setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
 }

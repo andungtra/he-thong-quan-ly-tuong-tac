@@ -78,7 +78,11 @@ public class WorkItem {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date dateCreated;
-
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date dateLastEdit;
+        
     private String additionalFields;
 
     @NotNull

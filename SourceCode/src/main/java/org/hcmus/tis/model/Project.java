@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -33,6 +34,10 @@ public class Project extends WorkItemContainer {
     @NotNull
     private ProjectProcess projectProcess;
 
+    @Enumerated
+    @NotNull
+    private ProjectStatus status;
+    
     public static long countProjectsByNameLike(String name) {
         if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
         name = name.replace('*', '%');

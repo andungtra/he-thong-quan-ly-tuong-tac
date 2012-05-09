@@ -53,6 +53,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         setAsignee(obj, index);
         setAuthor(obj, index);
         setDateCreated(obj, index);
+        setDateLastEdit(obj, index);
         setDescription(obj, index);
         setDueDate(obj, index);
         setPriority(obj, index);
@@ -81,6 +82,11 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     public void WorkItemDataOnDemand.setDateCreated(WorkItem obj, int index) {
         Date dateCreated = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
         obj.setDateCreated(dateCreated);
+    }
+    
+    public void WorkItemDataOnDemand.setDateLastEdit(WorkItem obj, int index) {
+        Date dateLastEdit = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        obj.setDateLastEdit(dateLastEdit);
     }
     
     public void WorkItemDataOnDemand.setDescription(WorkItem obj, int index) {

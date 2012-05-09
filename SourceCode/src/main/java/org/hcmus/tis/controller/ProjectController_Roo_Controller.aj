@@ -12,8 +12,6 @@ import org.hcmus.tis.model.Project;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -30,34 +28,10 @@ privileged aspect ProjectController_Roo_Controller {
         return "projects/create";
     }
     
-    @RequestMapping(produces = "text/html")
-    public String ProjectController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("projects", Project.findProjectEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Project.countProjects() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("projects", Project.findAllProjects());
-        }
-        return "projects/list";
-    }
-    
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ProjectController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Project.findProject(id));
         return "projects/update";
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String ProjectController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Project project = Project.findProject(id);
-        project.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/projects";
     }
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

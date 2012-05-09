@@ -10,8 +10,9 @@
             <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
             <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         </util:advancedpanel>
-        <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="user-managed" render="false"/>
-        <input type="hidden" name="c_org_hcmus_tis_model_Project_memberInformations" value="${project.memberInformations}"/>
+        <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" render="false" z="user-managed"/>
+        <input name="c_org_hcmus_tis_model_Project_memberInformations" type="hidden" value="${project.memberInformations}"/>
+        <field:select field="status" id="c_org_hcmus_tis_model_Project_status" items="${projectstatuses}" path="projectstatuses" required="true" z="KfEGBXitclALPxJ2l7qB+thOlf8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Project" render="${not empty dependencies}" z="oUwFVkWRLSvnxKFthMXtrdbKIJU="/>
 </div>
