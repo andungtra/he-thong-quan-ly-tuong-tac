@@ -26,7 +26,7 @@
 	<definition extends="content" name="projects/task">
 		<put-attribute name="body" value="/WEB-INF/views/projects/task.jspx" />
 	</definition>
-	<definition extends="default" name="projects/wiki">
+	<definition extends="content" name="projects/wiki">
 		<put-attribute name="body" value="/WEB-INF/views/projects/wiki.jspx" />
 	</definition>
 	<definition extends="content" name="projects/member">

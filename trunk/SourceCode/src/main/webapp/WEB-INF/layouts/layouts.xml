@@ -7,22 +7,26 @@
 
 	<definition name="default" template="/WEB-INF/layouts/default.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
 
 
 	<definition name="administrator" template="/WEB-INF/layouts/layout.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
 		<put-attribute name="myMenu" value="/WEB-INF/views/administratormenu.jspx" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
 
 	<definition name="project" template="/WEB-INF/layouts/layout.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
 		<put-attribute name="myMenu" value="/WEB-INF/views/projectmenu.jspx" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
 
 	<definition name="user" template="/WEB-INF/layouts/layout.jspx">
 		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
 		<put-attribute name="myMenu" value="/WEB-INF/views/usermenu.jspx" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
 	</definition>
 
 	<definition name="content" template="/WEB-INF/layouts/tabcontent.jspx">

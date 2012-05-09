@@ -12,14 +12,13 @@
 	<div class="left-panel" id="overview">
 		<page:show create="false" delete="false"
 			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
-			path="/projects" update="false" z="user-managed">
-			<field:display field="name" id="s_org_hcmus_tis_model_Project_name"
-				object="${project}" z="t8d+J0PKtFREMnVoUyyYCgNXBpI=" />
-				
+			path="/projects" update="false" z="user-managed"
+			label="Project ${project.name}">
+
 			<field:display field="description"
 				id="s_org_hcmus_tis_model_Project_description" object="${project}"
 				z="wdUFcebJjkZc28b97a5kBc7qxx8=" />
-							
+
 			<field:display field="parentContainer"
 				id="s_org_hcmus_tis_model_Project_parentContainer"
 				label="Parent project" object="${project}" z="user-managed" />
@@ -42,17 +41,17 @@
 	<div class="right-panel">
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
-				<li>Overdue 1</li>
-				<li>Overdue 2</li>
-				<li>Overdue 3</li>
+				<c:forEach items="${overdues}" var="item">
+					<li><span>${item.dueDate}</span>-<span>${item.title}</span></li>
+				</c:forEach>
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="Due next week" id="">
+		<util:fixpanel title="In due" id="">
 			<ul class="due">
-				<li>Due 1</li>
-				<li>Due 2</li>
-				<li>Due 3</li>
+				<c:forEach items="${indues}" var="item">
+					<li><span>${item.dueDate}</span>-<span>${item.title}</span></li>
+				</c:forEach>
 			</ul>
 		</util:fixpanel>
 	</div>

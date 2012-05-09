@@ -122,8 +122,9 @@ body {
 .footer {
 	background-color: #1964A6;
 	text-align: center;
-	padding: 0px 10px;
-	color: #85ADD0;
+	padding: 10px;
+
+	color: #FFF;
 }
 
 .footer p {
@@ -211,6 +212,9 @@ body {
 {
 	float: left;
 	width: 40%;
+	height:100%;
+	padding-right:25px;
+	border-right: solid 1px #ccc;
 }
 
 .right-panel
@@ -311,7 +315,7 @@ button:hover
 }
 
 #wrapper {
-	width: 1000px;
+	width: 1000px;	
 	margin: auto;	
 	overflow:hidden;
 	display:block;

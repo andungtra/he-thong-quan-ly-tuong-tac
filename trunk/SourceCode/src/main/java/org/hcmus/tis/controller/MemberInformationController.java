@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.MemberDTO;
+import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/memberinformations")
 @Controller
@@ -84,4 +89,23 @@ public class MemberInformationController {
         }
         return "redirect:/memberinformations/" + encodeUrlPathSegment(memberInformation.getId().toString(), httpServletRequest);
     }
+    
+    @RequestMapping(value = "mList/{id}", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho" })
+	@ResponseBody
+	public DtReply mList(@PathVariable("id") Long id,int iDisplayStart, int iDisplayLength, String sEcho) {
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		reply.setiTotalRecords((int) MemberInformation.countMemberInformations());
+		reply.setiTotalDisplayRecords((int)  MemberInformation.countMemberInformations());
+		List<MemberInformation> list  = MemberInformation.findMemberInformationsByProject(Project.findProject(id));
+		for (MemberInformation item : list) {
+			MemberDTO dto = new MemberDTO();
+			dto.DT_RowId = item.getId();
+			dto.setName(item.getAccount().getFirstName() + "" + item.getAccount().getLastName());
+			dto.setMemberRole(item.getMemberRole().getName());
+			reply.getAaData().add(dto);
+		}
+		return reply;
+	}
 }

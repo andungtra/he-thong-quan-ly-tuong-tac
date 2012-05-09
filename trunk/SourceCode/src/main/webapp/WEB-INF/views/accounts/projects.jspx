@@ -7,15 +7,7 @@
 	version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<page:quickfind createButton="false" finderName="quickFind" id="ff_org_hcmus_tis_model_Project" listButton="false" path="/projects" z="DDdiaXVXKt/UMSSWbFAl6PhR5G4=">
-        <table:SearchInput defaultValue="${query}" disableFormBinding="true" field="query" id="f_org_hcmus_tis_model_Project_name" label="search" max="50" min="1" placeholder="Search project ..." required="true" type="search" z="Mlw+7BkJHj2iZukqNMiPbNOQQ8g="/>
-    </page:quickfind>
-    <page:list id="pl_org_hcmus_tis_model_Project" items="${projects}" z="H4T6XJH9jrQ+hw+mH2+mN2ZPQWo=">
-        <table:table data="${projects}" id="l_org_hcmus_tis_model_Project" path="/projects" z="voKAEM8lGKeKDAaMF4waRTT63yk=">
-            <table:column id="c_org_hcmus_tis_model_Project_name" property="name" z="6S7wo7Xf1VDpKlEyVEcbkTGJAoA="/>
-            <table:column id="c_org_hcmus_tis_model_Project_parentContainer" property="parentContainer" z="ljK4mPmWOn3lNJCDQEk9lGIWnoo="/>
-            <table:column id="c_org_hcmus_tis_model_Project_description" property="description" z="Er6DWB+pj5iQaJPgx7f2q+OaObE="/>
-            <table:column id="c_org_hcmus_tis_model_Project_studyClass" property="studyClass" z="Qs1oTY40kbVA9MTc0H9V0EfkVCI="/>
-        </table:table>
-    </page:list>
+	<table:datatable aoColumns="name,parentContainer,description"
+       		id="tbproject" path="/accounts" source="/accounts/mListProject" 
+       		thead="Name,ParentContainer,Description"/>    
 </div>

@@ -14,13 +14,37 @@
 	<jsp:directive.attribute name="path" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The path" />
 
+	<jsp:directive.attribute name="source" type="java.lang.String"
+		required="true" rtexprvalue="true" description="The source" />
+
 	<jsp:directive.attribute name="aoColumns" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The aoColumns" />
 
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id" />
 
-	<jsp:directive.attribute name="goto" type="java.lang.Boolean"
+	<jsp:directive.attribute name="fgoto" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fnew" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fshow" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fdelete" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fadd" type="java.lang.String"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fupdate" type="java.lang.String"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fremove" type="java.lang.String"
+		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="redirectUrl" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
 
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
@@ -45,10 +69,9 @@
 	<spring:url
 		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
 		var="workitem_content_css" />
-	<spring:url value="${path}/" var="lDelete" />
-	<spring:url value="${path}/" var="lShow" />
-	<spring:url value="${path}/mList" var="source" />
-	<spring:url value="${path}?form" var="lNew" />
+<spring:url value="${path}" var="path" />
+	<spring:url value="${source}" var="source" />	<spring:url value="${path}?form" var="lNew" />
+
 	<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false}' />
 	<c:forTokens items="${aoColumns}" var="column" delims="{,}">
 		<c:set var="ao" value='${ao},{"mDataProp" :"${column}"}' />
@@ -84,7 +107,7 @@
 												"aoColumns" : ${ao},
 												"bJQueryUI" : true,												
 												"sPaginationType" : "full_numbers",
-												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"lip&gt;',												
+												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;',												
 												"fnCreatedRow" : function(nRow,
 														aData, iDataIndex) {
 													if (iDataIndex == 0) {
@@ -105,14 +128,24 @@
 	                         
 						});
 		 $(function() {
+			 debugger;
+			var bt = "";
+			if('${fnew}' != '')
+				bt = bt+ '<button onclick="fnew()">New</button>';
+			if('${fshow}' != '')
+				bt = bt +'<button onclick="fshow()">Show</button>';
+			if('${fgoto}' != '')
+				bt = bt+'<button onclick="fgoto()">Goto</button>';
+			if('${fdelete}' != '')
+				bt = bt	+'<button onclick="fdel()">Delete</button>';
+			if('${fadd}' != '')
+				bt = bt	+'<a href="${fadd}"><button>Add</button></a>';
+			if('${fupdate}' != '')
+				bt = bt	+'<button onclick="fupdate()">Update</button>';
+			if('${fremove}' != '')
+				bt = bt	+'<button onclick="fremove()">Remove</button>';
 			$('.datatable_buttons')
-					.html(
-							'<button onclick="fnew()">New</button>'
-							+'<button onclick="fshow()">Show</button>'
-							+'<button onclick="fgoto()">Goto</button>'
-							+'<button onclick="fdel()">Delete</button>'); 
-			
-			
+					.html(bt);	
 		}); 
 		
 		$(function() {
@@ -149,7 +182,40 @@
 			});
 			$(panel).mask('Loading ...');
 		}
+				
+		function fupdate(){
+			//debugger;
+			var s = $('#${id} tbody tr td:first-child input:checked');
+			var c = $('#${id} tbody tr td:first-child input:checked').length;
+			
+			if(c>0){
+				var idtr = $(s.parent().parent()[0]).attr('id');
+				var url="${fupdate}/"+idtr+"?fromProjectForm&amp;redirectUrl=${redirectUrl}";
+				alert(url);
+				//window.location=url;
+				$(panel).load(url, function() {});
+			}
+		}
 		
+		function fremove(){
+			var s = $('#${id} tbody tr td:first-child input:checked');
+			var c = $('#${id} tbody tr td:first-child input:checked').length;
+			
+			if(c>0){
+				
+				var idtr = $(s.parent().parent()[0]).attr('id');
+				$.ajax({
+			        type: "DELETE",
+			        url: "${fremove}/"+idtr+"?redirectUrl=${redirectUrl}",
+			        success:function(){			        	
+			        		$("#"+idtr).html("");
+			        		alert("${fremove}/"+idtr+"?redirectUrl=${redirectUrl}");
+			        		alert("item is deleted !");
+			        	} 
+			    });
+			}
+			debugger;
+		}
 		function fshow(){
 			//debugger;
 			var s = $('#${id} tbody tr td:first-child input:checked');
@@ -157,7 +223,7 @@
 			
 			if(c>0){
 				var idtr = $(s.parent().parent()[0]).attr('id');
-				var url="${lShow}"+idtr+"?form";
+				var url="${path}/"+idtr+"?form";
 				$(panel).load(url, function() {
 					$(panel).unmask();
 				});
@@ -172,7 +238,7 @@
 			
 			if(c>0){
 				var idtr = $(s.parent().parent()[0]).attr('id');
-				var url="${lShow}"+idtr;
+				var url="${path}/"+idtr;
 				//alert(url);
 				window.location=url;
 				
@@ -180,7 +246,7 @@
 		}
 		
 		function show(id){
-			var url="${lShow}"+id;
+			var url="${path}/"+id;
 			//alert(url);
 			window.location=url;
 		}
@@ -193,7 +259,7 @@
 				var idtr = $(s.parent().parent()[0]).attr('id');
 				$.ajax({
 			        type: "DELETE",
-			        url: "${lDelete}"+idtr,
+			        url: "${path}/"+idtr,
 			        success:function(){			        	
 			        		$("#"+idtr).html("");
 			        		alert("item is deleted !");

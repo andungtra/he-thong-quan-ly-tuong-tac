@@ -38,9 +38,9 @@
     <spring:message var="typeNamePlural" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_list_label" htmlEscape="false" />
 
     <spring:message arguments="${label}" code="entity_show" var="title_msg" htmlEscape="false" />
-    <util:fixpanel id="${id}" title="${title_msg}" openPane="${openPane}">
+    <util:fixpanel id="${id}" title="${label}" openPane="${openPane}">
       <c:choose>
-        <c:when test="${not empty object or object eq ''}">
+        <c:when test="${not empty object}">
           <jsp:doBody />
           <div class="quicklinks">
             <span>
