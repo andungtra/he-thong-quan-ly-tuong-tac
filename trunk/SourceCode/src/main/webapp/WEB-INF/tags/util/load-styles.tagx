@@ -1,0 +1,25 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:theme code="styleSheet" var="my_css" />
+	<spring:theme code="rooStyleSheet" var="roo_css" />
+	<spring:theme code="jqueryTheme" var="jquery_theme" />
+	<spring:url value="/${roo_css}" var="roo_css_url" />
+	<spring:url value="/${my_css}" var="my_css_url" />
+	<spring:url value="/resources/dijit/themes/tundra/tundra.css"	var="tundra_url" />
+	
+	<spring:url value="/resources/images/favicon.ico" var="favicon" />
+	<spring:url value="/${jquery_theme }" var="jquery_theme_url"></spring:url>
+
+	<link rel="stylesheet" type="text/css" href="${tundra_url}" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />
+	<link rel="stylesheet" type="text/css" href="${jquery_theme_url }"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="${my_css_url}" />
+	<link rel="stylesheet" type="text/css" media="screen" href="${mask_css_url}" />
+	<link rel="SHORTCUT ICON" href="${favicon}" />
+
+</jsp:root>
