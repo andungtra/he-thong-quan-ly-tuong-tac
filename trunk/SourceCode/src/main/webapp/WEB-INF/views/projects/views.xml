@@ -33,7 +33,11 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/member.jspx" />
 	</definition>
-	<definition extends="content" name="projects/calendar">
+	<definition extends="content" name="projects/dumpcalendar">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projects/dumpcalendar.jspx" />
+	</definition>
+		<definition extends="calendar" name="projects/calendar">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/calendar.jspx" />
 	</definition>

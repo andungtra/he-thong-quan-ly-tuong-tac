@@ -59,7 +59,7 @@ public class Account implements java.io.Serializable {
     @NotNull
     private AccountStatus status;
     
-    @ManyToOne(cascade={CascadeType.ALL})
+    @OneToOne(cascade={CascadeType.ALL})
     @JoinColumn(updatable=false)
     private Calendar calendar;
     @PrePersist
