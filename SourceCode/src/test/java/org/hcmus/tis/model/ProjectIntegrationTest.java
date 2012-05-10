@@ -1,9 +1,12 @@
 package org.hcmus.tis.model;
 
+import java.util.Collection;
+
 import javax.persistence.TypedQuery;
 
 import junit.framework.Assert;
 
+import org.hcmus.tis.dto.NonEditableEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -32,5 +35,11 @@ public class ProjectIntegrationTest {
     	TypedQuery<Project> result = Project.findProjectsByNameLike(name, 0, 100);
     	Assert.assertTrue(result.getResultList().size() > 0);
     	
+    }
+    @Test
+    public void testGetEventsOfMembers(){
+    	Project project = Project.findProject((long)1);
+    	Collection<Event> result = project.getEventsOfMembers();
+    	Assert.assertEquals(1, result.size());
     }
 }

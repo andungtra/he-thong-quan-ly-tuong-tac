@@ -14,8 +14,11 @@ import javax.validation.Valid;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.DSResponse;
+import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.dto.WorkItemDTO;
+import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
@@ -180,32 +183,6 @@ public class ProjectController {
 		return "projects/member";
 	}
 
-	@RequestMapping(value = "/{id}/calendar/{memberIds}")
-	@ResponseBody
-	public DSRestResponse getProjectCalendar(Long id, String memberIds) {
-		DSRestResponse restResponse = new DSRestResponse();
-		restResponse.setResponse(new DSResponse());
-		restResponse.getResponse().setStatus(0);
-		restResponse.getResponse().setData(new ArrayList<Object>());
-		Date beginDate = new Date();
-		Date endDate = new Date(beginDate.getTime() + 1000 * 60 * 50);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss");
-		EventTest eventTest = new EventTest();
-		eventTest.setName("name");
-		eventTest.setDescription("des");
-		eventTest.setStartDate(simpleDateFormat.format(beginDate));
-		eventTest.setEndDate(simpleDateFormat.format(endDate));
-		restResponse.getResponse().getData().add(eventTest);
-		return restResponse;
-	}
-
-	@RequestMapping(value = "/{id}/calendar", produces = "text/html")
-	public String calendar(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("project", Project.findProject(id));
-		uiModel.addAttribute("itemId", id);
-		return "projects/calendar";
-	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho" })
@@ -264,22 +241,126 @@ public class ProjectController {
 			lst = Project.findAllProjects();
 		}
 		for (Project project : lst) {
-			if (project.getStatus()!=null && project.getStatus().equals(ProjectStatus.DELETED))
+			if (project.getStatus() != null
+					&& project.getStatus().equals(ProjectStatus.DELETED))
 				lst.remove(project);
 		}
 		uiModel.addAttribute("projects", lst);
 		return "projects/list";
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Project project = Project.findProject(id);
-        project.setStatus(ProjectStatus.DELETED);
-        project.merge();
-        //project.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/projects";
-    }
+	public String delete(@PathVariable("id") Long id,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
+		Project project = Project.findProject(id);
+		project.setStatus(ProjectStatus.DELETED);
+		project.merge();
+		// project.remove();
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		return "redirect:/projects";
+	}
+
+	@RequestMapping(value = "/{id}/dumpcalendar")
+	public String showDumpCalendar(@PathVariable("id") Long id, Model uiModel) {
+		uiModel.addAttribute("id", id);
+		return "projects/dumpcalendar";
+	}
+
+	@RequestMapping(value = "/{id}/calendar")
+	public String showCalendar(@PathVariable("id") Long id, @RequestParam("encodedmemberids") String encodedMemberIds, Model uiModel) {
+		uiModel.addAttribute("id", id);
+		uiModel.addAttribute("encodedmemberids", encodedMemberIds);
+		return "projects/calendar";
+	}
+
+	@RequestMapping(value = "/{id}/calendar/{encodedmemberids}/events")
+	@ResponseBody
+	public DSRestResponse getEvents(@PathVariable("id") Long id,
+		  @PathVariable("encodedmemberids")	String encodedMemberIds) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		Project project = Project.findProject(id);
+		restResponse.getResponse().setData(new ArrayList<Object>());
+		for (Event event : project.getCalendar().getEvents()) {
+			restResponse.getResponse().getData().add(event);
+		}
+		for(Event event : project.getEventsOfMembers()){
+			NonEditableEvent nonEditableEvent = new NonEditableEvent();
+			nonEditableEvent.setId(event.getId());
+			int membersNumber = 0;
+			String memberNames = "";
+			
+			for(org.hcmus.tis.model.Calendar calendar : event.getCalendars()){
+				if(calendar.getAccount() != null){
+					for(MemberInformation memberInformation : project.getMemberInformations()){
+						if(memberInformation.getAccount().getCalendar().getId() == calendar.getId()){
+							membersNumber ++;
+							memberNames = memberNames +  memberInformation.getAccount().getFirstName() + " " + memberInformation.getAccount().getLastName() + ",";
+							break;
+						}
+					}
+				}
+			}
+			nonEditableEvent.setName(String.valueOf(membersNumber) + " members");
+			nonEditableEvent.setDescription(memberNames);
+			nonEditableEvent.setStartDate(event.getStartDate());
+			nonEditableEvent.setEndDate(event.getEndDate());
+			restResponse.getResponse().getData().add(nonEditableEvent);
+		}
+		restResponse.getResponse().setStatus(0);
+		return restResponse;
+	}
+
+	@RequestMapping(value = "/{id}/calendar/{encodedmemberids}/events", params = { "_operationType=add" })
+	@ResponseBody
+	public DSRestResponse creatEvent(@PathVariable("id") Long projectId,
+			@Valid Event event, BindingResult bindingResult) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		Project project = Project.findProject(projectId);
+		project.getCalendar().getEvents().add(event);
+		
+		event.persist();
+		restResponse.getResponse().setData(new ArrayList<Object>());
+		restResponse.getResponse().getData().add(event);
+		restResponse.getResponse().setStatus(0);
+
+		return restResponse;
+	}
+
+	@RequestMapping(value = "/{id}/calendar/{encodedmemberids}/events", params = { "_operationType=update" })
+	@ResponseBody
+	public DSRestResponse updateEvent(@PathVariable("id") Long projectId,
+			Long id, @Valid Event event, BindingResult bindingResult) {
+		DSRestResponse restResonse = new DSRestResponse();
+		restResonse.setResponse(new DSResponse());
+		event.setId(id);
+		Event resultEvent  = event.merge();
+		
+		restResonse.getResponse().setStatus(0);
+		restResonse.getResponse().setData(new ArrayList<Object>());
+		restResonse.getResponse().getData().add(resultEvent);
+		return restResonse;
+	}
+
+	@RequestMapping(value = "/{id}/calendar/{encodedmemberids}/events", params = { "_operationType=remove" })
+	@ResponseBody
+	public DSRestResponse deleteEvent(@PathVariable("id") Long accountId,
+			Long id) {
+		DSRestResponse restResponse = new DSRestResponse();
+		restResponse.setResponse(new DSResponse());
+		Event event = Event.findEvent(id);
+		for(org.hcmus.tis.model.Calendar calendar : event.getCalendars()){
+			calendar.getEvents().remove(event);
+		}
+		event.remove();
+		restResponse.getResponse().setStatus(0);
+		restResponse.getResponse().setData(new ArrayList<Object>());
+		restResponse.getResponse().getData().add(event);
+		return restResponse;
+	}
 }

@@ -5,15 +5,20 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.hcmus.tis.dto.NonEditableEvent;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -33,7 +38,14 @@ public class Project extends WorkItemContainer {
     @ManyToOne
     @NotNull
     private ProjectProcess projectProcess;
-
+    
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(nullable=false, updatable=false)
+    private Calendar calendar;
+    @PrePersist
+    public void prePersit(){
+    	calendar = new Calendar();
+    }
     @Enumerated
     private ProjectStatus status;
     
@@ -89,5 +101,21 @@ public class Project extends WorkItemContainer {
 
 	public void setProjectProcess(ProjectProcess projectProcess) {
 		this.projectProcess = projectProcess;
+	}
+
+	public Calendar getCalendar() {
+		return calendar;
+	}
+
+	protected void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
+	}
+	public Collection<Event> getEventsOfMembers(){
+		EntityManager entityManager = Project.entityManager();
+		String jpq = "SELECT DISTINCT event FROM Project project JOIN project.memberInformations memberInformation JOIN memberInformation.account.calendar calendar JOIN calendar.events event WHERE project.id = :projectId  AND event NOT MEMBER OF project.calendar.events";
+		TypedQuery<Event> q = entityManager.createQuery(jpq, Event.class);
+		q.setParameter("projectId", this.getId());
+	
+		return q.getResultList();
 	}
 }
