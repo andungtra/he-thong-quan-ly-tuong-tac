@@ -90,13 +90,14 @@ public class ProjectControllerTest {
 		events.add(event);
 		Mockito.doReturn(events).when(mockedCalendar).getEvents();
 		Collection<Event> eventsOfMember = new HashSet<Event>();
-		eventsOfMember.add(new Event());
+		Event mockedMemberEvent = Mockito.mock(Event.class);
+		eventsOfMember.add(mockedMemberEvent);
 		PowerMockito.when(Project.findProject(id)).thenReturn(mockedProject);
-		Mockito.doReturn(eventsOfMember).when(mockedProject).getMemberInformations();
+		Mockito.doReturn(eventsOfMember).when(mockedProject).getEventsOfMembers();
 		
 		DSRestResponse restResponse = aut.getEvents(id, encodedMemberIds);
 		
-		Mockito.verify(mockedProject).getMemberInformations();
+		Mockito.verify(mockedProject).getEventsOfMembers();
 		Assert.assertEquals(0, restResponse.getResponse().getStatus());
 		Assert.assertEquals(2, restResponse.getResponse().getData().size());
 	}
