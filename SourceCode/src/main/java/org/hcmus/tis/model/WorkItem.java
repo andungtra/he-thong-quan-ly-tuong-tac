@@ -116,7 +116,6 @@ public class WorkItem {
     void prePersit() {
         this.dateCreated = new Date();
     }
-
 	public ObjectFactory getObjectFactory() {
 		return objectFactory;
 	}
