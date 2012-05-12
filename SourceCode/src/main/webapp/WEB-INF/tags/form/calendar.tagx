@@ -13,34 +13,39 @@
 		description="url is used to load data, use REST format" />
 
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url value="/isomorphic/system/modules/ISC_Core.js"
+		<spring:url value="/resources/scripts/isomorphic/"
+		var="isomophic_dir_url" />
+	<script  type="text/javascript">
+	var isomorphicDir="${isomophic_dir_url}";
+	</script>
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Core.js"
 		var="isc_core_url" />
 	<script src="${isc_core_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/system/modules/ISC_Foundation.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Foundation.js"
 		var="isc_foundation_url" />
 	<script src="${isc_foundation_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/system/modules/ISC_Containers.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Containers.js"
 		var="isc_containers_url" />
 	<script src="${isc_containers_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/system/modules/ISC_Grids.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Grids.js"
 		var="isc_grids_url" />
 	<script src="${isc_grids_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/system/modules/ISC_Forms.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Forms.js"
 		var="isc_forms_url" />
 	<script src="${isc_forms_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/system/modules/ISC_DataBinding.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_DataBinding.js"
 		var="isc_databinding_url" />
 	<script src="${isc_databinding_url }" type="text/javascript"><!--isc core--></script>
-	<spring:url value="/isomorphic/system/modules/ISC_Calendar.js"
+	<spring:url value="/resources/scripts/isomorphic/system/modules/ISC_Calendar.js"
 		var="isc_calendar_url" />
 	<script src="${isc_calendar_url }" type="text/javascript"><!--isc core--></script>
 
-	<spring:url value="/isomorphic/skins/Enterprise/load_skin.js"
+	<spring:url value="/resources/scripts/isomorphic/skins/Enterprise/load_skin.js"
 		var="load_skin_url" />
 	<script src="${load_skin_url }" type="text/javascript"><!--isc core--></script>
 	<script type="text/javascript">
@@ -64,9 +69,9 @@ isc.RestDataSource.create({
         ],
 });
 isc.Calendar.create({
-    ID: "${id}_Calendar", 
-    dataSource: ${id}_dataSource, 
+    ID: "${id}_Calendar",
     autoFetchData: true,
+    dataSource: ${id}_dataSource, 
     eventAutoArrange: true,
     eventOverlap: false
 });
