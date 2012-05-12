@@ -14,7 +14,8 @@ public class NonEditableEvent {
 	private Long id;
 	private Integer version = 0;
 	private boolean canEdit = false;
-	private String eventWindowStyle = "testStyle";
+	private boolean canDelete = false;
+	private String eventWindowStyle = "nonDeletable";
 
 	public boolean isCanEdit() {
 		return canEdit;
@@ -78,6 +79,20 @@ public class NonEditableEvent {
 
 	public void setEventWindowStyle(String eventWindowStyle) {
 		this.eventWindowStyle = eventWindowStyle;
+	}
+
+	public boolean isCanDelete() {
+		return canDelete;
+	}
+
+	public void setCanDelete(boolean canDelete) {
+		this.canDelete = canDelete;
+		if(canDelete){
+			this.eventWindowStyle = "nonEditable";
+		}else
+		{
+			this.eventWindowStyle = "nonDeletable";
+		}
 	}
 
 	private String name;

@@ -323,7 +323,9 @@ public class ProjectController {
 		restResponse.setResponse(new DSResponse());
 		Project project = Project.findProject(projectId);
 		project.getCalendar().getEvents().add(event);
-		
+		for(MemberInformation memberInformation : project.getMemberInformations()){
+			memberInformation.getAccount().getCalendar().getEvents().add(event);
+		}
 		event.persist();
 		restResponse.getResponse().setData(new ArrayList<Object>());
 		restResponse.getResponse().getData().add(event);

@@ -37,6 +37,7 @@ public class Project extends WorkItemContainer {
     private StudyClass studyClass;
     @ManyToOne
     @NotNull
+    @JoinColumn(updatable=false)
     private ProjectProcess projectProcess;
     
     @OneToOne(cascade=CascadeType.ALL)
