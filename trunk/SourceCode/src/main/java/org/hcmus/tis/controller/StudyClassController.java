@@ -23,40 +23,82 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RooWebFinder
 public class StudyClassController {
 
-    @RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
-    public String findStudyClassesQuickly(@RequestParam("query") String query, Model uiModel) {
-        if (query.isEmpty()) {
-            uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
-        } else {
-            uiModel.addAttribute("studyclasses", StudyClass.findStudyClassesByNameLike(query).getResultList());
-        }
-        uiModel.addAttribute("query", query);
-        return "studyclasses/list";
-    }
+	@RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
+	public String findStudyClassesQuickly(@RequestParam("query") String query,
+			Model uiModel) {
+		if (query.isEmpty()) {
+			uiModel.addAttribute("studyclasses",
+					StudyClass.findAllStudyClasses());
+		} else {
+			uiModel.addAttribute("studyclasses", StudyClass
+					.findStudyClassesByNameLike(query).getResultList());
+		}
+		uiModel.addAttribute("query", query);
+		return "studyclasses/list";
+	}
 
-    @RequestMapping(value = "/ID/{id}", produces = "text/html")
-    public String showClass(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("studyclass", StudyClass.findStudyClass(id));
-        uiModel.addAttribute("itemId", id);
-        return "studyclasses/show";
-    }
-    
-    @RequestMapping(value = "mList", params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	@RequestMapping(value = "/ID/{id}", produces = "text/html")
+	public String showClass(@PathVariable("id") Long id, Model uiModel) {
+		uiModel.addAttribute("studyclass", StudyClass.findStudyClass(id));
+		uiModel.addAttribute("itemId", id);
+		return "studyclasses/show";
+	}
+
+	@RequestMapping(value = "mList", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho" })
 	@ResponseBody
-	public DtReply mList( int iDisplayStart,int iDisplayLength, String sEcho) {		
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		reply.setiTotalRecords((int) StudyClass.countStudyClasses());
-		reply.setiTotalDisplayRecords((int)   StudyClass.countStudyClasses());
-		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,iDisplayLength);
+		reply.setiTotalDisplayRecords((int) StudyClass.countStudyClasses());
+		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,
+				iDisplayLength);
 		for (StudyClass item : list) {
-			StudyClassDTO dto = new StudyClassDTO();
-			dto.DT_RowId = item.getId();
-			dto.setName(item.getName());			
-			dto.setDescription(item.getDescription());
-			
-			reply.getAaData().add(dto);
-		}		
+			if (item.isIsDeleted() != true) {
+				StudyClassDTO dto = new StudyClassDTO();
+				dto.DT_RowId = item.getId();
+				dto.setName(item.getName());
+				dto.setDescription(item.getDescription());
+
+				reply.getAaData().add(dto);
+			}
+		}
 		return reply;
 	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        StudyClass studyClass = StudyClass.findStudyClass(id);
+        studyClass.setIsDeleted(true);
+        studyClass.merge();
+        //studyClass.remove();
+        uiModel.asMap().clear();
+        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+        return "redirect:/studyclasses";
+    }
+	
+	@RequestMapping(produces = "text/html")
+    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        
+		List<StudyClass> list = null;
+		if (page != null || size != null) {
+            int sizeNo = size == null ? 10 : size.intValue();
+            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+            list = StudyClass.findStudyClassEntries(firstResult, sizeNo);
+            
+            float nrOfPages = (float) StudyClass.countStudyClasses() / sizeNo;
+            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
+        } else {
+           list = StudyClass.findAllStudyClasses();
+        }
+		
+		for(int i=0; i<list.size(); i++){
+			if(list.get(i).isIsDeleted()==true)
+				list.remove(i);
+		}
+		 uiModel.addAttribute("studyclasses", list);
+        return "studyclasses/list";
+    }
 }

@@ -7,7 +7,7 @@
         <field:display field="description" id="s_org_hcmus_tis_model_ProjectProcess_description" object="${projectprocess}" z="j8ba5c55X2eGNNuDa3+7eys8d3I="/>
         <field:display field="uniqueName" id="s_org_hcmus_tis_model_ProjectProcess_uniqueName" object="${projectprocess}" z="qbjy3Co+DfpWqmPvbT/2yuv+Zfw="/>
         <field:display field="processTemplateFile" id="s_org_hcmus_tis_model_ProjectProcess_processTemplateFile" object="${projectprocess}" render="false" z="user-managed"/>
-        <input name="s_org_hcmus_tis_model_ProjectProcess_processTemplateFile" type="hidden" value="${projectprocess}"/>
+        <input name="s_org_hcmus_tis_model_ProjectProcess_processTemplateFile" type="hidden" value="${projectprocess.processTemplateFile}"/>
         <field:display field="isDeleted" id="s_org_hcmus_tis_model_ProjectProcess_isDeleted" object="${projectprocess}" z="K6VTUXFdArEPOsq/5jjjMHGl8B8="/>
     </page:show>
 </div>

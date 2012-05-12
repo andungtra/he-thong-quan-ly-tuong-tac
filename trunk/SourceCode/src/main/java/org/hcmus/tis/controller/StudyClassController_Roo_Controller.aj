@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -44,20 +43,6 @@ privileged aspect StudyClassController_Roo_Controller {
         return "studyclasses/show";
     }
     
-    @RequestMapping(produces = "text/html")
-    public String StudyClassController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studyclasses", StudyClass.findStudyClassEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyClass.countStudyClasses() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
-        }
-        return "studyclasses/list";
-    }
-    
     @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
     public String StudyClassController.update(@Valid StudyClass studyClass, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -73,16 +58,6 @@ privileged aspect StudyClassController_Roo_Controller {
     public String StudyClassController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, StudyClass.findStudyClass(id));
         return "studyclasses/update";
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String StudyClassController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyClass studyClass = StudyClass.findStudyClass(id);
-        studyClass.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/studyclasses";
     }
     
     void StudyClassController.populateEditForm(Model uiModel, StudyClass studyClass) {

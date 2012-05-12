@@ -14,6 +14,8 @@
         <input name="c_org_hcmus_tis_model_Project_memberInformations" type="hidden" value="${project.memberInformations}"/>
         <field:select field="status" id="c_org_hcmus_tis_model_Project_status" items="${projectstatuses}" path="projectstatuses" render="false" required="true" z="user-managed"/>
         <input name="c_org_hcmus_tis_model_Project_status" type="hidden" value="${projectstatuses[0]}"/>
+        <field:select field="calendar" id="c_org_hcmus_tis_model_Project_calendar" itemValue="id" items="${calendars}" path="/calendars" z="9uXGGvg9+4tFzVXlJpTp+RRvB/I=" render="false"/>
+        <input type="hidden" name="c_org_hcmus_tis_model_Project_calendar" value=""/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Project" render="${not empty dependencies}" z="oUwFVkWRLSvnxKFthMXtrdbKIJU="/>
 </div>
