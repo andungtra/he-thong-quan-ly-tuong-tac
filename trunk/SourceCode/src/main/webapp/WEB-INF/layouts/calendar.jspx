@@ -14,29 +14,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <style type="text/css">
-.testStyle {
+.nonEditable, .nonDeletable {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
     background-color:#FA8072;
     border: 1px solid #004D99;
 }
 
-.testStyleHeader {
+.nonEditableHeader, .nonDeletableHeader {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
     color: white;
     background-color:#B22222;
 }
 
-.testStyleBody {
+.nonEditableBody, .nonDeletableBody {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
     color:black;
     background-color: #FA8072;
     padding: 3px;
 }
 
-.testStyleResizer {
+.nonEditableResizer, .nonDeletableResizer {
     border-top:1px solid white;
     border-bottom: 1px solid white;
 }
+.nonDeletableHeader .imgButton{
+	display : none;
+	cursor : default;
+	}
 </style>
 </head>
 <body>
