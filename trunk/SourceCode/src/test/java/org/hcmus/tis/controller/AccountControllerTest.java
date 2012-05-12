@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
 import org.hcmus.tis.dto.DSRestResponse;
+import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
+import org.hcmus.tis.model.Project;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService;
@@ -300,6 +302,8 @@ public class AccountControllerTest {
 		Collection<Event> events = new HashSet<Event>();
 		calendar.setEvents(events);
 		Event event = new Event();
+		event.setCalendars(new HashSet<Calendar>());
+		event.getCalendars().add(calendar);
 		events.add(event);
 		PowerMockito.mockStatic(Account.class);
 		PowerMockito.when(Account.findAccount(accountId)).thenReturn(mockedAccount);
@@ -309,6 +313,39 @@ public class AccountControllerTest {
 		assertEquals(0, restResponse.getResponse().getStatus());
 		assertEquals(1, restResponse.getResponse().getData().size());
 		assertSame(event, restResponse.getResponse().getData().get(0));
+	}
+	
+	@Test
+	@PrepareForTest(Account.class)
+	public void testGetSharedEvents() {
+		Long accountId = (long)1;
+		Account mockedAccount = Mockito.mock(Account.class);
+		Calendar calendar = new Calendar();
+		Mockito.doReturn(calendar).when(mockedAccount).getCalendar();
+		calendar.setEvents(new HashSet<Event>());
+		Event event = new Event();
+		event.setCalendars(new HashSet<Calendar>());
+		Calendar projectCalendar = new Calendar();
+		Project project = new Project();
+		project.setName("name");
+		projectCalendar.setProject(project);
+		Event sharedEvent = new Event();
+		sharedEvent.setDescription("des");
+		sharedEvent.setCalendars(new HashSet<Calendar>());
+		sharedEvent.getCalendars().add(calendar);
+		sharedEvent.getCalendars().add(projectCalendar);
+		event.getCalendars().add(calendar);
+		calendar.getEvents().add(event);
+		calendar.getEvents().add(sharedEvent);
+		PowerMockito.mockStatic(Account.class);
+		PowerMockito.when(Account.findAccount(accountId)).thenReturn(mockedAccount);
+		
+		DSRestResponse restResponse = aut.getEvents(accountId);
+		
+		assertEquals(0, restResponse.getResponse().getStatus());
+		assertEquals(2, restResponse.getResponse().getData().size());
+		assertSame(event, restResponse.getResponse().getData().get(0));
+		assertEquals(NonEditableEvent.class, restResponse.getResponse().getData().get(1).getClass());
 	}
 
 	@Test
