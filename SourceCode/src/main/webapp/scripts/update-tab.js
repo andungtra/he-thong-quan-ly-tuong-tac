@@ -20,28 +20,30 @@ $(function() {
 					$(ui.panel).mask('Loading ...');
 					panel = ui.panel;
 				},
-				load : function(event, ui){
+				load : function(event, ui) {
 					var x;
 					$(ui.panel).unmask();
 				}
 			});
 });
-// hook global link click event.
+
 $(function() {
-	$('#menu_menu').on('click', 'a', function(event) {
-		var url = this.href;
-		$(panel).mask("Loading...");
-		$(panel).load(this.href, function() {
-			$(panel).unmask();
+	if (!(window.notAddHandler === undefined) && notAddHandler) {
+		// hook global link click event.
+		$('#menu_menu').on('click', 'a', function(event) {
+			var url = this.href;
+			$(panel).mask("Loading...");
+			$(panel).load(this.href, function() {
+				$(panel).unmask();
+			});
+			return false;
 		});
-		return false;
-	});
-});
-// hook global form submit event
-$(function() {
-	$('#menu_menu').on('submit', 'form', function(event) {
-		formSubmitHandler(event, panel);
-	});
+		// hook global form submit event
+		$('#menu_menu').on('submit', 'form', function(event) {
+			formSubmitHandler(event, panel);
+		});
+		notAddHandler = false;
+	}
 });
 function removeFormSubmitHandler(container) {
 	$(container).off('submit', 'form', formSubmitHandler);
