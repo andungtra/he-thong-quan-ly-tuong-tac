@@ -33,4 +33,12 @@ privileged aspect StudyClass_Roo_JavaBean {
         this.projects = projects;
     }
     
+    public boolean StudyClass.isIsDeleted() {
+        return this.isDeleted;
+    }
+    
+    public void StudyClass.setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
 }

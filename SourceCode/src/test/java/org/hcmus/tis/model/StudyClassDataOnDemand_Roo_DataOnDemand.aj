@@ -25,6 +25,7 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
     public StudyClass StudyClassDataOnDemand.getNewTransientStudyClass(int index) {
         StudyClass obj = new StudyClass();
         setDescription(obj, index);
+        setIsDeleted(obj, index);
         setName(obj, index);
         return obj;
     }
@@ -32,6 +33,11 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
     public void StudyClassDataOnDemand.setDescription(StudyClass obj, int index) {
         String description = "description_" + index;
         obj.setDescription(description);
+    }
+    
+    public void StudyClassDataOnDemand.setIsDeleted(StudyClass obj, int index) {
+        Boolean isDeleted = true;
+        obj.setIsDeleted(isDeleted);
     }
     
     public void StudyClassDataOnDemand.setName(StudyClass obj, int index) {

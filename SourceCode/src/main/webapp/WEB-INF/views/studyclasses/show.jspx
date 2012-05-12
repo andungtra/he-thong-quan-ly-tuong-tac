@@ -7,6 +7,7 @@
         <field:display field="name" id="s_org_hcmus_tis_model_StudyClass_name" object="${studyclass}" z="zFLqdkfajdVL70L7hzyC8Svwufg="/>
         <field:display field="description" id="s_org_hcmus_tis_model_StudyClass_description" object="${studyclass}" z="AuJCxntv3A1zc/OUKmkBxUHF80Q="/>
         <field:display field="projects" id="s_org_hcmus_tis_model_StudyClass_projects" object="${studyclass}" z="OFgutM3/dLhFrj2cdCcWusrpJ6w="/>
+        <field:display field="isDeleted" id="s_org_hcmus_tis_model_StudyClass_isDeleted" object="${studyclass}" z="1wFnhCAGCMsn4c04zIA7eMhd9EM="/>
     </page:show>
     <page:list id="l_org_hcmus_tis_model_Project" items="${studyclass.projects}" label="Project" labelPlural="Projects" openPane="false">
         <field:table create="false" data="${studyclass.projects}" delete="false" id="t_org_hcmus_tis_Project" path="/projects" show="true" update="false">
@@ -14,6 +15,6 @@
             <field:column id="c_org_hcmus_tis_model_Project_description" property="description" z="Er6DWB+pj5iQaJPgx7f2q+OaObE="/>
             <field:column id="c_org_hcmus_tis_model_Project_parentContainer" property="parentContainer" z="ljK4mPmWOn3lNJCDQEk9lGIWnoo="/>
         </field:table>
-    </page:list>    
+    </page:list>
     <button>Add project</button>
 </div>

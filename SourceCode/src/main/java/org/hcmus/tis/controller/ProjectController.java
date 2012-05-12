@@ -183,7 +183,6 @@ public class ProjectController {
 		return "projects/member";
 	}
 
-
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho" })
 	@ResponseBody
@@ -195,14 +194,16 @@ public class ProjectController {
 		List<Project> list = Project.findProjectEntries(iDisplayStart,
 				iDisplayLength);
 		for (Project item : list) {
-			ProjectDTO dto = new ProjectDTO();
-			dto.DT_RowId = item.getId();
-			dto.setName(item.getName());
-			if (item.getParentContainer() != null)
-				dto.setParentContainer(item.getParentContainer().getName());
-			dto.setDescription(item.getDescription());
+			if (item.getStatus() != ProjectStatus.DELETED) {
+				ProjectDTO dto = new ProjectDTO();
+				dto.DT_RowId = item.getId();
+				dto.setName(item.getName());
+				if (item.getParentContainer() != null)
+					dto.setParentContainer(item.getParentContainer().getName());
+				dto.setDescription(item.getDescription());
 
-			reply.getAaData().add(dto);
+				reply.getAaData().add(dto);
+			}
 		}
 		return reply;
 	}
@@ -240,11 +241,13 @@ public class ProjectController {
 		} else {
 			lst = Project.findAllProjects();
 		}
-		for (Project project : lst) {
-			if (project.getStatus() != null
-					&& project.getStatus().equals(ProjectStatus.DELETED))
-				lst.remove(project);
+
+		for (int i = 0; i < lst.size(); i++) {
+			if (lst.get(i).getStatus() != null
+					&& lst.get(i).getStatus().equals(ProjectStatus.DELETED))
+				lst.remove(i);
 		}
+
 		uiModel.addAttribute("projects", lst);
 		return "projects/list";
 	}
@@ -271,7 +274,9 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}/calendar")
-	public String showCalendar(@PathVariable("id") Long id, @RequestParam("encodedmemberids") String encodedMemberIds, Model uiModel) {
+	public String showCalendar(@PathVariable("id") Long id,
+			@RequestParam("encodedmemberids") String encodedMemberIds,
+			Model uiModel) {
 		uiModel.addAttribute("id", id);
 		uiModel.addAttribute("encodedmemberids", encodedMemberIds);
 		return "projects/calendar";
@@ -280,7 +285,7 @@ public class ProjectController {
 	@RequestMapping(value = "/{id}/calendar/{encodedmemberids}/events")
 	@ResponseBody
 	public DSRestResponse getEvents(@PathVariable("id") Long id,
-		  @PathVariable("encodedmemberids")	String encodedMemberIds) {
+			@PathVariable("encodedmemberids") String encodedMemberIds) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
 		Project project = Project.findProject(id);
@@ -288,24 +293,32 @@ public class ProjectController {
 		for (Event event : project.getCalendar().getEvents()) {
 			restResponse.getResponse().getData().add(event);
 		}
-		for(Event event : project.getEventsOfMembers()){
+		for (Event event : project.getEventsOfMembers()) {
 			NonEditableEvent nonEditableEvent = new NonEditableEvent();
 			nonEditableEvent.setId(event.getId());
 			int membersNumber = 0;
 			String memberNames = "";
-			
-			for(org.hcmus.tis.model.Calendar calendar : event.getCalendars()){
-				if(calendar.getAccount() != null){
-					for(MemberInformation memberInformation : project.getMemberInformations()){
-						if(memberInformation.getAccount().getCalendar().getId() == calendar.getId()){
-							membersNumber ++;
-							memberNames = memberNames +  memberInformation.getAccount().getFirstName() + " " + memberInformation.getAccount().getLastName() + ",";
+
+			for (org.hcmus.tis.model.Calendar calendar : event.getCalendars()) {
+				if (calendar.getAccount() != null) {
+					for (MemberInformation memberInformation : project
+							.getMemberInformations()) {
+						if (memberInformation.getAccount().getCalendar()
+								.getId() == calendar.getId()) {
+							membersNumber++;
+							memberNames = memberNames
+									+ memberInformation.getAccount()
+											.getFirstName()
+									+ " "
+									+ memberInformation.getAccount()
+											.getLastName() + ",";
 							break;
 						}
 					}
 				}
 			}
-			nonEditableEvent.setName(String.valueOf(membersNumber) + " members");
+			nonEditableEvent
+					.setName(String.valueOf(membersNumber) + " members");
 			nonEditableEvent.setDescription(memberNames);
 			nonEditableEvent.setStartDate(event.getStartDate());
 			nonEditableEvent.setEndDate(event.getEndDate());
@@ -341,8 +354,8 @@ public class ProjectController {
 		DSRestResponse restResonse = new DSRestResponse();
 		restResonse.setResponse(new DSResponse());
 		event.setId(id);
-		Event resultEvent  = event.merge();
-		
+		Event resultEvent = event.merge();
+
 		restResonse.getResponse().setStatus(0);
 		restResonse.getResponse().setData(new ArrayList<Object>());
 		restResonse.getResponse().getData().add(resultEvent);
@@ -356,7 +369,7 @@ public class ProjectController {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
 		Event event = Event.findEvent(id);
-		for(org.hcmus.tis.model.Calendar calendar : event.getCalendars()){
+		for (org.hcmus.tis.model.Calendar calendar : event.getCalendars()) {
 			calendar.getEvents().remove(event);
 		}
 		event.remove();

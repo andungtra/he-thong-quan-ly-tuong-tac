@@ -38,15 +38,15 @@
     <spring:message var="typeNamePlural" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_list_label" htmlEscape="false" />
 
     <spring:message arguments="${label}" code="entity_show" var="title_msg" htmlEscape="false" />
-    <util:fixpanel id="${id}" title="${label}" openPane="${openPane}">
+    <div class="fix-panel" style="width: ${width}">    
       <c:choose>
         <c:when test="${not empty object}">
-          <jsp:doBody />
-          <div class="quicklinks">
-            <span>
+        <div class="panel-title">
+        	${label}
+        	
+            
               <c:if test="${delete}">
-                <spring:url value="${path}/${itemId}" var="delete_form_url" />
-                <spring:url value="/resources/images/delete.png" var="delete_image_url" />
+                <spring:url value="${path}/${itemId}" var="delete_form_url" />                
                 <form:form action="${delete_form_url}" method="DELETE">
                   <spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
                   <c:set var="delete_confirm_msg">
@@ -55,50 +55,56 @@
                     </spring:escapeBody>
                   </c:set>
                   <input title="${fn:escapeXml(delete_label)}" type="hidden" value="${fn:escapeXml(delete_label)}" />
+                  <div class="submit">
                   <button onclick="return confirm('${fn:escapeXml(delete_confirm_msg)}');">Delete</button>
+                  </div>
                 </form:form>
               </c:if>
-            </span>
-            <span>
+            
               <c:if test="${update}">
                 <spring:url value="${path}/${itemId}" var="update_form_url">
                   <spring:param name="form" />
-                </spring:url>
-                <spring:url value="/resources/images/update.png" var="update_image_url" />
+                </spring:url>                
                 <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" />
+                <div class="submit">
                 <a href="${update_form_url}" alt="${fn:escapeXml(update_label)}" title="${fn:escapeXml(update_label)}">
                   <button>Edit</button>
                 </a>
+                </div>
               </c:if>
-            </span>
-            <span>
+           
               <c:if test="${create}">
                 <spring:url value="${path}" var="create_form_url">
                   <spring:param name="form" />
-                </spring:url>
-                <spring:url value="/resources/images/create.png" var="create_image_url" />
+                </spring:url>                
                 <spring:message arguments="${typeName}" code="entity_create" var="create_label" htmlEscape="false" />
+                <div class="submit">
                 <a href="${create_form_url}" alt="${fn:escapeXml(create_label)}" title="${fn:escapeXml(create_label)}">
                   <button>New</button>
                 </a>
+                </div>
               </c:if>
-            </span>
-            <span>
+            
               <c:if test="${list}">
                 <spring:url value="${path}" var="list_form_url" />
                 <spring:url value="/resources/images/list.png" var="list_image_url" />
                 <spring:message arguments="${typeNamePlural}" code="entity_list_all" var="list_label" htmlEscape="false" />
+                <div class="submit">
                 <a href="${list_form_url}" alt="${fn:escapeXml(list_label)}" title="${fn:escapeXml(list_label)}">
                   <button>List</button>
                 </a>
-              </c:if>
-            </span>
-          </div>
+                </div>
+              </c:if> 
+         
+        </div>
+        <div class="clear"/>
+          <jsp:doBody />
+          
         </c:when>
         <c:otherwise>
           <!--  <spring:message arguments="${label}" code="entity_not_found_single" />  -->
         </c:otherwise>
       </c:choose>
-    </util:fixpanel>
+    </div>
   </c:if>
 </jsp:root>

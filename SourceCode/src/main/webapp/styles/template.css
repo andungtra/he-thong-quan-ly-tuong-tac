@@ -293,7 +293,7 @@ td a:hover
 
 button
 {
-	padding: 4px;
+	padding: 4px;	
 	font-weight: bold;
 	background-color: #ddd;
 	border: solid 1px #ccc;
@@ -305,8 +305,7 @@ button:hover
 {
 	background-color: #ccc;
 	border-color: #bbb;
-	color: #333;
-	
+	color: #333;	
 }
 
 .command
@@ -351,6 +350,16 @@ input[type="submit"]:hover, input[type="reset"]:hover
 	border-color: #bbb;
 	color: #333;
 }
+
+input[type="text"]
+{
+	max-width: 100% !important;
+	
+}
+textarea
+{
+	max-width: 500px;
+}
 .fix-panel
 {
 	border:none !important;
@@ -367,6 +376,7 @@ input[type="submit"]:hover, input[type="reset"]:hover
 	padding-top:5px;
 	padding-bottom:5px;
 	border-bottom: solid 1px #aaa;
+	margin-bottom: 10px;
 }
 .panel-content
 {
@@ -381,7 +391,7 @@ input[type="submit"]:hover, input[type="reset"]:hover
 label
 {
 	text-align:right;
-	width: 120px;
+	min-width: 120px;
 	font-weight: bold;
 	display: inline-block;
 	padding-right: 10px;
@@ -516,4 +526,19 @@ tr:hover td
 }
 #menu_menu .ui-tabs-panel{
 	min-height: 500px;
+}
+
+.panel-title .submit
+{
+	float:right;
+}
+
+.panel-title a
+{
+	margin: 0;
+	padding: 0;
+}
+.title_msg
+{
+	float:left;
 }
