@@ -7,6 +7,11 @@
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
+	<spring:url
+		value="/resources/styles/activity_tabs/jquery-ui-1.8.20.custom.css"
+		var="activity_tabs_css_url"></spring:url>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="${activity_tabs_css_url}" />
 	<spring:url value="/resources/scripts/jquery.validate.js"
 		var="jquery_validate_url" />
 	<script src="${jquery_validate_url }" type="text/javascript">
@@ -21,7 +26,7 @@
 
 		});
 		$(function() {
-			$("#activity_tabs")
+			$("#activity_tabs_content")
 					.tabs(
 							{
 								ajaxOptions : {
@@ -35,15 +40,6 @@
 									}
 								},
 								select : function(event, ui) {
-								},
-								show : function(event, ui) {
-									$(panel).unmask();
-									$(ui.panel).mask('Loading ...');
-									panel = ui.panel;
-								},
-								load : function(event, ui) {
-									var x;
-									$(ui.panel).unmask();
 								}
 							});
 		});
@@ -138,10 +134,12 @@
 		</util:fixpanel>
 		<util:fixpanel id="activity_panel" title="Activity">
 			<div id="activity_tabs">
-				<ul>
-					<li><a href="fsdfsdf">Comments</a></li>
-					<li><a href="fsdsdsfsdf">History</a></li>
-				</ul>
+				<div id="activity_tabs_content">
+					<ul>
+						<li><a href="fsdfsdf">Comments</a></li>
+						<li><a href="fsdsdsfsdf">History</a></li>
+					</ul>
+				</div>
 			</div>
 		</util:fixpanel>
 		<input name="workItemType" type="hidden" value="${workItemType.id }" />

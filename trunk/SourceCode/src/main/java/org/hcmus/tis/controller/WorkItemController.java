@@ -175,6 +175,7 @@ public class WorkItemController {
 		for (WorkItem workItem : workItems) {
 			if (workItem.getWorkItemContainer().getId().equals(projectId)) {
 				WorkItemDTO workItemDto = new WorkItemDTO();
+				workItemDto.DT_RowId = workItem.getId();
 				workItemDto.setlName("<a href='/TIS/workitems/"
 						+ workItem.getId() + "?form'>" + workItem.getTitle()
 						+ "</a>");
