@@ -15,6 +15,7 @@ import org.hcmus.tis.dto.AccountDTO;
 import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
@@ -286,7 +287,27 @@ public class AccountController {
 		Account account = Account.findAccount(id);
 		List<Object> datas = new ArrayList<Object>();
 		for(Event event : account.getCalendar().getEvents()){
+			if(event.getCalendars().size() > 1){
+				NonEditableEvent nonEditableEvent = new NonEditableEvent();
+				nonEditableEvent.setName(event.getName());
+				String des = "";
+				for(Calendar calendar : event.getCalendars()){
+					if(calendar.getProject() != null){
+						des  = "From : "+ calendar.getProject().getName() +" <br/>";
+						break;
+					}
+				}
+				
+				des = des + event.getDescription();
+				nonEditableEvent.setDescription(des);
+				nonEditableEvent.setId(event.getId());
+				nonEditableEvent.setVersion(event.getVersion());
+				nonEditableEvent.setStartDate(event.getStartDate());
+				nonEditableEvent.setEndDate(event.getEndDate());
+				datas.add(nonEditableEvent);
+			}else{
 			datas.add(event);
+			}
 		}
 		restResponse.getResponse().setStatus(0);
 		restResponse.getResponse().setData(datas);

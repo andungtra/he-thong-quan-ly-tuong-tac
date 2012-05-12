@@ -57,7 +57,7 @@
 	<xs:complexType name="xProjectProcess">
 		<xs:sequence>
 			<xs:element name="xWorkItems" type="xWorkItems"></xs:element>
-			<xs:element name="xDescription"></xs:element>
+			<xs:element name="xDescription" type="xs:string"></xs:element>
 		</xs:sequence>
 		<xs:attribute name="identity" type="xs:string" use="required"></xs:attribute>
 		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>

@@ -41,7 +41,7 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
 		ProjectProcess projectProcess = new ProjectProcess();
 		projectProcess.setUniqueName(xProjectProcess.getIdentity());
 		projectProcess.setName(xProjectProcess.getName());
-		projectProcess.setDescription(xProjectProcess.getXDescription().toString());
+		projectProcess.setDescription(xProjectProcess.getXDescription());
 		projectProcess.setWorkItemTypes(new ArrayList<WorkItemType>());
 		List<XWorkItem> xWorkItems = xProjectProcess.getXWorkItems().getXWorkItem();
 		for(XWorkItem xWorkItem : xWorkItems){
