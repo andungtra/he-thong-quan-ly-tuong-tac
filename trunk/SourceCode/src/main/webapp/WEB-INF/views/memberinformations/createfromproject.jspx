@@ -41,34 +41,31 @@
 			<INPUT type="hidden" name="projectId" value="${projectId}" />
 
 			<div>
-				<span class="label"><label for="email">Account : </label></span> <span
-					class="input"><input type="text" id="email" name="email" /></span>
+				<label for="email">Account : </label>
+				<input type="text" id="email" name="email"  width="400px" class="input"/>
 			</div>
-			<br/>
+			<br />
 			<div class="clear" />
 			<div>
-				<span class="label">Role</span> <span class="input"><select
-					name="memberRoleId">
-						<c:forEach items="${memberRoles }" var="memberRole"
-							varStatus="status">
-							<c:if test="${status.index == 0}">
-								<option selected="selected" value="${memberRole.id }">${memberRole.name}</option>
+				<label>Role</label> <select name="memberRoleId">
+					<c:forEach items="${memberRoles }" var="memberRole"
+						varStatus="status">
+						<c:if test="${status.index == 0}">
+							<option selected="selected" value="${memberRole.id }">${memberRole.name}</option>
 
-							</c:if>
-							<c:if test="${status.index != 0}">
-								<option value="${memberRole.id }">${memberRole.name}</option>
+						</c:if>
+						<c:if test="${status.index != 0}">
+							<option value="${memberRole.id }">${memberRole.name}</option>
 
-							</c:if>
-						</c:forEach>
-				</select></span>
+						</c:if>
+					</c:forEach>
+				</select>
 			</div>
 			<div class="clear" />
-			<br/>
+			<br />
 			<div>
 				<INPUT type="submit" value="Add" />
 			</div>
-
-
 		</form:form>
 	</panel:fixpanel>
 </div>

@@ -291,22 +291,7 @@ td a:hover
 	text-decoration: underline;
 }
 
-button
-{
-	padding: 4px;	
-	font-weight: bold;
-	background-color: #ddd;
-	border: solid 1px #ccc;
-	color: #666;	
-	border-radius:2px;
-}
 
-button:hover
-{
-	background-color: #ccc;
-	border-color: #bbb;
-	color: #333;	
-}
 
 .command
 {
@@ -334,7 +319,7 @@ input[type="search"]
 	width: 200px;
 }
 
-input[type="submit"], input[type="reset"]
+input[type="submit"], input[type="reset"],  input[type="button"], button
 {
 	padding: 4px;
 	font-weight: bold;
@@ -344,7 +329,7 @@ input[type="submit"], input[type="reset"]
 	border-radius:2px;	
 }
 
-input[type="submit"]:hover, input[type="reset"]:hover
+input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover
 {
 	background-color: #ccc;
 	border-color: #bbb;
@@ -368,8 +353,7 @@ textarea
 	margin-right: auto;
 }
 .panel-title
-{
-	background-color:#FFF;
+{	
 	font-weight:bold;
 	color:#333;
 	font-size:16px;
@@ -397,11 +381,15 @@ label
 	padding-right: 10px;
 }
 
-.input input
+.ui-autocomplete-input
 {
-	width: 250px !important;
-	height: 25px;	
+	width: 250px;
+	height: 20px;
 }
+
+
+		
+
 .submit
 {
 	text-align: center;
@@ -531,11 +519,13 @@ tr:hover td
 .panel-title .submit
 {
 	float:right;
+	margin: 0;
+	padding: 0;
 }
 
 .panel-title a
 {
-	margin: 0;
+	margin-bottom: 10px;
 	padding: 0;
 }
 .title_msg

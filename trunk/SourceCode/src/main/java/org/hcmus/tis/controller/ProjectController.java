@@ -27,6 +27,8 @@ import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.model.WorkItemHistory;
+import org.hcmus.tis.model.WorkItemHistoryType;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,14 +146,19 @@ public class ProjectController {
 					Calendar dueTime = Calendar.getInstance();
 					dueTime.setTime(workItem.getDueDate());
 					long due = dueTime.get(Calendar.DAY_OF_YEAR);
-					if (due < now)
-						overdues.add(workItem);
+					if (due < now) {
+						if (overdues.size() < 10)
+							overdues.add(workItem);
+					}
+
 					else
 						indues.add(workItem);
 				}
 			}
 		}
 
+		List<WorkItemHistory> listHistorys = WorkItemHistory.findAllWorkItemHistorysInProject(id,10);
+		uiModel.addAttribute("listHistorys", listHistorys);
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
 		uiModel.addAttribute("itemId", id);
@@ -336,7 +343,8 @@ public class ProjectController {
 		restResponse.setResponse(new DSResponse());
 		Project project = Project.findProject(projectId);
 		project.getCalendar().getEvents().add(event);
-		for(MemberInformation memberInformation : project.getMemberInformations()){
+		for (MemberInformation memberInformation : project
+				.getMemberInformations()) {
 			memberInformation.getAccount().getCalendar().getEvents().add(event);
 		}
 		event.persist();

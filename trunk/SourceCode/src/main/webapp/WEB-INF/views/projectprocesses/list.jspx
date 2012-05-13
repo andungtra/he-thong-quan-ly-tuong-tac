@@ -2,7 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <table:datatable aoColumns="name,description" fdelete="true" fgoto="true" fnew="true" fshow="true" id="tbprocess" path="/projectprocesses" source="/projectprocesses/mList" thead="Name, Description"/>
+    <table:datatable aoColumns="name,description" fnew="true" fshow="true" id="tbprocess" path="/projectprocesses" source="/projectprocesses/mList" thead="Name, Description"/>
     <div id="pl_org_hcmus_tis_model_ProjectProcess">
         <div id="l_org_hcmus_tis_model_ProjectProcess">
             <div id="c_org_hcmus_tis_model_ProjectProcess_name"/>

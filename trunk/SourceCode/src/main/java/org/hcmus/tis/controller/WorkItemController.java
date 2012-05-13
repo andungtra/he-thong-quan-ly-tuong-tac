@@ -155,11 +155,12 @@ public class WorkItemController {
 		
 		uiModel.asMap().clear();
 		workItem.persist();
-		return "redirect:/workitems/"
+		/*return "redirect:/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
-						httpServletRequest);
+						httpServletRequest);*/
+		return this.list(null, null, uiModel);
 	}
-
+	
 	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
 			"iDisplayStart", "iDisplayLength", "sEcho" })
 	@ResponseBody

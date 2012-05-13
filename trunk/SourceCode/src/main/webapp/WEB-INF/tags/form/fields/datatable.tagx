@@ -145,7 +145,7 @@
 			if('${fnew}' != '')
 				bt = bt+ '<button onclick="fnew()">New</button>';
 			if('${fshow}' != '')
-				bt = bt +'<button onclick="fshow()">Show</button>';
+				bt = bt +'<button onclick="fshow()">Edit</button>';
 			if('${fgoto}' != '')
 				bt = bt+'<button onclick="fgoto()">Goto</button>';
 			if('${fdelete}' != '')
@@ -286,7 +286,7 @@
 			class="display disable-a-handler">
 
 			<THEAD>
-				<th><input type="checkbox" /></th>
+				<th width="15px"><input type="checkbox" /></th>
 				<c:forTokens items="${thead}" var="item" delims="{,}">
 					<th>${item}</th>
 				</c:forTokens>

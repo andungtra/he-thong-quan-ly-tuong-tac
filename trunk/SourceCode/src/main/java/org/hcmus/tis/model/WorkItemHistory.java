@@ -11,8 +11,6 @@ import java.util.List;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -37,7 +35,15 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(finders = { "findWorkItemsByWorkItemContainer" })
-public class WorkItem {
+public class WorkItemHistory {
+	
+	@ManyToOne
+	private WorkItem workItem;
+	
+	private String changedBy;
+	
+	private WorkItemHistoryType type;
+	
 	@javax.persistence.Transient
 	@Autowired
 	private ObjectFactory objectFactory;
@@ -117,25 +123,7 @@ public class WorkItem {
     @PrePersist
     void prePersit() {
         this.dateCreated = new Date();
-        WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.CREATE);
-    	writeHistory(history);
     }
-    
-    @PreRemove
-    void preRemove(){
-    	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.DELETE);
-    	writeHistory(history);
-    }
-    
-    @PreUpdate
-    void preUpdate(){
-    	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.UPDATE);
-    	writeHistory(history);
-    }
-    
 	public ObjectFactory getObjectFactory() {
 		return objectFactory;
 	}
@@ -144,21 +132,8 @@ public class WorkItem {
 		this.objectFactory = objectFactory;
 	}
 	
-	private void writeHistory(WorkItemHistory history){
-		
-    	history.setWorkItem(this);
-    	history.setAsignee(this.asignee);
-    	history.setAdditionalFields(this.additionalFields);
-    	history.setAuthor(this.author);
-    	history.setDateCreated(this.dateCreated);
-    	history.setDateLastEdit(this.dateLastEdit);
-    	history.setDescription(this.description);
-    	history.setDueDate(this.dueDate);
-    	history.setPriority(this.priority) ;
-    	history.setStatus(this.status);
-    	history.setTitle(this.title);
-    	history.setWorkItemContainer(this.workItemContainer);
-    	history.setWorkItemType(this.workItemType);
-    	history.persist();
+	public static List<WorkItemHistory> findAllWorkItemHistorysInProject(Long id, int maxResults) {
+		// TODO Auto-generated method stub
+		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItemContainer.id = %d", id), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
 	}
 }
