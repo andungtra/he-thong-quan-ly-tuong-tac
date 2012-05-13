@@ -82,4 +82,5 @@ function formSubmitHandler(event, receiver) {
 		event.preventDefault();
 	}
 	form.mask("Loading...");
+	return false;
 }

@@ -2,6 +2,7 @@ package org.hcmus.tis.model;
 
 import java.util.Date;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +12,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
+@RooJpaActiveRecord(finders = { "findCommentsByWorkItem" })
 public class Comment {
 
     private String content;
@@ -25,4 +26,8 @@ public class Comment {
 
     @ManyToOne
     private MemberInformation projectMember;
+    @PrePersist
+    public void prePersit(){
+    	this.commentDate = new Date();
+    }
 }

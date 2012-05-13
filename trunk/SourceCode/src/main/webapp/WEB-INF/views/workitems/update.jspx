@@ -34,15 +34,23 @@
 									error : function(xhr, status, index, anchor) {
 										$(anchor.hash)
 												.html(
-														"Couldn't load this tab. We'll try to fix this as soon as possible. "
+														"Couldn't ddddddddddload this tab. We'll try to fix this as soon as possible. "
 																+ "If this wouldn't be a demo.");
 									},
 									beforeSend : function(jqXHR, settings) {
 									}
 								},
 								select : function(event, ui) {
-								}
+								},
 							});
+			
+		});
+		$(function(){
+			$("#activity_tabs_content div:first").on('submit', 'form', function(event){
+				formSubmitHandler(event, '#activity_tabs_content div:first');
+				event.stopImmediatePropagation();
+				return false;
+			})
 		});
 	</script>
 	<form:update id="fu_org_hcmus_tis_model_WorkItem"
@@ -137,7 +145,8 @@
 					z="gOGmWdpqzUkjhR+rxrDNMktSNxk=" />
 				<field:display date="true"
 					dateTimePattern="${workItem_datelastedit_date_format}"
-					field="dateLastEdit" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit"
+					field="dateLastEdit"
+					id="c_org_hcmus_tis_model_WorkItem_dateLastEdit"
 					object="${workItem}" z="user-managed" />
 			</util:fixpanel>
 			<util:fixpanel id="Attachments_panel" title="Attachments">
@@ -148,16 +157,6 @@
 		<util:fixpanel id="description_panel" title="Description">
 			<field:textarea field="description"
 				id="c_org_hcmus_tis_model_WorkItem_description" z="user-managed" />
-		</util:fixpanel>
-		<util:fixpanel id="activity_panel" title="Activity">
-			<div id="activity_tabs">
-				<div id="activity_tabs_content">
-					<ul>
-						<li><a href="fsdfsdf">Comments</a></li>
-						<li><a href="fsdsdsfsdf">History</a></li>
-					</ul>
-				</div>
-			</div>
 		</util:fixpanel>
 		<field:input field="jaxbContext"
 			id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false"
@@ -178,4 +177,17 @@
 			type="hidden" value="${workItem.dateLastEdit}"
 			z="JgCbHiIdvmEFuHv+2DThk60k/xg=" />
 	</form:update>
+	<util:fixpanel id="activity_panel" title="Activity">
+		<div id="activity_tabs">
+			<div id="activity_tabs_content">
+				<ul>
+					<spring:url value="/comments" var="comments_url">
+						<spring:param name="workItemId" value="${workItem.id}"></spring:param>
+					</spring:url>
+					<li><a href="${comments_url }">Comments</a></li>
+					<li><a href="fsdsdsfsdf">History</a></li>
+				</ul>
+			</div>
+		</div>
+	</util:fixpanel>
 </div>

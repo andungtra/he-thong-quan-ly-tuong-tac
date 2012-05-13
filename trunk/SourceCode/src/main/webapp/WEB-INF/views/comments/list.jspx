@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_hcmus_tis_model_Comment" items="${comments}" z="zGYb4vehqySBmk27FbiXh5BwNCM=">
+        <table:table data="${comments}" id="l_org_hcmus_tis_model_Comment" path="/comments" z="J5WAv2QFEkvJJN2Oshwl4HlUiY0=">
+            <table:column id="c_org_hcmus_tis_model_Comment_content" property="content" z="MpxHfuq8otbLXOpbtGA6IvRJ4As="/>
+            <table:column date="true" dateTimePattern="${comment_commentdate_date_format}" id="c_org_hcmus_tis_model_Comment_commentDate" property="commentDate" z="rKOy1l7tnJe0qCjo4xXfm+C/aKw="/>
+            <table:column id="c_org_hcmus_tis_model_Comment_workItem" property="workItem" z="KUBiVvrsQ3dC9iZA2bIMjH+j9U0="/>
+            <table:column id="c_org_hcmus_tis_model_Comment_projectMember" property="projectMember" z="9NgUjaTxk4i3CLjAgU+46CcyHsg="/>
+        </table:table>
+    </page:list>
+</div>
