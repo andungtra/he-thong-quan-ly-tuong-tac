@@ -91,7 +91,7 @@
 		<table class="tb">
 			<thead>
 				<tr>
-					<th><input type="checkbox" /></th>
+					
 					<c:forTokens items="${columnLabels}" delims="${'&#9999;'}"
 						var="columnHeading">
 						<th><c:out value="${columnHeading}" /> <spring:eval
@@ -101,7 +101,7 @@
 			</thead>
 			<c:forEach items="${data}" var="item">
 				<tr>
-					<td><input type="checkbox" /></td>
+					
 					<c:forTokens items="${columnProperties}" delims="${'&#9999;'}"
 						var="column" varStatus="num">
 						<c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
@@ -154,7 +154,7 @@
 					</c:set>
 					<c:if test="${show}">
 						<c:if test="${!path.contains('accounts')}">
-							<td class="utilbox"><spring:url value="${path}/ID/${itemId}"
+							<!-- <td class="utilbox"><spring:url value="${path}/ID/${itemId}"
 									var="show_form_url" /> <spring:url
 									value="/resources/images/show.png" var="show_image_url" /> <spring:message
 									arguments="${typeName}" code="entity_show" var="show_label"
@@ -163,7 +163,7 @@
 								title="${fn:escapeXml(show_label)}"> <img
 									alt="${fn:escapeXml(show_label)}" class="image"
 									src="${show_image_url}" title="${fn:escapeXml(show_label)}" />
-							</a></td>
+							</a></td> -->
 						</c:if>
 					</c:if>
 					<c:if test="${update}">

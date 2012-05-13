@@ -69,7 +69,8 @@ public class ProjectProcessController {
 		 * encodeUrlPathSegment(projectProcess.getId().toString(),
 		 * httpServletRequest);
 		 */
-		return "projectprocesses/show";
+		//return "projectprocesses/show";
+		return "redirect:/projectprocesses";
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",

@@ -6,7 +6,7 @@
     id="tbaccount" path="/accounts" 
     source="/accounts/mList" 
     thead="First Name, Last Name, Email, Status"
-    fdelete="true" fnew="true" fshow="true" fgoto="true"/>
+    fdelete="true" fnew="true" fshow="true"/>
     <div id="pl_org_hcmus_tis_model_Account">
         <div id="l_org_hcmus_tis_model_Account">
             <div id="c_org_hcmus_tis_model_Account_firstName"/>

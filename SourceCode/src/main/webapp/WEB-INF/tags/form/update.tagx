@@ -71,6 +71,11 @@
 						<input id="proceed" type="submit"
 							value="${fn:escapeXml(save_button)}" />
 					</div>
+					<div class="submit" >						
+						<a href="${form_url}">
+							<button>Cancel</button>
+						</a>						
+					</div>
 				</div>
 				<form:errors cssClass="errors" delimiter="&lt;p/&gt;" />
 				<jsp:doBody />
