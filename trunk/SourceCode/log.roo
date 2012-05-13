@@ -566,3 +566,14 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-09 11:32:49
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-09 22:07:01
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 00:50:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 00:16:55
+hint
+hint
+entity jpa --class org.hcmus.tis.model.Comment --testAutomatically 
+field string content
+field date --fieldName commentDate --type java.util.Date
+field reference --fieldName workItem --type ~.model.WorkItem
+// [failed] field reference --fieldName member --type ~.model.MemberInformation
+field reference --fieldName projectMember --type ~.model.MemberInformation
+entity jpa --class org.hcmus.tis.model.Attachment --testAutomatically 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 00:38:01

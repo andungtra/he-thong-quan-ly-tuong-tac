@@ -78,6 +78,13 @@
     <location>/resourceNotFound</location>
   </error-page>
   <welcome-file-list>
-  	<welcome-file>/administrator/homepage</welcome-file>
+    <welcome-file>/administrator/homepage</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>StartupServlet</display-name>
+    <servlet-name>StartupServlet</servlet-name>
+    <servlet-class>org.hcmus.tis.controller.StartupServlet</servlet-class>
+    <load-on-startup>1000</load-on-startup>
+  </servlet>
 </web-app>

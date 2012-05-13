@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -115,6 +116,10 @@ public class WorkItem {
     @PrePersist
     void prePersit() {
         this.dateCreated = new Date();
+    }
+   @PreUpdate
+    void preUpdate(){
+    	this.dateLastEdit = new Date();
     }
 	public ObjectFactory getObjectFactory() {
 		return objectFactory;

@@ -102,7 +102,7 @@ public class MemberInformationController {
 		for (MemberInformation item : list) {
 			MemberDTO dto = new MemberDTO();
 			dto.DT_RowId = item.getId();
-			dto.setName(item.getAccount().getFirstName() + "" + item.getAccount().getLastName());
+			dto.setName(item.getAccount().getFirstName() + " " + item.getAccount().getLastName());
 			dto.setMemberRole(item.getMemberRole().getName());
 			reply.getAaData().add(dto);
 		}
