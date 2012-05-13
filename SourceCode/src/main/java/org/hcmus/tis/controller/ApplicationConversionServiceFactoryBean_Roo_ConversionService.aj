@@ -5,6 +5,7 @@ package org.hcmus.tis.controller;
 
 import org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
@@ -48,6 +49,30 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Account>() {
             public org.hcmus.tis.model.Account convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), Account.class);
+            }
+        };
+    }
+    
+    public Converter<Comment, String> ApplicationConversionServiceFactoryBean.getCommentToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.Comment, java.lang.String>() {
+            public String convert(Comment comment) {
+                return new StringBuilder().append(comment.getContent()).append(" ").append(comment.getCommentDate()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, Comment> ApplicationConversionServiceFactoryBean.getIdToCommentConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Comment>() {
+            public org.hcmus.tis.model.Comment convert(java.lang.Long id) {
+                return Comment.findComment(id);
+            }
+        };
+    }
+    
+    public Converter<String, Comment> ApplicationConversionServiceFactoryBean.getStringToCommentConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Comment>() {
+            public org.hcmus.tis.model.Comment convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), Comment.class);
             }
         };
     }
@@ -256,6 +281,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getAccountToStringConverter());
         registry.addConverter(getIdToAccountConverter());
         registry.addConverter(getStringToAccountConverter());
+        registry.addConverter(getCommentToStringConverter());
+        registry.addConverter(getIdToCommentConverter());
+        registry.addConverter(getStringToCommentConverter());
         registry.addConverter(getIterationToStringConverter());
         registry.addConverter(getIdToIterationConverter());
         registry.addConverter(getStringToIterationConverter());

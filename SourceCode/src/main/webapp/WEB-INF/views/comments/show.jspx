@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_hcmus_tis_model_Comment" object="${comment}" path="/comments" z="QcItFe1vjqJfQ8yIpG5cFkdl3XA=">
+        <field:display field="content" id="s_org_hcmus_tis_model_Comment_content" object="${comment}" z="Fs01cpfD+ZBNswBPvanS/OXvGhA="/>
+        <field:display date="true" dateTimePattern="${comment_commentdate_date_format}" field="commentDate" id="s_org_hcmus_tis_model_Comment_commentDate" object="${comment}" z="f0lOIyZcU0TESKs1n42/iGAewsM="/>
+        <field:display field="workItem" id="s_org_hcmus_tis_model_Comment_workItem" object="${comment}" z="KyyQKBj0ByHR8yZW3lwN4o2z6eA="/>
+        <field:display field="projectMember" id="s_org_hcmus_tis_model_Comment_projectMember" object="${comment}" z="7AswQFZ3m370nqaU82vsxfz6N3U="/>
+    </page:show>
+</div>

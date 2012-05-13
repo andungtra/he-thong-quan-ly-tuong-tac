@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <spring:url value="/resources/scripts/jquery.validate.js" var="jquery_validate_url"/>
-    <script src="${jquery_validate_url }" type="text/javascript">
-        <!-- jlsdjf -->
-    </script>
-    <script>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:form="urn:jsptagdir:/WEB-INF/tags/form"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/resources/scripts/jquery.validate.js"
+		var="jquery_validate_url" />
+	<script src="${jquery_validate_url }" type="text/javascript">
+	<!-- jlsdjf -->
+		
+	</script>
+	<script>
 		debugger;
 		$(document).ready(function() {
 
@@ -14,67 +21,110 @@
 
 		});
 	</script>
-    <form:create id="fc_org_hcmus_tis_model_WorkItem" label="${workItemType.name }" modelAttribute="workItem" path="/workitems" render="${empty dependencies}" z="user-managed">
-        <field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="user-managed"/>
-        <div style="float: left">
-            <util:fixpanel id="detail_panel" title="Details">
-                <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="user-managed"/>
-                <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="user-managed"/>
-                <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" label="Iteration" path="/workitemcontainers" required="true" z="user-managed"/>
-                <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
-                <c:set value="" var="validateRule"/>
-                <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine">
-                    <c:if test="${fieldDefine.required }">
-                        <c:set value="required" var="validateRule"/>
-                    </c:if>
-                    <c:set value="${validateRule} ${fieldDefine.type}" var="validateRule"/>
-                    <div>
-                        <label for="ctf_${fieldDefine.refName }">
+	<form:create id="fc_org_hcmus_tis_model_WorkItem"
+		label="${workItemType.name }" modelAttribute="workItem"
+		path="/workitems" render="${empty dependencies}" z="user-managed">
+		<field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title"
+			required="true" z="user-managed" />
+		<div style="float: left">
+			<util:fixpanel id="detail_panel" title="Details">
+				<field:select field="status"
+					id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id"
+					items="${workitemstatuses}" path="/workitemstatuses"
+					required="true" z="user-managed" />
+				<field:select field="priority"
+					id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id"
+					items="${prioritys}" path="/prioritys" required="true"
+					z="user-managed" />
+				<field:select field="workItemContainer"
+					id="c_org_hcmus_tis_model_WorkItem_workItemContainer"
+					itemValue="id" items="${workitemcontainers}" label="Iteration"
+					path="/workitemcontainers" required="true" z="user-managed" />
+				<field:select field="workItemType"
+					id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id"
+					items="${workitemtypes}" path="/workitemtypes" render="false"
+					required="true" z="user-managed" />
+				<c:set value="" var="validateRule" />
+				<c:forEach items="${workItemType.additionalFieldDefines }"
+					var="fieldDefine">
+					<c:if test="${fieldDefine.required }">
+						<c:set value="required" var="validateRule" />
+					</c:if>
+					<c:set value="${validateRule} ${fieldDefine.type}"
+						var="validateRule" />
+					<div>
+						<label for="ctf_${fieldDefine.refName }">
 							${fieldDefine.refName } : </label>
-                        <c:choose>
-                            <c:when test="${empty fieldDefine.choices }">
-                                <input class="${validateRule }" id="ctf_${fieldDefine.refName }" name="${fieldDefine.refName }" value="${fieldDefine.defaultValue }"/>
-                                <br/>
-                                <br/>
-                            </c:when>
-                            <c:when test="${not empty fieldDefine.choices}">
-                                <select id="ctf_${fieldDefine.refName }" name="${ fieldDefine.refName}">
-                                    <c:forEach items="${fieldDefine.choices}" var="choice">
-                                        <option>${choice}</option>
-                                    </c:forEach>
-                                </select>
-                                <br/>
-                                <br/>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                </c:forEach>
-            </util:fixpanel>
-        </div>
-        <div style="float: right;">
-            <util:fixpanel id="people_panel" title="People">
-                <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" label="Asign to" path="/memberinformations" z="user-managed"/>
-                <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
-            </util:fixpanel>
-            <util:fixpanel id="Dates_panel" title="Dates">
-                <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" render="false" required="true" z="user-managed"/>
-                <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
-            </util:fixpanel>
-            <util:fixpanel id="Attachments_panel" title="Attachments">
-                <input type="file"/>
-            </util:fixpanel>
-        </div>
-        <div class="clear"/>
-        <util:fixpanel id="description_panel" title="Description">
-            <field:textarea field="description" id="c_org_hcmus_tis_model_WorkItem_description" label=" " z="user-managed"/>
-        </util:fixpanel>
-        <input name="workItemType" type="hidden" value="${workItemType.id }"/>
-        <input name="projectId" type="hidden" value="${projectId }"/>
-        <input name="author" type="hidden" value="${memberInformationId }"/>
-        <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" render="false" z="user-managed"/>
-        <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false" z="user-managed"/>
-        <field:input field="objectFactory" id="c_org_hcmus_tis_model_WorkItem_objectFactory" render="false" z="user-managed"/>
-        <field:datetime dateTimePattern="${workItem_datelastedit_date_format}" field="dateLastEdit" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit" render="false" z="user-managed"/>
-    </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}" z="user-managed"/>
+						<c:choose>
+							<c:when test="${empty fieldDefine.choices }">
+								<input class="${validateRule }" id="ctf_${fieldDefine.refName }"
+									name="${fieldDefine.refName }"
+									value="${fieldDefine.defaultValue }" />
+								<br />
+								<br />
+							</c:when>
+							<c:when test="${not empty fieldDefine.choices}">
+								<select id="ctf_${fieldDefine.refName }"
+									name="${ fieldDefine.refName}">
+									<c:forEach items="${fieldDefine.choices}" var="choice">
+										<option>${choice}</option>
+									</c:forEach>
+								</select>
+								<br />
+								<br />
+							</c:when>
+						</c:choose>
+					</div>
+				</c:forEach>
+			</util:fixpanel>
+		</div>
+		<div style="float: right;">
+			<util:fixpanel id="people_panel" title="People">
+				<field:select field="asignee"
+					id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id"
+					items="${memberinformations}" label="Asign to"
+					path="/memberinformations" z="user-managed" />
+				<field:select field="author"
+					id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id"
+					items="${memberinformations}" path="/memberinformations"
+					render="false" required="true" z="user-managed" />
+			</util:fixpanel>
+			<util:fixpanel id="Dates_panel" title="Dates">
+				<field:datetime
+					dateTimePattern="${workItem_datecreated_date_format}"
+					field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated"
+					render="false" required="true" z="user-managed" />
+				<field:datetime dateTimePattern="${workItem_duedate_date_format}"
+					field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate"
+					z="gOGmWdpqzUkjhR+rxrDNMktSNxk=" />
+			</util:fixpanel>
+			<util:fixpanel id="Attachments_panel" title="Attachments">
+				<input type="file" />
+			</util:fixpanel>
+		</div>
+		<div class="clear" />
+		<util:fixpanel id="description_panel" title="Description">
+			<field:textarea field="description"
+				id="c_org_hcmus_tis_model_WorkItem_description" label=" "
+				z="user-managed" />
+		</util:fixpanel>
+		<input name="workItemType" type="hidden" value="${workItemType.id }" />
+		<input name="projectId" type="hidden" value="${projectId }" />
+		<input name="author" type="hidden" value="${memberInformationId }" />
+		<field:input field="additionalFields"
+			id="c_org_hcmus_tis_model_WorkItem_additionalFields" render="false"
+			z="user-managed" />
+		<field:input field="jaxbContext"
+			id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false"
+			z="user-managed" />
+		<field:input field="objectFactory"
+			id="c_org_hcmus_tis_model_WorkItem_objectFactory" render="false"
+			z="user-managed" />
+		<field:datetime dateTimePattern="${workItem_datelastedit_date_format}"
+			field="dateLastEdit" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit"
+			render="false" z="user-managed" />
+	</form:create>
+	<form:dependency dependencies="${dependencies}"
+		id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}"
+		z="user-managed" />
 </div>

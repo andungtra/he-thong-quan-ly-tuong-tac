@@ -577,3 +577,11 @@ field reference --fieldName workItem --type ~.model.WorkItem
 field reference --fieldName projectMember --type ~.model.MemberInformation
 entity jpa --class org.hcmus.tis.model.Attachment --testAutomatically 
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 00:38:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 09:00:56
+hint
+focus --class ~.model.Comment
+finder list 
+finder add findCommentsByWorkItem
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 11:36:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:09:55
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 22:25:57

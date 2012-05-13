@@ -52,5 +52,9 @@
             <menu:item id="i_iteration_new" messageCode="global_menu_new" url="/iterations?form" z="XtXZUV+eevRublI8GnEBgWQPAbo="/>
             <menu:item id="i_iteration_list" messageCode="global_menu_list" url="/iterations?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FMRcCOlk6n7UQFBmcuueyTSnrrY="/>
         </menu:category>
+        <menu:category id="c_comment" z="KpI9zqkdeE9bZ8zxvHTXU6Lm24s=">
+            <menu:item id="i_comment_new" messageCode="global_menu_new" url="/comments?form" z="q921JBcftknHR9qtTYaac8JDm7g="/>
+            <menu:item id="i_comment_list" messageCode="global_menu_list" url="/comments?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Z9n1g0FmjBLpyAPjZHhefDZLMtY="/>
+        </menu:category>
     </menu:menu>
 </div>

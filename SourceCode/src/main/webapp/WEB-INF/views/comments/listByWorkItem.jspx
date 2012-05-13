@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="comments" xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<c:forEach items="${comments }" var="comment">
+		<div>
+			<p>${comment.projectMember.account.firstName }
+				${comment.projectMember.account.lastName } added a comment
+				-${comment.commentDate }</p>
+			<p>${comment.content}</p>
+		</div>
+	</c:forEach>
+	<spring:url value="/comments" var="action_url"></spring:url>
+	<FORM action="${ action_url}" method="POST">
+		<INPUT type="hidden" name="workItem" value="${workItemId }" />
+		<TEXTAREA name="content" rows="10" cols="10">
+			</TEXTAREA>
+		<INPUT type="submit" />
+	</FORM>
+	adfds
+</div>
