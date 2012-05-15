@@ -56,5 +56,9 @@
             <menu:item id="i_comment_new" messageCode="global_menu_new" url="/comments?form" z="q921JBcftknHR9qtTYaac8JDm7g="/>
             <menu:item id="i_comment_list" messageCode="global_menu_list" url="/comments?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Z9n1g0FmjBLpyAPjZHhefDZLMtY="/>
         </menu:category>
+        <menu:category id="c_attachment" z="ILosBIgZtka54YO9aBOb14K+zdY=">
+            <menu:item id="i_attachment_new" messageCode="global_menu_new" url="/attachments?form" z="f5MXI6RSW9sXXvkGg68SWJg0apc="/>
+            <menu:item id="i_attachment_list" messageCode="global_menu_list" url="/attachments?page=1&amp;size=${empty param.size ? 10 : param.size}" z="W61D2on9MDhfSV7J58ZOsuWhNlQ="/>
+        </menu:category>
     </menu:menu>
 </div>

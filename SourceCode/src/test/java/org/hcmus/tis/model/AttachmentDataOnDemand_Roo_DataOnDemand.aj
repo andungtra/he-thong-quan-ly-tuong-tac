@@ -24,7 +24,19 @@ privileged aspect AttachmentDataOnDemand_Roo_DataOnDemand {
     
     public Attachment AttachmentDataOnDemand.getNewTransientAttachment(int index) {
         Attachment obj = new Attachment();
+        setDisplayFileName(obj, index);
+        setRealFileName(obj, index);
         return obj;
+    }
+    
+    public void AttachmentDataOnDemand.setDisplayFileName(Attachment obj, int index) {
+        String displayFileName = "displayFileName_" + index;
+        obj.setDisplayFileName(displayFileName);
+    }
+    
+    public void AttachmentDataOnDemand.setRealFileName(Attachment obj, int index) {
+        String realFileName = "realFileName_" + index;
+        obj.setRealFileName(realFileName);
     }
     
     public Attachment AttachmentDataOnDemand.getSpecificAttachment(int index) {

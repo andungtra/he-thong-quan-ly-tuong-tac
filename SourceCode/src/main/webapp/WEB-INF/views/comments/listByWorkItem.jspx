@@ -7,9 +7,9 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<c:forEach items="${comments }" var="comment">
-		<div>
-			<p>${comment.projectMember.account.firstName }
-				${comment.projectMember.account.lastName } added a comment
+		<div style="border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: black;">
+			<p><b>${comment.projectMember.account.firstName }
+				${comment.projectMember.account.lastName }</b> added a comment
 				-${comment.commentDate }</p>
 			<p>${comment.content}</p>
 		</div>
@@ -21,5 +21,4 @@
 			</TEXTAREA>
 		<INPUT type="submit" />
 	</FORM>
-	adfds
 </div>

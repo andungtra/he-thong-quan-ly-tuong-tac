@@ -1,5 +1,8 @@
 package org.hcmus.tis.model;
 
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
@@ -8,4 +11,15 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 public class Attachment {
+	@NotNull
+	private String displayFileName;
+	private String realFileName;
+	@ManyToOne
+	private WorkItem workItem;
+	public WorkItem getWorkItem() {
+		return workItem;
+	}
+	public void setWorkItem(WorkItem workItem) {
+		this.workItem = workItem;
+	}
 }

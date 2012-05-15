@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBException;
 
 import org.aspectj.lang.annotation.After;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Field;
 import org.hcmus.tis.model.FieldDefine;
 import org.hcmus.tis.model.Iteration;
@@ -113,7 +114,7 @@ public class WorkItemControllerTest {
 	}
 	private List<Field> finalField;
 	@Test
-	@PrepareForTest({WorkItemType.class})
+	@PrepareForTest({WorkItemType.class, Attachment.class})
 	public void testCreate() throws JAXBException{
 		WorkItem workItem = new WorkItem();
 		workItem.setId((long)4);
@@ -141,11 +142,21 @@ public class WorkItemControllerTest {
 		}).when(spyWorkItem).setAdditionFiels(Mockito.any(List.class));
 		
 		Mockito.doReturn("value").when(httpServletRequest).getParameter("name");
+		Long attachmentIds[] = {(long)1, (long)2};
+		PowerMockito.mockStatic(Attachment.class);
+		Attachment mockedAttachment1 = Mockito.mock(Attachment.class);
+		Attachment mocedAttachment2 = Mockito.mock(Attachment.class);
+		PowerMockito.when(Attachment.findAttachment((long)1)).thenReturn(mocedAttachment2);
+		PowerMockito.when(Attachment.findAttachment((long)2)).thenReturn(mockedAttachment1);
 		 
-		aut.create(spyWorkItem, bindingResult, uiModel, httpServletRequest);
+		aut.create(spyWorkItem, bindingResult, uiModel, attachmentIds, httpServletRequest);
 		
 		Mockito.verify(httpServletRequest).getParameter("name");
 		Mockito.verify(spyWorkItem).persist();
+		Mockito.verify(mockedAttachment1).setWorkItem(spyWorkItem);
+		Mockito.verify(mockedAttachment1).flush();
+		Mockito.verify(mocedAttachment2).setWorkItem(spyWorkItem);
+		Mockito.verify(mocedAttachment2).flush();
 		assertEquals(1, finalField.size());
 		assertEquals("name", finalField.get(0).getName());
 		assertEquals("value", finalField.get(0).getValue());
