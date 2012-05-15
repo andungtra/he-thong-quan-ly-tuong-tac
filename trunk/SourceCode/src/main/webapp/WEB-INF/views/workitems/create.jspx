@@ -13,6 +13,14 @@
 	<!-- jlsdjf -->
 		
 	</script>
+	<spring:url value="/resources/scripts/fileuploader/fileuploader.js"
+		var="file_uploader_js_url"></spring:url>
+	<SCRIPT type="text/javascript" src="${file_uploader_js_url }"></SCRIPT>
+	<spring:url value="/resources/scripts/fileuploader/fileuploader.css"
+		var="file_uploader_css_url"></spring:url>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="${file_uploader_css_url}" />
+
 	<script>
 		debugger;
 		$(document).ready(function() {
@@ -21,6 +29,38 @@
 
 		});
 	</script>
+	<spring:url value="/attachments" var="upload_url"></spring:url>
+	<SCRIPT type="text/javascript">
+		$(function createUploader() {
+			var uploader = new qq.FileUploader({
+				element : document.getElementById('file-uploader-demo1'),
+				action : '${upload_url}',
+				debug : true,
+				extraDropzones : [ qq.getByClass(document,
+						'qq-upload-extra-drop-area')[0] ]
+			});
+		});
+		$(function() {
+			debugger;
+			$('#file-uploader-demo1').on('click', '.qq-upload-delete',
+					function(event) {
+						alert(event.target.href);
+						$.ajax({
+							type : "DELETE",
+							url : event.target.href,
+							success : function(data) {
+								if (data.success) {
+									alert('delete sucess' + data.attachmentId);
+
+									$('#' + data.attachmentId).remove();
+								}
+							}
+						});
+						event.stopImmediatePropagation();
+						return false;
+					});
+		});
+	</SCRIPT>
 	<form:create id="fc_org_hcmus_tis_model_WorkItem"
 		label="${workItemType.name }" modelAttribute="workItem"
 		path="/workitems" render="${empty dependencies}" z="user-managed">
@@ -99,7 +139,15 @@
 					z="gOGmWdpqzUkjhR+rxrDNMktSNxk=" />
 			</util:fixpanel>
 			<util:fixpanel id="Attachments_panel" title="Attachments">
-				<input type="file" />
+				<div id="file-uploader-demo1">
+					<noscript>
+						<p>Please enable JavaScript to use file uploader.</p>
+						<!-- or put a simple form for upload here -->
+					</noscript>
+				</div>
+
+				<div class="qq-upload-extra-drop-area">Drop files here too</div>
+
 			</util:fixpanel>
 		</div>
 		<div class="clear" />

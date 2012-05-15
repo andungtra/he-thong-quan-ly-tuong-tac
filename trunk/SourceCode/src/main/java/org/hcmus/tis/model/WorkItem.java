@@ -6,10 +6,13 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
@@ -109,6 +112,8 @@ public class WorkItem {
     @NotNull
     @ManyToOne
     private WorkItemStatus status;
+    @OneToMany(mappedBy="workItem", cascade={CascadeType.PERSIST})
+    private Collection<Attachment> attachments;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
@@ -142,6 +147,12 @@ public class WorkItem {
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
+	}
+	public Collection<Attachment> getAttachments() {
+		return attachments;
+	}
+	public void setAttachments(Collection<Attachment> attachments) {
+		this.attachments = attachments;
 	}
 	
 	private void writeHistory(WorkItemHistory history){

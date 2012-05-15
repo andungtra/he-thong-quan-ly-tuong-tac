@@ -5,6 +5,7 @@ package org.hcmus.tis.controller;
 
 import org.hcmus.tis.controller.ApplicationConversionServiceFactoryBean;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
@@ -49,6 +50,30 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Account>() {
             public org.hcmus.tis.model.Account convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), Account.class);
+            }
+        };
+    }
+    
+    public Converter<Attachment, String> ApplicationConversionServiceFactoryBean.getAttachmentToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.Attachment, java.lang.String>() {
+            public String convert(Attachment attachment) {
+                return new StringBuilder().append(attachment.getDisplayFileName()).append(" ").append(attachment.getRealFileName()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, Attachment> ApplicationConversionServiceFactoryBean.getIdToAttachmentConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Attachment>() {
+            public org.hcmus.tis.model.Attachment convert(java.lang.Long id) {
+                return Attachment.findAttachment(id);
+            }
+        };
+    }
+    
+    public Converter<String, Attachment> ApplicationConversionServiceFactoryBean.getStringToAttachmentConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Attachment>() {
+            public org.hcmus.tis.model.Attachment convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), Attachment.class);
             }
         };
     }
@@ -281,6 +306,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getAccountToStringConverter());
         registry.addConverter(getIdToAccountConverter());
         registry.addConverter(getStringToAccountConverter());
+        registry.addConverter(getAttachmentToStringConverter());
+        registry.addConverter(getIdToAttachmentConverter());
+        registry.addConverter(getStringToAttachmentConverter());
         registry.addConverter(getCommentToStringConverter());
         registry.addConverter(getIdToCommentConverter());
         registry.addConverter(getStringToCommentConverter());

@@ -15,10 +15,42 @@
 		href="${activity_tabs_css_url}" />
 	<spring:url value="/resources/scripts/jquery.validate.js"
 		var="jquery_validate_url" />
+	<spring:url value="/resources/scripts/fileuploader/fileuploader.js"
+		var="file_uploader_js_url"></spring:url>
+	<SCRIPT type="text/javascript" src="${file_uploader_js_url }"></SCRIPT>
+	<spring:url value="/resources/scripts/fileuploader/fileuploader.css"
+		var="file_uploader_css_url"></spring:url>
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="${file_uploader_css_url}" />
 	<script src="${jquery_validate_url }" type="text/javascript">
 	<!-- jlsdjf -->
 		
 	</script>
+	<spring:url value="/attachments" var="upload_url"></spring:url>
+	<SCRIPT type="text/javascript">
+		$(function createUploader() {
+			var uploader = new qq.FileUploader({
+				params :{
+					'workitemid' : '${workItem.id}'
+				},
+				element : document.getElementById('file-uploader-demo1'),
+				listElement : document.getElementById('qq-upload-list'),
+				action : '${upload_url}',
+				debug : true,
+				extraDropzones : [ qq.getByClass(document,
+						'qq-upload-extra-drop-area')[0] ]
+			});
+		});
+		$(function() {
+			debugger;
+			$('#file-uploader-demo1').on('click', '.qq-upload-delete',
+					function(event) {
+						alert(event.target.href);
+						event.stopImmediatePropagation();
+						return false;
+					});
+		});
+	</SCRIPT>
 	<script>
 		debugger;
 		$(document).ready(function() {
@@ -43,14 +75,18 @@
 								select : function(event, ui) {
 								},
 							});
-			
+
 		});
-		$(function(){
-			$("#activity_tabs_content div:first").on('submit', 'form', function(event){
-				formSubmitHandler(event, '#activity_tabs_content div:first');
-				event.stopImmediatePropagation();
-				return false;
-			})
+		$(function() {
+			$("#activity_tabs_content div:first").on(
+					'submit',
+					'form',
+					function(event) {
+						formSubmitHandler(event,
+								'#activity_tabs_content div:first');
+						event.stopImmediatePropagation();
+						return false;
+					})
 		});
 	</script>
 	<form:update id="fu_org_hcmus_tis_model_WorkItem"
@@ -150,7 +186,22 @@
 					object="${workItem}" z="user-managed" />
 			</util:fixpanel>
 			<util:fixpanel id="Attachments_panel" title="Attachments">
-				<input type="file"></input>
+				<div id="file-uploader-demo1">
+					<noscript>
+						<p>Please enable JavaScript to use file uploader.</p>
+						<!-- or put a simple form for upload here -->
+					</noscript>
+				</div>
+				<ul id="qq-upload-list">
+					<c:forEach items="${workItem.attachments }" var="attachment">
+						<li>
+						<span class="qq-upload-delete"><a href="#">Remove</a></span>
+						<span ></span>
+						<span class="qq-upload-file">${attachment.displayFileName }</span>
+						</li>
+					</c:forEach>
+				</ul>
+				<div class="qq-upload-extra-drop-area">Drop files here too</div>
 			</util:fixpanel>
 		</div>
 		<div class="clear"></div>

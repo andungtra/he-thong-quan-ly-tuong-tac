@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Field;
 import org.hcmus.tis.model.FieldDefine;
 import org.hcmus.tis.model.Iteration;
@@ -34,6 +35,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/workitems")
@@ -49,6 +51,7 @@ public class WorkItemController {
         WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
+		String attachmentIds[] = httpServletRequest.getParameterValues("attachment");
 		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {
 			Field field = new Field();
 			field.setName(fieldDefine.getRefName());
@@ -132,7 +135,7 @@ public class WorkItemController {
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid WorkItem workItem, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest)
+			Model uiModel, @RequestParam(value="attachment") Long[] attachmentIds, HttpServletRequest httpServletRequest)
 			throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, workItem);
@@ -155,7 +158,12 @@ public class WorkItemController {
 		
 		uiModel.asMap().clear();
 		workItem.persist();
-		/*return "redirect:/workitems/"
+		for(Long attachmentId : attachmentIds){
+			Attachment attachment = Attachment.findAttachment(attachmentId);
+			attachment.setWorkItem(workItem);
+			attachment.flush();
+		}
+		return "redirect:/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);*/
 		return this.list(null, null, uiModel);

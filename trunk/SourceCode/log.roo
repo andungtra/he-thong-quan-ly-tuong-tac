@@ -585,3 +585,18 @@ finder add findCommentsByWorkItem
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 11:36:42
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:09:55
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 22:25:57
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:42:07
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 22:50:05
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:53:45
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-14 00:02:45
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-14 20:56:17
+hint
+entity jpa --class org.hcmus.tis.model.Attachment --testAutomatically 
+web mvc scaffold --class ~.model.Attachment
+// [failed] web mvc scaffold --class ~.controller.AttachmentController
+// [failed] web mvc all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-15 00:31:19
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-15 09:10:36
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-15 10:33:28

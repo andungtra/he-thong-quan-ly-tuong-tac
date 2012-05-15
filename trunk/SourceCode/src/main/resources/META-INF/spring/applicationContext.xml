@@ -109,4 +109,7 @@
 	<bean id="objectFactory"
 		class="org.hcmus.tis.model.xml.ObjectFactory">
 	</bean>
+	<bean id="fileService"
+		class="org.hcmus.tis.service.FileService">
+	</bean>
 </beans>
