@@ -10,7 +10,8 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both;" />
 	<div class="left-panel" id="overview">
-		<page:show create="false" delete="false" id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
+		<page:show create="false" delete="false"
+			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
 			path="/projects" update="false" z="user-managed"
 			label="Project ${project.name}">
 
@@ -41,24 +42,49 @@
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
 				<c:forEach items="${overdues}" var="item">
-					<li><span>${item.dueDate}</span>-<span>${item.title}</span></li>
+					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<li>
+						<span>${item.dueDate}</span>    
+						<span><a href="${link }">${item.title}</a></span>
+					</li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="In due" id="">
+		<util:fixpanel title="Due in this week" id="">
 			<ul class="due">
 				<c:forEach items="${indues}" var="item">
-					<li><span>${item.dueDate}</span>-<span>${item.title}</span></li>
+					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<li>
+						<span>${item.dueDate}</span>    
+						<span><a href="${link }">${item.title}</a></span>
+					</li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
 	</div>
-	<div class="clear"/>
+	<div class="clear" />
 	<div>
-		<c:forEach var="item" items="${listHistorys}">
-			<spring:url value="/workitems/${item.workItem.id }?form" var="link"></spring:url>
-			<div>${item.dateLastEdit} ${item.changedBy} ${item.type} <a href="${link }">${item.title}</a></div>
-		</c:forEach>
+		<util:fixpanel id="" title="Activity">
+			<table>
+				<tr>
+					<th>Time</th>
+					<th>Change by</th>
+					<th>Type</th>
+					<th>Work Item</th>
+				</tr>
+				<c:forEach var="item" items="${listHistorys}">
+					<spring:url value="/workitems/${item.workItem.id }?form" var="link"></spring:url>
+					<tr>
+						<td>${item.dateLastEdit}</td>
+						<td>${item.changedBy}</td>
+						<td>${item.type}</td>
+						<td><a href="${link }">${item.title}</a></td>
+
+					</tr>
+				</c:forEach>
+			</table>
+
+		</util:fixpanel>
 	</div>
 </div>

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -116,11 +117,11 @@ public class WorkItem {
     private Collection<Attachment> attachments;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(style =  "SS")
     private Date dueDate;
 
     @PrePersist
-    void prePersit() {
+    void prePersit() {    	
         this.dateCreated = new Date();
         WorkItemHistory history = new WorkItemHistory();
     	history.setType(WorkItemHistoryType.CREATE);

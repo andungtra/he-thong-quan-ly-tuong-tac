@@ -12,8 +12,6 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
-import org.joda.time.format.DateTimeFormat;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,12 +53,6 @@ privileged aspect WorkItemController_Roo_Controller {
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/workitems";
-    }
-    
-    void WorkItemController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("workItem_datecreated_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("workItem_datelastedit_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("workItem_duedate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {

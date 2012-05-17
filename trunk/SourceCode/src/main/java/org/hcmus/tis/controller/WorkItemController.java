@@ -28,6 +28,8 @@ import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.joda.time.format.DateTimeFormat;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,6 +100,7 @@ public class WorkItemController {
 			dependencies.add(new String[] { "workitemstatus",
 					"workitemstatuses" });
 		}
+		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("dependencies", dependencies);
 		return "workitems/create";
 	}
@@ -165,8 +168,8 @@ public class WorkItemController {
 		}
 		return "redirect:/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
-						httpServletRequest);*/
-		return this.list(null, null, uiModel);
+						httpServletRequest);
+		
 	}
 	
 	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
@@ -195,4 +198,10 @@ public class WorkItemController {
 		}
 		return reply;
 	}
+	
+	void addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("workItem_datecreated_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("workItem_datelastedit_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("workItem_duedate_date_format", DateTimeFormat.patternForStyle("SS", LocaleContextHolder.getLocale()));
+    }
 }

@@ -2,7 +2,7 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:spring="http://www.springframework.org/tags" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <table:datatable aoColumns="name,parentContainer,description" fdelete="true" fgoto="true" fnew="true" fshow="true" id="tbproject" path="/projects" source="/projects/mList" thead="Name,ParentContainer,Description"/>
+    <table:datatable aoColumns="name,parentContainer,description" fgoto="true" fnew="true" fshow="true" id="tbproject" path="/projects" source="/projects/mList" thead="Name,ParentContainer,Description"/>
     <div id="pl_org_hcmus_tis_model_Project">
         <div id="l_org_hcmus_tis_model_Project">
             <div id="c_org_hcmus_tis_model_Project_name"/>
