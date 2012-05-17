@@ -60,4 +60,14 @@ public class MemberInformation {
         return q.getResultList();
 	
 	}
+
+	public static List<MemberInformation> findAllMemberInformationsByAccount(Account account) {
+		// TODO Auto-generated method stub
+		if (account == null) throw new IllegalArgumentException("The account argument is required");
+        EntityManager em = MemberInformation.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery("SELECT o FROM MemberInformation AS o WHERE o.account = :account", MemberInformation.class);
+      
+        q.setParameter("account", account);
+        return q.getResultList();
+	}
 }

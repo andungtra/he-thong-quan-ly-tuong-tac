@@ -10,19 +10,19 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both;" />
 	<div class="left-panel" id="overview">
-		<util:fixpanel title="Task created by me" id="">
-			<ul class="due">
-				<li>Task 1</li>
-				<li>Task 2</li>
-				<li>Task 3</li>
+		<util:fixpanel title="Overdue" id="">
+			<ul class="overdue">
+				<c:forEach items="${overdues}" var="item">
+					<li><span>${item.dueDate}</span>     <span>${item.title}</span></li>
+				</c:forEach>
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="Task asign to me" id="">
+		<util:fixpanel title="Due in this week" id="">
 			<ul class="due">
-				<li>Task 1</li>
-				<li>Task 2</li>
-				<li>Task 3</li>
+				<c:forEach items="${indues}" var="item">
+					<li><span>${item.dueDate}</span>     <span>${item.title}</span></li>
+				</c:forEach>
 			</ul>
 		</util:fixpanel>
 	</div>

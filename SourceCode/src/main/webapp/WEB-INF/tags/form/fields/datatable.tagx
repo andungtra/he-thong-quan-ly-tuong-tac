@@ -32,27 +32,30 @@
 	<jsp:directive.attribute name="fshow" type="java.lang.Boolean"
 		required="false" rtexprvalue="true" description="The server source" />
 
-	<jsp:directive.attribute name="fdelete" type="java.lang.Boolean"
+	<jsp:directive.attribute name="lshow" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
+
+	<jsp:directive.attribute name="fdelete" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="Delete" />
 
 	<jsp:directive.attribute name="fadd" type="java.lang.String"
-		required="false" rtexprvalue="true" description="The server source" />
+		required="false" rtexprvalue="true" description="Add" />
 
 	<jsp:directive.attribute name="fupdate" type="java.lang.String"
-		required="false" rtexprvalue="true" description="The server source" />
+		required="false" rtexprvalue="true" description="Update" />
 
 	<jsp:directive.attribute name="fremove" type="java.lang.String"
-		required="false" rtexprvalue="true" description="The server source" />
+		required="false" rtexprvalue="true" description="Remove" />
 
 	<jsp:directive.attribute name="redirectUrl" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
 
 	<jsp:directive.attribute name="paramName" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
-		
+
 	<jsp:directive.attribute name="paramValue" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
-		
+
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
 		var="datatables_js" />
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -77,6 +80,7 @@
 		var="workitem_content_css" />
 	<spring:url value="${path}" var="path" />
 	<spring:url value="${source}" var="source" />
+	<spring:url value="${lshow}" var="lshow" />
 	<c:set var="lNew" value="${path}?form" />
 	<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false}' />
 	<c:forTokens items="${aoColumns}" var="column" delims="{,}">
@@ -95,7 +99,7 @@
 		$(document)
 				.ready(
 						function() {
-							debugger;
+							//debugger;
 							
 							$('#${id}').on('click', '#${id} tbody tr td',
 									function(event) {									
@@ -136,7 +140,7 @@
 
 											});		
 							
-							debugger;
+							//debugger;
 	                         
 						});
 		 $(function() {
@@ -226,7 +230,7 @@
 			        	} 
 			    });
 			}
-			//debugger;
+			debugger;
 		}
 		function fshow(){
 			//debugger;
@@ -235,7 +239,11 @@
 			
 			if(c>0){
 				var idtr = $(s.parent().parent()[0]).attr('id');
-				var url="${path}/"+idtr+"?form";
+				var url;
+				if("${lshow}"!="")
+					url = "${lshow}/"+idtr+"?form";
+				else
+					url="${path}/"+idtr+"?form";
 				$(panel).load(url, function() {
 					$(panel).unmask();
 				});
@@ -250,7 +258,11 @@
 			
 			if(c>0){
 				var idtr = $(s.parent().parent()[0]).attr('id');
-				var url="${path}/"+idtr;
+				var url;
+				if("${lshow}"!="")
+					url = "${lshow}/"+idtr;
+				else 
+					url="${path}/"+idtr;
 				//alert(url);
 				window.location=url;
 				
@@ -265,18 +277,19 @@
 		function fdel(){
 			var s = $('#${id} tbody tr td:first-child input:checked');
 			var c = $('#${id} tbody tr td:first-child input:checked').length;
-			
+			var d = $(s.parent().parent());
 			if(c>0){
-				
-				var idtr = $(s.parent().parent()[0]).attr('id');
-				$.ajax({
-			        type: "DELETE",
-			        url: "${path}/"+idtr,
-			        success:function(){			        	
-			        		$("#"+idtr).html("");
-			        		alert("item is deleted !");
-			        	} 
-			    });
+				for(var x in d){
+					var idtr = $(d[x]).attr('id');
+					$.ajax({
+				        type: "DELETE",
+				        url: "${path}/"+idtr,
+				        success:function(){			        	
+				        		$("#"+idtr).html("");
+				        		alert("item is deleted !");
+				        	} 
+				    });
+				}
 			}
 			//debugger;			
 		}
@@ -298,6 +311,6 @@
 				</tr>
 			</TBODY>
 		</TABLE>
-		
+
 	</div>
 </jsp:root>

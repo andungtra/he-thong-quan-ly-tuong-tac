@@ -6,9 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
-	<spring:url value="/resources/images/delete.png" var="delete_image_url"></spring:url>
-	<spring:url value="/resources/images/update.png" var="update_image_url"></spring:url>
-	<spring:url value="/resources/images/create.png" var="create_image_url"></spring:url>
+
 	<spring:url value="/memberinformations" var="object_url"></spring:url>
 	<spring:url
 		value="/memberinformations?form&amp;projectId=${projectId}&amp;redirectUrl=/projects/${projectId}/members"
@@ -28,6 +26,6 @@
 	<table:datatable aoColumns="name,memberRole" id="tbmember"
 		path="memberinformations"
 		source="/memberinformations/mList/${projectId}"
-		thead="Name, Member Role" fadd="${lAdd}" fupdate="${update_url}"
+		thead="Name, Member Role" fadd="${lAdd}" fupdate="${update_url}" 
 		fremove="${remove_url}" redirectUrl="${redirectUrl}" />
 </div>

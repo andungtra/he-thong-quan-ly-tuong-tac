@@ -32,10 +32,14 @@ $(function() {
 		// hook global link click event.
 		$('#menu_menu').on('click', 'a', function(event) {
 			var url = this.href;
-			$(panel).mask("Loading...");
-			$(panel).load(this.href, function() {
-				$(panel).unmask();
-			});
+			if (url.indexOf('/projects/'))
+				window.location = url;
+			else {
+				$(panel).mask("Loading...");
+				$(panel).load(this.href, function() {
+					$(panel).unmask();
+				});
+			}
 			return false;
 		});
 		// hook global form submit event

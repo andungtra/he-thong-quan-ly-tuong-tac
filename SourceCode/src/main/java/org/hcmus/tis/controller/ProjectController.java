@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.velocity.runtime.directive.Foreach;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.DSResponse;
@@ -151,13 +153,14 @@ public class ProjectController {
 							overdues.add(workItem);
 					}
 
-					else
+					else if(due-now<7)
 						indues.add(workItem);
 				}
 			}
 		}
 
-		List<WorkItemHistory> listHistorys = WorkItemHistory.findAllWorkItemHistorysInProject(id,10);
+		List<WorkItemHistory> listHistorys = WorkItemHistory
+				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
@@ -217,15 +220,32 @@ public class ProjectController {
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	public String update(@Valid Project project, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest) {
-		if (bindingResult.hasErrors()) {
+			Model uiModel, HttpServletRequest httpServletRequest,
+			HttpSession session) {
+		Account acc = (Account) session.getAttribute("account");
+		List<MemberInformation> listInfo = MemberInformation
+				.findMemberInformationsByProject(project);
+		MemberInformation info = null;
+		for (MemberInformation memberInformation : listInfo) {
+			if (memberInformation.getAccount().equals(acc)) {
+				info = memberInformation;
+				break;
+			}
+		}
+		if (info!=null && info.getMemberRole().getId() == 0) {
+			if (bindingResult.hasErrors()) {
+				populateEditForm(uiModel, project);
+				return "projects/update";
+			}
+			uiModel.asMap().clear();
+			project.merge();
+			uiModel.addAttribute("projects", Project.findAllProjects());
+			return "projects/list";
+		} else {
+			uiModel.addAttribute("error","You don't have authority !!!");
 			populateEditForm(uiModel, project);
 			return "projects/update";
 		}
-		uiModel.asMap().clear();
-		project.merge();
-		uiModel.addAttribute("projects", Project.findAllProjects());
-		return "projects/list";
 	}
 
 	@RequestMapping(produces = "text/html")

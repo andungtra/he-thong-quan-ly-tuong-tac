@@ -24,6 +24,7 @@ import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
@@ -165,6 +166,30 @@ public class AccountController {
 
 	@RequestMapping(value = "/{id}/dashboard", produces = "text/html")
 	public String showDashBoard(@PathVariable("id") Long id, Model uiModel) {
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		long now = cal.get(java.util.Calendar.DAY_OF_YEAR);
+		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
+		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
+		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
+		for (WorkItem workItem : workItemsList) {
+			if (workItem.getAsignee().getAccount().getId().equals(id)) {
+				if (workItem.getDueDate() != null) {
+					java.util.Calendar dueTime = java.util.Calendar.getInstance();
+					dueTime.setTime(workItem.getDueDate());
+					long due = dueTime.get(java.util.Calendar.DAY_OF_YEAR);
+					
+					
+					if (due < now) {
+						if (overdues.size() < 10)
+							overdues.add(workItem);
+					}
+					else if(due-now<7)
+						indues.add(workItem);
+				}
+			}
+		}
+		uiModel.addAttribute("overdues", overdues);
+		uiModel.addAttribute("indues", indues);
 		return "accounts/dashboard";
 	}
 
@@ -184,7 +209,7 @@ public class AccountController {
 			if (item.getAccount().getEmail().equals(acc.getEmail())) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='//TIS/projects/"
+				dto.setName("<a href='../../../TIS/projects/"
 						+ item.getProject().getId() + "'>"
 						+ item.getProject().getName() + "</a>");
 				dto.setDescription(item.getProject().getDescription());
