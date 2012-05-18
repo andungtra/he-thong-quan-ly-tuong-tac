@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.AttachmentController;
 import org.hcmus.tis.model.Attachment;
+import org.hcmus.tis.model.WorkItem;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +24,6 @@ privileged aspect AttachmentController_Roo_Controller {
     public String AttachmentController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Attachment());
         return "attachments/create";
-    }
-    
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String AttachmentController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("attachment", Attachment.findAttachment(id));
-        uiModel.addAttribute("itemId", id);
-        return "attachments/show";
     }
     
     @RequestMapping(produces = "text/html")
@@ -63,9 +57,9 @@ privileged aspect AttachmentController_Roo_Controller {
         return "attachments/update";
     }
     
-    
     void AttachmentController.populateEditForm(Model uiModel, Attachment attachment) {
         uiModel.addAttribute("attachment", attachment);
+        uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());
     }
     
     String AttachmentController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

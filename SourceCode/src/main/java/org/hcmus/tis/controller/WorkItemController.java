@@ -44,16 +44,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RooWebScaffold(path = "workitems", formBackingObject = WorkItem.class)
 public class WorkItemController {
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid WorkItem workItem, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) throws JAXBException {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, workItem);
-            return "workitems/update";
-        }
-        WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
+	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
+			Model uiModel, HttpServletRequest httpServletRequest)
+			throws JAXBException {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, workItem);
+			return "workitems/update";
+		}
+		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
-		String attachmentIds[] = httpServletRequest.getParameterValues("attachment");
+		String attachmentIds[] = httpServletRequest
+				.getParameterValues("attachment");
 		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {
 			Field field = new Field();
 			field.setName(fieldDefine.getRefName());
@@ -62,14 +65,17 @@ public class WorkItemController {
 			fields.add(field);
 		}
 		workItem.setAdditionFiels(fields);
-		
-		Date date = new Date();		
+
+		Date date = new Date();
 		workItem.setDateLastEdit(date);
-		
-        uiModel.asMap().clear();
-        workItem.merge();
-        return "redirect:/workitems/" + encodeUrlPathSegment(workItem.getId().toString(), httpServletRequest);
-    }
+
+		uiModel.asMap().clear();
+		workItem.merge();
+		return "redirect:/workitems/"
+				+ encodeUrlPathSegment(workItem.getId().toString(),
+						httpServletRequest);
+	}
+
 	@RequestMapping(params = "form", produces = "text/html")
 	public String createForm(Long projectId, Long workItemTypeId,
 			String redirectUrl, Model uiModel, Principal principal)
@@ -104,12 +110,14 @@ public class WorkItemController {
 		uiModel.addAttribute("dependencies", dependencies);
 		return "workitems/create";
 	}
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String updateForm(@PathVariable("id") Long id, Model uiModel) {
-    	WorkItem workItem = WorkItem.findWorkItem(id);
-        populateEditFormCustomly(uiModel, workItem);
-        return "workitems/update";
-    }
+
+	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+	public String updateForm(@PathVariable("id") Long id, Model uiModel) {
+		WorkItem workItem = WorkItem.findWorkItem(id);
+		populateEditFormCustomly(uiModel, workItem);
+		return "workitems/update";
+	}
+
 	void populateEditFormCustomly(Model uiModel, WorkItem workItem) {
 		uiModel.addAttribute("workItem", workItem);
 		addDateTimeFormatPatterns(uiModel);
@@ -137,11 +145,14 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid WorkItem workItem, BindingResult bindingResult,
-			Model uiModel, @RequestParam(value="attachment") Long[] attachmentIds, HttpServletRequest httpServletRequest)
-			throws JAXBException {
+	public String create(
+			@Valid WorkItem workItem,
+			BindingResult bindingResult,
+			Model uiModel,
+			@RequestParam(value = "attachment", required = false) Long[] attachmentIds,
+			HttpServletRequest httpServletRequest) throws JAXBException {
 		if (bindingResult.hasErrors()) {
-			populateEditForm(uiModel, workItem);
+			populateEditFormCustomly(uiModel, workItem);
 			return "workitems/create";
 		}
 		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
@@ -155,23 +166,25 @@ public class WorkItemController {
 			fields.add(field);
 		}
 		workItem.setAdditionFiels(fields);
-		
-		Date date = new Date();		
+
+		Date date = new Date();
 		workItem.setDateLastEdit(date);
-		
+
 		uiModel.asMap().clear();
 		workItem.persist();
-		for(Long attachmentId : attachmentIds){
-			Attachment attachment = Attachment.findAttachment(attachmentId);
-			attachment.setWorkItem(workItem);
-			attachment.flush();
+		if (attachmentIds != null) {
+			for (Long attachmentId : attachmentIds) {
+				Attachment attachment = Attachment.findAttachment(attachmentId);
+				attachment.setWorkItem(workItem);
+				attachment.flush();
+			}
 		}
 		return "redirect:/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);
 		
 	}
-	
+
 	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
 			"iDisplayStart", "iDisplayLength", "sEcho" })
 	@ResponseBody

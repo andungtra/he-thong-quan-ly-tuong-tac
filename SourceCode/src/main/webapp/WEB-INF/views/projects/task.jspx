@@ -25,7 +25,7 @@
 			// MENU	
 			$(document).ready(function() {
 
-				$(".signin").click(function(e) {
+				$(".img").click(function(e) {
 					e.stopImmediatePropagation();
 					$("fieldset#signin_menu").toggle();
 					$(".signin").toggleClass("menu-open");
@@ -35,7 +35,7 @@
 					return false
 				});
 				$(document).mouseup(function(e) {
-					if ($(e.target).parent("a.signin").length == 0) {
+					if ($(e.target).parent(".signin").length == 0) {
 						$(".signin").removeClass("menu-open");
 						$("fieldset#signin_menu").hide();
 					}
@@ -50,12 +50,18 @@
 		id="skinSheet" />
 	<div id="container">
 		<div id="topnav" class="topnav">
-			<a href="#" class="signin"> <span>Create</span>
-			</a>
+			<spring:url value="/workitems?form" var="default_workitemform_url">
+				<spring:param name="projectId" value="${itemId}"></spring:param>
+				<spring:param name="workItemTypeId" value="${workItemTypes[0].id }"></spring:param>
+			</spring:url>
+			<span class="signin"> <a href="${default_workitemform_url }">
+					<span>Create ${workItemTypes[0].name }</span>
+			</a><span class="img"></span>
+			</span>
 		</div>
 		<fieldset id="signin_menu">
 			<ul>
-				<c:forEach items="${workItemTypes }" var="workItemType">
+				<c:forEach items="${workItemTypes }" var="workItemType" begin="1">
 					<li><spring:url value="/workitems?form" var="workitemform_url">
 							<spring:param name="projectId" value="${itemId}"></spring:param>
 							<spring:param name="workItemTypeId" value="${workItemType.id }"></spring:param>
@@ -86,9 +92,10 @@
 			<li><a href="">all work item</a></li>
 		</ul>
 	</div>
-	
-	<field:datatable aoColumns="lName,sStatus,sType"
-		id="tbproject" path="/workitems" source="/workitems/listWorkItemByProject" paramName="projectId" paramValue="${itemId}"
-		thead="Name,Status,Type" fshow="true" />
+
+	<field:datatable aoColumns="lName,sStatus,sType" id="tbproject"
+		path="/workitems" source="/workitems/listWorkItemByProject"
+		paramName="projectId" paramValue="${itemId}" thead="Name,Status,Type"
+		fshow="true" />
 	<div style="clear: both;" />
 </div>

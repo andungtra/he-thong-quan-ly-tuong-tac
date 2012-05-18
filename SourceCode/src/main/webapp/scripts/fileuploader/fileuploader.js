@@ -10,6 +10,7 @@
 //
 // Helper functions
 //
+debugger;
 var qq = qq || {};
 /**
  * Adds all missing properties from second obj to first obj
@@ -553,7 +554,7 @@ qq.FileUploader = function(o) {
 						fileTemplate : '<li>'
 								+ '<span class="qq-upload-delete"></span>'
 								+ '<span ></span>'
-								+ '<span class="qq-upload-file"></span>'
+								+ '<a href="#" class="qq-upload-file"></a>'
 								+ '<span class="qq-upload-spinner"></span>'
 								+ '<span class="qq-upload-size"></span>'
 								+ '<a class="qq-upload-cancel" href="#">Cancel</a>'
@@ -592,6 +593,29 @@ qq.FileUploader = function(o) {
 			._createUploadButton(this._find(this._element, 'button'));
 
 	this._bindCancelEvent();
+	// bind delete event
+	$(this._listElement).on('click', '.qq-upload-delete', function(event) {
+		debugger;
+		alert(event.target.href);
+		$.ajax({
+			type : "DELETE",
+			url : event.target.href,
+			success : function(data) {
+				if (data.success) {
+					alert('delete sucess' + data.attachmentId);
+
+					$('#' + data.attachmentId).remove();
+				}
+			}
+		});
+	});
+	$(this._listElement).on('click', '.qq-upload-file', function(event) {
+		debugger;
+		alert(event.target.href);
+		window.open(event.target.href, '_blank');
+		event.stopImmediatePropagation();
+		return false;
+	});
 	this._setupDragDrop();
 };
 
@@ -611,10 +635,10 @@ qq.extend(qq.FileUploader.prototype, {
 	_leaving_document_out : function(e) {
 		return ((qq.chrome() || (qq.safari() && qq.windows()))
 				&& e.clientX == 0 && e.clientY == 0) // null coords for
-														// Chrome and Safari
-														// Windows
+				// Chrome and Safari
+				// Windows
 				|| (qq.firefox() && !e.relatedTarget); // null e.relatedTarget
-														// for Firefox
+		// for Firefox
 	},
 	/**
 	 * Gets one of the elements listed in this._options.classes
@@ -722,11 +746,17 @@ qq.extend(qq.FileUploader.prototype, {
 
 		if (result.success) {
 			qq.addClass(item, this._classes.success);
-			var x = this;
+			var fileLink = $(item).find('.qq-upload-file');
+			var url = this._handler._options.action + '/' + result.attachmentId + '/' + fileLink.html();
+			fileLink.attr('href', url);
 			item.id = result.attachmentId;
-			var deleteUrl = this._handler._options.action + '/' + result.attachmentId;
-			$(item.childNodes[0]).html('<a href="'+ deleteUrl +'">Remove</a>');
-			$(item.childNodes[1]).html('<input type="hidden" name="attachment" value="'+ result.attachmentId +'"/>');
+			var deleteUrl = this._handler._options.action + '/'
+					+ result.attachmentId;
+			$(item.childNodes[0])
+					.html('<a href="' + deleteUrl + '">Remove</a>');
+			$(item.childNodes[1]).html(
+					'<input type="hidden" name="attachment" value="'
+							+ result.attachmentId + '"/>');
 		} else {
 			qq.addClass(item, this._classes.fail);
 		}
@@ -829,7 +859,7 @@ qq.UploadDropZone.prototype = {
 			var effect = qq.ie() ? null : e.dataTransfer.effectAllowed;
 			if (effect == 'move' || effect == 'linkMove') {
 				e.dataTransfer.dropEffect = 'move'; // for FF (only move
-													// allowed)
+				// allowed)
 			} else {
 				e.dataTransfer.dropEffect = 'copy'; // for Chrome
 			}

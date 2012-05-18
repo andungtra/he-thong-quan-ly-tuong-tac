@@ -5,5 +5,6 @@
     <page:show id="ps_org_hcmus_tis_model_Attachment" object="${attachment}" path="/attachments" z="4xBzv2yj5toK0rxU3d2Ux7T9hYk=">
         <field:display field="displayFileName" id="s_org_hcmus_tis_model_Attachment_displayFileName" object="${attachment}" z="tMesP87zbjtlj6N5wj8rMdXSrnU="/>
         <field:display field="realFileName" id="s_org_hcmus_tis_model_Attachment_realFileName" object="${attachment}" z="kI6IjPLd3u5MMVooaQk/kLxmsGg="/>
+        <field:display field="workItem" id="s_org_hcmus_tis_model_Attachment_workItem" object="${attachment}" z="2joXRXgN1CxFgcAqndeemhB0/T0="/>
     </page:show>
 </div>

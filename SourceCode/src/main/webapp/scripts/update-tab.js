@@ -45,6 +45,7 @@ $(function() {
 		// hook global form submit event
 		$('#menu_menu').on('submit', 'form', function(event) {
 			formSubmitHandler(event, panel);
+			return false;
 		});
 		notAddHandler = false;
 	}

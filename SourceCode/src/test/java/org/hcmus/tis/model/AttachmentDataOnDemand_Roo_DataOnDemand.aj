@@ -12,6 +12,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.AttachmentDataOnDemand;
+import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemDataOnDemand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect AttachmentDataOnDemand_Roo_DataOnDemand {
@@ -22,10 +25,14 @@ privileged aspect AttachmentDataOnDemand_Roo_DataOnDemand {
     
     private List<Attachment> AttachmentDataOnDemand.data;
     
+    @Autowired
+    private WorkItemDataOnDemand AttachmentDataOnDemand.workItemDataOnDemand;
+    
     public Attachment AttachmentDataOnDemand.getNewTransientAttachment(int index) {
         Attachment obj = new Attachment();
         setDisplayFileName(obj, index);
         setRealFileName(obj, index);
+        setWorkItem(obj, index);
         return obj;
     }
     
@@ -37,6 +44,11 @@ privileged aspect AttachmentDataOnDemand_Roo_DataOnDemand {
     public void AttachmentDataOnDemand.setRealFileName(Attachment obj, int index) {
         String realFileName = "realFileName_" + index;
         obj.setRealFileName(realFileName);
+    }
+    
+    public void AttachmentDataOnDemand.setWorkItem(Attachment obj, int index) {
+        WorkItem workItem = workItemDataOnDemand.getRandomWorkItem();
+        obj.setWorkItem(workItem);
     }
     
     public Attachment AttachmentDataOnDemand.getSpecificAttachment(int index) {

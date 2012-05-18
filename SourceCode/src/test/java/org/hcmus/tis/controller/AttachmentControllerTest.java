@@ -2,14 +2,18 @@ package org.hcmus.tis.controller;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.IOUtils;
@@ -118,6 +122,32 @@ public class AttachmentControllerTest {
 		Mockito.verify(mockedAttachment).remove();
 		assertEquals(true, result.isSuccess());
 		assertEquals(id, result.getAttachmentId());
+		
+	}
+	@Test
+	@PrepareForTest({Attachment.class, IOUtils.class})
+	public void testShow() throws IOException{
+		Long attachmentId  = (long)1;
+		HttpServletResponse mockedResponse = Mockito.mock(HttpServletResponse.class);
+		ServletOutputStream mockedOutputStream = Mockito.mock(ServletOutputStream.class);
+		Mockito.doReturn(mockedOutputStream).when(mockedResponse).getOutputStream();
+		
+		Attachment mockedAttachment = Mockito.mock(Attachment.class);
+		Mockito.doReturn((long)1).when(mockedAttachment).getId();
+		PowerMockito.mockStatic(Attachment.class);
+		PowerMockito.when(Attachment.findAttachment(attachmentId)).thenReturn(mockedAttachment);
+		PowerMockito.mockStatic(IOUtils.class);
+		
+		Mockito.doReturn("realpath").when(servletContext).getRealPath(Mockito.anyString());
+		
+		
+		aut.show(attachmentId, mockedResponse);
+		
+		Mockito.verify(mockedResponse).getOutputStream();
+		PowerMockito.verifyStatic();
+		IOUtils.copy(Mockito.any(FileInputStream.class), Mockito.any(ServletOutputStream.class));
+		Attachment.findAttachment(attachmentId);
+		Mockito.verify(fileService).getFileInPutStream("realpath" + File.separatorChar + "1");
 		
 	}
 

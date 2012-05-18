@@ -1,12 +1,15 @@
 package org.hcmus.tis.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -36,6 +39,24 @@ public class AttachmentController {
 	private ServletContext context;
 	@Autowired
 	private FileService fileService;
+
+	@RequestMapping(value = "/{id}/{fileName}", method = RequestMethod.GET)
+	public void show(@PathVariable("id") Long id, HttpServletResponse response)
+			throws IOException {
+		Attachment attachment = Attachment.findAttachment(id);
+		ServletOutputStream outPutSteam = response.getOutputStream();
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename=\""
+				+ attachment.getDisplayFileName() + "\"");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		String realPath = getContext().getRealPath(DESTINATION_DIR_PATH);
+		String realFileName = realPath + File.separatorChar
+				+ attachment.getId();
+		FileInputStream fileInputStream = fileService
+				.getFileInPutStream(realFileName);
+		IOUtils.copy(fileInputStream, outPutSteam);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -141,14 +162,15 @@ public class AttachmentController {
 	public void setFileService(FileService fileService) {
 		this.fileService = fileService;
 	}
-	 @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	 @ResponseBody
-	    public FileUploaderResponse delete(@PathVariable("id") Long id) {
-	        Attachment attachment = Attachment.findAttachment(id);
-	        attachment.remove();
-	        FileUploaderResponse response = new FileUploaderResponse();
-	        response.setSuccess(true);
-	        response.setAttachmentId(id);
-	        return response;
-	    }
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public FileUploaderResponse delete(@PathVariable("id") Long id) {
+		Attachment attachment = Attachment.findAttachment(id);
+		attachment.remove();
+		FileUploaderResponse response = new FileUploaderResponse();
+		response.setSuccess(true);
+		response.setAttachmentId(id);
+		return response;
+	}
 }

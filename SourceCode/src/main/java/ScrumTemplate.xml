@@ -3,6 +3,10 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 	<xWorkItems>
+		<xWorkItem name="Task" refName="task">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields></xAddionalFields>
+		</xWorkItem>
 		<xWorkItem refName="userStory" name="User story">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
