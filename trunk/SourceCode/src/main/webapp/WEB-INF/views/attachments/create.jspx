@@ -4,7 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_org_hcmus_tis_model_Attachment" modelAttribute="attachment" path="/attachments" render="${empty dependencies}" z="gDuIwBk4jXTfOinhwSdda69NlL8=">
         <field:input field="displayFileName" id="c_org_hcmus_tis_model_Attachment_displayFileName" required="true" z="SJF+Wnm7B0SBayERmxk3E4a6Rto="/>
-        <field:input field="realFileName" id="c_org_hcmus_tis_model_Attachment_realFileName" required="true" z="oovpS0W7/nxKYwIxTxRB13fOL+w="/>
+        <field:input field="realFileName" id="c_org_hcmus_tis_model_Attachment_realFileName" z="ls7T+28FxrDMYgUu9agKs9shVqo="/>
+        <field:select field="workItem" id="c_org_hcmus_tis_model_Attachment_workItem" itemValue="id" items="${workitems}" path="/workitems" z="YQv3eJ5R+C/ybEl8AtrO52A/rOg="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Attachment" render="${not empty dependencies}" z="qDJbs023rkwLRnFdVWkrjOtpEXg="/>
 </div>

@@ -11,7 +11,7 @@
 	text-align: left;
 }
 
-#topnav a.signin {
+#topnav .signin {
 	background: #88bbd4;
 	padding: 4px 6px 6px;
 	text-decoration: none;
@@ -25,30 +25,30 @@
 	*padding: 4px 12px 6px;
 }
 
-#topnav a.signin:hover {
+#topnav .signin:hover {
 	background: #59B;
 	*background: transparent url("images/signin-nav-bg-hover-ie.png")
 		no-repeat 0 0;
 	*padding: 4px 12px 6px;
 }
 
-#topnav a.signin,#topnav a.signin:hover {
+#topnav .signin,#topnav .signin:hover {
 	*background-position: 0 3px !important;
 }
 
-a.signin {
+.signin {
 	position: relative;
 	margin-left: 3px;
 }
 
-a.signin span {
+.signin .img {
 	background-image: url("images/toggle_down_light.png");
 	background-repeat: no-repeat;
 	background-position: 100% 50%;
 	padding: 4px 16px 6px 0;
 }
 
-#topnav a.menu-open {
+#topnav .menu-open {
 	background: #ddeef6 !important;
 	color: #666 !important;
 	outline: none;
@@ -62,9 +62,13 @@ a.signin span {
 	width: 170px;
 }
 
-a.signin.menu-open span {
+.signin.menu-open .img {
 	background-image: url("images/toggle_up_dark.png");
 	color: #789;
+}
+.signin a{
+	color: white;
+	padding-right: 5px;
 }
 
 #signin_menu {

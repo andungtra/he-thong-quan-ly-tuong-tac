@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
-<xProjectProcess identity="waterfall" name="Waterfall" xmlns="http://www.w3schools.com"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
+<xProjectProcess identity="waterfall" name="Waterfall"
+	xmlns="http://www.w3schools.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 	<xWorkItems>
+		<xWorkItem name="Task" refName="task">
+			<xPreDefinedFields></xPreDefinedFields>
+			<xAddionalFields></xAddionalFields>
+		</xWorkItem>
 		<xWorkItem refName="requirement" name="Requirement">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
 				<xField refName="risk" name="Risk" type="digits" requied="true">
 				</xField>
 				<xField refName="difficulty" name="Difficulty" type="digits"></xField>
-				<xField refName="costToComplete" name="Cost to complete" type="number"></xField>
+				<xField refName="costToComplete" name="Cost to complete"
+					type="number"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 		<xWorkItem name="Defect" refName="defect">

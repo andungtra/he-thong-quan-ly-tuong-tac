@@ -30,4 +30,6 @@
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
-
+.qq-upload-delete{
+	margin-right: 10px;
+}

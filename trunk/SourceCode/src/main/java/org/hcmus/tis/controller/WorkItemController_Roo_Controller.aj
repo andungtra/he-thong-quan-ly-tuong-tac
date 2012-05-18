@@ -6,6 +6,7 @@ package org.hcmus.tis.controller;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.WorkItemController;
+import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
@@ -58,6 +59,7 @@ privileged aspect WorkItemController_Roo_Controller {
     void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {
         uiModel.addAttribute("workItem", workItem);
         addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("attachments", Attachment.findAllAttachments());
         uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("prioritys", Priority.findAllPrioritys());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
