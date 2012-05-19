@@ -45,6 +45,10 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/gotoproject.jspx" />
 	</definition>
+	<definition extends="content" name="projects/roadmap">
+		<put-attribute name="body"
+			value="/WEB-INF/views/projects/roadmap.jspx" />
+	</definition>
 		<definition extends="project" name="projects/homepage">
 	</definition>
 </tiles-definitions>
