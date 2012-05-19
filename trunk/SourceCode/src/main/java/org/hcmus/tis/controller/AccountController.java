@@ -423,6 +423,7 @@ public class AccountController {
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
 		Account account = accountService.findAccount(id);
+		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
 		account.merge();
 		uiModel.asMap().clear();

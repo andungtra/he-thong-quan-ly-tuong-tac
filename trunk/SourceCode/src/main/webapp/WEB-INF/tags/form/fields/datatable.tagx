@@ -63,10 +63,7 @@
 		src="${datatables_js }">
 		
 	</script>
-	<script type="text/javascript" language="javascript"
-		src="${table_tool }">
-		
-	</script>
+
 	<spring:url value="/resources/scripts/dynatree/jquery-ui.custom.js"
 		var="jquery_ui" />
 
@@ -284,11 +281,8 @@
 					$.ajax({
 				        type: "DELETE",
 				        url: "${path}/"+idtr,
-				        success:function(){			        	
-				        		$("#"+idtr).html("");
-				        		alert("item is deleted !");
-				        	} 
 				    });
+					$("#"+idtr).html("");
 				}
 			}
 			//debugger;			

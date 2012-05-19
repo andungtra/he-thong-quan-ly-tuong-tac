@@ -38,7 +38,8 @@
     <spring:message var="typeNamePlural" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_list_label" htmlEscape="false" />
 
     <spring:message arguments="${label}" code="entity_show" var="title_msg" htmlEscape="false" />
-    <div class="fix-panel" style="width: ${width}">    
+
+    <div class="fix-panel" id="panel" style="width: ${width}">    
       <c:choose>
         <c:when test="${not empty object}">
         <div class="panel-title">
