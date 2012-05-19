@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<spring:url value="/projects/{itemId}/'roadmap" var="create_roadmap_url">
+		<spring:param name="form"></spring:param>
+	</spring:url>
+	<a href="${create_roadmap_url }">Create roadmap</a>
+	<ul>
+		<li><a href="#">Iteration 1</a></li>
+		<li><a href="#">Iteration 2</a></li>
+	</ul>
+</div>
