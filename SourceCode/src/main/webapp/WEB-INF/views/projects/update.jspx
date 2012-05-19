@@ -22,6 +22,6 @@
         <field:select render="false" field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="RtYHYGN7PFWC0YJisGpaT3tVlyw="/>
         <field:select render="false" field="calendar" id="c_org_hcmus_tis_model_Project_calendar" itemValue="id" items="${calendars}" path="/calendars" z="9uXGGvg9+4tFzVXlJpTp+RRvB/I="/>
         <input type="hidden" name="c_org_hcmus_tis_model_Project_projectProcess" value="${project.projectProcess}"/>
-        <input type="hidden" name=c_org_hcmus_tis_model_Project_calendar" value="${project.calendar}"/>
+        <input type="hidden" name="c_org_hcmus_tis_model_Project_calendar" value="${project.calendar}"/>
     </form:update>
 </div>

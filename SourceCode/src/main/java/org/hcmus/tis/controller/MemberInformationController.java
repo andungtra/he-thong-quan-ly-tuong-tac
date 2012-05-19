@@ -42,16 +42,22 @@ public class MemberInformationController {
 	}
 
 	@RequestMapping(params = { "email", "memberRoleId", "projectId" }, method = RequestMethod.POST, produces = "text/html")
-	public String create(Model uiModel,	String email,Long memberRoleId,	Long projectId,	@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+	public String create(
+			Model uiModel,
+			String email,
+			Long memberRoleId,
+			Long projectId,
+			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
 			HttpServletRequest httpServletRequest) {
 		MemberRole memberRole = MemberRole.findMemberRole(memberRoleId);
 		Project project = Project.findProject(projectId);
 		Account account = Account.findAccountsByEmailEquals(email)
 				.getResultList().get(0);
 
-		List<MemberInformation> exist =  MemberInformation.findMemberInformationsByAccountAndProject(account, project).getResultList();
-				
-		
+		List<MemberInformation> exist = MemberInformation
+				.findMemberInformationsByAccountAndProject(account, project)
+				.getResultList();
+
 		if (account != null && account.getStatus().equals(AccountStatus.ACTIVE)
 				&& exist.size() == 0) {
 
@@ -60,6 +66,7 @@ public class MemberInformationController {
 			memberInformation.setMemberRole(memberRole);
 			memberInformation.setProject(project);
 			memberInformation.persist();
+
 			if (redirectUrl != null) {
 				return "redirect:" + redirectUrl;
 			}
@@ -67,7 +74,24 @@ public class MemberInformationController {
 					+ encodeUrlPathSegment(
 							memberInformation.getId().toString(),
 							httpServletRequest);
-		} else {
+
+		} else if (account != null
+				&& account.getStatus().equals(AccountStatus.ACTIVE)
+				&& exist.size() > 0 && exist.get(0).getDeleted() == true) {
+			MemberInformation memberInformation = exist.get(0);
+			memberInformation.setDeleted(false);
+			memberInformation.merge();
+
+			if (redirectUrl != null) {
+				return "redirect:" + redirectUrl;
+			}
+			return "redirect:/memberinformations/"
+					+ encodeUrlPathSegment(
+							memberInformation.getId().toString(),
+							httpServletRequest);
+		}
+
+		else {
 			Collection<MemberRole> memberRoles = MemberRole
 					.findAllMemberRoles();
 			uiModel.addAttribute("memberRoles", memberRoles);
@@ -86,7 +110,8 @@ public class MemberInformationController {
 			Model uiModel) {
 		MemberInformation memberInformation = MemberInformation
 				.findMemberInformation(id);
-		memberInformation.remove();
+		memberInformation.setDeleted(true);
+		memberInformation.merge();
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -142,12 +167,14 @@ public class MemberInformationController {
 		List<MemberInformation> list = MemberInformation
 				.findMemberInformationsByProject(Project.findProject(id));
 		for (MemberInformation item : list) {
-			MemberDTO dto = new MemberDTO();
-			dto.DT_RowId = item.getId();
-			dto.setName(item.getAccount().getFirstName() + " "
-					+ item.getAccount().getLastName());
-			dto.setMemberRole(item.getMemberRole().getName());
-			reply.getAaData().add(dto);
+			if (!item.getDeleted()) {
+				MemberDTO dto = new MemberDTO();
+				dto.DT_RowId = item.getId();
+				dto.setName(item.getAccount().getFirstName() + " "
+						+ item.getAccount().getLastName());
+				dto.setMemberRole(item.getMemberRole().getName());
+				reply.getAaData().add(dto);
+			}
 		}
 		return reply;
 	}
