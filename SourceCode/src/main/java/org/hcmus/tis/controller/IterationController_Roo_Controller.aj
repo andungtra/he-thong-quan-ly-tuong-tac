@@ -25,23 +25,6 @@ privileged aspect IterationController_Roo_Controller {
     @Autowired
     IterationService IterationController.iterationService;
     
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String IterationController.create(@Valid Iteration iteration, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, iteration);
-            return "iterations/create";
-        }
-        uiModel.asMap().clear();
-        iterationService.saveIteration(iteration);
-        return "redirect:/iterations/" + encodeUrlPathSegment(iteration.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String IterationController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new Iteration());
-        return "iterations/create";
-    }
-    
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String IterationController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("iteration", iterationService.findIteration(id));
@@ -88,11 +71,6 @@ privileged aspect IterationController_Roo_Controller {
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/iterations";
-    }
-    
-    void IterationController.populateEditForm(Model uiModel, Iteration iteration) {
-        uiModel.addAttribute("iteration", iteration);
-        uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
     }
     
     String IterationController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
