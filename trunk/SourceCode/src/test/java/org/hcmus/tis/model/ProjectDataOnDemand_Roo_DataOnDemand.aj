@@ -13,6 +13,7 @@ import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.model.ProjectProcess;
+import org.hcmus.tis.model.ProjectProcessDataOnDemand;
 import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
@@ -27,6 +28,9 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     private Random ProjectDataOnDemand.rnd = new SecureRandom();
     
     private List<Project> ProjectDataOnDemand.data;
+    
+    @Autowired
+    private ProjectProcessDataOnDemand ProjectDataOnDemand.projectProcessDataOnDemand;
     
     @Autowired
     private StudyClassDataOnDemand ProjectDataOnDemand.studyClassDataOnDemand;
@@ -61,7 +65,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     }
     
     public void ProjectDataOnDemand.setProjectProcess(Project obj, int index) {
-        ProjectProcess projectProcess = null;
+        ProjectProcess projectProcess = projectProcessDataOnDemand.getRandomProjectProcess();
         obj.setProjectProcess(projectProcess);
     }
     

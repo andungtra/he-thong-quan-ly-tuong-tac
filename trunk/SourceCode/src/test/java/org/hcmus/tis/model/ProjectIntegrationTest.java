@@ -42,4 +42,7 @@ public class ProjectIntegrationTest {
     	Collection<Event> result = project.getEventsOfMembers();
     	Assert.assertEquals(1, result.size());
     }
+    @Test
+    public void testGetIterations(){
+    }
 }

@@ -11,8 +11,10 @@ import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.ProjectProcess;
+import org.hcmus.tis.model.ProjectProcessDataOnDemand;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.WorkItemTypeDataOnDemand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
@@ -22,6 +24,9 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
     private Random WorkItemTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<WorkItemType> WorkItemTypeDataOnDemand.data;
+    
+    @Autowired
+    private ProjectProcessDataOnDemand WorkItemTypeDataOnDemand.projectProcessDataOnDemand;
     
     public WorkItemType WorkItemTypeDataOnDemand.getNewTransientWorkItemType(int index) {
         WorkItemType obj = new WorkItemType();
@@ -46,7 +51,7 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
     }
     
     public void WorkItemTypeDataOnDemand.setProjectProcess(WorkItemType obj, int index) {
-        ProjectProcess projectProcess = null;
+        ProjectProcess projectProcess = projectProcessDataOnDemand.getRandomProjectProcess();
         obj.setProjectProcess(projectProcess);
     }
     

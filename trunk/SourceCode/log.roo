@@ -607,3 +607,20 @@ hint
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-17 11:46:13
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-18 15:42:26
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-18 16:50:32
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 10:15:15
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-19 10:18:29
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 11:13:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 21:06:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-19 21:12:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 23:44:49
+hint
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 00:37:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-20 10:12:04
+hint
+hint
+hint
+entity jpa --class ~.model.ProjectProcess --testAutomatically 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 11:57:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-20 20:32:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 20:38:15

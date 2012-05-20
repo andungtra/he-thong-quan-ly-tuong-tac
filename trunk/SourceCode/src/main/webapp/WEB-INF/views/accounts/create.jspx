@@ -11,17 +11,17 @@
         </c:if>
         <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
         <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
-        <field:input render="false" field="email" id="c_org_hcmus_tis_model_Account_email" min="1" required="true" validationMessageCode="field_invalid_email" z="qIGXRPvJPq9QUgnUCWNKhHtGCOk=" type="email"/>
-        <label>Email:</label><input type="email" name="email"/>
+        <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" render="false" required="true" type="email" validationMessageCode="field_invalid_email" z="user-managed"/>
+        <label>Email:</label>
+        <input name="email" type="email"/>
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
         <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false" z="user-managed"/>
-        <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>        
+        <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>
         <field:select field="calendar" id="c_org_hcmus_tis_model_Account_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" required="true" z="user-managed"/>
         <util:advancedpanel title="Advanced">
-            <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>            
+            <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>
         </util:advancedpanel>
-        
-        <input name="password" type="hidden" value="dummypassword"/>            
+        <input name="password" type="hidden" value="dummypassword"/>
         <input name="status" type="hidden" value="${accountstatuses[0] }"/>
         <input name="c_org_hcmus_tis_model_Account_calendar" type="hidden" value=""/>
     </form:create>
