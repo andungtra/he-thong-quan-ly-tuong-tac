@@ -316,27 +316,29 @@ public class AccountControllerTest {
 	}
 	
 	@Test
-	@PrepareForTest(Account.class)
+	@PrepareForTest({Account.class, AccountController.class})
 	public void testGetSharedEvents() {
 		Long accountId = (long)1;
 		Account mockedAccount = Mockito.mock(Account.class);
-		Calendar calendar = new Calendar();
-		Mockito.doReturn(calendar).when(mockedAccount).getCalendar();
-		calendar.setEvents(new HashSet<Event>());
+		Calendar accountCalendar = new Calendar();
+		Mockito.doReturn(accountCalendar).when(mockedAccount).getCalendar();
+		accountCalendar.setEvents(new HashSet<Event>());
 		Event event = new Event();
 		event.setCalendars(new HashSet<Calendar>());
 		Calendar projectCalendar = new Calendar();
+		projectCalendar.setEvents(new HashSet<Event>());
 		Project project = new Project();
 		project.setName("name");
 		projectCalendar.setProject(project);
 		Event sharedEvent = new Event();
 		sharedEvent.setDescription("des");
 		sharedEvent.setCalendars(new HashSet<Calendar>());
-		sharedEvent.getCalendars().add(calendar);
+		sharedEvent.getCalendars().add(accountCalendar);
 		sharedEvent.getCalendars().add(projectCalendar);
-		event.getCalendars().add(calendar);
-		calendar.getEvents().add(event);
-		calendar.getEvents().add(sharedEvent);
+		event.getCalendars().add(accountCalendar);
+		accountCalendar.getEvents().add(event);
+		accountCalendar.getEvents().add(sharedEvent);
+		projectCalendar.getEvents().add(sharedEvent);
 		PowerMockito.mockStatic(Account.class);
 		PowerMockito.when(Account.findAccount(accountId)).thenReturn(mockedAccount);
 		
@@ -344,7 +346,7 @@ public class AccountControllerTest {
 		
 		assertEquals(0, restResponse.getResponse().getStatus());
 		assertEquals(2, restResponse.getResponse().getData().size());
-		assertSame(event, restResponse.getResponse().getData().get(0));
+		assertTrue(restResponse.getResponse().getData().contains(event));
 		assertEquals(NonEditableEvent.class, restResponse.getResponse().getData().get(1).getClass());
 	}
 

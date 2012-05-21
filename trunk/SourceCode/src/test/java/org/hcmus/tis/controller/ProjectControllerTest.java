@@ -165,9 +165,15 @@ public class ProjectControllerTest {
 		
 	}
 	@Test
+	@PrepareForTest({Project.class})
 	public void testGetRoadmap(){
 		Long itemId = (long)1;
+		Project mockedProject = Mockito.mock(Project.class);
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.when(Project.findProject(itemId)).thenReturn(mockedProject);
 		
-		aut.getRoadmap(itemId, uiModel);
+		String result = aut.getRoadmap(itemId, uiModel);
+		Mockito.verify(uiModel).addAttribute("project", mockedProject);
+		Assert.assertEquals("projects/roadmap", result);
 	}
 }

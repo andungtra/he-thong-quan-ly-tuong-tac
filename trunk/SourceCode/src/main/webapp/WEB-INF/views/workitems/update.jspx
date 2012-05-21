@@ -70,7 +70,10 @@
         <field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="user-managed"/>
         <div style="float: left;">
             <util:fixpanel id="details_panel" title="Details">
+                <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="i/A6b2s+m/21/Wy/dBgqpuZrzRQ="/>
                 <c:set value="" var="validateRule"/>
+                <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="WmHVVNRJ+6ixlnib66TIZEvS2nw="/>
+                <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
                 <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
                 <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine" varStatus="status">
                     <c:set value="${workItem.additionFields[status.index].value }" var="fieldValue"/>
@@ -112,9 +115,11 @@
             <util:fixpanel id="peoples_panel" title="Peoples">
                 <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workItem}" z="user-managed"/>
                 <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
+                <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="SznRAOke4U5ObP7A5ssJBIbylhc="/>
             </util:fixpanel>
             <util:fixpanel id="dates_panel" title="Dates">
                 <field:display date="true" dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" object="${workItem}" z="user-managed"/>
+                <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
                 <field:display date="true" dateTimePattern="${workItem_datelastedit_date_format}" field="dateLastEdit" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit" object="${workItem}" z="user-managed"/>
             </util:fixpanel>
             <util:fixpanel id="Attachments_panel" title="Attachments">
@@ -153,12 +158,7 @@
         <input name="dateCreated" type="hidden" value="${dateCreated }"/>
         <input name="workItemType" type="hidden" value="${workItem.workItemType.id }"/>
         <input name="c_org_hcmus_tis_model_WorkItem_dateLastEdit" type="hidden" value="${workItem.dateLastEdit}" z="JgCbHiIdvmEFuHv+2DThk60k/xg="/>
-        <field:simple field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" render="false" z="user-managed"/>
-        <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="WmHVVNRJ+6ixlnib66TIZEvS2nw="/>
-        <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
-        <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemValue="id" items="${memberinformations}" path="/memberinformations" z="SznRAOke4U5ObP7A5ssJBIbylhc="/>
-        <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="i/A6b2s+m/21/Wy/dBgqpuZrzRQ="/>
-        <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
+        <field:simple render="false" field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" z="user-managed"/>
     </form:update>
     <util:fixpanel id="activity_panel" title="Activity">
         <div id="activity_tabs">

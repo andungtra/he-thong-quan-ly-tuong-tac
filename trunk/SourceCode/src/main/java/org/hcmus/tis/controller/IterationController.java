@@ -33,7 +33,7 @@ public class IterationController {
             return "iterations/create";
         }
         uiModel.asMap().clear();
-        iterationService.saveIteration(iteration);
+        iteration.persist();
         return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentContainer().getId().toString(), httpServletRequest) + "/roadmap";
     }
     void populateEditForm(Model uiModel, Iteration iteration) {

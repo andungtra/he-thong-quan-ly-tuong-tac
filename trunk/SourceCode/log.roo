@@ -630,3 +630,5 @@ hint
 entity jpa --class ~.model.WorkItem --testAutomatically
 // [failed] entity jpa --class org.hcmus.tis.model.test --abstract --testAutomatically 
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 00:33:04
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 15:29:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 15:34:44

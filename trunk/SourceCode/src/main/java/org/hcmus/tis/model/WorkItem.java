@@ -173,4 +173,17 @@ public class WorkItem {
     	history.setWorkItemType(this.workItemType);
     	history.persist();
 	}
+	public static long countWorkItemByProject(Project project){
+		String jql ="SELECT COUNT(workItem) FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+		TypedQuery<Long> query = entityManager().createQuery(jql, Long.class);
+		query.setParameter("containerId", project.getId());
+		long result = query.getSingleResult();
+		return result;
+	}
+	public static TypedQuery<WorkItem> findWorkItemsByProject(Project project){
+		String jql ="SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+		TypedQuery<WorkItem> query = entityManager().createQuery(jql, WorkItem.class);
+		query.setParameter("containerId", project.getId());
+		return query;
+	}
 }

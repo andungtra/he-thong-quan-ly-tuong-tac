@@ -1,6 +1,9 @@
 package org.hcmus.tis.model;
 
+import java.util.Collection;
+
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -18,5 +21,10 @@ public abstract class WorkItemContainer {
 
     @ManyToOne
     private org.hcmus.tis.model.WorkItemContainer parentContainer;
+    @OneToMany(mappedBy="parentContainer")
+    private Collection<WorkItemContainer> children;
     public abstract Project getParentProjectOrMyself();
+	public Collection<WorkItemContainer> getChildren() {
+		return children;
+	}
 }

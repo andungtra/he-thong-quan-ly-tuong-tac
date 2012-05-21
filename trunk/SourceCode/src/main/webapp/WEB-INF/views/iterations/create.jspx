@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_org_hcmus_tis_model_Iteration" modelAttribute="iteration" path="/iterations" render="${empty dependencies}" z="W1/zIQwX8TtS+4F5qCigGXbV3ZI=">
         <field:textarea field="name" id="c_org_hcmus_tis_model_Iteration_name" required="true" z="z2GAspdZzRaRL+/8zifgDbUTc6k="/>
-        <field:select field="parentContainer" id="c_org_hcmus_tis_model_Iteration_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="GLae2PNSeCEEs0ZJXyOHtF/pHfA="/>
+        <input type="hidden" name="parentContainer" value="${iteration.parentContainer.id }" ></input>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Iteration" render="${not empty dependencies}" z="1kAUQTGthr52fEzEP24eYk1vJeM="/>
 </div>
