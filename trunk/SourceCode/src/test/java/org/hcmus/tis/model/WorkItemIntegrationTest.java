@@ -22,4 +22,7 @@ public class WorkItemIntegrationTest {
     public void testCountWorkItemByProject(){
     	
     }
+    @Test
+    public void testRemove() {
+    }
 }

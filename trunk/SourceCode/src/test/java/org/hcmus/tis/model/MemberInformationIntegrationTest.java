@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,8 @@ public class MemberInformationIntegrationTest {
     	memberInformation.remove();
 
     	Mockito.verify(mockedMemberInformation).remove(Mockito.any(MemberInformation.class));
+    }
+    @Test
+    public void testRemove() {
     }
 }

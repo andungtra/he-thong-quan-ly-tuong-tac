@@ -106,16 +106,4 @@ privileged aspect WorkItemIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Expected 'WorkItem' identifier to no longer be null", obj.getId());
     }
     
-    @Test
-    public void WorkItemIntegrationTest.testRemove() {
-        WorkItem obj = dod.getRandomWorkItem();
-        Assert.assertNotNull("Data on demand for 'WorkItem' failed to initialize correctly", obj);
-        Long id = obj.getId();
-        Assert.assertNotNull("Data on demand for 'WorkItem' failed to provide an identifier", id);
-        obj = WorkItem.findWorkItem(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'WorkItem' with identifier '" + id + "'", WorkItem.findWorkItem(id));
-    }
-    
 }
