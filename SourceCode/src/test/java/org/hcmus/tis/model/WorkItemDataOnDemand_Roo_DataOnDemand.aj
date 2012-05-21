@@ -18,7 +18,6 @@ import org.hcmus.tis.model.MemberInformationDataOnDemand;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.PriorityDataOnDemand;
 import org.hcmus.tis.model.WorkItem;
-import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemDataOnDemand;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemStatusDataOnDemand;
@@ -115,11 +114,6 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
             title = title.substring(0, 50);
         }
         obj.setTitle(title);
-    }
-    
-    public void WorkItemDataOnDemand.setWorkItemContainer(WorkItem obj, int index) {
-        WorkItemContainer workItemContainer = null;
-        obj.setWorkItemContainer(workItemContainer);
     }
     
     public void WorkItemDataOnDemand.setWorkItemType(WorkItem obj, int index) {

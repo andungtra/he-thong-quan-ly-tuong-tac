@@ -75,7 +75,6 @@
             </util:fixpanel>
             <util:fixpanel id="Dates_panel" title="Dates">
                 <field:datetime dateTimePattern="${workItem_datecreated_date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" render="false" required="true" z="user-managed"/>
-                <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
             </util:fixpanel>
             <util:fixpanel id="Attachments_panel" title="Attachments">
                 <div id="file-uploader-demo1">
@@ -98,7 +97,8 @@
         <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false" z="user-managed"/>
         <field:input field="objectFactory" id="c_org_hcmus_tis_model_WorkItem_objectFactory" render="false" z="user-managed"/>
         <field:datetime dateTimePattern="${workItem_datelastedit_date_format}" field="dateLastEdit" id="c_org_hcmus_tis_model_WorkItem_dateLastEdit" render="false" z="user-managed"/>
-        <field:simple render="false" field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" z="user-managed"/>
+        <field:simple field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" render="false" z="user-managed"/>
+        <field:datetime dateTimePattern="${workItem_duedate_date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="gOGmWdpqzUkjhR+rxrDNMktSNxk="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_WorkItem" render="${not empty dependencies}" z="user-managed"/>
 </div>

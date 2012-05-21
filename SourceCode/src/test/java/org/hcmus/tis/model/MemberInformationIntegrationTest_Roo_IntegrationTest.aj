@@ -101,16 +101,4 @@ privileged aspect MemberInformationIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Expected 'MemberInformation' identifier to no longer be null", obj.getId());
     }
     
-    @Test
-    public void MemberInformationIntegrationTest.testRemove() {
-        MemberInformation obj = dod.getRandomMemberInformation();
-        Assert.assertNotNull("Data on demand for 'MemberInformation' failed to initialize correctly", obj);
-        Long id = obj.getId();
-        Assert.assertNotNull("Data on demand for 'MemberInformation' failed to provide an identifier", id);
-        obj = MemberInformation.findMemberInformation(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'MemberInformation' with identifier '" + id + "'", MemberInformation.findMemberInformation(id));
-    }
-    
 }

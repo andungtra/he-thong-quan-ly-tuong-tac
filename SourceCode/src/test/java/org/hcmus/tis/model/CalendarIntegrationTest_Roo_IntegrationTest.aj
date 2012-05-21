@@ -106,16 +106,4 @@ privileged aspect CalendarIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Expected 'Calendar' identifier to no longer be null", obj.getId());
     }
     
-    @Test
-    public void CalendarIntegrationTest.testRemove() {
-        Calendar obj = dod.getRandomCalendar();
-        Assert.assertNotNull("Data on demand for 'Calendar' failed to initialize correctly", obj);
-        Long id = obj.getId();
-        Assert.assertNotNull("Data on demand for 'Calendar' failed to provide an identifier", id);
-        obj = Calendar.findCalendar(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'Calendar' with identifier '" + id + "'", Calendar.findCalendar(id));
-    }
-    
 }
