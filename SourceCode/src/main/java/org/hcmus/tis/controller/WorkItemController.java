@@ -182,7 +182,7 @@ public class WorkItemController {
 		return "redirect:/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);
-		
+
 	}
 
 	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
@@ -193,28 +193,40 @@ public class WorkItemController {
 			String sSortDir_0, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		
-		List<WorkItem> workItems = WorkItem.findWorkItemEntries(iDisplayStart,
-				iDisplayLength);
+		Project project = Project.findProject(projectId);
+		reply.setiTotalRecords((int) WorkItem.countWorkItemByProject(project));
+		reply.setiTotalDisplayRecords((int) WorkItem
+				.countWorkItemByProject(project));
+		List<WorkItem> workItems = WorkItem.findWorkItemsByProject(project)
+				.setFirstResult(iDisplayStart).setMaxResults(iDisplayLength)
+				.getResultList();
 		for (WorkItem workItem : workItems) {
-			if (workItem.getWorkItemContainer().getId().equals(projectId)) {
-				WorkItemDTO workItemDto = new WorkItemDTO();
-				workItemDto.DT_RowId = workItem.getId();
-				workItemDto.setlName("<a href='/TIS/workitems/"
-						+ workItem.getId() + "?form'>" + workItem.getTitle()
-						+ "</a>");
-				workItemDto.setsStatus(workItem.getStatus().getName());
-				workItemDto.setsType(workItem.getWorkItemType().getName());
-				reply.getAaData().add(workItemDto);
-			}
+			WorkItemDTO workItemDto = new WorkItemDTO();
+			workItemDto.DT_RowId = workItem.getId();
+			workItemDto.setlName("<a href='/TIS/workitems/" + workItem.getId()
+					+ "?form'>" + workItem.getTitle() + "</a>");
+			WorkItemStatus testStatus = workItem.getStatus();
+			String testName = workItem.getTitle();
+			workItemDto.setsStatus(workItem.getStatus().getName());
+			workItemDto.setsType(workItem.getWorkItemType().getName());
+			reply.getAaData().add(workItemDto);
 		}
 		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
-	
+
 	void addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("workItem_datecreated_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("workItem_datelastedit_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("workItem_duedate_date_format", DateTimeFormat.patternForStyle("SS", LocaleContextHolder.getLocale()));
-    }
+		uiModel.addAttribute(
+				"workItem_datecreated_date_format",
+				DateTimeFormat.patternForStyle("M-",
+						LocaleContextHolder.getLocale()));
+		uiModel.addAttribute(
+				"workItem_datelastedit_date_format",
+				DateTimeFormat.patternForStyle("M-",
+						LocaleContextHolder.getLocale()));
+		uiModel.addAttribute(
+				"workItem_duedate_date_format",
+				DateTimeFormat.patternForStyle("SS",
+						LocaleContextHolder.getLocale()));
+	}
 }

@@ -65,7 +65,8 @@ public class IterationControllerTest {
 		Mockito.doReturn((long)1).when(mockedProjec).getId();
 		String result = aut.create(mockedIteration, mockedBindingResult, mockedUIModel, mockedHttpServletRequest);
 		
-		Assert.assertEquals("/projects/1/roadmap", result);
+		Mockito.verify(mockedIteration).persist();
+		Assert.assertEquals("redirect:/projects/1/roadmap", result);
 	}
 
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="default" name="iterations/list">
+    <definition extends="content" name="iterations/list">
         <put-attribute name="body" value="/WEB-INF/views/iterations/list.jspx"/>
     </definition>
-<definition extends="default" name="iterations/show">
+<definition extends="content" name="iterations/show">
         <put-attribute name="body" value="/WEB-INF/views/iterations/show.jspx"/>
     </definition>
-<definition extends="default" name="iterations/create">
+<definition extends="content" name="iterations/create">
         <put-attribute name="body" value="/WEB-INF/views/iterations/create.jspx"/>
     </definition>
-<definition extends="default" name="iterations/update">
+<definition extends="content" name="iterations/update">
         <put-attribute name="body" value="/WEB-INF/views/iterations/update.jspx"/>
     </definition>
 </tiles-definitions>

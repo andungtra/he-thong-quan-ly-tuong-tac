@@ -4,15 +4,18 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields"
 	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url value="/projects/{itemId}/'roadmap" var="create_roadmap_url">
+	<spring:url value="/iterations" var="create_roadmap_url">
 		<spring:param name="form"></spring:param>
+		<spring:param name="parentId" value="${itemId }"></spring:param>
 	</spring:url>
 	<a href="${create_roadmap_url }">Create roadmap</a>
 	<ul>
-		<li><a href="#">Iteration 1</a></li>
-		<li><a href="#">Iteration 2</a></li>
+		<c:forEach items="${project.children }" var="child">
+			<li><a href="#">${child.name }</a></li>
+		</c:forEach>
 	</ul>
 </div>
