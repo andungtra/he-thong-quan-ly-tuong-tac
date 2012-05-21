@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
@@ -67,13 +68,19 @@ public class MemberInformationController {
 			memberInformation.setProject(project);
 			memberInformation.persist();
 
-			if (redirectUrl != null) {
+			/*if (redirectUrl != null) {
 				return "redirect:" + redirectUrl;
 			}
 			return "redirect:/memberinformations/"
 					+ encodeUrlPathSegment(
 							memberInformation.getId().toString(),
-							httpServletRequest);
+							httpServletRequest);*/
+			
+			Set<MemberInformation> memberInformations = Project.findProject(projectId)
+					.getMemberInformations();
+			uiModel.addAttribute("memberinformations", memberInformations);
+			uiModel.addAttribute("projectId", projectId);
+			return "projects/member";
 
 		} else if (account != null
 				&& account.getStatus().equals(AccountStatus.ACTIVE)
@@ -82,13 +89,18 @@ public class MemberInformationController {
 			memberInformation.setDeleted(false);
 			memberInformation.merge();
 
-			if (redirectUrl != null) {
+			/*if (redirectUrl != null) {
 				return "redirect:" + redirectUrl;
 			}
 			return "redirect:/memberinformations/"
 					+ encodeUrlPathSegment(
 							memberInformation.getId().toString(),
-							httpServletRequest);
+							httpServletRequest);*/
+			Set<MemberInformation> memberInformations = Project.findProject(projectId)
+					.getMemberInformations();
+			uiModel.addAttribute("memberinformations", memberInformations);
+			uiModel.addAttribute("projectId", projectId);
+			return "projects/member";
 		}
 
 		else {
@@ -154,16 +166,13 @@ public class MemberInformationController {
 	}
 
 	@RequestMapping(value = "mList/{id}", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" })
+			"iDisplayLength", "sEcho" , "sSearch"})
 	@ResponseBody
 	public DtReply mList(@PathVariable("id") Long id, int iDisplayStart,
-			int iDisplayLength, String sEcho) {
+			int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		reply.setiTotalRecords((int) MemberInformation
-				.countMemberInformations());
-		reply.setiTotalDisplayRecords((int) MemberInformation
-				.countMemberInformations());
+		
 		List<MemberInformation> list = MemberInformation
 				.findMemberInformationsByProject(Project.findProject(id));
 		for (MemberInformation item : list) {
@@ -176,6 +185,7 @@ public class MemberInformationController {
 				reply.getAaData().add(dto);
 			}
 		}
+		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
 }

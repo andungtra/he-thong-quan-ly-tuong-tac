@@ -9,11 +9,17 @@ public class DtReply {
 	private String sEcho;
 	private String sColumns;
 	private List<Object> aaData = new ArrayList<Object>();
+	
+	public DtReply(){
+		iTotalDisplayRecords = 10;
+	}
 	public int getiTotalRecords() {
 		return iTotalRecords;
 	}
 	public void setiTotalRecords(int iTotalRecords) {
 		this.iTotalRecords = iTotalRecords;
+		if(this.iTotalDisplayRecords> iTotalRecords)
+			this.iTotalDisplayRecords = iTotalRecords;
 	}
 	public int getiTotalDisplayRecords() {
 		return iTotalDisplayRecords;

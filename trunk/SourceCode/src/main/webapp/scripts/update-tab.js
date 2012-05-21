@@ -32,14 +32,14 @@ $(function() {
 		// hook global link click event.
 		$('#menu_menu').on('click', 'a', function(event) {
 			var url = this.href;
-			/*if (url.indexOf('/projects/'))
+			if (url.indexOf("TIS/projects/")!=-1)
 				window.location = url;
-			else {*/
+			else {
 				$(panel).mask("Loading...");
 				$(panel).load(this.href, function() {
 					$(panel).unmask();
 				});
-			/*}*/
+			}
 			return false;
 		});
 		// hook global form submit event

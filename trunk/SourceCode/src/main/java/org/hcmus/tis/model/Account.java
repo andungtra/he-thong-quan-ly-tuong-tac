@@ -1,6 +1,7 @@
 package org.hcmus.tis.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -91,5 +92,16 @@ public class Account implements java.io.Serializable {
 	}
 	protected void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
+	}
+	public static List<Account> findAccountEntries(int iDisplayStart,
+			int iDisplayLength, String sSearch) {
+		// TODO Auto-generated method stub
+		if(sSearch.length()==0)
+			return findAccountEntries(iDisplayStart, iDisplayLength);
+		
+		String queryString = "SELECT account FROM Account AS account WHERE account.email like :sSearch or account.firstName like :sSearch or account.lastName like :sSearch";
+        TypedQuery<Account> query = entityManager().createQuery(queryString, Account.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
+        query.setParameter("sSearch", "%"+sSearch+"%");
+        return query.getResultList();
 	}
 }
