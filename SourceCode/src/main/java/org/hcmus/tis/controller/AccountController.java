@@ -194,19 +194,18 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" })
+			"iDisplayLength", "sEcho" , "sSearch"})
 	@ResponseBody
 	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
-			String sEcho, HttpSession session) {
+			String sEcho, String sSearch,HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		reply.setiTotalRecords((int) Project.countProjects());
-		reply.setiTotalDisplayRecords((int) Project.countProjects());
+				
 		Account acc = (Account) session.getAttribute("account");
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationEntries(iDisplayStart, iDisplayLength);
+				.findMemberInformationEntries(iDisplayStart, iDisplayLength, sSearch);
 		for (MemberInformation item : list) {
-			if (item.getAccount().getEmail().equals(acc.getEmail())) {
+			if (item.getAccount().getEmail().equals(acc.getEmail()) && item.getDeleted()==false) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
 				dto.setName("<a href='../../../TIS/projects/"
@@ -217,6 +216,7 @@ public class AccountController {
 			}
 
 		}
+		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
 
@@ -268,27 +268,25 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" })
+			"iDisplayLength", "sEcho" , "sSearch"})
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
-		reply.setsEcho(sEcho);
-		reply.setiTotalRecords((int) Account.countAccounts());
-		reply.setiTotalDisplayRecords((int) Account.countAccounts());
-		List<Account> list = Account.findAccountEntries(iDisplayStart,
-				iDisplayLength);
+		reply.setsEcho(sEcho);		
+		List<Account> list = Account.findAccountEntries(iDisplayStart,iDisplayLength, sSearch);
 		for (Account item : list) {
 			if (!item.getStatus().equals(AccountStatus.DELETED)) {
 				AccountDTO dto = new AccountDTO();
 				dto.DT_RowId = item.getId();
-				dto.setFirstName(item.getFirstName());
 				dto.setLastName(item.getLastName());
+				dto.setFirstName(item.getFirstName());
+				
 				dto.setEmail(item.getEmail());
 				dto.setStatus(item.getStatus().name());
-
 				reply.getAaData().add(dto);
 			}
 		}
+		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
 

@@ -261,7 +261,8 @@
 				else 
 					url="${path}/"+idtr;
 				//alert(url);
-				window.location=url;
+				window.open(url, "_blank");
+				//window.location=url;
 				
 			}
 		}
@@ -275,17 +276,18 @@
 			var s = $('#${id} tbody tr td:first-child input:checked');
 			var c = $('#${id} tbody tr td:first-child input:checked').length;
 			var d = $(s.parent().parent());
+			debugger;		
 			if(c>0){
 				for(var x in d){
 					var idtr = $(d[x]).attr('id');
+					$("#"+idtr).html("");
 					$.ajax({
 				        type: "DELETE",
 				        url: "${path}/"+idtr,
-				    });
-					$("#"+idtr).html("");
+				    });					
 				}
 			}
-			//debugger;			
+				
 		}
 	</script>
 	<div id="table_${id }" class="table_content">

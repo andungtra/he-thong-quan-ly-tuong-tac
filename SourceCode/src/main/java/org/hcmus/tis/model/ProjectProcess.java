@@ -6,10 +6,12 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.TypedQuery;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,4 +46,18 @@ public class ProjectProcess {
 
     @Value("false")
     private boolean isDeleted;
+
+	public static List<ProjectProcess> findProjectProcessEntries(
+			int iDisplayStart, int iDisplayLength, String sSearch) {
+		// TODO Auto-generated method stub
+		if(sSearch.length()==0)
+			return findProjectProcessEntries(iDisplayStart,iDisplayLength);
+		
+		EntityManager entityManager = Project.entityManager();
+		String jpq =  "SELECT o FROM ProjectProcess AS o WHERE LOWER(o.name) LIKE LOWER(:sSearch)";
+		TypedQuery<ProjectProcess> q = entityManager.createQuery(jpq, ProjectProcess.class);
+		q.setParameter("sSearch", "%"+sSearch+"%");
+	
+		return q.getResultList();
+	}
 }

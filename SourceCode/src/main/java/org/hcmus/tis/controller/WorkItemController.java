@@ -193,8 +193,7 @@ public class WorkItemController {
 			String sSortDir_0, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		reply.setiTotalRecords((int) WorkItem.countWorkItems());
-		reply.setiTotalDisplayRecords((int) WorkItem.countWorkItems());
+		
 		List<WorkItem> workItems = WorkItem.findWorkItemEntries(iDisplayStart,
 				iDisplayLength);
 		for (WorkItem workItem : workItems) {
@@ -209,6 +208,7 @@ public class WorkItemController {
 				reply.getAaData().add(workItemDto);
 			}
 		}
+		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
 	

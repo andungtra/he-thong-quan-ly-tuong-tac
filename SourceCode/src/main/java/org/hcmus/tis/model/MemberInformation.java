@@ -70,4 +70,17 @@ public class MemberInformation {
         q.setParameter("account", account);
         return q.getResultList();
 	}
+
+	public static List<MemberInformation> findMemberInformationEntries(
+			int iDisplayStart, int iDisplayLength, String sSearch) {
+		// TODO Auto-generated method stub
+		if(sSearch.length()==0)
+			return findMemberInformationEntries(iDisplayStart,iDisplayLength);
+		
+		EntityManager em = MemberInformation.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery("SELECT o FROM MemberInformation AS o WHERE o.account.firstNane like :sSearch or o.account.lastNane like :sSearch", MemberInformation.class);
+      
+        q.setParameter("sSearch", "%"+sSearch+"%");
+        return q.getResultList();
+	}
 }

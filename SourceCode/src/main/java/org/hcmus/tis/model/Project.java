@@ -3,6 +3,7 @@ package org.hcmus.tis.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -116,6 +117,20 @@ public class Project extends WorkItemContainer {
 		String jpq = "SELECT DISTINCT event FROM Project project JOIN project.memberInformations memberInformation JOIN memberInformation.account.calendar calendar JOIN calendar.events event WHERE project.id = :projectId  AND event NOT MEMBER OF project.calendar.events";
 		TypedQuery<Event> q = entityManager.createQuery(jpq, Event.class);
 		q.setParameter("projectId", this.getId());
+	
+		return q.getResultList();
+	}
+
+	public static List<Project> findProjectEntries(int iDisplayStart,
+			int iDisplayLength, String sSearch) {
+		// TODO Auto-generated method stub
+		if(sSearch.length()==0)
+			return findProjectEntries(iDisplayStart,iDisplayLength);
+		
+		EntityManager entityManager = Project.entityManager();
+		String jpq =  "SELECT o FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:sSearch)";
+		TypedQuery<Project> q = entityManager.createQuery(jpq, Project.class);
+		q.setParameter("sSearch", "%"+sSearch+"%");
 	
 		return q.getResultList();
 	}
