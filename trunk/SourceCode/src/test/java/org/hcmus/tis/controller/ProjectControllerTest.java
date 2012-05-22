@@ -9,6 +9,7 @@ import java.util.Vector;
 import javax.persistence.TypedQuery;
 
 import org.hcmus.tis.dto.DSRestResponse;
+import org.hcmus.tis.dto.SiteMapItem;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
@@ -22,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -175,5 +178,37 @@ public class ProjectControllerTest {
 		String result = aut.getRoadmap(itemId, uiModel);
 		Mockito.verify(uiModel).addAttribute("project", mockedProject);
 		Assert.assertEquals("projects/roadmap", result);
+	}
+	List<SiteMapItem> siteMapItems;
+	@Test
+	@PrepareForTest({Project.class})
+	public void testshowHomepage(){
+		long id = (long)2;
+		Project mockedProject = Mockito.mock(Project.class);
+		Project mockedParentProject = Mockito.mock(Project.class);
+		Mockito.doReturn(mockedParentProject).when(mockedProject).getParentContainer();
+		Mockito.doReturn("name").when(mockedProject).getName();
+		Mockito.doReturn((long)1).when(mockedProject).getId();
+		Mockito.doReturn("name parent").when(mockedParentProject).getName();
+		Mockito.doReturn((long)2).when(mockedParentProject).getId();
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.when(Project.findProject(id)).thenReturn(mockedProject);
+		Mockito.doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				siteMapItems = (List<SiteMapItem>) invocation.getArguments()[1];
+				return null;
+			}
+		}).when(uiModel).addAttribute(Mockito.eq("siteMapItems"), Mockito.any(List.class));
+		String result = aut.showhomepage(id, uiModel);
+		
+		PowerMockito.verifyStatic();
+		Project.findProject(id);
+		Assert.assertEquals("projects/homepage", result);
+		Mockito.verify(uiModel).addAttribute(Mockito.eq("siteMapItems"), Mockito.any(List.class));
+		Assert.assertEquals(2, siteMapItems.size());
+		Assert.assertEquals("name parent", siteMapItems.get(0).getName());
+		Assert.assertEquals("/projects/2", siteMapItems.get(0).getUrl());
 	}
 }

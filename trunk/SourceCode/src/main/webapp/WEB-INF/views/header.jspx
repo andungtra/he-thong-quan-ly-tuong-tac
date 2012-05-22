@@ -13,18 +13,24 @@
 
 	<spring:url value="/administrator/homepage" var="administrator_url" />
 	<spring:message code="security_login_as" var="loginAs" />
-
+	<spring:url value="/resources/images/left_right_arrow.png"
+		var="left_right_arrow_url"></spring:url>
 	<div class="menu">
 		<div class="menu_sitemap">
 			<!-- TemplateBeginEditable name="Site map" -->
-			<div style="float: left">				
+			<div style="float: left">
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<a href="${administrator_url}">Admin</a><span style="color: white !important;">|</span>
+				</sec:authorize>
 				<c:if test="${pageContext['request'].userPrincipal != null}">
 					<spring:url value="/accounts/home" var="home" />
 					<a href="${home}">Home</a>
+					<c:forEach items="${siteMapItems}" var="siteMapItem">
+					<spring:url value="${siteMapItem.url }" var="sitemap_item_url"></spring:url>
+						<img src="${left_right_arrow_url }"></img>
+						<a href="${sitemap_item_url }">${siteMapItem.name}</a>
+					</c:forEach>
 				</c:if>
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<a href="${administrator_url}">Admin</a>
-				</sec:authorize>
 			</div>
 			<div style="float: right">
 				<c:choose>

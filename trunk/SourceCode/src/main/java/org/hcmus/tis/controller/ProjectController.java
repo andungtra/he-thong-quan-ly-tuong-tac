@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -12,12 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.SiteMapItem;
 import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Event;
@@ -93,6 +96,18 @@ public class ProjectController {
 	@RequestMapping(value = "{id}", produces = "text/html")
 	public String showhomepage(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
+		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
+		Project project = Project.findProject(id);
+		WorkItemContainer currentContainer = project;
+		while(currentContainer  != null){
+			SiteMapItem item = new SiteMapItem();
+			item.setName(currentContainer.getName());
+			item.setUrl("/projects/" + currentContainer.getId());
+			siteMapItems.add(item);
+			currentContainer = currentContainer.getParentContainer();
+		}
+		Collections.reverse(siteMapItems);
+		uiModel.addAttribute("siteMapItems", siteMapItems);
 		return "projects/homepage";
 	}
 
