@@ -245,7 +245,7 @@ public class ProjectController {
 				break;
 			}
 		}
-		if (info!=null && info.getMemberRole().getId() == 0) {
+		if (acc.getIsAdmin()==true ||( info!=null && info.getMemberRole().getId() == 1)) {
 			if (bindingResult.hasErrors()) {
 				populateEditForm(uiModel, project);
 				return "projects/update";

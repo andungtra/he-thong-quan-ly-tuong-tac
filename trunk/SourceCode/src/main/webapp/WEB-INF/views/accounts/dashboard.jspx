@@ -13,7 +13,11 @@
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
 				<c:forEach items="${overdues}" var="item">
-					<li><span>${item.dueDate}</span>     <span>${item.title}</span></li>
+					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<li>
+						<span>${item.dueDate}</span> : 
+						<span><a href="${link }">${item.title}</a></span>
+					</li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
@@ -21,7 +25,11 @@
 		<util:fixpanel title="Due in this week" id="">
 			<ul class="due">
 				<c:forEach items="${indues}" var="item">
-					<li><span>${item.dueDate}</span>     <span>${item.title}</span></li>
+					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<li>
+						<span>${item.dueDate}</span> : 
+						<span><a href="${link }">${item.title}</a></span>
+					</li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>

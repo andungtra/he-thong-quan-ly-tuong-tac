@@ -211,7 +211,7 @@ body {
 .left-panel
 {
 	float: left;
-	width: 40%;
+	width: 45%;
 	height:100%;
 	padding-right:25px;
 	border-right: solid 1px #ccc;
@@ -220,7 +220,7 @@ body {
 .right-panel
 {
 	float: right;
-	width: 55%;
+	width: 50%;
 }
 
 #project-tab
@@ -355,7 +355,7 @@ textarea
 .panel-title
 {	
 	font-weight:bold;
-	color:#333;
+	color: #008040;
 	font-size:16px;
 	padding-top:5px;
 	padding-bottom:5px;
@@ -502,15 +502,25 @@ tr:hover td
 	color: #345643;
 }
 
+ul
+{
+	list-style-type: none;
+}
 .overdue li
 {
-	color: red;
+	color: #E6820E;
 	padding: 3px;
+	padding-left:25px;
+	background-image:url("../images/post.png");
+	background-repeat:no-repeat;
 }
 .due li
 {
-	color: blue;
+	color: #3375D9;
 	padding: 3px;
+	padding-left:25px;
+	background-image:url("../images/post.png");
+	background-repeat:no-repeat;
 }
 #menu_menu .ui-tabs-panel{
 	min-height: 500px;
@@ -531,4 +541,14 @@ tr:hover td
 .title_msg
 {
 	float:left;
+}
+
+a {
+	color:#0D44AA ;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #06A209 ;
+	text-decoration: underline;
 }

@@ -171,20 +171,21 @@ public class AccountController {
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
 		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
-		for (WorkItem workItem : workItemsList) {
-			if (workItem.getAsignee().getAccount().getId().equals(id)) {
-				if (workItem.getDueDate() != null) {
-					java.util.Calendar dueTime = java.util.Calendar.getInstance();
-					dueTime.setTime(workItem.getDueDate());
-					long due = dueTime.get(java.util.Calendar.DAY_OF_YEAR);
-					
-					
-					if (due < now) {
-						if (overdues.size() < 10)
-							overdues.add(workItem);
+		if (workItemsList.size() > 0) {
+			for (WorkItem workItem : workItemsList) {
+				if (workItem.getAsignee().getAccount().getId().equals(id)) {
+					if (workItem.getDueDate() != null) {
+						java.util.Calendar dueTime = java.util.Calendar
+								.getInstance();
+						dueTime.setTime(workItem.getDueDate());
+						long due = dueTime.get(java.util.Calendar.DAY_OF_YEAR);
+
+						if (due < now) {
+							if (overdues.size() < 10)
+								overdues.add(workItem);
+						} else if (due - now < 7)
+							indues.add(workItem);
 					}
-					else if(due-now<7)
-						indues.add(workItem);
 				}
 			}
 		}
@@ -194,20 +195,22 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" , "sSearch"})
+			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
-			String sEcho, String sSearch,HttpSession session) {
+			String sEcho, String sSearch, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-				
+
 		Account acc = (Account) session.getAttribute("account");
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationEntries(iDisplayStart, iDisplayLength, sSearch);
+				.findMemberInformationEntries(iDisplayStart, iDisplayLength,
+						sSearch);
 		for (MemberInformation item : list) {
-			if (item.getAccount().getEmail().equals(acc.getEmail()) && item.getDeleted()==false) {
+			if (item.getAccount().getEmail().equals(acc.getEmail())
+					&& item.getDeleted() == false) {
 				ProjectDTO dto = new ProjectDTO();
-				dto.DT_RowId = item.getId();
+				dto.DT_RowId = item.getProject().getId();
 				dto.setName("<a href='../../../TIS/projects/"
 						+ item.getProject().getId() + "'>"
 						+ item.getProject().getName() + "</a>");
@@ -268,19 +271,21 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" , "sSearch"})
+			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
+			String sSearch) {
 		DtReply reply = new DtReply();
-		reply.setsEcho(sEcho);		
-		List<Account> list = Account.findAccountEntries(iDisplayStart,iDisplayLength, sSearch);
+		reply.setsEcho(sEcho);
+		List<Account> list = Account.findAccountEntries(iDisplayStart,
+				iDisplayLength, sSearch);
 		for (Account item : list) {
 			if (!item.getStatus().equals(AccountStatus.DELETED)) {
 				AccountDTO dto = new AccountDTO();
 				dto.DT_RowId = item.getId();
 				dto.setLastName(item.getLastName());
 				dto.setFirstName(item.getFirstName());
-				
+
 				dto.setEmail(item.getEmail());
 				dto.setStatus(item.getStatus().name());
 				reply.getAaData().add(dto);
@@ -309,18 +314,19 @@ public class AccountController {
 		restResponse.setResponse(new DSResponse());
 		Account account = Account.findAccount(id);
 		List<Object> datas = new ArrayList<Object>();
-		for(Event event : account.getCalendar().getEvents()){
-			if(event.getCalendars().size() > 1){
+		for (Event event : account.getCalendar().getEvents()) {
+			if (event.getCalendars().size() > 1) {
 				NonEditableEvent nonEditableEvent = new NonEditableEvent();
 				nonEditableEvent.setName(event.getName());
 				String des = "";
-				for(Calendar calendar : event.getCalendars()){
-					if(calendar.getProject() != null){
-						des  = "From : "+ calendar.getProject().getName() +" <br/>";
+				for (Calendar calendar : event.getCalendars()) {
+					if (calendar.getProject() != null) {
+						des = "From : " + calendar.getProject().getName()
+								+ " <br/>";
 						break;
 					}
 				}
-				
+
 				des = des + event.getDescription();
 				nonEditableEvent.setDescription(des);
 				nonEditableEvent.setId(event.getId());
@@ -328,8 +334,8 @@ public class AccountController {
 				nonEditableEvent.setStartDate(event.getStartDate());
 				nonEditableEvent.setEndDate(event.getEndDate());
 				datas.add(nonEditableEvent);
-			}else{
-			datas.add(event);
+			} else {
+				datas.add(event);
 			}
 		}
 		restResponse.getResponse().setStatus(0);
@@ -337,12 +343,13 @@ public class AccountController {
 		return restResponse;
 	}
 
-	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=add"})
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=add" })
 	@ResponseBody
-	public DSRestResponse creatEvent(@PathVariable("id") Long accountId, @Valid Event event, BindingResult bindingResult) {
+	public DSRestResponse creatEvent(@PathVariable("id") Long accountId,
+			@Valid Event event, BindingResult bindingResult) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			restResponse.getResponse().setStatus(1);
 		}
 		event.setCalendars(new ArrayList<Calendar>());
@@ -354,13 +361,15 @@ public class AccountController {
 		restResponse.getResponse().setData(data);
 		return restResponse;
 	}
-	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=update"})
+
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=update" })
 	@ResponseBody
-	public DSRestResponse updateEvent(@PathVariable("id") Long accountId, Long id, @Valid Event event, BindingResult bindingResult) {
+	public DSRestResponse updateEvent(@PathVariable("id") Long accountId,
+			Long id, @Valid Event event, BindingResult bindingResult) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
 		event.setId(id);
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			restResponse.getResponse().setStatus(1);
 		}
 		Event managedEvent = event.merge();
@@ -369,13 +378,15 @@ public class AccountController {
 		restResponse.getResponse().setData(data);
 		return restResponse;
 	}
-	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=remove"})
+
+	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=remove" })
 	@ResponseBody
-	public DSRestResponse deleteEvent(@PathVariable("id") Long accountId, Long id) {
+	public DSRestResponse deleteEvent(@PathVariable("id") Long accountId,
+			Long id) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
 		Event event = Event.findEvent(id);
-		for(Calendar calendar : event.getCalendars()){
+		for (Calendar calendar : event.getCalendars()) {
 			calendar.getEvents().remove(event);
 		}
 		event.remove();
@@ -405,12 +416,12 @@ public class AccountController {
 		} else {
 			lst = accountService.findAllAccounts();
 		}
-		
-		for(int i=0; i<lst.size();i++){
-			if(lst.get(i).getStatus().equals(AccountStatus.DELETED))
+
+		for (int i = 0; i < lst.size(); i++) {
+			if (lst.get(i).getStatus().equals(AccountStatus.DELETED))
 				lst.remove(i);
 		}
-		
+
 		uiModel.addAttribute("accounts", lst);
 		return "accounts/list";
 	}

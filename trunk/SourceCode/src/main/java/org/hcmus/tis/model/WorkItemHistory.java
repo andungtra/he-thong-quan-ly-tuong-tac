@@ -134,11 +134,11 @@ public class WorkItemHistory {
 	
 	public static List<WorkItemHistory> findAllWorkItemHistorysInProject(Long id, int maxResults) {
 		// TODO Auto-generated method stub
-		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItemContainer.id = %d", id), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItemContainer.id = %d ORDER BY o.dateLastEdit DESC", id), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
 	}
 	public static List<WorkItemHistory> findAllWorkItemHistorysOfWorkItem(
 			Long workItemId, int maxResults) {
 		// TODO Auto-generated method stub
-		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItem.id = %d", workItemId), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItem.id = %d ORDER BY o.dateLastEdit DESC", workItemId), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
 	}
 }
