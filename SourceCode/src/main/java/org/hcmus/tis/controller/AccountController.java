@@ -173,7 +173,7 @@ public class AccountController {
 		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
-				if (workItem.getAsignee().getAccount().getId().equals(id)) {
+				if (workItem.getAsignee()!=null && workItem.getAsignee().getAccount().getId().equals(id)) {
 					if (workItem.getDueDate() != null) {
 						java.util.Calendar dueTime = java.util.Calendar
 								.getInstance();
