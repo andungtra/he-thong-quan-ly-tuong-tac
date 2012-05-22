@@ -50,10 +50,20 @@ public class MemberInformationController {
 			Long projectId,
 			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
 			HttpServletRequest httpServletRequest) {
+		Account account = null;
+		try {
+			account = Account.getAccountbyEmail(email);
+		} catch (Exception e) {
+			Collection<MemberRole> memberRoles = MemberRole
+					.findAllMemberRoles();
+			uiModel.addAttribute("memberRoles", memberRoles);
+			uiModel.addAttribute("projectId", projectId);
+			uiModel.addAttribute("redirectUrl", redirectUrl);
+			return "memberinformations/createfromproject";
+		}
+
 		MemberRole memberRole = MemberRole.findMemberRole(memberRoleId);
 		Project project = Project.findProject(projectId);
-		Account account = Account.findAccountsByEmailEquals(email)
-				.getResultList().get(0);
 
 		List<MemberInformation> exist = MemberInformation
 				.findMemberInformationsByAccountAndProject(account, project)
@@ -68,16 +78,14 @@ public class MemberInformationController {
 			memberInformation.setProject(project);
 			memberInformation.persist();
 
-			/*if (redirectUrl != null) {
-				return "redirect:" + redirectUrl;
-			}
-			return "redirect:/memberinformations/"
-					+ encodeUrlPathSegment(
-							memberInformation.getId().toString(),
-							httpServletRequest);*/
-			
-			Set<MemberInformation> memberInformations = Project.findProject(projectId)
-					.getMemberInformations();
+			/*
+			 * if (redirectUrl != null) { return "redirect:" + redirectUrl; }
+			 * return "redirect:/memberinformations/" + encodeUrlPathSegment(
+			 * memberInformation.getId().toString(), httpServletRequest);
+			 */
+
+			Set<MemberInformation> memberInformations = Project.findProject(
+					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
 			uiModel.addAttribute("projectId", projectId);
 			return "projects/member";
@@ -89,15 +97,13 @@ public class MemberInformationController {
 			memberInformation.setDeleted(false);
 			memberInformation.merge();
 
-			/*if (redirectUrl != null) {
-				return "redirect:" + redirectUrl;
-			}
-			return "redirect:/memberinformations/"
-					+ encodeUrlPathSegment(
-							memberInformation.getId().toString(),
-							httpServletRequest);*/
-			Set<MemberInformation> memberInformations = Project.findProject(projectId)
-					.getMemberInformations();
+			/*
+			 * if (redirectUrl != null) { return "redirect:" + redirectUrl; }
+			 * return "redirect:/memberinformations/" + encodeUrlPathSegment(
+			 * memberInformation.getId().toString(), httpServletRequest);
+			 */
+			Set<MemberInformation> memberInformations = Project.findProject(
+					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
 			uiModel.addAttribute("projectId", projectId);
 			return "projects/member";
@@ -166,13 +172,13 @@ public class MemberInformationController {
 	}
 
 	@RequestMapping(value = "mList/{id}", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho" , "sSearch"})
+			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(@PathVariable("id") Long id, int iDisplayStart,
 			int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		
+
 		List<MemberInformation> list = MemberInformation
 				.findMemberInformationsByProject(Project.findProject(id));
 		for (MemberInformation item : list) {
