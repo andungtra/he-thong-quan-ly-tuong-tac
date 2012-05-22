@@ -44,7 +44,7 @@
 				<c:forEach items="${overdues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
 					<li>
-						<span>${item.dueDate}</span>    
+						<span>${item.dueDate}</span> : 
 						<span><a href="${link }">${item.title}</a></span>
 					</li>
 				</c:forEach>
@@ -56,7 +56,7 @@
 				<c:forEach items="${indues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
 					<li>
-						<span>${item.dueDate}</span>    
+						<span>${item.dueDate}</span> : 
 						<span><a href="${link }">${item.title}</a></span>
 					</li>
 				</c:forEach>
