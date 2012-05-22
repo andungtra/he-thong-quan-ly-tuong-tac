@@ -23,6 +23,7 @@ import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.xml.ObjectFactory;
@@ -228,5 +229,13 @@ public class WorkItemController {
 				"workItem_duedate_date_format",
 				DateTimeFormat.patternForStyle("SS",
 						LocaleContextHolder.getLocale()));
+	}
+	
+	@RequestMapping(value="/history", params = "workItemId", produces = "text/html")
+	public String history(Model uiModel, Long workItemId){
+		List<WorkItemHistory> history = WorkItemHistory.findAllWorkItemHistorysOfWorkItem(workItemId,10);
+		uiModel.addAttribute("history", history);
+		uiModel.addAttribute("workItemId", workItemId);
+		return "workitems/history";
 	}
 }

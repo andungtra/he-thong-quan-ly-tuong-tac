@@ -42,7 +42,7 @@
 
 			<div>
 				<label for="email">Account : </label>
-				<input type="text" id="email" name="email"  width="400px" class="input"/>
+				<input type="email" id="email" name="email"  width="400px" class="input"/>
 			</div>
 			<br />
 			<div class="clear" />

@@ -419,6 +419,14 @@ field boolean --fieldName deleted --value false
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-19 17:46:46
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-19 21:17:42
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-20 00:25:24
+<<<<<<< .mine
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-24 14:48:41
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-24 15:59:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-25 00:14:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 00:26:29
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-25 13:22:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 15:05:28
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-21 09:42:06
 service --entity ~.model.ProjectProcess --interface org.hcmus.tis.service.ProjectProcessService
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-21 11:45:42
@@ -518,6 +526,11 @@ finder add --finderName findMemberInformationsByAccountAndProject
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-25 11:13:16
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-26 15:26:10
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-26 17:17:22
+<<<<<<< .mine
+>>>>>>> .r83
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-27 13:04:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-27 17:18:57
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-27 13:30:34
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-27 15:39:49
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-27 23:58:41
@@ -547,6 +560,18 @@ field date --fieldName endDate --type java.util.Date --notNull
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-01 21:35:43
 hint
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-01 22:32:36
+<<<<<<< .mine
+>>>>>>> .r87
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-02 17:09:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-02 17:55:12
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-05 18:15:03
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-05 18:29:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-09 10:36:49
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-09 15:14:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-12 14:27:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-12 14:41:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-12 16:15:42
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-02 23:29:01
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-02 23:34:20
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-03 22:49:39
@@ -566,69 +591,17 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-09 11:32:49
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-09 22:07:01
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 00:50:01
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 00:16:55
-hint
-hint
-entity jpa --class org.hcmus.tis.model.Comment --testAutomatically 
-field string content
-field date --fieldName commentDate --type java.util.Date
-field reference --fieldName workItem --type ~.model.WorkItem
-// [failed] field reference --fieldName member --type ~.model.MemberInformation
-field reference --fieldName projectMember --type ~.model.MemberInformation
-entity jpa --class org.hcmus.tis.model.Attachment --testAutomatically 
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 00:38:01
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 09:00:56
-hint
-focus --class ~.model.Comment
-finder list 
-finder add findCommentsByWorkItem
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 11:36:42
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:09:55
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 22:25:57
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:42:07
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 22:50:05
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 22:53:45
-hint
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-14 00:02:45
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-14 20:56:17
-hint
-entity jpa --class org.hcmus.tis.model.Attachment --testAutomatically 
-web mvc scaffold --class ~.model.Attachment
-// [failed] web mvc scaffold --class ~.controller.AttachmentController
-// [failed] web mvc all --package org.hcmus.tis.controller
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-15 00:31:19
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-15 09:10:36
-hint
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-15 10:33:28
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-16 23:51:56
-hint
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-17 00:28:22
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-17 10:18:21
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-17 11:46:13
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-18 15:42:26
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-18 16:50:32
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 10:15:15
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-19 10:18:29
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 11:13:40
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 21:06:25
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-19 21:12:01
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-19 23:44:49
-hint
-hint
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 00:37:40
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-20 10:12:04
-hint
-hint
-hint
-entity jpa --class ~.model.ProjectProcess --testAutomatically 
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 11:57:34
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-20 20:32:53
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-20 20:38:15
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-20 21:55:39
-hint
-hint
-entity jpa --class ~.model.WorkItem --testAutomatically
-// [failed] entity jpa --class org.hcmus.tis.model.test --abstract --testAutomatically 
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 00:33:04
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 15:29:06
-// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 15:34:44
+>>>>>>> .r108
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-12 17:44:45
+// [failed] controller all --package org.hcmus.tis.controller
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-12 20:55:32
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-12 22:06:14
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-12 22:43:08
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-13 11:44:03
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-13 12:13:33
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 07:02:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 07:39:38
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 09:03:13
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 09:20:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 21:59:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 22:03:30

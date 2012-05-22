@@ -167,11 +167,14 @@
                     <spring:url value="/comments" var="comments_url">
                         <spring:param name="workItemId" value="${workItem.id}"/>
                     </spring:url>
+                    <spring:url value="/workitems/history" var="history_url">
+                        <spring:param name="workItemId" value="${workItem.id}"/>
+                    </spring:url>
                     <li>
                         <a href="${comments_url }">Comments</a>
                     </li>
                     <li>
-                        <a href="fsdsdsfsdf">History</a>
+                        <a href="${history_url}">History</a>
                     </li>
                 </ul>
             </div>

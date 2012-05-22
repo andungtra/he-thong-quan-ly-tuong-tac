@@ -136,4 +136,9 @@ public class WorkItemHistory {
 		// TODO Auto-generated method stub
 		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItemContainer.id = %d", id), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
 	}
+	public static List<WorkItemHistory> findAllWorkItemHistorysOfWorkItem(
+			Long workItemId, int maxResults) {
+		// TODO Auto-generated method stub
+		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItem.id = %d", workItemId), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
+	}
 }

@@ -85,7 +85,8 @@ public class Account implements java.io.Serializable {
         String queryString = "SELECT account FROM Account AS account WHERE account.email = :email";
         TypedQuery<Account> query = entityManager().createQuery(queryString, Account.class);
         query.setParameter("email", email);
-        return query.getSingleResult();
+        
+        return query.getSingleResult();        
     }
 	public Calendar getCalendar() {
 		return calendar;
