@@ -5,15 +5,20 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:message var="app_name" code="application_name"
 		htmlEscape="false" />
-
+	<spring:url
+		value="/accounts/email/${pageContext['request'].userPrincipal.name}"
+		var="redirect"></spring:url>
+	<SCRIPT type="text/javascript">
+		if ("${pageContext['request'].userPrincipal.name}" != "") {
+			window.location = "${redirect}";
+		}
+	</SCRIPT>
 	<div class="welcome">
 		<h3>
 			<spring:message code="welcome_h3" arguments="${app_name}" />
 		</h3>
-		<p>
-		TIS is COLLABORATIVE DEVELOPMENT ENVIRONMENTS base on web, provide
-		tool for manager project, schedule, member, source ...
-		</p>
+		<p>TIS is COLLABORATIVE DEVELOPMENT ENVIRONMENTS base on web,
+			provide tool for manager project, schedule, member, source ...</p>
 		<spring:url value="/login" var="login"></spring:url>
 		<a href="${login}">Login</a> to begin use feature of TIS
 	</div>

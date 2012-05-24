@@ -66,7 +66,7 @@
 					})
 		});
 	</script>
-    <form:update id="fu_org_hcmus_tis_model_WorkItem" label="${workItemType.name } : ${workItem.id }" modelAttribute="workItem" path="/workitems" versionField="Version" z="user-managed">
+    <form:update cancel="/projects/${workItem.workItemContainer.id}/task" id="fu_org_hcmus_tis_model_WorkItem" label="${workItemType.name } : ${workItem.id }" modelAttribute="workItem" path="/workitems" versionField="Version" z="user-managed">
         <field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="user-managed"/>
         <div style="float: left;">
             <util:fixpanel id="details_panel" title="Details">

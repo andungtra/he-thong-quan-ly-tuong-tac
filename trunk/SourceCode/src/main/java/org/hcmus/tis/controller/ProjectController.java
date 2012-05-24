@@ -219,7 +219,10 @@ public class ProjectController {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName(item.getName());
+				dto.setName("<a href='../projects/"
+						+ item.getId() + "'>"
+						+ item.getName() + "</a>");
+				
 				if (item.getParentContainer() != null)
 					dto.setParentContainer(item.getParentContainer().getName());
 				dto.setDescription(item.getDescription());

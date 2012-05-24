@@ -109,6 +109,8 @@ public class WorkItemController {
 		}
 		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("dependencies", dependencies);
+		
+		
 		return "workitems/create";
 	}
 
