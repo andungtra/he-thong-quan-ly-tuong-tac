@@ -38,6 +38,10 @@
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 	<jsp:directive.attribute name="width" type="java.lang.String"
 		required="false" description="width of fixpanel" />
+		
+	<jsp:directive.attribute name="cancel" type="java.lang.String"
+		required="false" description="link cancel" />
+		
 	<c:if test="${empty render or render}">
 		<c:if test="${empty label}">
 			<spring:message
@@ -71,8 +75,12 @@
 						<input id="proceed" type="submit"
 							value="${fn:escapeXml(save_button)}" />
 					</div>
-					<div class="submit" >						
-						<a href="${form_url}">
+					<div class="submit" >
+					<c:set value="${form_url}" var="cancel_url"/>
+					<c:if test="${not empty cancel}">
+						<spring:url value="${cancel}" var="cancel_url" />
+					</c:if>
+						<a href="${cancel_url}">
 							<button>Cancel</button>
 						</a>						
 					</div>
