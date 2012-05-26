@@ -188,7 +188,7 @@ public class WorkItemControllerTest {
 		PowerMockito.when(Attachment.findAttachment((long) 2)).thenReturn(
 				mockedAttachment1);
 
-		aut.create(spyWorkItem, bindingResult, uiModel, attachmentIds,
+		aut.create(spyWorkItem, bindingResult,(long)1, uiModel, attachmentIds,
 				httpServletRequest);
 
 		Mockito.verify(httpServletRequest).getParameter("name");

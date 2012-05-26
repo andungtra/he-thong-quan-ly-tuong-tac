@@ -4,5 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_hcmus_tis_model_MemberRole" object="${memberrole}" path="/memberroles" z="a9nKwc9sk6vcqtKRx0QPnG7A1LQ=">
         <field:display field="name" id="s_org_hcmus_tis_model_MemberRole_name" object="${memberrole}" z="6Gd9Y2OiSZ1czYMpqVv6ErDDZXw="/>
+        <field:display field="refName" id="s_org_hcmus_tis_model_MemberRole_refName" object="${memberrole}" z="wN196ARHaOfvhb4wxuzRTZ6iwpM="/>
+        <field:display field="permissions" id="s_org_hcmus_tis_model_MemberRole_permissions" object="${memberrole}" z="i2UluWQiD3x/Oc6RFVXS5Qhpv28="/>
     </page:show>
 </div>

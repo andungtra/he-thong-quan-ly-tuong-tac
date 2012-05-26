@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.MemberRoleController;
 import org.hcmus.tis.model.MemberRole;
+import org.hcmus.tis.model.Permission;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,6 +87,7 @@ privileged aspect MemberRoleController_Roo_Controller {
     
     void MemberRoleController.populateEditForm(Model uiModel, MemberRole memberRole) {
         uiModel.addAttribute("memberRole", memberRole);
+        uiModel.addAttribute("permissions", Permission.findAllPermissions());
     }
     
     String MemberRoleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

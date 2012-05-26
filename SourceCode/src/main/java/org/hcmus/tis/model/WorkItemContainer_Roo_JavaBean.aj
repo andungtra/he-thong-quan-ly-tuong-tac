@@ -3,6 +3,7 @@
 
 package org.hcmus.tis.model;
 
+import java.util.Collection;
 import org.hcmus.tis.model.WorkItemContainer;
 
 privileged aspect WorkItemContainer_Roo_JavaBean {
@@ -21,6 +22,10 @@ privileged aspect WorkItemContainer_Roo_JavaBean {
     
     public void WorkItemContainer.setParentContainer(WorkItemContainer parentContainer) {
         this.parentContainer = parentContainer;
+    }
+    
+    public void WorkItemContainer.setChildren(Collection<WorkItemContainer> children) {
+        this.children = children;
     }
     
 }

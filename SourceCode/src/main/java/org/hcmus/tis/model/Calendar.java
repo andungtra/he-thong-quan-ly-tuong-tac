@@ -23,20 +23,4 @@ public class Calendar {
 	
 	@OneToOne(mappedBy="calendar")
 	private Project project;
-
-	public Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
 }

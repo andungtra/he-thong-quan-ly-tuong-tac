@@ -5,6 +5,8 @@
     <page:list id="pl_org_hcmus_tis_model_MemberRole" items="${memberroles}" z="Wk3C97H4qu7/qJc6Wz2Y+qFQBCM=">
         <table:table data="${memberroles}" id="l_org_hcmus_tis_model_MemberRole" path="/memberroles" z="zPR2zVkcu/ma0Zvjkpwc5wKAkdI=">
             <table:column id="c_org_hcmus_tis_model_MemberRole_name" property="name" z="enjQJj3yBwtESYzwi9RxH5sjZgc="/>
+            <table:column id="c_org_hcmus_tis_model_MemberRole_refName" property="refName" z="mbFuvShk6tQ5CqtrNDOUHOlsKHo="/>
+            <table:column id="c_org_hcmus_tis_model_MemberRole_permissions" property="permissions" z="XfV57L7qjGPY61aPyXqCukMLa2w="/>
         </table:table>
     </page:list>
 </div>

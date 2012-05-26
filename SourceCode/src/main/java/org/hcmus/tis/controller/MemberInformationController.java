@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("/memberinformations")
+@RequestMapping("projects/{projectId}/memberinformations")
 @Controller
 @RooWebScaffold(path = "memberinformations", formBackingObject = MemberInformation.class)
 public class MemberInformationController {
 
-	@RequestMapping(params = { "form", "projectId", "redirectUrl" }, produces = "text/html")
-	public String createForm(Model uiModel, Long projectId, String redirectUrl) {
+	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
+	public String createForm(Model uiModel,@PathVariable("projectId") Long projectId, String redirectUrl) {
 		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
 		uiModel.addAttribute("memberRoles", memberRoles);
 		uiModel.addAttribute("projectId", projectId);
@@ -139,8 +139,7 @@ public class MemberInformationController {
 		return "redirect:/memberinformations";
 	}
 
-	@RequestMapping(value = "/{id}", params = { "fromProjectForm",
-			"redirectUrl" }, produces = "text/html")
+	@RequestMapping(value = "/{id}", params = {"redirectUrl" }, produces = "text/html")
 	public String updateFromProjectForm(@PathVariable("id") Long id,
 			Model uiModel, String redirectUrl) {
 		MemberInformation memberInformation = MemberInformation
@@ -171,16 +170,16 @@ public class MemberInformationController {
 						httpServletRequest);
 	}
 
-	@RequestMapping(value = "mList/{id}", params = { "iDisplayStart",
+	@RequestMapping(params = { "iDisplayStart",
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
-	public DtReply mList(@PathVariable("id") Long id, int iDisplayStart,
+	public DtReply listByProject(@PathVariable("projectId") Long projectId, int iDisplayStart,
 			int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationsByProject(Project.findProject(id));
+				.findMemberInformationsByProject(Project.findProject(projectId));
 		for (MemberInformation item : list) {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();

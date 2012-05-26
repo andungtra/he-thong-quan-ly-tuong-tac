@@ -18,12 +18,12 @@
         <spring:message code="security_login_message" />
       </p>
     </c:if>
-    <spring:url value="/resources/j_spring_security_check" var="form_url" />
-    <form name="f" action="${fn:escapeXml(form_url)}" method="POST" >
+    <spring:url value="/login" var="action_url"></spring:url>
+    <form name="loginform" action="${action_url }" method="POST" >
     <div class="tbcontent">
       <div>
         <label>Email</label> 
-        <input id="j_username" type='text' name='j_username' />
+        <input id="j_username" type='text' name='username' />
         
         <spring:message code="security_login_form_email_message" var="name_msg" htmlEscape="false" />
         <script type="text/javascript">
@@ -36,7 +36,7 @@
       <br />
       <div>
         <label>Password</label>
-        <input id="j_password" type='password' name='j_password'/>
+        <input id="j_password" type='password' name='password'/>
         	
         <spring:message code="security_login_form_password_message" var="pwd_msg" htmlEscape="false" />
         <script type="text/javascript">

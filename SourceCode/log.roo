@@ -605,3 +605,8 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 09:20:44
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 21:59:25
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 22:03:30
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-25 10:08:35
+entity jpa --class org.hcmus.tis.model.Permission --testAutomatically 
+field string --fieldName refName --notNull 
+focus --class ~.model.MemberRole
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-25 12:08:29

@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:shiro="http://shiro.apache.org/tags"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 	<jsp:output omit-xml-declaration="yes" />
 
@@ -20,7 +21,9 @@
 			<li><a href="${projectCalendar}">Calendar</a></li>
 			<li><a href="${projectRoadmap}">Roadmap</a></li>
 			<li><a href="${projectMember}">Member</a></li>
-			<li><a href="${projectSetting}">Setting</a></li>
+			<shiro:hasPermission name="project:update">
+				<li><a href="${projectSetting}">Setting</a></li>
+			</shiro:hasPermission>
 		</ul>
 	</div>
 

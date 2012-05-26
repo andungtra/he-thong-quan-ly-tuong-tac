@@ -1,5 +1,6 @@
 package org.hcmus.tis.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,10 +11,15 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.web.util.WebUtils;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
@@ -57,6 +63,7 @@ public class ProjectController {
 	private ProjectProcessService projectProcessService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
+	@RequiresPermissions("project:create")
 	public String create(@Valid Project project, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -83,8 +90,9 @@ public class ProjectController {
 		List<ProjectProcess> test = ProjectProcess.findAllProjectProcesses();
 		int size = test.size();
 	}
-
+	
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
+	@RequiresPermissions("project:read")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
 		Project p = Project.findProject(id);
@@ -94,12 +102,13 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "{id}", produces = "text/html")
+	@RequiresPermissions("project:read")
 	public String showhomepage(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		while(currentContainer  != null){
+		while (currentContainer != null) {
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
@@ -112,6 +121,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
+	@RequiresPermissions("project:list")
 	public String findProjectsQuickly(@RequestParam("query") String name,
 			Model uiModel,
 			@RequestParam(value = "page", required = false) Integer page,
@@ -147,7 +157,9 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
-	public String overview(@PathVariable("id") Long id, Model uiModel) {
+	@RequiresPermissions("project:read")
+	public String overview(@PathVariable("id") Long id, Model uiModel,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		uiModel.addAttribute("project", Project.findProject(id));
 
 		Calendar cal = Calendar.getInstance();
@@ -168,7 +180,7 @@ public class ProjectController {
 							overdues.add(workItem);
 					}
 
-					else if(due-now<7)
+					else if (due - now < 7)
 						indues.add(workItem);
 				}
 			}
@@ -211,10 +223,12 @@ public class ProjectController {
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
+			String sSearch) {
 		DtReply reply = new DtReply();
-		reply.setsEcho(sEcho);		
-		List<Project> list = Project.findProjectEntries(iDisplayStart,iDisplayLength,sSearch );
+		reply.setsEcho(sEcho);
+		List<Project> list = Project.findProjectEntries(iDisplayStart,
+				iDisplayLength, sSearch);
 		for (Project item : list) {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
@@ -235,6 +249,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	@RequiresPermissions("project:update")
 	public String update(@Valid Project project, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpServletRequest,
 			HttpSession session) {
@@ -248,7 +263,8 @@ public class ProjectController {
 				break;
 			}
 		}
-		if (acc.getIsAdmin()==true ||( info!=null && info.getMemberRole().getId() == 1)) {
+		if (acc.getIsAdmin() == true
+				|| (info != null && info.getMemberRole().getId() == 1)) {
 			if (bindingResult.hasErrors()) {
 				populateEditForm(uiModel, project);
 				return "projects/update";
@@ -258,13 +274,14 @@ public class ProjectController {
 			uiModel.addAttribute("projects", Project.findAllProjects());
 			return "projects/list";
 		} else {
-			uiModel.addAttribute("error","You don't have authority !!!");
+			uiModel.addAttribute("error", "You don't have authority !!!");
 			populateEditForm(uiModel, project);
 			return "projects/update";
 		}
 	}
 
 	@RequestMapping(produces = "text/html")
+	@RequiresPermissions("project:list")
 	public String list(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -296,6 +313,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+	@RequiresPermissions("project:delete")
 	public String delete(@PathVariable("id") Long id,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
@@ -422,7 +440,8 @@ public class ProjectController {
 		restResponse.getResponse().getData().add(event);
 		return restResponse;
 	}
-	public void createWorkItemContainer(Long projectId){
-		
+
+	public void createWorkItemContainer(Long projectId) {
+
 	}
 }

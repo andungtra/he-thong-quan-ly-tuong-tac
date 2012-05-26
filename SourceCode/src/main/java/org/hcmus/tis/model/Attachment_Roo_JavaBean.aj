@@ -4,6 +4,7 @@
 package org.hcmus.tis.model;
 
 import org.hcmus.tis.model.Attachment;
+import org.hcmus.tis.model.WorkItem;
 
 privileged aspect Attachment_Roo_JavaBean {
     
@@ -21,6 +22,14 @@ privileged aspect Attachment_Roo_JavaBean {
     
     public void Attachment.setRealFileName(String realFileName) {
         this.realFileName = realFileName;
+    }
+    
+    public WorkItem Attachment.getWorkItem() {
+        return this.workItem;
+    }
+    
+    public void Attachment.setWorkItem(WorkItem workItem) {
+        this.workItem = workItem;
     }
     
 }

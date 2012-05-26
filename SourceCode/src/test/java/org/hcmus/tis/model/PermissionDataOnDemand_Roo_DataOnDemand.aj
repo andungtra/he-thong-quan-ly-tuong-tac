@@ -10,36 +10,30 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import org.hcmus.tis.model.MemberRole;
-import org.hcmus.tis.model.MemberRoleDataOnDemand;
+import org.hcmus.tis.model.Permission;
+import org.hcmus.tis.model.PermissionDataOnDemand;
 import org.springframework.stereotype.Component;
 
-privileged aspect MemberRoleDataOnDemand_Roo_DataOnDemand {
+privileged aspect PermissionDataOnDemand_Roo_DataOnDemand {
     
-    declare @type: MemberRoleDataOnDemand: @Component;
+    declare @type: PermissionDataOnDemand: @Component;
     
-    private Random MemberRoleDataOnDemand.rnd = new SecureRandom();
+    private Random PermissionDataOnDemand.rnd = new SecureRandom();
     
-    private List<MemberRole> MemberRoleDataOnDemand.data;
+    private List<Permission> PermissionDataOnDemand.data;
     
-    public MemberRole MemberRoleDataOnDemand.getNewTransientMemberRole(int index) {
-        MemberRole obj = new MemberRole();
-        setName(obj, index);
+    public Permission PermissionDataOnDemand.getNewTransientPermission(int index) {
+        Permission obj = new Permission();
         setRefName(obj, index);
         return obj;
     }
     
-    public void MemberRoleDataOnDemand.setName(MemberRole obj, int index) {
-        String name = "name_" + index;
-        obj.setName(name);
-    }
-    
-    public void MemberRoleDataOnDemand.setRefName(MemberRole obj, int index) {
+    public void PermissionDataOnDemand.setRefName(Permission obj, int index) {
         String refName = "refName_" + index;
         obj.setRefName(refName);
     }
     
-    public MemberRole MemberRoleDataOnDemand.getSpecificMemberRole(int index) {
+    public Permission PermissionDataOnDemand.getSpecificPermission(int index) {
         init();
         if (index < 0) {
             index = 0;
@@ -47,36 +41,36 @@ privileged aspect MemberRoleDataOnDemand_Roo_DataOnDemand {
         if (index > (data.size() - 1)) {
             index = data.size() - 1;
         }
-        MemberRole obj = data.get(index);
+        Permission obj = data.get(index);
         Long id = obj.getId();
-        return MemberRole.findMemberRole(id);
+        return Permission.findPermission(id);
     }
     
-    public MemberRole MemberRoleDataOnDemand.getRandomMemberRole() {
+    public Permission PermissionDataOnDemand.getRandomPermission() {
         init();
-        MemberRole obj = data.get(rnd.nextInt(data.size()));
+        Permission obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return MemberRole.findMemberRole(id);
+        return Permission.findPermission(id);
     }
     
-    public boolean MemberRoleDataOnDemand.modifyMemberRole(MemberRole obj) {
+    public boolean PermissionDataOnDemand.modifyPermission(Permission obj) {
         return false;
     }
     
-    public void MemberRoleDataOnDemand.init() {
+    public void PermissionDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = MemberRole.findMemberRoleEntries(from, to);
+        data = Permission.findPermissionEntries(from, to);
         if (data == null) {
-            throw new IllegalStateException("Find entries implementation for 'MemberRole' illegally returned null");
+            throw new IllegalStateException("Find entries implementation for 'Permission' illegally returned null");
         }
         if (!data.isEmpty()) {
             return;
         }
         
-        data = new ArrayList<MemberRole>();
+        data = new ArrayList<Permission>();
         for (int i = 0; i < 10; i++) {
-            MemberRole obj = getNewTransientMemberRole(i);
+            Permission obj = getNewTransientPermission(i);
             try {
                 obj.persist();
             } catch (ConstraintViolationException e) {
