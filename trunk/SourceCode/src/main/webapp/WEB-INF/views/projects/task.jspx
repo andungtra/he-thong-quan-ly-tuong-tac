@@ -50,8 +50,7 @@
 		id="skinSheet" />
 	<div id="container">
 		<div id="topnav" class="topnav">
-			<spring:url value="/workitems?form" var="default_workitemform_url">
-				<spring:param name="projectId" value="${itemId}"></spring:param>
+			<spring:url value="/projects/${itemId }/workitems?form" var="default_workitemform_url">
 				<spring:param name="workItemTypeId" value="${workItemTypes[0].id }"></spring:param>
 			</spring:url>
 			<span class="signin"> <a href="${default_workitemform_url }">
@@ -62,10 +61,10 @@
 		<fieldset id="signin_menu">
 			<ul>
 				<c:forEach items="${workItemTypes }" var="workItemType" begin="1">
-					<li><spring:url value="/workitems?form" var="workitemform_url">
-							<spring:param name="projectId" value="${itemId}"></spring:param>
+					<li><spring:url value="/projects/${itemId }/workitems?form" var="workitemform_url">
 							<spring:param name="workItemTypeId" value="${workItemType.id }"></spring:param>
-						</spring:url> <a href="${workitemform_url}">${workItemType.name }</a></li>
+						</spring:url> 
+						<a href="${workitemform_url}">${workItemType.name }</a></li>
 				</c:forEach>
 			</ul>
 
@@ -92,9 +91,10 @@
 			<li><a href="">all work item</a></li>
 		</ul>
 	</div>
-
+	<spring:url value="/projects/${itemId }/workitems" var="update_url">
+	</spring:url>
 	<field:datatable aoColumns="lName,sStatus,sType" id="tbproject"
-		path="/workitems" source="/workitems/listWorkItemByProject"
+		path="/workitems" source="/projects/${itemId }/workitems"
 		paramName="projectId" paramValue="${itemId}" thead="Name,Status,Type"
 		fshow="true" />
 	<div style="clear: both;" />

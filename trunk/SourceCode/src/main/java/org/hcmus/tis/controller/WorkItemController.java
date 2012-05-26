@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
@@ -41,11 +42,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("/workitems")
+@RequestMapping("/projects/{projectId}/workitems")
 @Controller
 @RooWebScaffold(path = "workitems", formBackingObject = WorkItem.class)
 public class WorkItemController {
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpServletRequest)
 			throws JAXBException {
@@ -72,15 +74,18 @@ public class WorkItemController {
 
 		uiModel.asMap().clear();
 		workItem.merge();
-		return "redirect:/workitems/"
+		return "redirect:/projects/"
+				+ workItem.getWorkItemContainer().getParentProjectOrMyself().getId()
+				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
-	public String createForm(Long projectId, Long workItemTypeId,
-			String redirectUrl, Model uiModel, Principal principal)
-			throws NotPermissionException {
+	@RequiresPermissions("workitem:create")
+	public String createForm(@PathVariable("projectId") Long projectId,
+			Long workItemTypeId, String redirectUrl, Model uiModel,
+			Principal principal) throws NotPermissionException {
 		WorkItem workItem = new WorkItem();
 		Project project = Project.findProject(projectId);
 		workItem.setWorkItemContainer(project);
@@ -115,6 +120,7 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+	@RequiresPermissions("workitem:update")
 	public String updateForm(@PathVariable("id") Long id, Model uiModel) {
 		WorkItem workItem = WorkItem.findWorkItem(id);
 		populateEditFormCustomly(uiModel, workItem);
@@ -148,9 +154,11 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
+	@RequiresPermissions("workitem:create")
 	public String create(
 			@Valid WorkItem workItem,
 			BindingResult bindingResult,
+			@PathVariable("projectId") Long projectId,
 			Model uiModel,
 			@RequestParam(value = "attachment", required = false) Long[] attachmentIds,
 			HttpServletRequest httpServletRequest) throws JAXBException {
@@ -182,16 +190,19 @@ public class WorkItemController {
 				attachment.flush();
 			}
 		}
-		return "redirect:/workitems/"
+		return "redirect:/projects/"
+				+ projectId
+				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);
 
 	}
 
-	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
-			"iDisplayStart", "iDisplayLength", "sEcho" })
+	@RequestMapping(params = { "iDisplayStart", "iDisplayLength", "sEcho" })
 	@ResponseBody
-	public DtReply listWorkItemByProject(Long projectId, int iDisplayStart,
+	@RequiresPermissions("workitem:list")
+	public DtReply listWorkItemByProject(
+			@PathVariable("projectId") Long projectId, int iDisplayStart,
 			int iDisplayLength, String sEcho, int iSortCol_0,
 			String sSortDir_0, String sSearch) {
 		DtReply reply = new DtReply();
@@ -206,8 +217,9 @@ public class WorkItemController {
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
 			workItemDto.DT_RowId = workItem.getId();
-			workItemDto.setlName("<a href='/TIS/workitems/" + workItem.getId()
-					+ "?form'>" + workItem.getTitle() + "</a>");
+			workItemDto.setlName("<a href='/TIS/projects/" + projectId
+					+ "/workitems/" + workItem.getId() + "?form'>"
+					+ workItem.getTitle() + "</a>");
 			WorkItemStatus testStatus = workItem.getStatus();
 			String testName = workItem.getTitle();
 			workItemDto.setsStatus(workItem.getStatus().getName());
@@ -232,12 +244,13 @@ public class WorkItemController {
 				DateTimeFormat.patternForStyle("SS",
 						LocaleContextHolder.getLocale()));
 	}
-	
-	@RequestMapping(value="/history", params = "workItemId", produces = "text/html")
-	public String history(Model uiModel, Long workItemId){
-		List<WorkItemHistory> history = WorkItemHistory.findAllWorkItemHistorysOfWorkItem(workItemId,10);
+  @RequiresPermissions("workitem:read")
+	@RequestMapping(value = "/${id}/history", produces = "text/html")
+	public String history(Model uiModel, Long id) {
+		List<WorkItemHistory> history = WorkItemHistory
+				.findAllWorkItemHistorysOfWorkItem(id, 10);
 		uiModel.addAttribute("history", history);
-		uiModel.addAttribute("workItemId", workItemId);
+		uiModel.addAttribute("workItemId", id);
 		return "workitems/history";
 	}
 }

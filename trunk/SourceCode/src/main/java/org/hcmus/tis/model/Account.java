@@ -88,12 +88,6 @@ public class Account implements java.io.Serializable {
         
         return query.getSingleResult();        
     }
-	public Calendar getCalendar() {
-		return calendar;
-	}
-	protected void setCalendar(Calendar calendar) {
-		this.calendar = calendar;
-	}
 	public static List<Account> findAccountEntries(int iDisplayStart,
 			int iDisplayLength, String sSearch) {
 		// TODO Auto-generated method stub
@@ -104,5 +98,11 @@ public class Account implements java.io.Serializable {
         TypedQuery<Account> query = entityManager().createQuery(queryString, Account.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
         query.setParameter("sSearch", "%"+sSearch+"%");
         return query.getResultList();
+	}
+	public Calendar getCalendar() {
+		return calendar;
+	}
+	private void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
 	}
 }

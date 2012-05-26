@@ -2,11 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <table:datatable aoColumns="firstName,lastName,email,status" 
-    id="tbaccount" path="/accounts" 
-    source="/accounts/mList" 
-    thead="First Name, Last Name, Email, Status"
-    fdelete="true" fnew="true" fshow="true"/>
+    <table:datatable aoColumns="firstName,lastName,email,status" fdelete="true" fnew="true" fshow="true" id="tbaccount" path="/accounts" source="/accounts/mList" thead="First Name, Last Name, Email, Status"/>
     <div id="pl_org_hcmus_tis_model_Account">
         <div id="l_org_hcmus_tis_model_Account">
             <div id="c_org_hcmus_tis_model_Account_firstName"/>

@@ -16,10 +16,4 @@ public class Attachment {
 	private String realFileName;
 	@ManyToOne
 	private WorkItem workItem;
-	public WorkItem getWorkItem() {
-		return workItem;
-	}
-	public void setWorkItem(WorkItem workItem) {
-		this.workItem = workItem;
-	}
 }

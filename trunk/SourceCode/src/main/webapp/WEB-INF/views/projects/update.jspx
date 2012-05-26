@@ -10,15 +10,17 @@
     
     </SCRIPT>
     <form:update id="fu_org_hcmus_tis_model_Project" modelAttribute="project" path="/projects" versionField="Version" z="VltzOKzzRvDk+3kwSwdSPTsWC0Q=">
+    fffff
         <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
         <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
         <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="6KobXDiw9fv0CHTLXKKkTTvnU1U="/>
         <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         <field:select field="status" id="c_org_hcmus_tis_model_Project_status" items="${projectstatuses}" path="projectstatuses" z="w9DdqX2KzLLAiUAMdvgceSAsNco="/>
-        <field:select field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" render="false" required="true" z="user-managed"/>
+        <div id="c_org_hcmus_tis_model_Project_projectProcess"/>
         <field:select field="calendar" id="c_org_hcmus_tis_model_Project_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" z="user-managed"/>
         <input name="projectProcess" type="hidden" value="${project.projectProcess.id}"/>
         <input name="calendar" type="hidden" value="${project.calendar.id}"/>
+        <field:simple field="children" id="c_org_hcmus_tis_model_Project_children" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Container" z="aqnVLOiOH4rOg5fcgMLNj4CnDG0="/>
     </form:update>
 </div>

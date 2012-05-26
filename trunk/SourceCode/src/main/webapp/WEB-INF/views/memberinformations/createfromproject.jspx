@@ -7,23 +7,12 @@
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url value="/resources/scripts/jquery.ui.widget.js"
-		var="widget_url"></spring:url>
-	<spring:url value="/resources/scripts/ui/jquery.ui.position.js"
-		var="position_url"></spring:url>
-	<spring:url value="/resources/scripts/ui/jquery.ui.autocomplete.js"
-		var="autocomplete_url"></spring:url>
 	<spring:url value="/accounts" var="search_url"></spring:url>
-	<spring:url value="/memberinformations" var="create_url"></spring:url>
-	<script type="text/javascript" src="${widget_url }">
-	<!--dadfs-->
-		
-	</script>
-	<script type="text/javascript" src="${position_url }"></script>
-	<script type="text/javascript" src="${autocomplete_url }"></script>
+	<spring:url value="/projects/${projectId }/memberinformations" var="create_url"></spring:url>
+	<spring:url value="/resources/images/ui-anim_basic_16x16.gif" var="searching_img_url"></spring:url>
 	<style>
 .ui-autocomplete-loading {
-	background: white url('images/ui-anim_basic_16x16.gif') right center
+	background: white url('${searching_img_url}') right center
 		no-repeat;
 }
 </style>
@@ -41,8 +30,8 @@
 			<INPUT type="hidden" name="projectId" value="${projectId}" />
 
 			<div>
-				<label for="email">Account : </label>
-				<input type="email" id="email" name="email"  width="400px" class="input"/>
+				<label for="email">Account : </label> <input type="email" id="email"
+					name="email" width="400px" class="input" />
 			</div>
 			<br />
 			<div class="clear" />

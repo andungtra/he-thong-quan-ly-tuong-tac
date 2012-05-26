@@ -151,7 +151,7 @@ public class AccountController {
 			HttpSession session) {
 		uiModel.addAttribute("account", accountService.findAccount(id));
 		uiModel.addAttribute("itemId", id);
-		session.setAttribute("account", accountService.findAccount(id));
+		//session.setAttribute("account", accountService.findAccount(id));
 		return "accounts/home";
 		// return "accounts/redirect";
 	}

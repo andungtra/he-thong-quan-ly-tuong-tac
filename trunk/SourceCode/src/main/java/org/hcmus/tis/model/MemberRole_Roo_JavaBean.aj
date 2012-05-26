@@ -3,7 +3,9 @@
 
 package org.hcmus.tis.model;
 
+import java.util.Collection;
 import org.hcmus.tis.model.MemberRole;
+import org.hcmus.tis.model.Permission;
 
 privileged aspect MemberRole_Roo_JavaBean {
     
@@ -13,6 +15,22 @@ privileged aspect MemberRole_Roo_JavaBean {
     
     public void MemberRole.setName(String name) {
         this.name = name;
+    }
+    
+    public String MemberRole.getRefName() {
+        return this.refName;
+    }
+    
+    public void MemberRole.setRefName(String refName) {
+        this.refName = refName;
+    }
+    
+    public Collection<Permission> MemberRole.getPermissions() {
+        return this.permissions;
+    }
+    
+    public void MemberRole.setPermissions(Collection<Permission> permissions) {
+        this.permissions = permissions;
     }
     
 }

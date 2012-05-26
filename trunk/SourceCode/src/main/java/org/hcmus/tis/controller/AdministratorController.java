@@ -11,5 +11,10 @@ public class AdministratorController {
 	{
 		return "administrator/adminstrator";
 	}
+	@RequestMapping(value = "/test",produces = "text/html")
+	public String test(Long id){
+		long x = id;
+		return "";
+	}
 
 }

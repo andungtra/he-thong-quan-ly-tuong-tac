@@ -3,13 +3,14 @@
 	xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu"
 	xmlns:tab="urn:jsptagdir:/WEB-INF/tags/map"
 	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:shiro="http://shiro.apache.org/tags"
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" id="myMenu" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:url value="/" var="home" />
 	<spring:url value="/login" var="login" />
-	<spring:url value="/resources/j_spring_security_logout" var="logout" />
+	<spring:url value="/logout" var="logout" />
 
 	<spring:url value="/administrator/homepage" var="administrator_url" />
 	<spring:message code="security_login_as" var="loginAs" />
@@ -19,39 +20,38 @@
 		<div class="menu_sitemap">
 			<!-- TemplateBeginEditable name="Site map" -->
 			<div style="float: left">
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<a href="${administrator_url}">Admin</a><span style="color: white !important;">|</span>
-				</sec:authorize>
+				<shiro:hasRole name="administrator">
+					<a href="${administrator_url}">Admin</a>
+					<span style="color: white !important;">|</span>
+				</shiro:hasRole>
 				<c:if test="${pageContext['request'].userPrincipal != null}">
 					<spring:url value="/accounts/home" var="home" />
 					<a href="${home}">Home</a>
 					<c:forEach items="${siteMapItems}" var="siteMapItem">
-					<spring:url value="${siteMapItem.url }" var="sitemap_item_url"></spring:url>
+						<spring:url value="${siteMapItem.url }" var="sitemap_item_url"></spring:url>
 						<img src="${left_right_arrow_url }"></img>
 						<a href="${sitemap_item_url }">${siteMapItem.name}</a>
 					</c:forEach>
 				</c:if>
 			</div>
 			<div style="float: right">
-				<c:choose>
-					<c:when test="${pageContext['request'].userPrincipal != null}">
-						<div class="header_menu_right_item header_menu_right_item_border">
-							<a href="${logout}"> <spring:message code="security_logout" /></a>
-						</div>
-						<div class="header_menu_right_item" id="header_menu_first">
-							<spring:url
-								value="/accounts/${sessionScope['account'].id}?userform"
-								var="info" />
-							${loginAs } <a href="${info}">${sessionScope["account"].firstName}
-							</a>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="header_menu_right_item">
-							<a href="${login}">Login</a>
-						</div>
-					</c:otherwise>
-				</c:choose>
+				<shiro:user>
+					<div class="header_menu_right_item header_menu_right_item_border">
+						<a href="${logout}"> <spring:message code="security_logout" /></a>
+					</div>
+					<div class="header_menu_right_item" id="header_menu_first">
+						<spring:url
+							value="/accounts/${sessionScope['account'].id}?userform"
+							var="info" />
+						${loginAs } <a href="${info}">${sessionScope["account"].firstName}
+						</a>
+					</div>
+				</shiro:user>
+				<shiro:guest>
+					<div class="header_menu_right_item">
+						<a href="${login}">Login</a>
+					</div>
+				</shiro:guest>
 			</div>
 			<!-- TemplateEndEditable -->
 		</div>

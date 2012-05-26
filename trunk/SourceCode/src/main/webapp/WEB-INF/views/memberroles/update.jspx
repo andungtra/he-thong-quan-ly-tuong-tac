@@ -4,5 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_org_hcmus_tis_model_MemberRole" modelAttribute="memberRole" path="/memberroles" versionField="Version" z="oxnUEDbM9Z8xgXMu06Fa1wp44Ek=">
         <field:input field="name" id="c_org_hcmus_tis_model_MemberRole_name" required="true" z="nptcFRBkFp+Z0ZL7FQ6PwjTCq+k="/>
+        <field:input field="refName" id="c_org_hcmus_tis_model_MemberRole_refName" required="true" z="OhSwnZo6/x+gcYdaCrc+xtKwEwY="/>
+        <field:select field="permissions" id="c_org_hcmus_tis_model_MemberRole_permissions" itemValue="id" items="${permissions}" multiple="true" path="/permissions" z="wuSDMP60jRp4ACo2rk31IUW1CY0="/>
     </form:update>
 </div>
