@@ -171,21 +171,21 @@ public class MemberInformationController {
 	}
 
 	@RequestMapping(params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch" })
+			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
 	@ResponseBody
 	public DtReply listByProject(@PathVariable("projectId") Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho, String sSearch) {
+			int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationsByProject(Project.findProject(projectId));
+				.findMemberInformationsByProjectBaseAccount(Project.findProject(id),iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
 		for (MemberInformation item : list) {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName(item.getAccount().getFirstName() + " "
-						+ item.getAccount().getLastName());
+				dto.setFirstName(item.getAccount().getFirstName());
+				dto.setLastName(item.getAccount().getLastName());
 				dto.setMemberRole(item.getMemberRole().getName());
 				reply.getAaData().add(dto);
 			}

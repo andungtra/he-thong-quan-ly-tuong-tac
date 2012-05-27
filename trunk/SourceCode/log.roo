@@ -605,8 +605,121 @@ focus --class ~.model.Account
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 09:20:44
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-21 21:59:25
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-21 22:03:30
+<<<<<<< .mine
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-26 10:27:39
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName jackson-core-asl
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName jackson-mapper-asl
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName jcl.over.slf4j
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url https://addon-heroku.googlecode.com/svn/repo/repository.xml
+osgi obr start --bundleSymbolicName net.stsmedia.roo.addon.heroku
+osgi obr url remove --url https://addon-heroku.googlecode.com/svn/repo/repository.xml
+osgi obr url add --url http://spring-roo-os-commands.googlecode.com/svn/repo/repository.xml
+osgi obr start --bundleSymbolicName net.stsmedia.roo.addon.oscommands
+osgi obr url remove --url http://spring-roo-os-commands.googlecode.com/svn/repo/repository.xml
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.aop
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.asm
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.context
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.beans
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.core
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.expression
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.cloud.foundry
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.entity
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.git
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.op4j
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.aopalliance
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.cloud-foundry-api
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.derby
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.derbyclient
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.firebird
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.h2
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.hsqldb
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jansi
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jgit
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jline
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jna
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jsch
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jtds
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.jtopen
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.mysql-connector-java
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.postgresql-jdbc3
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.protobuf-java
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName org.springframework.web
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName slf4j.api
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+// [failed] osgi obr start --bundleSymbolicName slf4j.nop
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-26 12:54:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-27 08:19:46
+=======
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-25 10:08:35
 entity jpa --class org.hcmus.tis.model.Permission --testAutomatically 
 field string --fieldName refName --notNull 
 focus --class ~.model.MemberRole
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-25 12:08:29
+>>>>>>> .r132

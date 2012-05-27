@@ -13,6 +13,8 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemController_Roo_Controller {
+    
+    @Autowired
+    AccountService WorkItemController.accountService;
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String WorkItemController.show(@PathVariable("id") Long id, Model uiModel) {
@@ -59,6 +64,7 @@ privileged aspect WorkItemController_Roo_Controller {
     void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {
         uiModel.addAttribute("workItem", workItem);
         addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("accounts", accountService.findAllAccounts());
         uiModel.addAttribute("attachments", Attachment.findAllAttachments());
         uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
         uiModel.addAttribute("prioritys", Priority.findAllPrioritys());

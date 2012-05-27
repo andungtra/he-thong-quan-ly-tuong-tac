@@ -122,16 +122,54 @@ public class Project extends WorkItemContainer {
 	}
 
 	public static List<Project> findProjectEntries(int iDisplayStart,
-			int iDisplayLength, String sSearch) {
-		// TODO Auto-generated method stub
-		if(sSearch.length()==0)
-			return findProjectEntries(iDisplayStart,iDisplayLength);
+			int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
+		// TODO Auto-generated method stub		
 		
-		EntityManager entityManager = Project.entityManager();
-		String jpq =  "SELECT o FROM Project AS o WHERE LOWER(o.name) LIKE LOWER(:sSearch)";
+		EntityManager entityManager = Project.entityManager();		
+		
+		String jpq =  "SELECT o FROM Project AS o";
+		int h = -1;
+		if (sSearch.length()>0){
+			jpq += " WHERE (LOWER(o.name) LIKE LOWER(:sSearch) OR LOWER(o.description) LIKE LOWER(:sSearch) OR LOWER(o.parentContainer.name) LIKE LOWER(:sSearch))";
+			h =1;			
+		}
+			 
+		if (sSearch_0.length()>0){
+			if(h==1)
+				jpq += " AND";
+			else 
+				jpq += " WHERE";
+			
+			jpq += " LOWER(o.name) LIKE LOWER(:sSearch_0)";
+			h =1;
+		}
+		if (sSearch_1.length()>0){
+			if(h==1)
+				jpq += " AND";
+			else 
+				jpq += " WHERE";
+			
+			jpq += " LOWER(o.parentContainer.name) LIKE LOWER(:sSearch_1)";
+			h =1;
+		}
+		if (sSearch_2.length()>0){
+			if(h==1)
+				jpq += " AND";
+			else 
+				jpq += " WHERE";
+			jpq += " LOWER(o.description) LIKE LOWER(:sSearch_2)";			
+		}		
+	    
 		TypedQuery<Project> q = entityManager.createQuery(jpq, Project.class);
-		q.setParameter("sSearch", "%"+sSearch+"%");
-	
+		if (sSearch.length()>0)
+			q.setParameter("sSearch", "%"+sSearch+"%");		
+		if (sSearch_0.length()>0)
+			q.setParameter("sSearch_0", "%"+sSearch_0+"%");
+		if (sSearch_1.length()>0)
+			q.setParameter("sSearch_1", "%"+sSearch_1+"%");
+		if (sSearch_2.length()>0)
+			q.setParameter("sSearch_2", "%"+sSearch_2+"%");
+		
 		return q.getResultList();
 	}
 }

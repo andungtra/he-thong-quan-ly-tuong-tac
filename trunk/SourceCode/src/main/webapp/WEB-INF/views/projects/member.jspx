@@ -23,9 +23,9 @@
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both; height: 10px;" />
 
-	<table:datatable aoColumns="name,memberRole" id="tbmember"
+	<table:datatable aoColumns="firstName,lastName,memberRole" id="tbmember"
 		path="memberinformations"
 		source="/projects/${projectId}/memberinformations"
-		thead="Name, Member Role" fadd="${lAdd}" fupdate="${update_url}" 
+		thead="First Name, Last Name, Member Role" fadd="${lAdd}" fupdate="${update_url}" 
 		fremove="${remove_url}" redirectUrl="${redirectUrl}" />
 </div>

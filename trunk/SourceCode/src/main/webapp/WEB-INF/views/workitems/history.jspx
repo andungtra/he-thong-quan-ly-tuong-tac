@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-     <table style="width:100%;">
-        <tr>
-            <th>Date</th>
-            <th>Type</th>
-        </tr>
-        <c:forEach items="${history}" var="item">
-            <tr>
-                <td>${item.dateLastEdit}</td>
-                <td>${item.type}</td>
-            </tr>
-        </c:forEach>
-    </table>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<c:forEach items="${history}" var="item">
+		<div class="history"> <span class="changedBy">${item.changedBy.firstName} </span>${item.type }
+		<span class="time">at ${item.dateLastEdit}</span>
+		</div>
+	</c:forEach>
+
 </div>

@@ -48,16 +48,40 @@ public class ProjectProcess {
     private boolean isDeleted;
 
 	public static List<ProjectProcess> findProjectProcessEntries(
-			int iDisplayStart, int iDisplayLength, String sSearch) {
+			int iDisplayStart, int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1) {
 		// TODO Auto-generated method stub
-		if(sSearch.length()==0)
-			return findProjectProcessEntries(iDisplayStart,iDisplayLength);
-		
-		EntityManager entityManager = Project.entityManager();
-		String jpq =  "SELECT o FROM ProjectProcess AS o WHERE LOWER(o.name) LIKE LOWER(:sSearch)";
-		TypedQuery<ProjectProcess> q = entityManager.createQuery(jpq, ProjectProcess.class);
-		q.setParameter("sSearch", "%"+sSearch+"%");
+		String hql =  "SELECT o FROM ProjectProcess AS o";
 	
+		int h=-1;
+		if(sSearch.length()>0){
+			hql += " WHERE (LOWER(o.name) LIKE LOWER(:sSearch) or LOWER(o.description) LIKE LOWER(:sSearch))";
+			h =1;
+		}
+		if(sSearch_0.length()>0){
+			if(h==1)
+				hql += " AND";
+			else
+				hql += " WHERE";
+			h=1;
+			hql += " LOWER(o.name) LIKE LOWER(:sSearch_0)";
+		}
+		if(sSearch_1.length()>0){
+			if(h==1)
+				hql += " AND";
+			else
+				hql += " WHERE";
+			h=1;
+			hql += " LOWER(o.description) LIKE LOWER(:sSearch_1)";
+		}
+		EntityManager entityManager = Project.entityManager();
+		
+		TypedQuery<ProjectProcess> q = entityManager.createQuery(hql, ProjectProcess.class);
+		if(sSearch.length()>0)
+			q.setParameter("sSearch", "%"+sSearch+"%");
+		if(sSearch_0.length()>0)
+			q.setParameter("sSearch_0", "%"+sSearch_0+"%");
+		if(sSearch_1.length()>0)
+			q.setParameter("sSearch_1", "%"+sSearch_1+"%");
 		return q.getResultList();
 	}
 }

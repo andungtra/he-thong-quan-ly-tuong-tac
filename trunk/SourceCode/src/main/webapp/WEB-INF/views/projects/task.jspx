@@ -93,9 +93,9 @@
 	</div>
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
-	<field:datatable aoColumns="lName,sStatus,sType" id="tbproject"
+	<field:datatable aoColumns="lName,sStatus,sType,priority" id="tbproject"
 		path="/workitems" source="/projects/${itemId }/workitems"
-		paramName="projectId" paramValue="${itemId}" thead="Name,Status,Type"
+		paramName="projectId" paramValue="${itemId}" thead="Name,Status,Type,Priority"
 		fshow="true" />
 	<div style="clear: both;" />
 </div>

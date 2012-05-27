@@ -17,10 +17,10 @@
 	<div id="menu_menu">
 		<ul>
 			<li><a href="${projectOverview}">Overview</a></li>
-			<li><a href="${projectTask}">Task</a></li>
+			<li><a href="${projectTask}">Tasks</a></li>
 			<li><a href="${projectCalendar}">Calendar</a></li>
-			<li><a href="${projectRoadmap}">Roadmap</a></li>
-			<li><a href="${projectMember}">Member</a></li>
+			<li><a href="${projectRoadmap}">Plan</a></li>
+			<li><a href="${projectMember}">Members</a></li>
 			<shiro:hasPermission name="project:update">
 				<li><a href="${projectSetting}">Setting</a></li>
 			</shiro:hasPermission>

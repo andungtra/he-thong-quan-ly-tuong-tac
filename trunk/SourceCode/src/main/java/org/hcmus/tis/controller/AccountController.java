@@ -1,11 +1,9 @@
 package org.hcmus.tis.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,15 +19,12 @@ import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
-import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
-import org.hibernate.mapping.Array;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -173,7 +168,9 @@ public class AccountController {
 		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
-				if (workItem.getAsignee()!=null && workItem.getAsignee().getAccount().getId().equals(id)) {
+				if (workItem.getAsignee() != null
+						&& workItem.getAsignee().getAccount().getId()
+								.equals(id)) {
 					if (workItem.getDueDate() != null) {
 						java.util.Calendar dueTime = java.util.Calendar
 								.getInstance();
@@ -191,21 +188,37 @@ public class AccountController {
 		}
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
+
+		Collection<Project> listProject = Project.findProjectsByAccount(id);
+		ArrayList<Event> newEvent = new ArrayList<Event>();
+		Date n = new Date();
+		for (Project project : listProject) {
+			Calendar c = project.getCalendar();
+			Collection<Event> e = c.getEvents();
+			for (Event event : e) {
+				if (event.getStartDate() != null
+						&& event.getStartDate().getTime() > n.getTime()
+						&& (event.getStartDate().getTime() - n.getTime()) < 7) {
+					newEvent.add(event);
+				}
+			}
+		}
+		uiModel.addAttribute("newEvent", newEvent);
 		return "accounts/dashboard";
 	}
 
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch" })
+			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1" })
 	@ResponseBody
 	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
-			String sEcho, String sSearch, HttpSession session) {
+			String sEcho, String sSearch,String sSearch_0, String sSearch_1, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		Account acc = (Account) session.getAttribute("account");
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationEntries(iDisplayStart, iDisplayLength,
-						sSearch);
+				.findMemberInformationEntriesBaseProject(iDisplayStart, iDisplayLength,
+						sSearch, sSearch_0, sSearch_1);
 		for (MemberInformation item : list) {
 			if (item.getAccount().getEmail().equals(acc.getEmail())
 					&& item.getDeleted() == false) {
@@ -274,11 +287,11 @@ public class AccountController {
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch) {
+			String sSearch, String sSearch_0, String sSearch_1, String sSearch_2, String sSearch_3 ) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		List<Account> list = Account.findAccountEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+				iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2, sSearch_3);
 		for (Account item : list) {
 			if (!item.getStatus().equals(AccountStatus.DELETED)) {
 				AccountDTO dto = new AccountDTO();

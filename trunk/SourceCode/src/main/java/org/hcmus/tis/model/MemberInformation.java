@@ -72,15 +72,100 @@ public class MemberInformation {
 	}
 
 	public static List<MemberInformation> findMemberInformationEntries(
-			int iDisplayStart, int iDisplayLength, String sSearch) {
+			int iDisplayStart, int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1) {
 		// TODO Auto-generated method stub
-		if(sSearch.length()==0)
-			return findMemberInformationEntries(iDisplayStart,iDisplayLength);
+		String hql = "SELECT o FROM MemberInformation AS o";
+		int h =-1;
+		if(sSearch.length()>0){			
+			hql+= " WHERE LOWER(o.account.firstName) like LOWER(:sSearch) or LOWER(o.account.lastName) like LOWER(:sSearch)";
+			h=1;
+		}
+		if(sSearch_0.length()>0){
+			if(h==1) hql += " AND";
+			else hql += " WHERE";			
+			hql += " LOWER(o.account.firstName) like LOWER(:sSearch_0)";
+			h=1;
+		}
+		if(sSearch_1.length()>0){
+			if(h==1) hql += " AND";
+			else hql += " WHERE";
+			hql += " LOWER(o.account.lastName) like LOWER(:sSearch_1)";
+		}
+			
+		EntityManager em = MemberInformation.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery(hql , MemberInformation.class);
+        if(sSearch.length()>0)
+        	q.setParameter("sSearch", "%"+sSearch+"%");
+        if(sSearch_0.length()>0)
+        	q.setParameter("sSearch_0", "%"+sSearch_0+"%");
+        if(sSearch_1.length()>0)
+        	q.setParameter("sSearch_1", "%"+sSearch_1+"%");
+        return q.getResultList();
+	}
+
+	public static List<MemberInformation> findMemberInformationEntriesBaseProject(
+			int iDisplayStart, int iDisplayLength, String sSearch,
+			String sSearch_0, String sSearch_1) {
+		// TODO Auto-generated method stub
+		String hql = "SELECT o FROM MemberInformation AS o";
+		int h =-1;
+		if(sSearch.length()>0){			
+			hql+= " WHERE (LOWER(o.project.name) like LOWER(:sSearch) or LOWER(o.project.description) like LOWER(:sSearch))";
+			h=1;
+		}
+		if(sSearch_0.length()>0){
+			if(h==1) hql += " AND";
+			else hql += " WHERE";			
+			hql += " LOWER(o.project.name) like LOWER(:sSearch_0)";
+			h=1;
+		}
+		if(sSearch_1.length()>0){
+			if(h==1) hql += " AND";
+			else hql += " WHERE";
+			hql += " LOWER(o.project.description) like LOWER(:sSearch_1)";
+		}
+			
+		EntityManager em = MemberInformation.entityManager();
+        TypedQuery<MemberInformation> q = em.createQuery(hql , MemberInformation.class);
+        if(sSearch.length()>0)
+        	q.setParameter("sSearch", "%"+sSearch+"%");
+        if(sSearch_0.length()>0)
+        	q.setParameter("sSearch_0", "%"+sSearch_0+"%");
+        if(sSearch_1.length()>0)
+        	q.setParameter("sSearch_1", "%"+sSearch_1+"%");
+        return q.getResultList();
+	}
+
+	public static List<MemberInformation> findMemberInformationsByProjectBaseAccount(
+			Project findProject,int iDisplayStart, int iDisplayLength, String sSearch, String sSearch_0,
+			String sSearch_1, String sSearch_2) {
+		// TODO Auto-generated method stub
+		String hql = "SELECT o FROM MemberInformation AS o WHERE o.project = :project";
+		
+		if(sSearch.length()>0){			
+			hql+= " AND (LOWER(o.account.firstName) like LOWER(:sSearch) or LOWER(o.account.lastName) like LOWER(:sSearch) or LOWER(o.memberRole.name) like LOWER(:sSearch))";			
+		}
+		if(sSearch_0.length()>0){					
+			hql += " AND LOWER(o.account.firstName) like LOWER(:sSearch_0)";			
+		}
+		if(sSearch_1.length()>0){					
+			hql += " AND LOWER(o.account.lastName) like LOWER(:sSearch_1)";			
+		}
+		if(sSearch_2.length()>0){			
+			hql += " AND LOWER(o.memberRole.name) like LOWER(:sSearch_2)";
+		}
 		
 		EntityManager em = MemberInformation.entityManager();
-        TypedQuery<MemberInformation> q = em.createQuery("SELECT o FROM MemberInformation AS o WHERE o.account.firstNane like :sSearch or o.account.lastNane like :sSearch", MemberInformation.class);
-      
-        q.setParameter("sSearch", "%"+sSearch+"%");
+        TypedQuery<MemberInformation> q = em.createQuery(hql , MemberInformation.class);
+        if(sSearch.length()>0)
+        	q.setParameter("sSearch", "%"+sSearch+"%");
+        if(sSearch_0.length()>0)
+        	q.setParameter("sSearch_0", "%"+sSearch_0+"%");
+        if(sSearch_1.length()>0)
+        	q.setParameter("sSearch_1", "%"+sSearch_1+"%");
+        if(sSearch_2.length()>0)
+        	q.setParameter("sSearch_2", "%"+sSearch_2+"%");
+        q.setParameter("project", findProject);
         return q.getResultList();
 	}
 }

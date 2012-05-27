@@ -63,9 +63,22 @@
 				modelAttribute="${modelAttribute}" enctype="${enctype}"
 				onsubmit="${jsCall}">
 				<div class="panel-title">
-					${title_msg}
+					<c:set value="${form_url}" var="cancel_url"/>
+					<c:if test="${not empty cancel}">
+					<a href="${cancel_url}">${modelAttribute}</a> >
+					</c:if>
+					${title_msg}					
+					<div class="submit" >
+					
+					<c:if test="${not empty cancel}">
+						<spring:url value="${cancel}" var="cancel_url" />
+					</c:if>
+						<a href="${cancel_url}">
+							<input type="button" value="Cancel"/>
+						</a>						
+					</div>
+					
 					<div class="submit">
-
 						<spring:message code="button_save_and_continue"
 							var="save_and_continue_button" htmlEscape="false" />
 						<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
@@ -77,15 +90,7 @@
 							htmlEscape="false" />
 						<input id="proceed" type="submit" value="${fn:escapeXml(save_button)}" />
 					</div>
-					<div class="submit" >
-					<c:set value="${form_url}" var="cancel_url"/>
-					<c:if test="${not empty cancel}">
-						<spring:url value="${cancel}" var="cancel_url" />
-					</c:if>
-						<a href="${cancel_url}">
-							<input type="button" value="Cancel"/>
-						</a>						
-					</div>
+					
 				</div>
 				<div class="clear" />
 				<div class="panel-content">

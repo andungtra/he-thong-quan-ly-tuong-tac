@@ -5,6 +5,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<jsp:directive.tag import="java.util.ArrayList" />
 	<jsp:output omit-xml-declaration="yes" />
 
@@ -91,55 +92,78 @@
 </style>
 
 
-
 	<SCRIPT type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-							//debugger;
-							
-							$('#${id}').on('click', '#${id} tbody tr td',
-									function(event) {									
-										//var id =   $(this).parent().attr("id");
-										//alert(id);
-										//show(id);
-									});
-							
-							oTable= $("#${id}")							
-									.dataTable(
-											{
-												"bProcessing" : true,
-												"bServerSide" : true,
-												"sAjaxSource" : "${source}",	
-												"fnServerParams" : function(aoData){
-													aoData.push({
-														"name": "${paramName}",
-														"value": "${paramValue}"
-													});
-												},												
-												"aoColumns" : ${ao},
-												"bJQueryUI" : true,												
-												"sPaginationType" : "full_numbers",
-												"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;',												
-												"fnCreatedRow" : function(nRow,
-														aData, iDataIndex) {
-													if (iDataIndex == 0) {
-														$(
-																"#${id} thead tr td:first-child input[type=checkbox]")
-																.attr(
-																		'checked',
-																		null);
-													}
-													$(nRow.firstChild)
-															.html(
-																	'<input type="checkbox"/>');
+	
+	var asInitVals = new Array();
+	$(document)
+			.ready(
+					function() {
+						//debugger;											
+						var oTable= $("#${id}")							
+								.dataTable(
+										{
+											"bProcessing" : true,
+											"bServerSide" : true,
+											"bFilter": true,
+											"sAjaxSource" : "${source}",	
+											"oLanguage": {
+												"sSearch": "Search all columns:"
+											},
+											"fnServerParams" : function(aoData){
+												aoData.push({
+													"name": "${paramName}",
+													"value": "${paramValue}"
+												});
+											},												
+											"aoColumns" : ${ao},
+											"bJQueryUI" : true,												
+											"sPaginationType" : "full_numbers",
+											"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;',												
+											"fnCreatedRow" : function(nRow,
+													aData, iDataIndex) {
+												if (iDataIndex == 0) {
+													$(
+															"#${id} thead tr td:first-child input[type=checkbox]")
+															.attr(
+																	'checked',
+																	null);
 												}
+												$(nRow.firstChild)
+														.html(
+																'<input type="checkbox"/>');
+											}
 
-											});		
-							
-							//debugger;
-	                         
-						});
+										});		
+						
+						//debugger;						
+						$("#${id} tfoot input").keyup( function () {
+					        /* Filter on the column (the index) of this element */
+					        oTable.fnFilter( this.value, $("#${id} tfoot input").index(this) );
+					    } );
+						/*
+					     * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+					     * the footer
+					     */
+					    $("#${id} tfoot input").each( function (i) {
+					        asInitVals[i] = this.value;
+					    } );
+					     
+					    $("#${id} tfoot input").focus( function () {
+					        if ( this.className == "search_init" )
+					        {
+					            this.className = "";
+					            this.value = "";
+					        }
+					    } );
+					     
+					    $("#${id} tfoot input").blur( function (i) {
+					        if ( this.value == "" )
+					        {
+					            this.className = "search_init";
+					            this.value = asInitVals[$("#${id} tfoot input").index(this)];
+					        }
+					    } );
+					});
 		 $(function() {
 			//debugger;
 			var bt = "";
@@ -159,6 +183,8 @@
 				bt = bt	+'<button onclick="fremove()">Remove</button>';
 			$('.datatable_buttons')
 					.html(bt);	
+			
+			
 		}); 
 		
 		$(function() {
@@ -185,6 +211,8 @@
 		});	
 		
 	</SCRIPT>
+
+
 
 	<script type="text/javascript">
 		var oTable;
@@ -278,13 +306,15 @@
 			var d = $(s.parent().parent());
 			debugger;		
 			if(c>0){
-				for(var x in d){
-					var idtr = $(d[x]).attr('id');
-					$("#"+idtr).html("");
-					$.ajax({
-				        type: "DELETE",
-				        url: "${path}/"+idtr,
-				    });					
+				if(confirm('Do you want to delete ?')){
+					for(var x in d){
+						var idtr = $(d[x]).attr('id');
+						$("#"+idtr).html("");
+						$.ajax({
+					        type: "DELETE",
+					        url: "${path}/"+idtr,
+					    });					
+					}
 				}
 			}
 				
@@ -306,6 +336,12 @@
 					<td colspan="4">Loading...</td>
 				</tr>
 			</TBODY>
+			<tfoot>
+				<th></th>
+				<c:forTokens items="${thead}" var="item" delims="{,}">
+					<th><input class="search_init" type="text" value="Search ${item}"/></th>
+				</c:forTokens>
+			</tfoot>
 		</TABLE>
 
 	</div>

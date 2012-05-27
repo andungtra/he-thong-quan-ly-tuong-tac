@@ -45,14 +45,14 @@ public class StudyClassController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch" })
+			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1" })
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+				iDisplayLength, sSearch, sSearch_0, sSearch_1 );
 		for (StudyClass item : list) {
 			if (item.isIsDeleted() != true) {
 				StudyClassDTO dto = new StudyClassDTO();
