@@ -34,14 +34,36 @@ public class StudyClass {
     private boolean isDeleted;
 
 	public static List<StudyClass> findStudyClassEntries(int iDisplayStart,
-			int iDisplayLength, String sSearch) {
-		// TODO Auto-generated method stub
-		if(sSearch.length()==0)
-			return findStudyClassEntries(iDisplayStart, iDisplayLength);
+			int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1  ) {
+		// TODO Auto-generated method stub		
 		
-		String queryString = "SELECT s FROM StudyClass AS s WHERE s.name like :sSearch";
-        TypedQuery<StudyClass> query = entityManager().createQuery(queryString, StudyClass.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
-        query.setParameter("sSearch", "%"+sSearch+"%");
+		String hql = "SELECT s FROM StudyClass AS s";
+		int h=-1;
+		if(sSearch.length()>0){
+			hql += " WHERE (LOWER(s.name) like LOWER(:sSearch) or LOWER(s.description) like LOWER(:sSearch))";
+			h=1;
+		}
+		if(sSearch_0.length()>0){
+			if(h==1)
+				hql += " AND";
+			else hql += " WHERE";
+			h =1;
+			hql += " LOWER(s.name) like LOWER(:sSearch_0)";
+		}
+
+		if(sSearch_1.length()>0){
+			if(h==1)
+				hql += " AND";
+			else hql += " WHERE";			
+			hql += " LOWER(s.description) like LOWER(:sSearch_1)";
+		}
+        TypedQuery<StudyClass> query = entityManager().createQuery(hql, StudyClass.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
+        if(sSearch.length()>0)
+        	query.setParameter("sSearch", "%"+sSearch+"%");
+        if(sSearch_0.length()>0)
+        	query.setParameter("sSearch_0", "%"+sSearch_0+"%");
+        if(sSearch_1.length()>0)
+        	query.setParameter("sSearch_1", "%"+sSearch_1+"%");
         return query.getResultList();
 	}
 }

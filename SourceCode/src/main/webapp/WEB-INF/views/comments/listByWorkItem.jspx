@@ -11,14 +11,13 @@
 			<p><b>${comment.projectMember.account.firstName }
 				${comment.projectMember.account.lastName }</b> added a comment
 				-${comment.commentDate }</p>
-			<p>${comment.content}</p>
+			<div class="comment">${comment.content}</div>
 		</div>
 	</c:forEach>
 	<spring:url value="/comments" var="action_url"></spring:url>
 	<FORM action="${ action_url}" method="POST">
 		<INPUT type="hidden" name="workItem" value="${workItemId }" />
-		<TEXTAREA name="content" rows="10" cols="10">
-			</TEXTAREA>
-		<INPUT type="submit" />
+		<TEXTAREA name="content" cols="1000"/>			
+		<div><INPUT type="submit" /></div>
 	</FORM>
 </div>

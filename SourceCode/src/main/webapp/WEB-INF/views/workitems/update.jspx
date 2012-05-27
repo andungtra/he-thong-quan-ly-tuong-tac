@@ -69,12 +69,13 @@
 	</script>
     <form:update id="fu_org_hcmus_tis_model_WorkItem" label="${workItemType.name } : ${workItem.id }" modelAttribute="workItem" path="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems" versionField="Version" z="user-managed">
         <field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title" required="true" z="user-managed"/>
-        <div style="float: left;">
+        <field:textarea field="description" id="c_org_hcmus_tis_model_WorkItem_description" value="${workItem.description}" z="user-managed"/>
+        <div class="left-panel">
             <util:fixpanel id="details_panel" title="Details">
                 <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="i/A6b2s+m/21/Wy/dBgqpuZrzRQ="/>
                 <c:set value="" var="validateRule"/>
                 <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="WmHVVNRJ+6ixlnib66TIZEvS2nw="/>
-                <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
+                <field:select label="Planed for" field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" required="true" z="vl8Wfj+xwPca7pu4kVmfMk6q89U="/>
                 <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
                 <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine" varStatus="status">
                     <c:set value="${workItem.additionFields[status.index].value }" var="fieldValue"/>
@@ -112,7 +113,7 @@
                 </c:forEach>
             </util:fixpanel>
         </div>
-        <div style="float: right;">
+        <div class="right-panel">
             <util:fixpanel id="peoples_panel" title="Peoples">
                 <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workItem}" z="user-managed"/>
                 <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
@@ -148,9 +149,6 @@
             </util:fixpanel>
         </div>
         <div class="clear"/>
-        <util:fixpanel id="description_panel" title="Description">
-            <field:textarea field="description" id="c_org_hcmus_tis_model_WorkItem_description" z="user-managed"/>
-        </util:fixpanel>
         <field:input field="jaxbContext" id="c_org_hcmus_tis_model_WorkItem_jaxbContext" render="false" z="user-managed"/>
         <field:input field="additionalFields" id="c_org_hcmus_tis_model_WorkItem_additionalFields" render="false" z="user-managed"/>
         <field:input field="objectFactory" id="c_org_hcmus_tis_model_WorkItem_objectFactory" render="false" z="user-managed"/>
@@ -159,7 +157,8 @@
         <input name="dateCreated" type="hidden" value="${dateCreated }"/>
         <input name="workItemType" type="hidden" value="${workItem.workItemType.id }"/>
         <input name="c_org_hcmus_tis_model_WorkItem_dateLastEdit" type="hidden" value="${workItem.dateLastEdit}" z="JgCbHiIdvmEFuHv+2DThk60k/xg="/>
-        <field:simple render="false" field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" z="user-managed"/>
+        <field:simple field="attachments" id="c_org_hcmus_tis_model_WorkItem_attachments" messageCode="entity_reference_not_managed" messageCodeAttribute="Attachment" render="false" z="user-managed"/>
+        <field:select field="userLastEdit" id="c_org_hcmus_tis_model_WorkItem_userLastEdit" itemValue="id" items="${accounts}" path="/accounts" z="user-managed" render="false"/>
     </form:update>
     <util:fixpanel id="activity_panel" title="Activity">
         <div id="activity_tabs">

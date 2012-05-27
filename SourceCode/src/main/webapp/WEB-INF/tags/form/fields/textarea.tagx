@@ -11,7 +11,7 @@
   <jsp:directive.attribute name="validationMessage" type="java.lang.String" required="false" rtexprvalue="true" description="Specify the message to be displayed if the regular expression validation fails" />
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-
+  <jsp:directive.attribute name="value" type="java.lang.String" required="false" description="value" />
   <c:if test="${empty render or render}">
 
     <c:if test="${empty disabled}">
@@ -36,8 +36,8 @@
         <c:out value="${fn:escapeXml(label)}" />
         :
       </label>
-      <form:textarea id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" />
-      
+      <!-- <form:textarea id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" /> -->
+      <textarea name="${sec_field}"  value="${value}" cols="1050"/>
       <br />
       <form:errors cssClass="errors" id="_${sec_field}_error_id" path="${sec_field}" />
       <script type="text/javascript">Spring.addDecoration(new Spring.ElementDecoration({elementId : '_${sec_field}_id', widgetType : 'dijit.form.SimpleTextarea', widgetAttrs : {disabled : ${disabled}}})); </script>

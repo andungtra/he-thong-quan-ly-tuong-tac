@@ -1,5 +1,7 @@
 package org.hcmus.tis.dto;
 
+import org.hcmus.tis.model.Priority;
+
 public class WorkItemDTO {
 	public long DT_RowId;	
 	private String lName;
@@ -23,5 +25,12 @@ public class WorkItemDTO {
 	}
 	private String sStatus;
 	private String sType;
-
+	private String priority;
+	public String getPriority() {
+		return priority;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	
 }

@@ -40,7 +40,8 @@ public class WorkItemHistory {
 	@ManyToOne
 	private WorkItem workItem;
 	
-	private String changedBy;
+	@ManyToOne
+	private Account changedBy;
 	
 	private WorkItemHistoryType type;
 	

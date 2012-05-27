@@ -66,24 +66,14 @@
 	<div class="clear" />
 	<div>
 		<util:fixpanel id="" title="Activity">
-			<table>
-				<tr>
-					<th>Time</th>
-					<th>Change by</th>
-					<th>Type</th>
-					<th>Work Item</th>
-				</tr>
+			
 				<c:forEach var="item" items="${listHistorys}">
 					<spring:url value="/workitems/${item.workItem.id }?form" var="link"></spring:url>
-					<tr>
-						<td>${item.dateLastEdit}</td>
-						<td>${item.changedBy}</td>
-						<td>${item.type}</td>
-						<td><a href="${link }">${item.title}</a></td>
-
-					</tr>
+					<div class="history"> <span class="changedBy">${item.changedBy.firstName}</span> ${item.type} workitem <a href="${link }">${item.title }</a>
+					<span class="time"> at ${item.dateLastEdit}</span>
+					</div>					
 				</c:forEach>
-			</table>
+			
 
 		</util:fixpanel>
 	</div>

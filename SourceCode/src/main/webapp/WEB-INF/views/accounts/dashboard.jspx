@@ -14,10 +14,8 @@
 			<ul class="overdue">
 				<c:forEach items="${overdues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
-					<li>
-						<span>${item.dueDate}</span> : 
-						<span><a href="${link }">${item.title}</a></span>
-					</li>
+					<li><span>${item.dueDate}</span> : <span><a
+							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
@@ -26,10 +24,8 @@
 			<ul class="due">
 				<c:forEach items="${indues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
-					<li>
-						<span>${item.dueDate}</span> : 
-						<span><a href="${link }">${item.title}</a></span>
-					</li>
+					<li><span>${item.dueDate}</span> : <span><a
+							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
@@ -37,9 +33,10 @@
 	<div class="right-panel">
 		<util:fixpanel title="Incomming Event" id="">
 			<ul class="overdue">
-				<li>Event 1</li>
-				<li>Event 2</li>
-				<li>Event 3</li>
+				<c:forEach items="${newEvent}" var="item">
+					<li><span>${item.startDate}</span> : <span>${item.name}</span>
+					</li>
+				</c:forEach>
 			</ul>
 		</util:fixpanel>
 	</div>

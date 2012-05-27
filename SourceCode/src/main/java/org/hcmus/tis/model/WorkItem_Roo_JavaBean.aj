@@ -5,6 +5,7 @@ package org.hcmus.tis.model;
 
 import java.util.Date;
 import javax.xml.bind.JAXBContext;
+import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
@@ -52,6 +53,14 @@ privileged aspect WorkItem_Roo_JavaBean {
     
     public void WorkItem.setDateLastEdit(Date dateLastEdit) {
         this.dateLastEdit = dateLastEdit;
+    }
+    
+    public Account WorkItem.getUserLastEdit() {
+        return this.userLastEdit;
+    }
+    
+    public void WorkItem.setUserLastEdit(Account userLastEdit) {
+        this.userLastEdit = userLastEdit;
     }
     
     public String WorkItem.getAdditionalFields() {

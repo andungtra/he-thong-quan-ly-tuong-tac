@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberInformationDataOnDemand;
 import org.hcmus.tis.model.Priority;
@@ -44,6 +46,9 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     private WorkItemStatusDataOnDemand WorkItemDataOnDemand.workItemStatusDataOnDemand;
     
     @Autowired
+    private AccountDataOnDemand WorkItemDataOnDemand.accountDataOnDemand;
+    
+    @Autowired
     private WorkItemTypeDataOnDemand WorkItemDataOnDemand.workItemTypeDataOnDemand;
     
     public WorkItem WorkItemDataOnDemand.getNewTransientWorkItem(int index) {
@@ -58,6 +63,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         setPriority(obj, index);
         setStatus(obj, index);
         setTitle(obj, index);
+        setUserLastEdit(obj, index);
         setWorkItemContainer(obj, index);
         setWorkItemType(obj, index);
         return obj;
@@ -114,6 +120,11 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
             title = title.substring(0, 50);
         }
         obj.setTitle(title);
+    }
+    
+    public void WorkItemDataOnDemand.setUserLastEdit(WorkItem obj, int index) {
+        Account userLastEdit = accountDataOnDemand.getRandomAccount();
+        obj.setUserLastEdit(userLastEdit);
     }
     
     public void WorkItemDataOnDemand.setWorkItemType(WorkItem obj, int index) {

@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -88,7 +89,10 @@ public class WorkItem {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date dateLastEdit;
-        
+    
+    @ManyToOne
+    private Account userLastEdit;
+    
     private String additionalFields;
 
     @NotNull
@@ -124,21 +128,21 @@ public class WorkItem {
     void prePersit() {    	
         this.dateCreated = new Date();
         WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.CREATE);
+    	history.setType(WorkItemHistoryType.create);
     	writeHistory(history);
     }
     
     @PreRemove
     void preRemove(){
     	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.DELETE);
+    	history.setType(WorkItemHistoryType.delete);
     	writeHistory(history);
     }
     
     @PreUpdate
     void preUpdate(){
     	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.UPDATE);
+    	history.setType(WorkItemHistoryType.update);
     	writeHistory(history);
     }
     
@@ -157,7 +161,7 @@ public class WorkItem {
 	}
 	
 	private void writeHistory(WorkItemHistory history){
-		
+		history.setChangedBy(userLastEdit);
     	history.setWorkItem(this);
     	history.setAsignee(this.asignee);
     	history.setAdditionalFields(this.additionalFields);
@@ -185,5 +189,42 @@ public class WorkItem {
 		TypedQuery<WorkItem> query = entityManager().createQuery(jql, WorkItem.class);
 		query.setParameter("containerId", project.getId());
 		return query;
+	}
+	public static List<WorkItem> findWorkItems(Project project, int iDisplayStart, int iDisplayLength, String sSearch,
+			String sSearch_0, String sSearch_1, String sSearch_2,
+			String sSearch_3) {
+		// TODO Auto-generated method stub
+		String hql ="SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
+		
+		if(sSearch.length()>0){
+			hql += " AND (LOWER(o.title) like LOWER(:sSearch) or LOWER(o.status.name) like LOWER(:sSearch) or LOWER(o.workItemType.name) like LOWER(:sSearch) or LOWER(o.priority.name) like LOWER(:sSearch))";
+			
+		}
+		if(sSearch_0.length()>0){			
+			hql += " AND LOWER(o.title) like LOWER(:sSearch_0)";
+		}
+		if(sSearch_1.length()>0){			
+			hql += " AND LOWER(o.status.name) like LOWER(:sSearch_1)";
+		}
+		if(sSearch_2.length()>0){			
+			hql += " AND LOWER(o.workItemType.name) like LOWER(:sSearch_2)";
+		}
+		if(sSearch_3.length()>0){			
+			hql += " AND LOWER(o.priority.name) like LOWER(:sSearch_3)";
+		}		
+		
+		TypedQuery<WorkItem> query = entityManager().createQuery(hql, WorkItem.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
+		if(sSearch.length()>0)
+			query.setParameter("sSearch", "%"+sSearch+"%");
+		if(sSearch_0.length()>0)
+			query.setParameter("sSearch_0", "%"+sSearch_0+"%");
+		if(sSearch_1.length()>0)
+			query.setParameter("sSearch_1", "%"+sSearch_1+"%");
+		if(sSearch_2.length()>0)
+			query.setParameter("sSearch_2", "%"+sSearch_2+"%");
+		if(sSearch_3.length()>0)
+			query.setParameter("sSearch_3", "%"+sSearch_3+"%");
+		query.setParameter("containerId", project.getId());
+		return query.getResultList();
 	}
 }

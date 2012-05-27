@@ -214,7 +214,7 @@ body {
 	width: 45%;
 	height:100%;
 	padding-right:25px;
-	border-right: solid 1px #ccc;
+	
 }
 
 .right-panel
@@ -374,6 +374,7 @@ textarea
 
 label
 {
+	vertical-align:top;
 	text-align:right;
 	min-width: 120px;
 	font-weight: bold;
@@ -386,9 +387,6 @@ label
 	width: 250px;
 	height: 20px;
 }
-
-
-		
 
 .submit
 {
@@ -551,4 +549,28 @@ a {
 a:hover {
 	color: #06A209 ;
 	text-decoration: underline;
+}
+
+textarea
+{	
+	max-height:200px ;
+	min-height: 50px !important;
+}
+
+.time{
+	color:#E17009;
+}
+
+.changedBy{
+	color: #333;
+	font-weight: bold;
+}
+
+.history{
+	padding-left:25px;
+	background-image:url("../images/history-icon.png");
+	background-repeat:no-repeat;	
+}
+.comment{
+	color:#008040;
 }

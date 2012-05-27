@@ -108,12 +108,16 @@ public class ProjectController {
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		while (currentContainer != null) {
+		int num = 0;
+		while(currentContainer  != null && num <5){
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
-			currentContainer = currentContainer.getParentContainer();
+			if(currentContainer.getParentContainer().equals(currentContainer))
+				currentContainer = null;
+			else currentContainer = currentContainer.getParentContainer();
+			num++;
 		}
 		Collections.reverse(siteMapItems);
 		uiModel.addAttribute("siteMapItems", siteMapItems);
@@ -221,14 +225,12 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch" })
+			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
 		DtReply reply = new DtReply();
-		reply.setsEcho(sEcho);
-		List<Project> list = Project.findProjectEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+		reply.setsEcho(sEcho);		
+		List<Project> list = Project.findProjectEntries(iDisplayStart,iDisplayLength,sSearch, sSearch_0, sSearch_1, sSearch_2 );
 		for (Project item : list) {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
@@ -263,8 +265,7 @@ public class ProjectController {
 				break;
 			}
 		}
-		if (acc.getIsAdmin() == true
-				|| (info != null && info.getMemberRole().getId() == 1)) {
+		if (acc!=null && acc.getIsAdmin()==true ||( info!=null && info.getMemberRole().getId() == 1)) {
 			if (bindingResult.hasErrors()) {
 				populateEditForm(uiModel, project);
 				return "projects/update";

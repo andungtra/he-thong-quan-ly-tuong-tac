@@ -12,9 +12,9 @@
 	<spring:url value = "/accounts/${id }/dumpcalendar" var="calendar"/>
 	<div id="menu_menu">
 		<ul>
-			<li><a href="${dashboard}">Dash Board</a></li>
+			<li><a href="${dashboard}">Dashboard</a></li>
 			<li><a href="${calendar}">My Calendar</a></li>
-			<li><a href="${projects}">My Project</a></li>
+			<li><a href="${projects}">My Projects</a></li>
 		</ul>
 	</div>
 </jsp:root>

@@ -49,7 +49,7 @@ public class WorkItemController {
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest)
+			Model uiModel, HttpServletRequest httpServletRequest, HttpSession session)
 			throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, workItem);
@@ -71,7 +71,8 @@ public class WorkItemController {
 
 		Date date = new Date();
 		workItem.setDateLastEdit(date);
-
+		Account acc = (Account) session.getAttribute("account");
+		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
 		workItem.merge();
 		return "redirect:/projects/"
@@ -161,7 +162,7 @@ public class WorkItemController {
 			@PathVariable("projectId") Long projectId,
 			Model uiModel,
 			@RequestParam(value = "attachment", required = false) Long[] attachmentIds,
-			HttpServletRequest httpServletRequest) throws JAXBException {
+			HttpServletRequest httpServletRequest, HttpSession session) throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditFormCustomly(uiModel, workItem);
 			return "workitems/create";
@@ -180,7 +181,8 @@ public class WorkItemController {
 
 		Date date = new Date();
 		workItem.setDateLastEdit(date);
-
+		Account acc = (Account) session.getAttribute("account");
+		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
 		workItem.persist();
 		if (attachmentIds != null) {
@@ -198,32 +200,31 @@ public class WorkItemController {
 
 	}
 
-	@RequestMapping(params = { "iDisplayStart", "iDisplayLength", "sEcho" })
+	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
+			"iDisplayStart", "iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2", "sSearch_3" })
 	@ResponseBody
 	@RequiresPermissions("workitem:list")
 	public DtReply listWorkItemByProject(
 			@PathVariable("projectId") Long projectId, int iDisplayStart,
 			int iDisplayLength, String sEcho, int iSortCol_0,
-			String sSortDir_0, String sSearch) {
+			String sSortDir_0, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2, String sSearch_3) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Project project = Project.findProject(projectId);
 		reply.setiTotalRecords((int) WorkItem.countWorkItemByProject(project));
 		reply.setiTotalDisplayRecords((int) WorkItem
 				.countWorkItemByProject(project));
-		List<WorkItem> workItems = WorkItem.findWorkItemsByProject(project)
-				.setFirstResult(iDisplayStart).setMaxResults(iDisplayLength)
-				.getResultList();
+		List<WorkItem> workItems = WorkItem.findWorkItems(project, iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2, sSearch_3);
+				
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
 			workItemDto.DT_RowId = workItem.getId();
 			workItemDto.setlName("<a href='/TIS/projects/" + projectId
 					+ "/workitems/" + workItem.getId() + "?form'>"
 					+ workItem.getTitle() + "</a>");
-			WorkItemStatus testStatus = workItem.getStatus();
-			String testName = workItem.getTitle();
 			workItemDto.setsStatus(workItem.getStatus().getName());
 			workItemDto.setsType(workItem.getWorkItemType().getName());
+			workItemDto.setPriority(workItem.getPriority().getName());
 			reply.getAaData().add(workItemDto);
 		}
 		reply.setiTotalRecords(reply.getAaData().size());

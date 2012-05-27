@@ -89,14 +89,54 @@ public class Account implements java.io.Serializable {
         return query.getSingleResult();        
     }
 	public static List<Account> findAccountEntries(int iDisplayStart,
-			int iDisplayLength, String sSearch) {
-		// TODO Auto-generated method stub
-		if(sSearch.length()==0)
-			return findAccountEntries(iDisplayStart, iDisplayLength);
+			int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2, String sSearch_3) {
+		// TODO Auto-generated method stub		
 		
-		String queryString = "SELECT account FROM Account AS account WHERE account.email like :sSearch or account.firstName like :sSearch or account.lastName like :sSearch";
-        TypedQuery<Account> query = entityManager().createQuery(queryString, Account.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
-        query.setParameter("sSearch", "%"+sSearch+"%");
+		String hql = "SELECT account FROM Account AS account";
+		int h =-1;
+		if(sSearch.length()>0){
+			hql += " WHERE (LOWER(account.firstName) like LOWER(:sSearch) or LOWER(account.lastName) like LOWER(:sSearch) or LOWER(account.email) like LOWER(:sSearch) or LOWER(account.status) like LOWER(:sSearch))";
+			h=1;
+		}			
+		if(sSearch_0.length()>0){
+			if(h==1)
+				hql+= " AND";
+			else hql += " WHERE";
+			h=1;
+			hql += " LOWER(account.firstName) like LOWER(:sSearch_0)";			
+		}
+		if(sSearch_1.length()>0){
+			if(h==1)
+				hql+= " AND";
+			else hql += " WHERE";
+			h=1;
+			hql += " LOWER(account.lastName) like LOWER(:sSearch_1)";
+		}			
+		if(sSearch_2.length()>0){
+			if(h==1)
+				hql+= " AND";
+			else hql += " WHERE";
+			h=1;
+			hql += " LOWER(account.email) like LOWER(:sSearch_2)";
+		}
+		if(sSearch_3.length()>0){
+			if(h==1)
+				hql+= " AND";
+			else hql += " WHERE";			
+			hql += " LOWER(account.status) like LOWER(:sSearch_3)";
+		}
+        TypedQuery<Account> query = entityManager().createQuery(hql, Account.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
+        if(sSearch.length()>0)
+        	query.setParameter("sSearch", "%"+sSearch+"%");
+        if(sSearch_0.length()>0)
+        	query.setParameter("sSearch_0", "%"+sSearch_0+"%");
+        if(sSearch_1.length()>0)
+        	query.setParameter("sSearch_1", "%"+sSearch_1+"%");
+        if(sSearch_2.length()>0)
+        	query.setParameter("sSearch_2", "%"+sSearch_2+"%");
+        if(sSearch_3.length()>0)
+        	query.setParameter("sSearch_3", "%"+sSearch_3+"%");
+       
         return query.getResultList();
 	}
 	public Calendar getCalendar() {
