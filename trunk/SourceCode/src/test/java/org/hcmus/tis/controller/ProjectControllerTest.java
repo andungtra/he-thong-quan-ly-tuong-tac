@@ -8,6 +8,8 @@ import java.util.Vector;
 
 import javax.persistence.TypedQuery;
 
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.SiteMapItem;
 import org.hcmus.tis.model.Account;
@@ -36,14 +38,29 @@ import org.springframework.validation.BindingResult;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Project.class)
 @MockStaticEntityMethods
-public class ProjectControllerTest {
+public class ProjectControllerTest extends AbstractShiroTest{
 	private ProjectController aut;
 	private Model uiModel;
+	private Subject mockedSubject;
+	private Session mockedSession; 
+	private Account mockedLoginedAccount;
 	@Before
 	public void setUp(){
 		aut = new ProjectController();
 		uiModel = Mockito.mock(Model.class);
 		PowerMockito.mockStatic(Project.class);
+		
+		 mockedSubject = Mockito.mock(Subject.class);
+		 mockedSession = Mockito.mock(Session.class);
+		 mockedLoginedAccount = Mockito.mock(Account.class);
+		 Mockito.doReturn(mockedSession).when(mockedSubject).getSession();
+		 Mockito.doReturn(mockedLoginedAccount).when(mockedSession).getAttribute("account");
+		Mockito.doReturn(true).when(mockedSubject).isAuthenticated();
+		Mockito.doNothing().when(mockedSubject).checkPermissions(Mockito.any(String[].class));
+		setSubject(mockedSubject);
+	}
+	public void tearDown(){
+		clearSubject();
 	}
 	@Test
 	public void testFindProjectsByNameLikeWhenNameEmpty() {

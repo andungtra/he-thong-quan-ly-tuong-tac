@@ -38,7 +38,7 @@ import org.springframework.validation.BindingResult;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Account.class)
 @MockStaticEntityMethods
-public class AccountControllerTest {
+public class AccountControllerTest extends AbstractShiroTest {
 	private Account spyAccount;
 	private AccountController aut;
 	private AccountService mockedAccountService;
@@ -347,7 +347,7 @@ public class AccountControllerTest {
 		assertEquals(0, restResponse.getResponse().getStatus());
 		assertEquals(2, restResponse.getResponse().getData().size());
 		assertTrue(restResponse.getResponse().getData().contains(event));
-		assertEquals(NonEditableEvent.class, restResponse.getResponse().getData().get(1).getClass());
+		assertTrue(restResponse.getResponse().getData().get(1) instanceof NonEditableEvent || restResponse.getResponse().getData().get(0) instanceof NonEditableEvent);
 	}
 
 	@Test

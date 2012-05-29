@@ -90,7 +90,7 @@ public class ProjectController {
 		List<ProjectProcess> test = ProjectProcess.findAllProjectProcesses();
 		int size = test.size();
 	}
-	
+
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
 	@RequiresPermissions("project:read")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
@@ -108,16 +108,18 @@ public class ProjectController {
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		int num = 0;
-		while(currentContainer  != null && num <5){
+		//int num = 0;
+		//while(currentContainer  != null && num <5){
+			while(currentContainer  != null){
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
-			if(currentContainer.getParentContainer().equals(currentContainer))
-				currentContainer = null;
-			else currentContainer = currentContainer.getParentContainer();
-			num++;
+			currentContainer = currentContainer.getParentContainer();
+//			if(currentContainer.getParentContainer().equals(currentContainer))
+//				currentContainer = null;
+//			else currentContainer = currentContainer.getParentContainer();
+//			num++;
 		}
 		Collections.reverse(siteMapItems);
 		uiModel.addAttribute("siteMapItems", siteMapItems);
@@ -163,7 +165,8 @@ public class ProjectController {
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")
 	public String overview(@PathVariable("id") Long id, Model uiModel,
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		uiModel.addAttribute("project", Project.findProject(id));
 
 		Calendar cal = Calendar.getInstance();
@@ -225,20 +228,22 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
+			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1",
+			"sSearch_2" })
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
+			String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
 		DtReply reply = new DtReply();
-		reply.setsEcho(sEcho);		
-		List<Project> list = Project.findProjectEntries(iDisplayStart,iDisplayLength,sSearch, sSearch_0, sSearch_1, sSearch_2 );
+		reply.setsEcho(sEcho);
+		List<Project> list = Project.findProjectEntries(iDisplayStart,
+				iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
 		for (Project item : list) {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../projects/"
-						+ item.getId() + "'>"
+				dto.setName("<a href='../projects/" + item.getId() + "'>"
 						+ item.getName() + "</a>");
-				
+
 				if (item.getParentContainer() != null)
 					dto.setParentContainer(item.getParentContainer().getName());
 				dto.setDescription(item.getDescription());
@@ -265,7 +270,8 @@ public class ProjectController {
 				break;
 			}
 		}
-		if (acc!=null && acc.getIsAdmin()==true ||( info!=null && info.getMemberRole().getId() == 1)) {
+		if (acc != null && acc.getIsAdmin() == true
+				|| (info != null && info.getMemberRole().getId() == 1)) {
 			if (bindingResult.hasErrors()) {
 				populateEditForm(uiModel, project);
 				return "projects/update";

@@ -179,7 +179,7 @@ public class MemberInformationController {
 		reply.setsEcho(sEcho);
 
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationsByProjectBaseAccount(Project.findProject(id),iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
+				.findMemberInformationsByProjectBaseAccount(Project.findProject(projectId),iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
 		for (MemberInformation item : list) {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();

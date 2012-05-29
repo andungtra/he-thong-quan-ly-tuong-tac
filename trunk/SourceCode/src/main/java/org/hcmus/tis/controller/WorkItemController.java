@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.WorkItemDTO;
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,12 +51,14 @@ public class WorkItemController {
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest, HttpSession session)
+			Model uiModel, HttpServletRequest httpServletRequest)
 			throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, workItem);
 			return "workitems/update";
 		}
+		WorkItem inDatabaseWorkItem = WorkItem.findWorkItem(workItem.getId());
+		workItem.setSubcribers(inDatabaseWorkItem.getSubcribers());
 		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
@@ -71,15 +75,42 @@ public class WorkItemController {
 
 		Date date = new Date();
 		workItem.setDateLastEdit(date);
-		Account acc = (Account) session.getAttribute("account");
+		Account acc = (Account) SecurityUtils.getSubject().getSession()
+				.getAttribute("account");
 		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
 		workItem.merge();
 		return "redirect:/projects/"
-				+ workItem.getWorkItemContainer().getParentProjectOrMyself().getId()
+				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
+						.getId()
 				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);
+	}
+
+	@RequestMapping(value = "/{workItemId}", params = "subscribe")
+	public String subscribe(@PathVariable("projectId") Long projectId,
+			@PathVariable("workItemId") Long workItemId,
+			HttpServletRequest httpServletRequest) {
+		Account account = Account.findAccountsByEmailEquals(
+				(String) SecurityUtils.getSubject().getPrincipal())
+				.getSingleResult();
+		Project project = Project.findProject(projectId);
+		MemberInformation member = MemberInformation
+				.findMemberInformationsByAccountAndProject(account, project)
+				.getSingleResult();
+		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		if (!workItem.getSubcribers().contains(member)) {
+			workItem.getSubcribers().add(member);
+			workItem.flush();
+		}
+		return "redirect:/projects/"
+				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
+						.getId()
+				+ "/workitems/"
+				+ encodeUrlPathSegment(workItem.getId().toString(),
+						httpServletRequest) + "?form";
+
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -115,16 +146,25 @@ public class WorkItemController {
 		}
 		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("dependencies", dependencies);
-		
-		
+
 		return "workitems/create";
 	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
 	@RequiresPermissions("workitem:update")
-	public String updateForm(@PathVariable("id") Long id, Model uiModel) {
+	public String updateForm(@PathVariable("projectId") Long projectId,
+			@PathVariable("id") Long id, Model uiModel) {
 		WorkItem workItem = WorkItem.findWorkItem(id);
 		populateEditFormCustomly(uiModel, workItem);
+		Project project = Project.findProject(projectId);
+		Account account = Account.findAccountsByEmailEquals(
+				(String) SecurityUtils.getSubject().getPrincipal())
+				.getSingleResult();
+		MemberInformation member = MemberInformation
+				.findMemberInformationsByAccountAndProject(account, project)
+				.getSingleResult();
+		boolean subscribed = workItem.getSubcribers().contains(member);
+		uiModel.addAttribute("subscribed", subscribed);
 		return "workitems/update";
 	}
 
@@ -162,7 +202,7 @@ public class WorkItemController {
 			@PathVariable("projectId") Long projectId,
 			Model uiModel,
 			@RequestParam(value = "attachment", required = false) Long[] attachmentIds,
-			HttpServletRequest httpServletRequest, HttpSession session) throws JAXBException {
+			HttpServletRequest httpServletRequest) throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditFormCustomly(uiModel, workItem);
 			return "workitems/create";
@@ -181,7 +221,8 @@ public class WorkItemController {
 
 		Date date = new Date();
 		workItem.setDateLastEdit(date);
-		Account acc = (Account) session.getAttribute("account");
+		Account acc = (Account) SecurityUtils.getSubject().getSession()
+				.getAttribute("account");
 		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
 		workItem.persist();
@@ -200,22 +241,26 @@ public class WorkItemController {
 
 	}
 
-	@RequestMapping(value = "listWorkItemByProject", params = { "projectId",
-			"iDisplayStart", "iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2", "sSearch_3" })
+	@RequestMapping(params = { "projectId", "iDisplayStart", "iDisplayLength",
+			"sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2",
+			"sSearch_3" })
 	@ResponseBody
 	@RequiresPermissions("workitem:list")
 	public DtReply listWorkItemByProject(
 			@PathVariable("projectId") Long projectId, int iDisplayStart,
 			int iDisplayLength, String sEcho, int iSortCol_0,
-			String sSortDir_0, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2, String sSearch_3) {
+			String sSortDir_0, String sSearch, String sSearch_0,
+			String sSearch_1, String sSearch_2, String sSearch_3) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Project project = Project.findProject(projectId);
 		reply.setiTotalRecords((int) WorkItem.countWorkItemByProject(project));
 		reply.setiTotalDisplayRecords((int) WorkItem
 				.countWorkItemByProject(project));
-		List<WorkItem> workItems = WorkItem.findWorkItems(project, iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2, sSearch_3);
-				
+		List<WorkItem> workItems = WorkItem.findWorkItems(project,
+				iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1,
+				sSearch_2, sSearch_3);
+
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
 			workItemDto.DT_RowId = workItem.getId();
@@ -245,7 +290,8 @@ public class WorkItemController {
 				DateTimeFormat.patternForStyle("SS",
 						LocaleContextHolder.getLocale()));
 	}
-  @RequiresPermissions("workitem:read")
+
+	@RequiresPermissions("workitem:read")
 	@RequestMapping(value = "/${id}/history", produces = "text/html")
 	public String history(Model uiModel, Long id) {
 		List<WorkItemHistory> history = WorkItemHistory
@@ -253,5 +299,30 @@ public class WorkItemController {
 		uiModel.addAttribute("history", history);
 		uiModel.addAttribute("workItemId", id);
 		return "workitems/history";
+	}
+
+	@RequestMapping(value = "/{workItemId}", params = "unSubscribe")
+	public String unSubscribe(@PathVariable("projectId") Long projectId,
+			@PathVariable("workItemId") Long workItemId,
+			HttpServletRequest httpServletRequest){
+		Account account = Account.findAccountsByEmailEquals(
+				(String) SecurityUtils.getSubject().getPrincipal())
+				.getSingleResult();
+		Project project = Project.findProject(projectId);
+		MemberInformation member = MemberInformation
+				.findMemberInformationsByAccountAndProject(account, project)
+				.getSingleResult();
+		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		if (workItem.getSubcribers().contains(member)) {
+			workItem.getSubcribers().remove(member);
+			workItem.flush();
+		}
+		return "redirect:/projects/"
+				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
+						.getId()
+				+ "/workitems/"
+				+ encodeUrlPathSegment(workItem.getId().toString(),
+						httpServletRequest) + "?form";
+
 	}
 }

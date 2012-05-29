@@ -2,15 +2,20 @@ package org.hcmus.tis.controller;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Member;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 
-import org.aspectj.lang.annotation.After;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Attachment;
@@ -24,6 +29,7 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,11 +46,14 @@ import org.springframework.validation.BindingResult;
 
 @RunWith(PowerMockRunner.class)
 @MockStaticEntityMethods
-public class WorkItemControllerTest {
+public class WorkItemControllerTest extends AbstractShiroTest {
 	private Model uiModel;
 	private WorkItemController aut;
 	private BindingResult bindingResult;
 	private HttpServletRequest httpServletRequest;
+	private Subject mockedSubject;
+	private Session mockedSession;
+	private Account mockedLoginedAccount;
 
 	@Before
 	public void setUp() {
@@ -53,6 +62,21 @@ public class WorkItemControllerTest {
 		aut = new WorkItemController();
 		bindingResult = Mockito.mock(BindingResult.class);
 		httpServletRequest = Mockito.mock(HttpServletRequest.class);
+		mockedSubject = Mockito.mock(Subject.class);
+		mockedSession = Mockito.mock(Session.class);
+		mockedLoginedAccount = Mockito.mock(Account.class);
+		Mockito.doReturn(mockedSession).when(mockedSubject).getSession();
+		Mockito.doReturn(mockedLoginedAccount).when(mockedSession)
+				.getAttribute("account");
+		Mockito.doReturn(true).when(mockedSubject).isAuthenticated();
+		Mockito.doNothing().when(mockedSubject)
+				.checkPermissions(Mockito.any(String[].class));
+		setSubject(mockedSubject);
+	}
+
+	@After
+	public void tearDown() {
+		clearSubject();
 	}
 
 	@Test
@@ -188,8 +212,8 @@ public class WorkItemControllerTest {
 		PowerMockito.when(Attachment.findAttachment((long) 2)).thenReturn(
 				mockedAttachment1);
 
-		aut.create(spyWorkItem, bindingResult,(long)1, uiModel, attachmentIds,
-				httpServletRequest);
+		aut.create(spyWorkItem, bindingResult, (long) 1, uiModel,
+				attachmentIds, httpServletRequest);
 
 		Mockito.verify(httpServletRequest).getParameter("name");
 		Mockito.verify(spyWorkItem).persist();
@@ -210,6 +234,8 @@ public class WorkItemControllerTest {
 		WorkItemType workItemType = new WorkItemType();
 		workItemType.setId((long) 1);
 		workItem.setWorkItemType(workItemType);
+		Project project = new Project();
+		workItem.setWorkItemContainer(project);
 		List<FieldDefine> fieldDefines = new ArrayList<FieldDefine>();
 		FieldDefine fieldDefine = new FieldDefine();
 		fieldDefine.setRefName("name");
@@ -259,7 +285,7 @@ public class WorkItemControllerTest {
 		workItems.add(Mockito.mock(WorkItem.class));
 		WorkItemStatus mockedStatus = Mockito.mock(WorkItemStatus.class);
 		WorkItemType mockedType = Mockito.mock(WorkItemType.class);
-		for(WorkItem workItem : workItems){
+		for (WorkItem workItem : workItems) {
 			Mockito.doReturn(mockedStatus).when(workItem).getStatus();
 			Mockito.doReturn(mockedType).when(workItem).getWorkItemType();
 		}
@@ -270,20 +296,228 @@ public class WorkItemControllerTest {
 				mockedProject);
 		TypedQuery<WorkItem> mockedQuery = Mockito.mock(TypedQuery.class);
 		Mockito.doReturn(workItems).when(mockedQuery).getResultList();
-		Mockito.doReturn(mockedQuery).when(mockedQuery).setFirstResult(Mockito.anyInt());
-		Mockito.doReturn(mockedQuery).when(mockedQuery).setMaxResults(Mockito.anyInt());
+		Mockito.doReturn(mockedQuery).when(mockedQuery)
+				.setFirstResult(Mockito.anyInt());
+		Mockito.doReturn(mockedQuery).when(mockedQuery)
+				.setMaxResults(Mockito.anyInt());
 		PowerMockito.mockStatic(WorkItem.class);
-		PowerMockito.when(WorkItem.countWorkItemByProject(mockedProject)).thenReturn((long)2);
-		PowerMockito.when(WorkItem.findWorkItemsByProject(mockedProject)).thenReturn(mockedQuery);
-		
+		PowerMockito.when(WorkItem.countWorkItemByProject(mockedProject))
+				.thenReturn((long) 2);
+		PowerMockito.when(WorkItem.findWorkItemsByProject(mockedProject))
+				.thenReturn(mockedQuery);
+
 		DtReply dtReply = aut.listWorkItemByProject(projectId, iDisplayStart,
-				iDisplayLength, sEcho, iSortCol_0, sSortDir_0, sSearch);
+				iDisplayLength, sEcho, iSortCol_0, sSortDir_0, sSearch, "", "",
+				"", "");
 		PowerMockito.verifyStatic(Mockito.atLeastOnce());
 		WorkItem.countWorkItemByProject(mockedProject);
 		PowerMockito.verifyStatic();
-		WorkItem.findWorkItemsByProject(mockedProject);
+		// WorkItem.findWorkItemsByProject(mockedProject);
 		Assert.assertEquals(2, dtReply.getiTotalRecords());
 		Assert.assertEquals(2, dtReply.getiTotalDisplayRecords());
 		Assert.assertEquals(2, dtReply.getAaData().size());
+	}
+
+	@Test
+	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+			WorkItem.class })
+	public void testSubscibeWithNonSubscibedMember() {
+		PowerMockito.mockStatic(Account.class);
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.mockStatic(MemberInformation.class);
+		PowerMockito.mockStatic(WorkItem.class);
+		Long projectId = (long) 1;
+		Long workItemId = (long) 1;
+		Project mockedProject = Mockito.mock(Project.class);
+		PowerMockito.when(Project.findProject(projectId)).thenReturn(
+				mockedProject);
+		WorkItem mockedWorkItem = Mockito.mock(WorkItem.class);
+		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
+				mockedWorkItem);
+		MemberInformation mockedMember = Mockito.mock(MemberInformation.class);
+		TypedQuery<MemberInformation> mockedQuery = Mockito
+				.mock(TypedQuery.class);
+		Mockito.doReturn(mockedMember).when(mockedQuery).getSingleResult();
+		Account mockedAccount = Mockito.mock(Account.class);
+		TypedQuery<Account> mockedAccountQuery = Mockito.mock(TypedQuery.class);
+		Mockito.doReturn(mockedAccount).when(mockedAccountQuery)
+				.getSingleResult();
+		PowerMockito.when(
+				Account.findAccountsByEmailEquals(Mockito.anyString()))
+				.thenReturn(mockedAccountQuery);
+		PowerMockito.when(
+				MemberInformation.findMemberInformationsByAccountAndProject(
+						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+		Collection<MemberInformation> mockedSubscriber = Mockito
+				.mock(Collection.class);
+		Mockito.doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
+		Mockito.doReturn(false).when(mockedSubscriber).contains(mockedMember);
+		HttpServletRequest mockedHttpServletRequest = Mockito
+				.mock(HttpServletRequest.class);
+		Mockito.doReturn(mockedProject).when(mockedWorkItem)
+				.getWorkItemContainer();
+		Mockito.doReturn(mockedProject).when(mockedProject)
+				.getParentProjectOrMyself();
+		Mockito.doReturn((long) 1).when(mockedProject).getId();
+		Mockito.doReturn((long) 1).when(mockedWorkItem).getId();
+		String result = aut.subscribe(projectId, workItemId,
+				mockedHttpServletRequest);
+
+		Assert.assertEquals("redirect:/projects/1/workitems/1?form", result);
+		Mockito.verify(mockedSubscriber).add(mockedMember);
+		Mockito.verify(mockedWorkItem).flush();
+
+	}
+
+	@Test
+	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+			WorkItem.class })
+	public void testSubscibeWithSubscibedMember() {
+		PowerMockito.mockStatic(Account.class);
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.mockStatic(MemberInformation.class);
+		PowerMockito.mockStatic(WorkItem.class);
+		Long projectId = (long) 1;
+		Long workItemId = (long) 1;
+		Project mockedProject = Mockito.mock(Project.class);
+		PowerMockito.when(Project.findProject(projectId)).thenReturn(
+				mockedProject);
+		WorkItem mockedWorkItem = Mockito.mock(WorkItem.class);
+		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
+				mockedWorkItem);
+		MemberInformation mockedMember = Mockito.mock(MemberInformation.class);
+		TypedQuery<MemberInformation> mockedQuery = Mockito
+				.mock(TypedQuery.class);
+		Mockito.doReturn(mockedMember).when(mockedQuery).getSingleResult();
+		Account mockedAccount = Mockito.mock(Account.class);
+		TypedQuery<Account> mockedAccountQuery = Mockito.mock(TypedQuery.class);
+		Mockito.doReturn(mockedAccount).when(mockedAccountQuery)
+				.getSingleResult();
+		PowerMockito.when(
+				Account.findAccountsByEmailEquals(Mockito.anyString()))
+				.thenReturn(mockedAccountQuery);
+		PowerMockito.when(
+				MemberInformation.findMemberInformationsByAccountAndProject(
+						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+		Collection<MemberInformation> mockedSubscriber = Mockito
+				.mock(Collection.class);
+		Mockito.doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
+		Mockito.doReturn(true).when(mockedSubscriber).contains(mockedMember);
+
+		HttpServletRequest mockedHttpServletRequest = Mockito
+				.mock(HttpServletRequest.class);
+		Mockito.doReturn(mockedProject).when(mockedWorkItem)
+				.getWorkItemContainer();
+		Mockito.doReturn(mockedProject).when(mockedProject)
+				.getParentProjectOrMyself();
+		Mockito.doReturn((long) 1).when(mockedProject).getId();
+		Mockito.doReturn((long) 1).when(mockedWorkItem).getId();
+		String result = aut.subscribe(projectId, workItemId,
+				mockedHttpServletRequest);
+
+		assertEquals("redirect:/projects/1/workitems/1?form", result);
+		Mockito.verify(mockedSubscriber, Mockito.times(0)).add(
+				Mockito.any(MemberInformation.class));
+
+	}
+
+	@Test
+	@PrepareForTest({ WorkItem.class, WorkItemController.class, Account.class,
+			Project.class, MemberInformation.class })
+	public void testUpdateForm() {
+		Long projectId = (long) 1;
+		Long workItemId = (long) 2;
+		PowerMockito.mockStatic(WorkItem.class);
+		PowerMockito.mockStatic(Account.class);
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.mockStatic(MemberInformation.class);
+		Account mockedAccount = Mockito.mock(Account.class);
+		Project mockedProject = Mockito.mock(Project.class);
+		WorkItem mockedWorkItem = Mockito.mock(WorkItem.class);
+		MemberInformation mockedMember = Mockito.mock(MemberInformation.class);
+		MemberInformation member = Mockito.mock(MemberInformation.class);
+		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
+				mockedWorkItem);
+		PowerMockito.when(Project.findProject(projectId)).thenReturn(
+				mockedProject);
+		TypedQuery<Account> mockedAccountQuery = Mockito.mock(TypedQuery.class);
+		Mockito.doReturn(mockedAccount).when(mockedAccountQuery)
+				.getSingleResult();
+		PowerMockito.when(
+				Account.findAccountsByEmailEquals(Mockito.anyString()))
+				.thenReturn(mockedAccountQuery);
+		TypedQuery<MemberInformation> mockedMemberQuery = Mockito
+				.mock(TypedQuery.class);
+		Mockito.doReturn(mockedMember).when(mockedMemberQuery)
+				.getSingleResult();
+		PowerMockito.when(
+				MemberInformation.findMemberInformationsByAccountAndProject(
+						mockedAccount, mockedProject)).thenReturn(
+				mockedMemberQuery);
+		Collection<MemberInformation> mockedSubscribers = Mockito
+				.mock(Collection.class);
+		Mockito.doReturn(true).when(mockedSubscribers).contains(mockedMember);
+		Mockito.doReturn(mockedSubscribers).when(mockedWorkItem)
+				.getSubcribers();
+
+		WorkItemController spy = Mockito.spy(aut);
+		Mockito.doNothing()
+				.when(spy)
+				.populateEditFormCustomly(Mockito.any(Model.class),
+						Mockito.any(WorkItem.class));
+		String result = spy.updateForm(projectId, workItemId, uiModel);
+		Mockito.verify(mockedSubscribers).contains(mockedMember);
+		Mockito.verify(uiModel).addAttribute("subscribed", true);
+		Assert.assertEquals("workitems/update", result);
+
+	}
+	@Test
+	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+		WorkItem.class })
+	public void testUnSubscribe(){
+		PowerMockito.mockStatic(Account.class);
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.mockStatic(MemberInformation.class);
+		PowerMockito.mockStatic(WorkItem.class);
+		Long projectId = (long) 1;
+		Long workItemId = (long) 1;
+		Project mockedProject = Mockito.mock(Project.class);
+		PowerMockito.when(Project.findProject(projectId)).thenReturn(
+				mockedProject);
+		WorkItem mockedWorkItem = Mockito.mock(WorkItem.class);
+		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
+				mockedWorkItem);
+		MemberInformation mockedMember = Mockito.mock(MemberInformation.class);
+		TypedQuery<MemberInformation> mockedQuery = Mockito
+				.mock(TypedQuery.class);
+		Mockito.doReturn(mockedMember).when(mockedQuery).getSingleResult();
+		Account mockedAccount = Mockito.mock(Account.class);
+		TypedQuery<Account> mockedAccountQuery = Mockito.mock(TypedQuery.class);
+		Mockito.doReturn(mockedAccount).when(mockedAccountQuery)
+				.getSingleResult();
+		PowerMockito.when(
+				Account.findAccountsByEmailEquals(Mockito.anyString()))
+				.thenReturn(mockedAccountQuery);
+		PowerMockito.when(
+				MemberInformation.findMemberInformationsByAccountAndProject(
+						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+		Collection<MemberInformation> mockedSubscriber = Mockito
+				.mock(Collection.class);
+		Mockito.doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
+		Mockito.doReturn(true).when(mockedSubscriber).contains(mockedMember);
+		HttpServletRequest mockedHttpServletRequest = Mockito
+				.mock(HttpServletRequest.class);
+		Mockito.doReturn(mockedProject).when(mockedWorkItem)
+				.getWorkItemContainer();
+		Mockito.doReturn(mockedProject).when(mockedProject)
+				.getParentProjectOrMyself();
+		Mockito.doReturn((long) 1).when(mockedProject).getId();
+		Mockito.doReturn((long) 1).when(mockedWorkItem).getId();
+		String result = aut.unSubscribe(projectId, workItemId,
+				mockedHttpServletRequest);
+
+		Assert.assertEquals("redirect:/projects/1/workitems/1?form", result);
+		Mockito.verify(mockedSubscriber).remove(mockedMember);
+		Mockito.verify(mockedWorkItem).flush();
 	}
 }

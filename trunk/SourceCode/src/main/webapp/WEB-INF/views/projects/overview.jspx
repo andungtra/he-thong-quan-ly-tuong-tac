@@ -42,7 +42,7 @@
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
 				<c:forEach items="${overdues}" var="item">
-					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<spring:url value="/projects/${project.id }/workitems/${item.id }?form" var="link"></spring:url>
 					<li>
 						<span>${item.dueDate}</span> : 
 						<span><a href="${link }">${item.title}</a></span>
@@ -54,7 +54,7 @@
 		<util:fixpanel title="Due in this week" id="">
 			<ul class="due">
 				<c:forEach items="${indues}" var="item">
-					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<spring:url value="/projects/${project.id }/workitems/${item.id }?form" var="link"></spring:url>
 					<li>
 						<span>${item.dueDate}</span> : 
 						<span><a href="${link }">${item.title}</a></span>
@@ -68,7 +68,7 @@
 		<util:fixpanel id="" title="Activity">
 			
 				<c:forEach var="item" items="${listHistorys}">
-					<spring:url value="/workitems/${item.workItem.id }?form" var="link"></spring:url>
+					<spring:url value="/projects/${project.id }/workitems/${item.workItem.id }?form" var="link"></spring:url>
 					<div class="history"> <span class="changedBy">${item.changedBy.firstName}</span> ${item.type} workitem <a href="${link }">${item.title }</a>
 					<span class="time"> at ${item.dateLastEdit}</span>
 					</div>					
