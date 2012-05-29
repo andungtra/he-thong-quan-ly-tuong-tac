@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AdministratorControllerTest {
+public class AdministratorControllerTest extends AbstractShiroTest {
 
 	@Test
 	public void testGoToAdministrator() {

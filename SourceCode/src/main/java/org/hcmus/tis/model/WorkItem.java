@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -113,6 +114,9 @@ public class WorkItem {
 
     @ManyToOne
     private MemberInformation asignee;
+    
+    @ManyToMany
+    private Collection<MemberInformation> subcribers;
 
     @NotNull
     @ManyToOne
@@ -226,5 +230,11 @@ public class WorkItem {
 			query.setParameter("sSearch_3", "%"+sSearch_3+"%");
 		query.setParameter("containerId", project.getId());
 		return query.getResultList();
+	}
+	public Collection<MemberInformation> getSubcribers() {
+		return subcribers;
+	}
+	public void setSubcribers(Collection<MemberInformation> subcribers) {
+		this.subcribers = subcribers;
 	}
 }

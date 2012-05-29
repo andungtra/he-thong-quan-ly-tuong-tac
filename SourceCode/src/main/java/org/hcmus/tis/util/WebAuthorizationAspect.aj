@@ -25,11 +25,11 @@ public class WebAuthorizationAspect {
     }
     @Before("@target(org.springframework.stereotype.Controller) && @annotation(requiresPermissions)")
     public void assertPermissiontAuthorizled(JoinPoint jp, RequiresPermissions requiresPermissions) {
-    	ServletRequestAttributes sra = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = sra.getRequest();
         try{
         	  SecurityUtils.getSubject().checkPermissions(requiresPermissions.value());
         }catch (AuthorizationException e) {
+        	ServletRequestAttributes sra = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = sra.getRequest();
 			WebUtils.saveRequest(request);
 			throw e;
 		}

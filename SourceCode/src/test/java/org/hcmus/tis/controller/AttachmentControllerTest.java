@@ -17,10 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.service.FileService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +36,12 @@ import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 
 @RunWith(PowerMockRunner.class)
-public class AttachmentControllerTest {
+public class AttachmentControllerTest extends AbstractShiroTest{
 	private AttachmentController aut;
 	private Model uiModel;
 	private FileService fileService;
 	private ServletContext servletContext;
+	private Subject mockedSubject;
 
 	@Before
 	public void setUp() {
@@ -47,8 +51,15 @@ public class AttachmentControllerTest {
 		servletContext = Mockito.mock(ServletContext.class);
 		aut.setContext(servletContext);
 		aut.setFileService(fileService);
+		Subject mockedSubject = Mockito.mock(Subject.class);
+		Mockito.doReturn(true).when(mockedSubject).isAuthenticated();
+		Mockito.doThrow(UnauthorizedException.class).when(mockedSubject).checkPermission(Mockito.anyString());
+		setSubject(mockedSubject);
 	}
-
+	@After
+	public void tearDown(){
+		clearSubject();
+	}
 	@Test
 	@PrepareForTest({ Attachment.class, AttachmentController.class,
 			IOUtils.class })
