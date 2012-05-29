@@ -103,24 +103,24 @@ public class ProjectController {
 
 	@RequestMapping(value = "{id}", produces = "text/html")
 	@RequiresPermissions("project:read")
-	public String showhomepage(@PathVariable("id") Long id, Model uiModel) {
+	String showhomepage(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("itemId", id);
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		int num = 0;
-		while(currentContainer  != null && num <5){
-			
+		//int num = 0;
+		//while(currentContainer  != null && num <5){
+			while(currentContainer  != null){
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
 			currentContainer = currentContainer.getParentContainer();
-			if(currentContainer.getParentContainer().equals(currentContainer))
-				currentContainer = null;
-			else currentContainer = currentContainer.getParentContainer();
-			num++;
-		}
+//			if(currentContainer.getParentContainer().equals(currentContainer))
+//				currentContainer = null;
+//			else currentContainer = currentContainer.getParentContainer();
+//			num++;
+			}
 		Collections.reverse(siteMapItems);
 		uiModel.addAttribute("siteMapItems", siteMapItems);
 		return "projects/homepage";
