@@ -31,8 +31,12 @@ import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.hcmus.tis.service.EmailService;
+import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,6 +52,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RooWebScaffold(path = "workitems", formBackingObject = WorkItem.class)
 public class WorkItemController {
+	@Autowired
+	private TaskExecutor taskExecutor;
+	@Autowired
+	private EmailService emailService;
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
@@ -80,6 +88,7 @@ public class WorkItemController {
 		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
 		workItem.merge();
+		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "updated", emailService));
 		return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
 						.getId()
@@ -324,5 +333,21 @@ public class WorkItemController {
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest) + "?form";
 
+	}
+
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
+
+	public EmailService getEmailService() {
+		return emailService;
+	}
+
+	public void setEmailService(EmailService emailService) {
+		this.emailService = emailService;
 	}
 }
