@@ -108,18 +108,18 @@ public class ProjectController {
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		//int num = 0;
-		//while(currentContainer  != null && num <5){
-			while(currentContainer  != null){
+		int num = 0;
+		while(currentContainer  != null && num <5){
+			
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
 			currentContainer = currentContainer.getParentContainer();
-//			if(currentContainer.getParentContainer().equals(currentContainer))
-//				currentContainer = null;
-//			else currentContainer = currentContainer.getParentContainer();
-//			num++;
+			if(currentContainer.getParentContainer().equals(currentContainer))
+				currentContainer = null;
+			else currentContainer = currentContainer.getParentContainer();
+			num++;
 		}
 		Collections.reverse(siteMapItems);
 		uiModel.addAttribute("siteMapItems", siteMapItems);
@@ -241,7 +241,7 @@ public class ProjectController {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../projects/" + item.getId() + "'>"
+				dto.setName("<a href='../projects/" + item.getId() + "?goto=true'>"
 						+ item.getName() + "</a>");
 
 				if (item.getParentContainer() != null)

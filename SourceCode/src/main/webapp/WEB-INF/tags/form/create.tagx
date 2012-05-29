@@ -39,7 +39,10 @@
 
 	<jsp:directive.attribute name="cancel" type="java.lang.String"
 		required="false" description="link cancel" />
-		
+	
+	<jsp:directive.attribute name="labelBackList" type="java.lang.String"
+		required="false" description="label for back to list" />
+			
 	<c:if test="${empty render or render}">
 		<c:if test="${empty label}">
 			<spring:message
@@ -53,7 +56,6 @@
 		<spring:message arguments="${label}" code="entity_create"
 			var="title_msg" htmlEscape="false" />
 		<div class="fix-panel" style="width: ${width}">
-
 			<spring:url value="${path}" var="form_url" />
 			<c:set var="jsCall" value="" />
 			<c:if test="${not empty compositePkField}">
@@ -64,15 +66,18 @@
 				onsubmit="${jsCall}">
 				<div class="panel-title">
 					<c:set value="${form_url}" var="cancel_url"/>
-					<c:if test="${not empty cancel}">
-					<a href="${cancel_url}">${modelAttribute}</a> >
-					</c:if>
-					${title_msg}					
-					<div class="submit" >
-					
+					<c:set value="${modelAttribute}" var="label_Back"/>
 					<c:if test="${not empty cancel}">
 						<spring:url value="${cancel}" var="cancel_url" />
 					</c:if>
+					
+					<c:if test="${not empty labelBackList}">
+						<c:set value="${labelBackList}" var="label_Back"/>
+					</c:if>
+					<a href="${cancel_url}">${label_Back}</a> >
+					
+					${title_msg}					
+					<div class="submit" >					
 						<a href="${cancel_url}">
 							<input type="button" value="Cancel"/>
 						</a>						

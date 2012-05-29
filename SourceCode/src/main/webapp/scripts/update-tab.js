@@ -32,16 +32,16 @@ $(function() {
 		// hook global link click event.
 		$('#menu_menu').on('click', 'a', function(event) {
 			var url = this.href;
-//			if (url.indexOf("TIS/projects/")!=-1 && url.indexOf("/task")==-1){
-//				window.open(url, "_blank");
-//			}
-//				
-//			else {
+			if (url.indexOf("goto=true")!=-1){
+				window.open(url, "_blank");
+			}
+				
+			else {
 				$(panel).mask("Loading...");
 				$(panel).load(this.href, function() {
 					$(panel).unmask();
 				});
-//			}
+				}
 			return false;
 		});
 		// hook global form submit event
