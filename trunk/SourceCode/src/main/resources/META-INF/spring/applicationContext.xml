@@ -169,5 +169,11 @@
 	</bean>
 	<bean name="projectPermissionFilter" id="projectPermissionFilter"
 		class="org.hcmus.tis.util.ProjectPermissionFilter" />
-		<bean name="initBean" id="initBean" class="org.hcmus.tis.util.InitDatabaseBean"></bean>
+	<bean name="initBean" id="initBean" class="org.hcmus.tis.util.InitDatabaseBean"></bean>
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="25" />
+	</bean>
 </beans>

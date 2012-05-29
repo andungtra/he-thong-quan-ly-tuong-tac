@@ -47,9 +47,12 @@ public class WorkItem {
 	@javax.persistence.Transient
 	@Autowired
 	private ObjectFactory objectFactory;
-	public void setAdditionFiels(List<Field> additionalFields) throws JAXBException{
-		XAdditionalFieldsImpl xAdditionalFields = getObjectFactory().createXAdditionalFieldsImpl();
-		for(Field field : additionalFields){
+
+	public void setAdditionFiels(List<Field> additionalFields)
+			throws JAXBException {
+		XAdditionalFieldsImpl xAdditionalFields = getObjectFactory()
+				.createXAdditionalFieldsImpl();
+		for (Field field : additionalFields) {
 			XFieldImpl xField = getObjectFactory().createXFieldImpl();
 			xField.setRef(field.getName());
 			xField.setContent(field.getValue());
@@ -60,13 +63,15 @@ public class WorkItem {
 		marshaller.marshal(xAdditionalFields, writer);
 		this.additionalFields = writer.toString();
 	}
-	public List<Field> getAdditionFields() throws JAXBException{
+
+	public List<Field> getAdditionFields() throws JAXBException {
 		List<Field> additionFiels = new ArrayList<Field>();
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		StringReader reader = new StringReader(this.getAdditionalFields());
 		Source source = new StreamSource(reader);
-		XAdditionalFieldsImpl additionalFieldsImpl = unmarshaller.unmarshal(source, XAdditionalFieldsImpl.class).getValue();
-		for(XFieldImpl xFieldImpl : additionalFieldsImpl.getXField()){
+		XAdditionalFieldsImpl additionalFieldsImpl = unmarshaller.unmarshal(
+				source, XAdditionalFieldsImpl.class).getValue();
+		for (XFieldImpl xFieldImpl : additionalFieldsImpl.getXField()) {
 			Field field = new Field();
 			field.setName(xFieldImpl.getRef());
 			field.setValue(xFieldImpl.getContent());
@@ -74,82 +79,87 @@ public class WorkItem {
 		}
 		return additionFiels;
 	}
+
 	@javax.persistence.Transient
 	@Autowired
 	private JAXBContext jaxbContext;
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String title;
+	@NotNull
+	@Size(min = 1, max = 50)
+	private String title;
 
-    private String description;
+	private String description;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date dateCreated;
-    
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date dateLastEdit;
-    
-    @ManyToOne
-    private Account userLastEdit;
-    
-    private String additionalFields;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dateCreated;
 
-    @NotNull
-    @ManyToOne
-    private Priority priority;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dateLastEdit;
 
-    @NotNull
-    @ManyToOne
-    private WorkItemContainer workItemContainer;
+	@ManyToOne
+	private Account userLastEdit;
 
-    @NotNull
-    @ManyToOne
-    private WorkItemType workItemType;
+	private String additionalFields;
 
-    @NotNull
-    @ManyToOne
-    private MemberInformation author;
+	@NotNull
+	@ManyToOne
+	private Priority priority;
 
-    @ManyToOne
-    private MemberInformation asignee;
-    
-    @ManyToMany
-    private Collection<MemberInformation> subcribers;
+	@NotNull
+	@ManyToOne
+	private WorkItemContainer workItemContainer;
 
-    @NotNull
-    @ManyToOne
-    private WorkItemStatus status;
-    @OneToMany(mappedBy="workItem", cascade={CascadeType.PERSIST})
-    private Collection<Attachment> attachments;
+	@NotNull
+	@ManyToOne
+	private WorkItemType workItemType;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style =  "SS")
-    private Date dueDate;
+	@NotNull
+	@ManyToOne
+	private MemberInformation author;
 
-    @PrePersist
-    void prePersit() {    	
-        this.dateCreated = new Date();
-        WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.create);
-    	writeHistory(history);
-    }
-    
-    @PreRemove
-    void preRemove(){
-    	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.delete);
-    	writeHistory(history);
-    }
-    
-    @PreUpdate
-    void preUpdate(){
-    	WorkItemHistory history = new WorkItemHistory();
-    	history.setType(WorkItemHistoryType.update);
-    	writeHistory(history);
-    }
-    
+	@ManyToOne
+	private MemberInformation asignee;
+
+	@ManyToMany
+	private Collection<MemberInformation> subcribers;
+
+	@NotNull
+	@ManyToOne
+	private WorkItemStatus status;
+	@OneToMany(mappedBy = "workItem", cascade = { CascadeType.PERSIST })
+	private Collection<Attachment> attachments;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "SS")
+	private Date dueDate;
+
+	@PrePersist
+	void prePersit() {
+		this.dateCreated = new Date();
+		WorkItemHistory history = new WorkItemHistory();
+		history.setType(WorkItemHistoryType.create);
+		writeHistory(history);
+	}
+
+	@PreRemove
+	void preRemove() {
+		WorkItemHistory history = new WorkItemHistory();
+		history.setType(WorkItemHistoryType.delete);
+		writeHistory(history);
+	}
+
+	@PreUpdate
+	void preUpdate() {
+		WorkItemHistory history = new WorkItemHistory();
+		WorkItem oldWorKitem = WorkItem.findWorkItem(this.getId());
+		if (oldWorKitem.getSubcribers().size() == this.getSubcribers().size()) {
+			history.setType(WorkItemHistoryType.update);
+			writeHistory(history);
+		}
+		
+	}
+
 	public ObjectFactory getObjectFactory() {
 		return objectFactory;
 	}
@@ -157,83 +167,94 @@ public class WorkItem {
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
 	}
+
 	public Collection<Attachment> getAttachments() {
 		return attachments;
 	}
+
 	public void setAttachments(Collection<Attachment> attachments) {
 		this.attachments = attachments;
 	}
-	
-	private void writeHistory(WorkItemHistory history){
-		history.setChangedBy(userLastEdit);
-    	history.setWorkItem(this);
-    	history.setAsignee(this.asignee);
-    	history.setAdditionalFields(this.additionalFields);
-    	history.setAuthor(this.author);
-    	history.setDateCreated(this.dateCreated);
-    	history.setDateLastEdit(this.dateLastEdit);
-    	history.setDescription(this.description);
-    	history.setDueDate(this.dueDate);
-    	history.setPriority(this.priority) ;
-    	history.setStatus(this.status);
-    	history.setTitle(this.title);
-    	history.setWorkItemContainer(this.workItemContainer);
-    	history.setWorkItemType(this.workItemType);
-    	history.persist();
+
+	private void writeHistory(WorkItemHistory history) {
+		history.setChangedBy(getUserLastEdit());
+		history.setWorkItem(this);
+		history.setAsignee(this.asignee);
+		history.setAdditionalFields(this.additionalFields);
+		history.setAuthor(this.author);
+		history.setDateCreated(this.dateCreated);
+		history.setDateLastEdit(this.dateLastEdit);
+		history.setDescription(this.description);
+		history.setDueDate(this.dueDate);
+		history.setPriority(this.priority);
+		history.setStatus(this.status);
+		history.setTitle(this.title);
+		history.setWorkItemContainer(this.workItemContainer);
+		history.setWorkItemType(this.workItemType);
+		history.persist();
 	}
-	public static long countWorkItemByProject(Project project){
-		String jql ="SELECT COUNT(workItem) FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+
+	public static long countWorkItemByProject(Project project) {
+		String jql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
 		TypedQuery<Long> query = entityManager().createQuery(jql, Long.class);
 		query.setParameter("containerId", project.getId());
 		long result = query.getSingleResult();
 		return result;
 	}
-	public static TypedQuery<WorkItem> findWorkItemsByProject(Project project){
-		String jql ="SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
-		TypedQuery<WorkItem> query = entityManager().createQuery(jql, WorkItem.class);
+
+	public static TypedQuery<WorkItem> findWorkItemsByProject(Project project) {
+		String jql = "SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+		TypedQuery<WorkItem> query = entityManager().createQuery(jql,
+				WorkItem.class);
 		query.setParameter("containerId", project.getId());
 		return query;
 	}
-	public static List<WorkItem> findWorkItems(Project project, int iDisplayStart, int iDisplayLength, String sSearch,
+
+	public static List<WorkItem> findWorkItems(Project project,
+			int iDisplayStart, int iDisplayLength, String sSearch,
 			String sSearch_0, String sSearch_1, String sSearch_2,
 			String sSearch_3) {
 		// TODO Auto-generated method stub
-		String hql ="SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
-		
-		if(sSearch.length()>0){
+		String hql = "SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
+
+		if (sSearch.length() > 0) {
 			hql += " AND (LOWER(o.title) like LOWER(:sSearch) or LOWER(o.status.name) like LOWER(:sSearch) or LOWER(o.workItemType.name) like LOWER(:sSearch) or LOWER(o.priority.name) like LOWER(:sSearch))";
-			
+
 		}
-		if(sSearch_0.length()>0){			
+		if (sSearch_0.length() > 0) {
 			hql += " AND LOWER(o.title) like LOWER(:sSearch_0)";
 		}
-		if(sSearch_1.length()>0){			
+		if (sSearch_1.length() > 0) {
 			hql += " AND LOWER(o.status.name) like LOWER(:sSearch_1)";
 		}
-		if(sSearch_2.length()>0){			
+		if (sSearch_2.length() > 0) {
 			hql += " AND LOWER(o.workItemType.name) like LOWER(:sSearch_2)";
 		}
-		if(sSearch_3.length()>0){			
+		if (sSearch_3.length() > 0) {
 			hql += " AND LOWER(o.priority.name) like LOWER(:sSearch_3)";
-		}		
-		
-		TypedQuery<WorkItem> query = entityManager().createQuery(hql, WorkItem.class).setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
-		if(sSearch.length()>0)
-			query.setParameter("sSearch", "%"+sSearch+"%");
-		if(sSearch_0.length()>0)
-			query.setParameter("sSearch_0", "%"+sSearch_0+"%");
-		if(sSearch_1.length()>0)
-			query.setParameter("sSearch_1", "%"+sSearch_1+"%");
-		if(sSearch_2.length()>0)
-			query.setParameter("sSearch_2", "%"+sSearch_2+"%");
-		if(sSearch_3.length()>0)
-			query.setParameter("sSearch_3", "%"+sSearch_3+"%");
+		}
+
+		TypedQuery<WorkItem> query = entityManager()
+				.createQuery(hql, WorkItem.class).setFirstResult(iDisplayStart)
+				.setMaxResults(iDisplayLength);
+		if (sSearch.length() > 0)
+			query.setParameter("sSearch", "%" + sSearch + "%");
+		if (sSearch_0.length() > 0)
+			query.setParameter("sSearch_0", "%" + sSearch_0 + "%");
+		if (sSearch_1.length() > 0)
+			query.setParameter("sSearch_1", "%" + sSearch_1 + "%");
+		if (sSearch_2.length() > 0)
+			query.setParameter("sSearch_2", "%" + sSearch_2 + "%");
+		if (sSearch_3.length() > 0)
+			query.setParameter("sSearch_3", "%" + sSearch_3 + "%");
 		query.setParameter("containerId", project.getId());
 		return query.getResultList();
 	}
+
 	public Collection<MemberInformation> getSubcribers() {
 		return subcribers;
 	}
+
 	public void setSubcribers(Collection<MemberInformation> subcribers) {
 		this.subcribers = subcribers;
 	}
