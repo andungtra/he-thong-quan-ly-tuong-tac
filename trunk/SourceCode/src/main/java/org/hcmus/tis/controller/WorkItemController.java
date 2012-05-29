@@ -301,8 +301,8 @@ public class WorkItemController {
 	}
 
 	@RequiresPermissions("workitem:read")
-	@RequestMapping(value = "/${id}/history", produces = "text/html")
-	public String history(Model uiModel, Long id) {
+	@RequestMapping(value = "/{id}/history", produces = "text/html")
+	public String history(Model uiModel,@PathVariable("id") Long id) {
 		List<WorkItemHistory> history = WorkItemHistory
 				.findAllWorkItemHistorysOfWorkItem(id, 10);
 		uiModel.addAttribute("history", history);
