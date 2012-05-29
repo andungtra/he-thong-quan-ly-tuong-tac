@@ -362,6 +362,13 @@ textarea
 	border-bottom: solid 1px #aaa;
 	margin-bottom: 10px;
 }
+.panel-title a{
+	color: #008040;
+}
+.panel-title a:hover{
+	color: #008040;
+	text-decoration: underline;
+}
 .panel-content
 {
 	padding: 10px;
