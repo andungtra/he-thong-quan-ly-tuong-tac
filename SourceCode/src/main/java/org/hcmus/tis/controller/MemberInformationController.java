@@ -1,18 +1,14 @@
 package org.hcmus.tis.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
-import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.MemberDTO;
-import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.MemberInformation;

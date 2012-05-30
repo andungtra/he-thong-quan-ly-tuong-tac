@@ -3,6 +3,10 @@ package org.hcmus.tis.dto;
 import java.io.Serializable;
 
 public class StudyClassDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String description;
 	public long DT_RowId;	

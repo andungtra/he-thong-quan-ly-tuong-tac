@@ -1,6 +1,5 @@
 package org.hcmus.tis.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +40,10 @@ public class Page<T> {
 	public void setElements(List<T> elements) {
 		this.elements = elements;
 	}
-	private List<Parameter> getAnotherParameters() {
+	public List<Parameter> getAnotherParameters() {
 		return anotherParameters;
 	}
-	private void setAnotherParameters(List<Parameter> anotherParameters) {
+	public void setAnotherParameters(List<Parameter> anotherParameters) {
 		this.anotherParameters = anotherParameters;
 	}
 

@@ -1,6 +1,5 @@
 package org.hcmus.tis.model;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -9,10 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.TypedQuery;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 

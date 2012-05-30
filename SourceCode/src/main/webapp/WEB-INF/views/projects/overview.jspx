@@ -34,6 +34,11 @@
 						object="${project}" z="user-managed" />
 				</c:otherwise>
 			</c:choose>
+			<h3>WorkItem</h3>
+			<div><label>New : </label> ${numNew}</div>
+			<div><label>In process : </label> ${numInProcess}</div>
+			<div><label>Resolved : </label> ${numResolved}</div>
+			<div><label>Closed : </label> ${numClosed}</div>
 		</page:show>
 
 	</div>

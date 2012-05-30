@@ -3,7 +3,6 @@ package org.hcmus.tis.model;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
@@ -45,7 +44,7 @@ public class Event {
 	private Collection<Calendar> calendars;
 
 	@PreRemove
-	private void preRemove() {
+	public void preRemove() {
 		if (calendars != null) {
 			for (Calendar calendar : calendars) {
 				calendar.getEvents().remove(this);

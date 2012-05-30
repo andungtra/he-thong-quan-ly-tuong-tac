@@ -11,14 +11,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Permission;
 import org.hcmus.tis.model.Project;
-import org.springframework.dao.CleanupFailureDataAccessException;
 
 public class CustomAuthorizingRealm extends AuthorizingRealm {
 	public CustomAuthorizingRealm() {

@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -13,10 +12,10 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 public class VelocityMimeMessagePreparator implements MimeMessagePreparator {
 	private String destEmail;
 	private String templateFile;
-	private Map model;
+	private Map<?, ?> model;
 	private String subject;
 	private VelocityEngine velocityEngine;
-	public VelocityMimeMessagePreparator(String destEmail, String templateFile, Map model, String subject){
+	public VelocityMimeMessagePreparator(String destEmail, String templateFile, Map<?, ?> model, String subject){
 		this.setDestEmail(destEmail);
 		this.setTemplateFile(templateFile);
 		this.setModel(model);
@@ -53,10 +52,10 @@ public class VelocityMimeMessagePreparator implements MimeMessagePreparator {
 	public void setDestEmail(String destEmail) {
 		this.destEmail = destEmail;
 	}
-	public Map getModel() {
+	public Map<?, ?> getModel() {
 		return model;
 	}
-	public void setModel(Map model) {
+	public void setModel(Map<?, ?> model) {
 		this.model = model;
 	}
 	public String getSubject() {

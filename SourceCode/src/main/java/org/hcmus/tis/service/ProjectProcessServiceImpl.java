@@ -2,13 +2,9 @@ package org.hcmus.tis.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -16,23 +12,17 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.hcmus.tis.model.ProjectProcess;
-import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
-import org.hcmus.tis.model.xml.XChoices;
 import org.hcmus.tis.model.xml.XField;
 import org.hcmus.tis.model.xml.XFieldImpl;
 import org.hcmus.tis.model.xml.XProjectProcess;
 import org.hcmus.tis.model.xml.XWorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Document;
-
 
 public class ProjectProcessServiceImpl implements ProjectProcessService {
 	@Autowired

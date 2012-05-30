@@ -1,21 +1,13 @@
 package org.hcmus.tis.controller;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hcmus.tis.model.Account;
-import org.hcmus.tis.model.AccountStatus;
-import org.hcmus.tis.model.MemberRole;
-import org.hcmus.tis.model.Permission;
-import org.hcmus.tis.model.Priority;
-import org.hcmus.tis.model.Project;
-import org.hcmus.tis.model.WorkItemStatus;
+
 
 /**
  * Servlet implementation class StartupServlet

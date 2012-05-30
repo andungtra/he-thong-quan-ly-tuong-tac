@@ -1,20 +1,15 @@
 package org.hcmus.tis.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.TypedQuery;
 import javax.servlet.ServletContext;
 
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.service.EmailService.SendMailException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSendException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.web.context.ServletContextAware;
 
 public class AccountServiceImpl implements AccountService, ServletContextAware  {

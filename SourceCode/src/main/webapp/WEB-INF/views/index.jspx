@@ -1,16 +1,19 @@
 <div xmlns:spring="http://www.springframework.org/tags"
 	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
-	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0" class="index">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<spring:message var="app_name" code="application_name"
 		htmlEscape="false" />
 	<spring:url
 		value="/accounts/email/${pageContext['request'].userPrincipal.name}"
-		var="redirect"></spring:url>
+		var="redirect"/>
+	<spring:url value="/login" var="login"/>
 	<SCRIPT type="text/javascript">
 		if ("${pageContext['request'].userPrincipal.name}" != "") {
 			window.location = "${redirect}";
+		}else{
+			window.location = "${login}";
 		}
 	</SCRIPT>
 	<div class="welcome">
