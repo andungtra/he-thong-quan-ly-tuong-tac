@@ -105,6 +105,24 @@
 						path="${fn:escapeXml(versionField)}" />
 				</c:if>
 			</form:form>
+			<SCRIPT type="text/javascript">
+
+		    function abortChange(){
+		    	changed=0;
+		    }
+		    $("input").change( function () {
+		        	changed = 1;
+		    } );
+		
+		    $("select").change(function () {
+		    	changed = 1;
+		      })
+		      .change();
+		    
+		    $("textarea").change( function () {     
+		        	changed = 1;
+		    } );
+    		</SCRIPT>
 		</div>
 	</c:if>
 </jsp:root>
