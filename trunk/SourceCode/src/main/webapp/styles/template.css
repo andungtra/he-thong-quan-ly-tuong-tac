@@ -343,7 +343,8 @@ input[type="text"]
 }
 textarea
 {
-	max-width: 500px;
+	max-width: 80% !important;
+	min-width: 80% !important;
 }
 .fix-panel
 {

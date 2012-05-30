@@ -1,6 +1,7 @@
 var panel = null;
 // create ui tab.
 var testIndex = 0;
+var changed = 0;
 $(function() {
 	$("#menu_menu").tabs(
 			{
@@ -14,6 +15,14 @@ $(function() {
 					}
 				},
 				select : function(event, ui) {
+					if(changed==1){
+						if(!confirm("You don't want to save your change ?")){
+							return false;
+						}else{
+							changed=0;
+							return true;
+						}
+					}
 				},
 				show : function(event, ui) {
 					$(panel).unmask();
