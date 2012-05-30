@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.Collection;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;

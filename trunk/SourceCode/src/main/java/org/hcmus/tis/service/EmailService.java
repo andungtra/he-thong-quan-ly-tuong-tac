@@ -5,6 +5,10 @@ import java.util.Map;
 public interface EmailService {
 	public class SendMailException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private Exception rootCause;
 
 		public Exception getRootCause() {
@@ -21,5 +25,5 @@ public interface EmailService {
 			this.rootCause = rootCause;
 		}
 	}
-	public void sendEmail(String destEmail, String templateFile, Map model, String subject) throws SendMailException;
+	public void sendEmail(String destEmail, String templateFile, Map<?, ?> model, String subject) throws SendMailException;
 }

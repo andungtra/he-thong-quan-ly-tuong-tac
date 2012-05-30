@@ -2,10 +2,6 @@ package org.hcmus.tis.dto;
 
 import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hcmus.tis.util.JsonDateSerializer;
 import org.springframework.format.annotation.DateTimeFormat;

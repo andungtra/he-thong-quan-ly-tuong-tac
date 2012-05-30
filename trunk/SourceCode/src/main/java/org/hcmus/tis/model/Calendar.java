@@ -2,9 +2,7 @@ package org.hcmus.tis.model;
 
 import java.util.Collection;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 

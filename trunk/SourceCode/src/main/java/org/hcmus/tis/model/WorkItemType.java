@@ -2,12 +2,10 @@ package org.hcmus.tis.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.JAXBContext;
@@ -15,10 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
-import org.hcmus.tis.model.xml.XChoices;
 import org.hcmus.tis.model.xml.XField;
-import org.hcmus.tis.model.xml.XFieldImpl;
 import org.hcmus.tis.model.xml.XProjectProcess;
 import org.hcmus.tis.model.xml.XWorkItem;
 import org.springframework.beans.factory.annotation.Autowired;

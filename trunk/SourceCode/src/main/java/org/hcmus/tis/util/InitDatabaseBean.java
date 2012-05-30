@@ -1,7 +1,5 @@
 package org.hcmus.tis.util;
 
-import java.util.Collection;
-
 import javax.annotation.PostConstruct;
 
 import org.hcmus.tis.model.Account;

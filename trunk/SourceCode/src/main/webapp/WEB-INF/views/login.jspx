@@ -1,9 +1,8 @@
-<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<div class="login" xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   
-  <div class="login">
-  <div class="title">Login</div>
+   <div class="title">Login</div>
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
@@ -52,11 +51,8 @@
       <div class="submit">
         <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
         <spring:message code="button_submit" var="submit_label" htmlEscape="false" />
-        <input id="proceed" type="submit" value="${fn:escapeXml(submit_label)}" />
-        <spring:message code="button_reset" var="reset_label" htmlEscape="false" />
-        <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
+        <input id="proceed" type="submit" value="${fn:escapeXml(submit_label)}" />        
       </div>
     </form>
-  </div>
 </div>
 

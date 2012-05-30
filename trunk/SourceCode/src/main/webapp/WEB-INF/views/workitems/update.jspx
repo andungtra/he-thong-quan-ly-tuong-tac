@@ -259,7 +259,7 @@
 					<spring:url value="/comments" var="comments_url">
 						<spring:param name="workItemId" value="${workItem.id}" />
 					</spring:url>
-					<spring:url value="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems/${workItem.id }/history" var="history_url">
+					<spring:url value="/projects/workitems/${workItem.id }/history" var="history_url">
 					</spring:url>
 					<li><a href="${comments_url }">Comments</a></li>
 					<li><a href="${history_url}">History</a></li>

@@ -1,7 +1,6 @@
 package org.hcmus.tis.model;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;

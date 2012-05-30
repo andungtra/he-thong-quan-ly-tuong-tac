@@ -1,12 +1,10 @@
 package org.hcmus.tis.controller;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -15,22 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.web.util.WebUtils;
-import org.apache.velocity.runtime.directive.Foreach;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.dto.SiteMapItem;
-import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Event;
-import org.hcmus.tis.model.EventTest;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
@@ -39,7 +30,6 @@ import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
-import org.hcmus.tis.model.WorkItemHistoryType;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +77,6 @@ public class ProjectController {
 				WorkItemContainer.findAllWorkItemContainers());
 		uiModel.addAttribute("projectprocesses",
 				ProjectProcess.findAllProjectProcesses());
-		List<ProjectProcess> test = ProjectProcess.findAllProjectProcesses();
-		int size = test.size();
 	}
 
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
@@ -108,19 +96,18 @@ public class ProjectController {
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
-		//int num = 0;
-		//while(currentContainer  != null && num <5){
-			while(currentContainer  != null){
+		int num = 0;
+		while(currentContainer  != null && num <3){			
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
-			currentContainer = currentContainer.getParentContainer();
-//			if(currentContainer.getParentContainer().equals(currentContainer))
-//				currentContainer = null;
-//			else currentContainer = currentContainer.getParentContainer();
-//			num++;
-			}
+			
+			if(currentContainer.getParentContainer().equals(currentContainer))
+				currentContainer = null;
+			else currentContainer = currentContainer.getParentContainer();
+			num++;
+		}
 		Collections.reverse(siteMapItems);
 		uiModel.addAttribute("siteMapItems", siteMapItems);
 		return "projects/homepage";
@@ -170,35 +157,50 @@ public class ProjectController {
 		uiModel.addAttribute("project", Project.findProject(id));
 
 		Calendar cal = Calendar.getInstance();
-		// int curWeek = cal.get(Calendar.WEEK_OF_MONTH);
+		
 		long now = cal.get(Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
-		for (WorkItem workItem : workItemsList) {
-			if (workItem.getWorkItemContainer().getId().equals(id)) {
-				if (workItem.getDueDate() != null) {
-
-					Calendar dueTime = Calendar.getInstance();
-					dueTime.setTime(workItem.getDueDate());
-					long due = dueTime.get(Calendar.DAY_OF_YEAR);
-					if (due < now) {
-						if (overdues.size() < 10)
-							overdues.add(workItem);
-					}
-
-					else if (due - now < 7)
-						indues.add(workItem);
+		List<WorkItem> workItemsList = WorkItem.findWorkItemsByProject(Project.findProject(id)).getResultList();
+		int numNew = 0;
+		int numClosed =0 ;
+		int numInProcess=0;
+		int numResolved =0;
+		for (WorkItem workItem : workItemsList) {			
+			if (workItem.getDueDate() != null) {
+				Calendar dueTime = Calendar.getInstance();
+				dueTime.setTime(workItem.getDueDate());
+				long due = dueTime.get(Calendar.DAY_OF_YEAR);
+				if (due < now) {
+					if (overdues.size() < 10)
+						overdues.add(workItem);
 				}
-			}
+
+				else if (due - now < 7)
+					indues.add(workItem);
+			}	
+			if(workItem.getStatus().getName().equals("New"))
+				numNew++;
+			else if(workItem.getStatus().getName().equals("Closed"))
+				numClosed++;
+			else if(workItem.getStatus().getName().equals("In Process"))
+				numInProcess++;
+			else if(workItem.getStatus().getName().equals("Resolved"))
+				numResolved++;
 		}
 
 		List<WorkItemHistory> listHistorys = WorkItemHistory
 				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);
+		
+		
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
 		uiModel.addAttribute("itemId", id);
+		uiModel.addAttribute("numNew", numNew);
+		uiModel.addAttribute("numClosed", numClosed);
+		uiModel.addAttribute("numInProcess", numInProcess);
+		uiModel.addAttribute("numResolved", numResolved);
 		return "projects/overview";
 	}
 
@@ -447,8 +449,13 @@ public class ProjectController {
 		restResponse.getResponse().getData().add(event);
 		return restResponse;
 	}
-
-	public void createWorkItemContainer(Long projectId) {
-
+	
+	@RequestMapping(value = "/workitems/{workItemId}/history", produces = "text/html")
+	public String history(Model uiModel,@PathVariable("workItemId") Long id) {
+		List<WorkItemHistory> history = WorkItemHistory
+				.findAllWorkItemHistorysOfWorkItem(id, 10);
+		uiModel.addAttribute("history", history);
+		uiModel.addAttribute("workItemId", id);
+		return "workitems/history";
 	}
 }

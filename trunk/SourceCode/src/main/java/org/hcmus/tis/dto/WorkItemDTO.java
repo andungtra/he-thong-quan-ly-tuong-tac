@@ -1,7 +1,5 @@
 package org.hcmus.tis.dto;
 
-import org.hcmus.tis.model.Priority;
-
 public class WorkItemDTO {
 	public long DT_RowId;	
 	private String lName;
