@@ -60,7 +60,7 @@ public class ProjectProcessController {
 			if (item.isIsDeleted() != true) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName(item.getName());
+				dto.setName("<a href='../projectprocesses/"+item.getId()+"'?form>"+item.getName()+"</a>");
 				dto.setDescription(item.getDescription());
 				reply.getAaData().add(dto);
 			}

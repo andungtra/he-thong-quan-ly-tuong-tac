@@ -85,7 +85,7 @@
 	<form:update labelBackList="Tasks" id="fu_org_hcmus_tis_model_WorkItem"
 		label="${workItemType.name } : ${workItem.id }"
 		modelAttribute="workItem"
-		path="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems"
+		path="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems" cancel ="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/task"
 		versionField="Version" z="user-managed">
 		<field:input field="title" id="c_org_hcmus_tis_model_WorkItem_title"
 			required="true" z="user-managed" />

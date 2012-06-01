@@ -77,10 +77,10 @@
 					<c:if test="${not empty labelBackList}">
 						<c:set value="${labelBackList}" var="label_Back"/>
 					</c:if>
-					<a href="${cancel_url}">${label_Back}</a> >					
+					<a href="${cancel_url}" onclick="abortChange()">${label_Back}</a> >					
 					${title_msg}
 					<div class="submit" >
-						<a href="${cancel_url}">
+						<a href="${cancel_url}" onclick="abortChange()">
 							<button>Cancel</button>
 						</a>						
 					</div>
@@ -90,7 +90,7 @@
 							htmlEscape="false" />
 						<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
 						<input id="proceed" type="submit"
-							value="${fn:escapeXml(save_button)}" />
+							value="${fn:escapeXml(save_button)}" onclick="abortChange()"/>
 					</div>
 					<div class="border-bottom"/>
 				</div>
