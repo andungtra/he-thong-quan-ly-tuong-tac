@@ -167,7 +167,7 @@ public class ProjectController {
 		int numInProcess=0;
 		int numResolved =0;
 		for (WorkItem workItem : workItemsList) {			
-			if (workItem.getDueDate() != null) {
+			if (workItem.getDueDate() != null && !workItem.getStatus().getName().equals("Closed")) {
 				Calendar dueTime = Calendar.getInstance();
 				dueTime.setTime(workItem.getDueDate());
 				long due = dueTime.get(Calendar.DAY_OF_YEAR);
@@ -210,7 +210,7 @@ public class ProjectController {
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
 				.getProjectProcess().getWorkItemTypes());
-		return "projects/task";
+		return "projects/workitems";
 	}
 
 	@RequestMapping(value = "/{id}/roadmap", produces = "text/html")

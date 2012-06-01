@@ -2,7 +2,7 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_org_hcmus_tis_model_WorkItem" object="${workitem}" path="/workitems" z="lC/dccXLoVPP5D5b7xbKnNcUqbE=">
+    <page:show id="ps_org_hcmus_tis_model_WorkItem" object="${workitem}" path="/projects/${workitem.workItemContainer.parentProjectOrMyself.id}/workitems" llist="/projects/${workitem.workItemContainer.parentProjectOrMyself.id }/task" z="lC/dccXLoVPP5D5b7xbKnNcUqbE=">
         <field:display field="title" id="s_org_hcmus_tis_model_WorkItem_title" object="${workitem}" z="kGeygrNX8VR7sRR+89acCCHFpQ4="/>
          <field:display field="description" id="s_org_hcmus_tis_model_WorkItem_description" object="${workitem}" z="OkRbHvTZwTg9eHyHS4hKBOvpjcg="/>
         <div class="left-panel">

@@ -296,9 +296,8 @@ public class AccountController {
 			if (!item.getStatus().equals(AccountStatus.DELETED)) {
 				AccountDTO dto = new AccountDTO();
 				dto.DT_RowId = item.getId();
-				dto.setLastName(item.getLastName());
-				dto.setFirstName(item.getFirstName());
-
+				dto.setFirstName("<a href='../accounts/ID/"+item.getId()+"'>"+item.getFirstName()+"</a>");
+				dto.setLastName(item.getLastName());	
 				dto.setEmail(item.getEmail());
 				dto.setStatus(item.getStatus().name());
 				reply.getAaData().add(dto);

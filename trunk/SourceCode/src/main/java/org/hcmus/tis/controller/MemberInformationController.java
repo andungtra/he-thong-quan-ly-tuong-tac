@@ -1,3 +1,5 @@
+
+
 package org.hcmus.tis.controller;
 
 import java.util.Collection;
@@ -180,7 +182,7 @@ public class MemberInformationController {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
 				dto.DT_RowId = item.getId();
-				dto.setFirstName(item.getAccount().getFirstName());
+				dto.setFirstName("<a href='../accounts/ID/"+item.getAccount().getId()+"'>"+item.getAccount().getFirstName()+"</a>");
 				dto.setLastName(item.getAccount().getLastName());
 				dto.setMemberRole(item.getMemberRole().getName());
 				reply.getAaData().add(dto);
