@@ -18,7 +18,7 @@
 		<!-- <spring:param name="fromProjectForm"></spring:param> -->
 	</spring:url>
 	<c:set var="redirectUrl" value="/projects/${projectId}/members"></c:set>
-	<spring:url value="/memberinformations" var="remove_url" />
+	<spring:url value="/projects/${projectId}/memberinformations" var="remove_url" />
 
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both; height: 10px;" />

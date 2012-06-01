@@ -319,27 +319,26 @@ input[type="search"]
 	width: 200px;
 }
 
-input[type="submit"], input[type="reset"],  input[type="button"], button
+input[type="submit"],input[type="file"], input[type="reset"],  input[type="button"], button
 {
 	padding: 4px;
 	font-weight: bold;
-	background-color: #ddd;
-	border: solid 1px #ccc;
-	color: #666;	
+	background-color: #666 !important;
+	border: solid 1px #666;
+	color: #fff;	
 	border-radius:2px;	
 }
 
-input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover
+input[type="submit"]:hover,input[type="file"]:hover, input[type="reset"]:hover, input[type="button"]:hover, button:hover
 {
-	background-color: #ccc;
+	background-color: #ccc !important;
 	border-color: #bbb;
 	color: #333;
 }
 
 input[type="text"]
 {
-	max-width: 100% !important;
-	
+	height: 20px;
 }
 textarea
 {
@@ -359,9 +358,13 @@ textarea
 	color: #008040;
 	font-size:16px;
 	padding-top:5px;
-	padding-bottom:5px;
-	border-bottom: solid 1px #aaa;
+	padding-bottom:5px;	
 	margin-bottom: 10px;
+}
+
+.border-bottom{
+	height:10px;
+	border-bottom: solid 1px #aaa;
 }
 .panel-title a{
 	color: #008040;
@@ -583,4 +586,17 @@ textarea
 }
 .comment{
 	color:#008040;
+}
+.comment-box{
+	background-color: #eee;
+	border: solid 1px #aaa;
+	margin-top: -2px;
+	padding: 2px 4px 2px 10px;
+}
+.box{
+	height: 200px;
+	overflow: auto;
+	border: solid 1px #aaa;
+	border-left:none;
+	margin-bottom: 10px;
 }

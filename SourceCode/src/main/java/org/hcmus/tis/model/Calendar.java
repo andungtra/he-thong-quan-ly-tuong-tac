@@ -1,5 +1,6 @@
 package org.hcmus.tis.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,11 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord
-public class Calendar {
+public class Calendar implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@ManyToMany(cascade={CascadeType.PERSIST})
 	private Collection<Event> events;
 	@OneToOne(mappedBy="calendar")

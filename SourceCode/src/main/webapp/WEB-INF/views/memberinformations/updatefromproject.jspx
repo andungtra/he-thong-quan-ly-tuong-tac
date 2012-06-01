@@ -7,7 +7,9 @@
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url value="/projects/${memberInformation.project.id }/memberinformations" var="create_url"></spring:url>
+	<spring:url
+		value="/projects/${memberInformation.project.id }/memberinformations"
+		var="create_url"></spring:url>
 	<form:form action="${create_url }" method="PUT">
 		<input type="hidden" name="redirectUrl" value="${redirectUrl }" />
 		<input type="hidden" name="project"
@@ -16,7 +18,22 @@
 			value="${memberInformation.id }" />
 		<input type="hidden" name="account"
 			value="${memberInformation.account.id }" />
-		<util:fixpanel id="" title="Update member">
+		<div class="fix-panel">
+			<div class="panel-title">
+				<div class="panel-title">
+					Add member to project
+					<div class="submit">
+						<spring:url value="/projects/${projectId}/members"
+							var="cancel_url" />
+						<a href="${cancel_url}"> <input type="button" value="Cancel" />
+						</a>
+					</div>
+					<div class="submit">
+						<input type="submit" value="Save" />
+					</div>
+					<div class="border-bottom" />
+				</div>
+			</div>
 			<div>
 				<label for="email"> Account : </label> <input disabled="disabled"
 					type="text" id="email" name="email"
@@ -26,7 +43,8 @@
 				<label>Role</label> <SELECT name="memberRole">
 					<c:forEach items="${memberRoles }" var="memberRole">
 						<c:choose>
-							<c:when	test="${memberRole.id == memberInformation.memberRole.id }">
+							<c:when
+								test="${memberRole.id == memberInformation.memberRole.id }">
 								<option selected="selected" value="${memberRole.id }">${memberRole.name}</option>
 							</c:when>
 							<c:otherwise>
@@ -36,7 +54,6 @@
 					</c:forEach>
 				</SELECT>
 			</div>
-		</util:fixpanel>
-		<INPUT type="submit" value="Save" />
+		</div>
 	</form:form>
 </div>

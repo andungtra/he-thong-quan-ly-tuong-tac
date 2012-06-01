@@ -103,7 +103,7 @@ public class ProjectController {
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
 			
-			if(currentContainer.getParentContainer().equals(currentContainer))
+			if(currentContainer.equals(currentContainer.getParentContainer()))
 				currentContainer = null;
 			else currentContainer = currentContainer.getParentContainer();
 			num++;

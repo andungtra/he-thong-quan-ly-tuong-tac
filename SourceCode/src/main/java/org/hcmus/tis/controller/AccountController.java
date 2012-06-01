@@ -225,7 +225,7 @@ public class AccountController {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getProject().getId();
 				dto.setName("<a href='../../../TIS/projects/"
-						+ item.getProject().getId() + "'>"
+						+ item.getProject().getId() + "?goto=true'>"
 						+ item.getProject().getName() + "</a>");
 				dto.setDescription(item.getProject().getDescription());
 				reply.getAaData().add(dto);

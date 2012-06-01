@@ -24,10 +24,25 @@
 			});
 		});
 	</SCRIPT>
-	<panel:fixpanel title="Invite member to project" id="">
+	
 		<form:form action="${create_url }" method="POST">
+		<div class="fix-panel">
+			<div class="panel-title">
+				<div class="panel-title">Add member to project
+					<div class="submit" >
+						<spring:url value="/projects/${projectId}/members" var="cancel_url" />
+						<a href="${cancel_url}">
+							<input type="button" value="Cancel"/>
+						</a>						
+					</div>
+					<div class="submit">
+						<input type="submit" value="Add" />
+					</div>
+					<div class="border-bottom"/>					
+				</div>
+			</div>
 			<input type="hidden" name="redirectUrl" value="${redirectUrl }" />
-			<INPUT type="hidden" name="projectId" value="${projectId}" />
+			<input type="hidden" name="projectId" value="${projectId}" />
 
 			<div>
 				<label for="email">Account : </label> <input type="email" id="email"
@@ -51,10 +66,7 @@
 				</select>
 			</div>
 			<div class="clear" />
-			<br />
-			<div>
-				<INPUT type="submit" value="Add" />
 			</div>
 		</form:form>
-	</panel:fixpanel>
+	
 </div>

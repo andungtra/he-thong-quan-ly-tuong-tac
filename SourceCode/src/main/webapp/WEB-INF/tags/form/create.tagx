@@ -76,7 +76,7 @@
 					</c:if>
 					<a href="${cancel_url}">${label_Back}</a> >
 					
-					${title_msg}					
+					${title_msg}
 					<div class="submit" >					
 						<a href="${cancel_url}">
 							<input type="button" value="Cancel"/>
@@ -95,6 +95,8 @@
 							htmlEscape="false" />
 						<input id="proceed" type="submit" value="${fn:escapeXml(save_button)}" />
 					</div>
+					
+					<div class="border-bottom"/>
 					
 				</div>
 				<div class="clear" />
