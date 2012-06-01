@@ -131,9 +131,14 @@ public class WorkItemController {
 		String name = principal.getName();
 		Account loginAccount = Account.findAccountsByEmailEquals(name)
 				.getSingleResult();
-		MemberInformation memberInformation = MemberInformation
+		MemberInformation memberInformation =null;
+		
+		try {
+			memberInformation= MemberInformation
+		
 				.findMemberInformationsByAccountAndProject(loginAccount,
 						project).getSingleResult();
+		}catch(Exception ex){}
 		if (memberInformation == null) {
 			throw new NotPermissionException();
 		}

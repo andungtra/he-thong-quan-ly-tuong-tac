@@ -13,7 +13,7 @@
 		<page:show create="false" delete="false"
 			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
 			path="/projects" update="false" z="user-managed"
-			label="Project ${project.name}">
+			label="Project : ${project.name}">
 
 			<field:display field="description"
 				id="s_org_hcmus_tis_model_Project_description" object="${project}"
@@ -34,11 +34,21 @@
 						object="${project}" z="user-managed" />
 				</c:otherwise>
 			</c:choose>
-			<h3>WorkItem</h3>
-			<div><label>New : </label> ${numNew}</div>
-			<div><label>In process : </label> ${numInProcess}</div>
-			<div><label>Resolved : </label> ${numResolved}</div>
-			<div><label>Closed : </label> ${numClosed}</div>
+			<util:fixpanel title="WorkItem status" id="">
+				<div>
+					<label>New : </label> ${numNew}
+				</div>
+				<div>
+					<label>In process : </label> ${numInProcess}
+				</div>
+				<div>
+					<label>Resolved : </label> ${numResolved}
+				</div>
+				<div>
+					<label>Closed : </label> ${numClosed}
+				</div>
+			</util:fixpanel>
+
 		</page:show>
 
 	</div>
@@ -47,39 +57,40 @@
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
 				<c:forEach items="${overdues}" var="item">
-					<spring:url value="/projects/${project.id }/workitems/${item.id }?form" var="link"></spring:url>
-					<li>
-						<span>${item.dueDate}</span> : 
-						<span><a href="${link }">${item.title}</a></span>
-					</li>
+					<spring:url
+						value="/projects/${project.id }/workitems/${item.id }?form"
+						var="link"></spring:url>
+					<li><span>${item.dueDate}</span> : <span><a
+							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="Due in this week" id="">
+		<util:fixpanel title="Due this week" id="">
 			<ul class="due">
 				<c:forEach items="${indues}" var="item">
-					<spring:url value="/projects/${project.id }/workitems/${item.id }?form" var="link"></spring:url>
-					<li>
-						<span>${item.dueDate}</span> : 
-						<span><a href="${link }">${item.title}</a></span>
-					</li>
+					<spring:url
+						value="/projects/${project.id }/workitems/${item.id }?form"
+						var="link"></spring:url>
+					<li><span>${item.dueDate}</span> : <span><a
+							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
 	</div>
 	<div class="clear" />
 	<div>
-		<util:fixpanel id="" title="Activity">
-			
-				<c:forEach var="item" items="${listHistorys}">
-					<spring:url value="/projects/${project.id }/workitems/${item.workItem.id }?form" var="link"></spring:url>
-					<div class="history"> <span class="changedBy">${item.changedBy.firstName}</span> ${item.type} workitem <a href="${link }">${item.title }</a>
-					<span class="time"> at ${item.dateLastEdit}</span>
-					</div>					
-				</c:forEach>
-			
-
+		<util:fixpanel id="" title="Recent activity" bt="true">
+			<c:forEach var="item" items="${listHistorys}">
+				<spring:url
+					value="/projects/${project.id }/workitems/${item.workItem.id }?form"
+					var="link"></spring:url>
+				<div class="history">
+					<span class="changedBy">${item.changedBy.firstName}</span>
+					${item.type} workitem <a href="${link }">${item.title }</a> <span
+						class="time"> at ${item.dateLastEdit}</span>
+				</div>
+			</c:forEach>
 		</util:fixpanel>
 	</div>
 </div>

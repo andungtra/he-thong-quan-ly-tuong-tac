@@ -92,7 +92,7 @@
 						<input id="proceed" type="submit"
 							value="${fn:escapeXml(save_button)}" />
 					</div>
-					
+					<div class="border-bottom"/>
 				</div>
 				<form:errors cssClass="errors" delimiter="&lt;p/&gt;" />
 				<jsp:doBody />

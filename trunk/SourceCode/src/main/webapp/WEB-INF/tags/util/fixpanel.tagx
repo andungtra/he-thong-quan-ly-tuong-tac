@@ -21,7 +21,8 @@
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 	<jsp:directive.attribute name="width" type="java.lang.String"
 		rtexprvalue="true" description="width of panel" />
-
+	<jsp:directive.attribute name="bt" type="java.lang.Boolean"
+		rtexprvalue="true" description="border bottom" />
 	<c:if test="${empty render or render}">
 		<c:if test="${empty openPane}">
 			<c:set value="true" var="openPane" />
@@ -41,7 +42,12 @@
 
 		<div class="fix-panel" style="width: ${width}">
 			<c:if test="${not empty title}">
-				<div class="panel-title">${title}</div>
+				<div class="panel-title">${title}
+					<c:if test="${bt eq true}">
+						<div class="border-bottom"/>
+					</c:if>	
+				</div>
+				
 			</c:if>
 			<div class="panel-content">
 				<jsp:doBody />

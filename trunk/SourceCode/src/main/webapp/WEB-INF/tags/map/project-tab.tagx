@@ -22,7 +22,7 @@
 			<li><a href="${projectRoadmap}">Plan</a></li>
 			<li><a href="${projectMember}">Members</a></li>
 			<shiro:hasPermission name="project:update">
-				<li><a href="${projectSetting}">Setting</a></li>
+				<li><a href="${projectSetting}">Settings</a></li>
 			</shiro:hasPermission>
 		</ul>
 	</div>
