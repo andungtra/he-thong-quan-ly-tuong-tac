@@ -119,13 +119,11 @@ public class AccountController {
 	@RequestMapping(value = "/ID/{id}", produces = "text/html")
 	public String showAccount(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("account", accountService.findAccount(id));
-		uiModel.addAttribute("itemId", id);
 		return "accounts/show";
-		// return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/home", produces = "text/html")
-	public String homepage(HttpServletRequest request, Model uiModel) {
+	public String homepage() {
 		return "accounts/redirect";
 	}
 
@@ -142,20 +140,12 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/{id}/home", produces = "text/html")
-	public String home(@PathVariable("id") Long id, Model uiModel,
-			HttpSession session) {
-		uiModel.addAttribute("account", accountService.findAccount(id));
-		uiModel.addAttribute("itemId", id);
-		//session.setAttribute("account", accountService.findAccount(id));
+	public String home() {
 		return "accounts/home";
-		// return "accounts/redirect";
 	}
 
 	@RequestMapping(value = "/{id}/projects", produces = "text/html")
-	public String showProjects(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("account", accountService.findAccount(id));
-		uiModel.addAttribute("itemId", id);
-		uiModel.addAttribute("projects", Project.findProjectsByAccount(id));
+	public String showProjects() {
 		return "accounts/projects";
 	}
 
@@ -208,17 +198,16 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "mListProject", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1" })
+			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
-			String sEcho, String sSearch,String sSearch_0, String sSearch_1, HttpSession session) {
+			String sEcho, String sSearch, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-
 		Account acc = (Account) session.getAttribute("account");
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationEntriesBaseProject(iDisplayStart, iDisplayLength,
-						sSearch, sSearch_0, sSearch_1);
+				.findMemberInformationEntriesBaseProject(iDisplayStart,
+						iDisplayLength, sSearch);
 		for (MemberInformation item : list) {
 			if (item.getAccount().getEmail().equals(acc.getEmail())
 					&& item.getDeleted() == false) {
@@ -287,21 +276,20 @@ public class AccountController {
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch, String sSearch_0, String sSearch_1, String sSearch_2, String sSearch_3 ) {
+			String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		List<Account> list = Account.findAccountEntries(iDisplayStart,
-				iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2, sSearch_3);
+				iDisplayLength, sSearch);
 		for (Account item : list) {
-			if (!item.getStatus().equals(AccountStatus.DELETED)) {
-				AccountDTO dto = new AccountDTO();
-				dto.DT_RowId = item.getId();
-				dto.setFirstName("<a href='../accounts/ID/"+item.getId()+"'>"+item.getFirstName()+"</a>");
-				dto.setLastName(item.getLastName());	
-				dto.setEmail(item.getEmail());
-				dto.setStatus(item.getStatus().name());
-				reply.getAaData().add(dto);
-			}
+			AccountDTO dto = new AccountDTO();
+			dto.DT_RowId = item.getId();
+			dto.setFirstName("<a href='../accounts/ID/" + item.getId() + "'>"
+					+ item.getFirstName() + "</a>");
+			dto.setLastName(item.getLastName());
+			dto.setEmail(item.getEmail());
+			dto.setStatus(item.getStatus().name());
+			reply.getAaData().add(dto);
 		}
 		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
