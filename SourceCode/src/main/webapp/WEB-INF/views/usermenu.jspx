@@ -3,6 +3,6 @@
 	xmlns:tab="urn:jsptagdir:/WEB-INF/tags/map" id="myMenu" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<tab:user-tab id="${itemId}" />
+	<tab:user-tab id="${account.id}" />
 	<div class="clear" />
 </div>

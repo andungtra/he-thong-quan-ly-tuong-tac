@@ -1,12 +1,13 @@
 package org.hcmus.tis.model;
 
-
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -31,6 +33,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -154,7 +157,7 @@ public class WorkItem {
 			history.setType(WorkItemHistoryType.update);
 			writeHistory(history);
 		}
-		
+
 	}
 
 	public ObjectFactory getObjectFactory() {
@@ -200,9 +203,10 @@ public class WorkItem {
 	}
 
 	public static TypedQuery<WorkItem> findWorkItemsByProject(Project project) {
-		String jql = "SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+		String jql = "SELECT workItem FROM WorkItem workItem WHERE workItem.status.name <> :status AND (workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId)";
 		TypedQuery<WorkItem> query = entityManager().createQuery(jql,
 				WorkItem.class);
+		query.setParameter("status", "Closed");
 		query.setParameter("containerId", project.getId());
 		return query;
 	}
@@ -255,4 +259,22 @@ public class WorkItem {
 	public void setSubcribers(Collection<MemberInformation> subcribers) {
 		this.subcribers = subcribers;
 	}
-}
+
+	public static TypedQuery<WorkItem> findAllWorkItemsByProject(
+			Project findProject) {
+		// TODO Auto-generated method stub
+		String jql = "SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
+		TypedQuery<WorkItem> query = entityManager().createQuery(jql,
+				WorkItem.class);
+		query.setParameter("containerId", findProject.getId());
+		return query;
+	}
+
+	public static List listStatusByProject(Project findProject) {
+		// TODO Auto-generated method stub
+		String jql = "SELECT workItem.status.name, count(workItem) FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId GROUP BY workItem.status.name";
+		Query query = entityManager().createQuery(jql);
+		query.setParameter("containerId", findProject.getId());
+		return query.getResultList();
+	}
+} 

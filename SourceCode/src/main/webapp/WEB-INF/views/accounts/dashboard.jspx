@@ -12,6 +12,9 @@
 	<div class="left-panel" id="overview">
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
+				<c:if test="${empty overdue}">
+					You don't have any overdue !
+				</c:if>
 				<c:forEach items="${overdues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
 					<li><span>${item.dueDate}</span> : <span><a
@@ -20,8 +23,11 @@
 			</ul>
 		</util:fixpanel>
 
-		<util:fixpanel title="Due in this week" id="">
+		<util:fixpanel title="Due this week" id="">
 			<ul class="due">
+				<c:if test="${empty indues}">
+					You don't have any due this week !
+				</c:if>
 				<c:forEach items="${indues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
 					<li><span>${item.dueDate}</span> : <span><a
@@ -33,6 +39,9 @@
 	<div class="right-panel">
 		<util:fixpanel title="Incomming Event" id="">
 			<ul class="overdue">
+				<c:if test="${empty newEvent}">
+					You don't have any event !
+				</c:if>
 				<c:forEach items="${newEvent}" var="item">
 					<li><span>${item.startDate}</span> : <span>${item.name}</span>
 					</li>

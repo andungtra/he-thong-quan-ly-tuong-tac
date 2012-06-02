@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +64,6 @@ public class ProjectController {
 		uiModel.asMap().clear();
 		project.persist();
 		uiModel.addAttribute("projectId", project.getId());
-		// return "projects/gotoproject";
 		uiModel.addAttribute("projects", Project.findAllProjects());
 		return "projects/list";
 	}
@@ -82,10 +82,8 @@ public class ProjectController {
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
 	@RequiresPermissions("project:read")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("itemId", id);
 		Project p = Project.findProject(id);
 		uiModel.addAttribute("project", p);
-		uiModel.addAttribute("itemName", p.getName());
 		return "projects/show";
 	}
 
@@ -151,8 +149,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")
-	public String overview(@PathVariable("id") Long id, Model uiModel,
-			HttpServletRequest request, HttpServletResponse response)
+	public String overview(@PathVariable("id") Long id, Model uiModel)
 			throws IOException {
 		uiModel.addAttribute("project", Project.findProject(id));
 
@@ -161,11 +158,8 @@ public class ProjectController {
 		long now = cal.get(Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = WorkItem.findWorkItemsByProject(Project.findProject(id)).getResultList();
-		int numNew = 0;
-		int numClosed =0 ;
-		int numInProcess=0;
-		int numResolved =0;
+		List<WorkItem> workItemsList = WorkItem.findAllWorkItemsByProject(Project.findProject(id)).getResultList();
+		
 		for (WorkItem workItem : workItemsList) {			
 			if (workItem.getDueDate() != null && !workItem.getStatus().getName().equals("Closed")) {
 				Calendar dueTime = Calendar.getInstance();
@@ -178,17 +172,9 @@ public class ProjectController {
 
 				else if (due - now < 7)
 					indues.add(workItem);
-			}	
-			if(workItem.getStatus().getName().equals("New"))
-				numNew++;
-			else if(workItem.getStatus().getName().equals("Closed"))
-				numClosed++;
-			else if(workItem.getStatus().getName().equals("In Process"))
-				numInProcess++;
-			else if(workItem.getStatus().getName().equals("Resolved"))
-				numResolved++;
+			}
 		}
-
+		List listStatus = WorkItem.listStatusByProject(Project.findProject(id));
 		List<WorkItemHistory> listHistorys = WorkItemHistory
 				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);
@@ -196,11 +182,8 @@ public class ProjectController {
 		
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
+		uiModel.addAttribute("listStatus", listStatus);
 		uiModel.addAttribute("itemId", id);
-		uiModel.addAttribute("numNew", numNew);
-		uiModel.addAttribute("numClosed", numClosed);
-		uiModel.addAttribute("numInProcess", numInProcess);
-		uiModel.addAttribute("numResolved", numResolved);
 		return "projects/overview";
 	}
 

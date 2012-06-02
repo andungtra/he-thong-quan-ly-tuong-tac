@@ -76,7 +76,6 @@ public class ProjectProcessController {
 			Model uiModel) {
 		ProjectProcess projectProcess = projectProcessService
 				.findProjectProcess(id);
-		// projectProcessService.deleteProjectProcess(projectProcess);
 		projectProcess.setIsDeleted(true);
 		projectProcess.merge();
 		uiModel.asMap().clear();

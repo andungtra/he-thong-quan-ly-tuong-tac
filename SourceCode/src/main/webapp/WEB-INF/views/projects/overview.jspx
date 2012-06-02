@@ -34,21 +34,15 @@
 						object="${project}" z="user-managed" />
 				</c:otherwise>
 			</c:choose>
-			<util:fixpanel title="WorkItem status" id="">
-				<div>
-					<label>New : </label> ${numNew}
-				</div>
-				<div>
-					<label>In process : </label> ${numInProcess}
-				</div>
-				<div>
-					<label>Resolved : </label> ${numResolved}
-				</div>
-				<div>
-					<label>Closed : </label> ${numClosed}
-				</div>
-			</util:fixpanel>
-
+			<c:if test="${not empty listStatus}">
+				<util:fixpanel title="WorkItem status" id="">
+					<c:forEach items="${listStatus}" var="item">
+						<div>
+							<label>${item[0]} : </label> ${item[1]}
+						</div>
+					</c:forEach>
+				</util:fixpanel>
+			</c:if>
 		</page:show>
 
 	</div>
@@ -56,6 +50,9 @@
 	<div class="right-panel">
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
+				<c:if test="${empty overdue}">
+					You don't have any overdue !
+				</c:if>
 				<c:forEach items="${overdues}" var="item">
 					<spring:url
 						value="/projects/${project.id }/workitems/${item.id }?form"
@@ -68,6 +65,9 @@
 
 		<util:fixpanel title="Due this week" id="">
 			<ul class="due">
+				<c:if test="${empty indues}">
+					You don't have any due this week !
+				</c:if>
 				<c:forEach items="${indues}" var="item">
 					<spring:url
 						value="/projects/${project.id }/workitems/${item.id }?form"
@@ -81,6 +81,9 @@
 	<div class="clear" />
 	<div>
 		<util:fixpanel id="" title="Recent activity" bt="true">
+			<c:if test="${empty listHistorys}">
+					Don't have any activity !
+			</c:if>
 			<c:forEach var="item" items="${listHistorys}">
 				<spring:url
 					value="/projects/${project.id }/workitems/${item.workItem.id }?form"
