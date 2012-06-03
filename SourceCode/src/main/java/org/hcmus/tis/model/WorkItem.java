@@ -138,14 +138,14 @@ public class WorkItem {
 	void prePersit() {
 		this.dateCreated = new Date();
 		WorkItemHistory history = new WorkItemHistory();
-		history.setType(WorkItemHistoryType.create);
+		history.setType(WorkItemHistoryType.created);
 		writeHistory(history);
 	}
 
 	@PreRemove
 	void preRemove() {
 		WorkItemHistory history = new WorkItemHistory();
-		history.setType(WorkItemHistoryType.delete);
+		history.setType(WorkItemHistoryType.deleted);
 		writeHistory(history);
 	}
 
@@ -154,7 +154,7 @@ public class WorkItem {
 		WorkItemHistory history = new WorkItemHistory();
 		WorkItem oldWorKitem = WorkItem.findWorkItem(this.getId());
 		if (oldWorKitem.getSubcribers().size() == this.getSubcribers().size()) {
-			history.setType(WorkItemHistoryType.update);
+			history.setType(WorkItemHistoryType.updated);
 			writeHistory(history);
 		}
 
