@@ -1,7 +1,7 @@
 <html>
 <body>
-<p><b>${member}</b> have ${action} <b>task ${workitem}</b> at ${time}</p>
-<p> You received this email because you subscribed to this workitem.<br />
+<p><b>${member}</b> ${action} <b>task ${workitem}</b> at ${time}</p>
+<p> You received this email because you subscribed to this task.<br />
 </body>
 </body>
 </html>

@@ -4,6 +4,8 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.CommentController;
@@ -26,6 +28,11 @@ privileged aspect CommentController_Roo_Controller {
     @RequestMapping(params = "form", produces = "text/html")
     public String CommentController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Comment());
+        List<String[]> dependencies = new ArrayList<String[]>();
+        if (WorkItem.countWorkItems() == 0) {
+            dependencies.add(new String[] { "workitem", "workitems" });
+        }
+        uiModel.addAttribute("dependencies", dependencies);
         return "comments/create";
     }
     

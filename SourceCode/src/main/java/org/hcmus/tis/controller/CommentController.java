@@ -7,26 +7,36 @@ import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.shiro.SecurityUtils;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.service.EmailService;
+import org.hcmus.tis.util.NotifyAboutWorkItemTask;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RequestMapping("/comments")
+@RequestMapping("/projects/{projectId}/workitems/{workitemid}/comments")
 @Controller
 @RooWebScaffold(path = "comments", formBackingObject = Comment.class)
 public class CommentController {
+	@Autowired
+	private EmailService emailService;
+	@Autowired
+	private TaskExecutor taskExecutor;
 	@RequestMapping(produces = "text/html")
 	public String listCommentsByWorkItem(
-			@RequestParam(value = "workItemId") Long workItemId,
+			@PathVariable("workitemid") Long workItemId,
 			Integer firstResult, Integer maxResult, Model uiModel) {
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
 		TypedQuery<Comment> commentsQuery = Comment
@@ -42,20 +52,19 @@ public class CommentController {
 		commentsQuery.setMaxResults(maxResult);
 		List<Comment> comments = commentsQuery.getResultList();
 		uiModel.addAttribute("comments", comments);
-		uiModel.addAttribute("workItemId", workItemId);
+		uiModel.addAttribute("workitem", workItem);
 		return "comments/listByWorkItem";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Comment comment, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest,
-			Principal principal) {
+			Model uiModel) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, comment);
 			return "comments/create";
 		}
 		uiModel.asMap().clear();
-		String name = principal.getName();
+		String name = (String) SecurityUtils.getSubject().getPrincipal();
 		WorkItem workItem = comment.getWorkItem();
 		Project project = workItem.getWorkItemContainer().getParentProjectOrMyself();
 		Account loginAccount = Account.findAccountsByEmailEquals(name)
@@ -65,7 +74,9 @@ public class CommentController {
 						project).getSingleResult();
 		comment.setProjectMember(memberInformation);
 		comment.persist();
-		return "redirect:/comments?workItemId=" + comment.getWorkItem().getId();
+		workItem.getSubcribers().toArray();
+		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "commented", emailService));
+		return "redirect:/projects/" + project.getId() + "/workitems/" + workItem.getId() + "/comments";
 	}
 
 	public String list(Integer page, Integer size, Model uiModel) {
@@ -85,6 +96,14 @@ public class CommentController {
 		}
 		addDateTimeFormatPatterns(uiModel);
 		return "comments/list";
+	}
+
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 
 }

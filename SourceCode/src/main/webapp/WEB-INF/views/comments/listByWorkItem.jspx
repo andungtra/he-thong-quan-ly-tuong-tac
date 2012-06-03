@@ -18,9 +18,9 @@
 			</div>
 		</c:forEach>
 	</div>
-	<spring:url value="/comments" var="action_url"></spring:url>
+	<spring:url value="/projects/${workitem.workItemContainer.parentProjectOrMyself.id }/workitems/${workitem.id}/comments" var="action_url"></spring:url>
 	<FORM action="${ action_url}" method="POST">
-		<INPUT type="hidden" name="workItem" value="${workItemId }" />
+		<INPUT type="hidden" name="workItem" value="${workitem.id }" />
 		<TEXTAREA name="content" cols="1000" />
 		<div>
 			<INPUT type="submit" />

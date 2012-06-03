@@ -47,6 +47,8 @@
 		destroy-method="close" id="dataSource">
 		<property name="driverClassName" value="${database.driverClassName}" />
 		<property name="url" value="${database.url}" />
+
+		  <property name="connectionProperties" value="useUnicode=true;characterEncoding=UTF-8"/>
 		<property name="username" value="${database.username}" />
 		<property name="password" value="${database.password}" />
 		<property name="testOnBorrow" value="true" />

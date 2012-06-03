@@ -8,14 +8,14 @@
 	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	<spring:url value="/iterations" var="create_roadmap_url">
+	<spring:url value="/projects/${project.id}/iterations" var="create_roadmap_url">
 		<spring:param name="form"></spring:param>
 		<spring:param name="parentId" value="${itemId }"></spring:param>
 	</spring:url>
-	<a href="${create_roadmap_url }">Create roadmap</a>
-	<ul>
-		<c:forEach items="${project.children }" var="child">
-			<li><a href="#">${child.name }</a></li>
-		</c:forEach>
-	</ul>
+	<a href="${create_roadmap_url }" style="color: blue;">Create Iteration</a>
+	<div style="margin-top: 30px;">
+	<c:forEach items="${project.children}" var="iteration">
+		<util:iteration model="${iteration }" path="/projects/${project.id}/iterations"></util:iteration>
+	</c:forEach>
+	</div>
 </div>
