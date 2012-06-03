@@ -5,8 +5,8 @@
     <page:show id="ps_org_hcmus_tis_model_StudyClass" object="${studyclass}" path="/studyclasses" z="wTJD6yV4FvrRBsuKLQIIEGwwkGw=">
         <field:display field="name" id="s_org_hcmus_tis_model_StudyClass_name" object="${studyclass}" z="zFLqdkfajdVL70L7hzyC8Svwufg="/>
         <field:display field="description" id="s_org_hcmus_tis_model_StudyClass_description" object="${studyclass}" z="AuJCxntv3A1zc/OUKmkBxUHF80Q="/>
-        <field:display field="projects" id="s_org_hcmus_tis_model_StudyClass_projects" object="${studyclass}" z="OFgutM3/dLhFrj2cdCcWusrpJ6w="/>
-        <field:display field="isDeleted" id="s_org_hcmus_tis_model_StudyClass_isDeleted" object="${studyclass}" z="1wFnhCAGCMsn4c04zIA7eMhd9EM="/>
+        <field:display field="projects" id="s_org_hcmus_tis_model_StudyClass_projects" object="${studyclass}" z="OFgutM3/dLhFrj2cdCcWusrpJ6w=" render="false"/>
+        <field:display field="isDeleted" id="s_org_hcmus_tis_model_StudyClass_isDeleted" object="${studyclass}" z="1wFnhCAGCMsn4c04zIA7eMhd9EM=" render="false"/>
     </page:show>
     <page:list id="l_org_hcmus_tis_model_Project" items="${studyclass.projects}" label="Project" labelPlural="Projects" openPane="false">
         <field:table create="false" data="${studyclass.projects}" delete="false" id="t_org_hcmus_tis_Project" path="/projects" show="true" update="false">

@@ -23,7 +23,7 @@
 		<INPUT type="hidden" name="workItem" value="${workitem.id }" />
 		<TEXTAREA name="content" cols="1000" />
 		<div>
-			<INPUT type="submit" />
+			<INPUT type="submit" value="Add"/>
 		</div>
 	</FORM>
 </div>
