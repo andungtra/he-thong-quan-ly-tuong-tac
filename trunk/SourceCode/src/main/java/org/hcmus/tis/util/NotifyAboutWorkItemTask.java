@@ -14,7 +14,8 @@ public class NotifyAboutWorkItemTask implements Runnable {
 	private WorkItem workItem;
 	private String action;
 
-	public NotifyAboutWorkItemTask(WorkItem workItem, String action, EmailService emailService) {
+	public NotifyAboutWorkItemTask(WorkItem workItem, String action,
+			EmailService emailService) {
 		this.setWorkItem(workItem);
 		this.setAction(action);
 		this.setEmailService(emailService);
@@ -22,21 +23,30 @@ public class NotifyAboutWorkItemTask implements Runnable {
 
 	@Override
 	public void run() {
-	
+		sendNotify(workItem.getAuthor());
+		if (workItem.getAsignee() != null && workItem.getAuthor() != workItem.getAsignee()) {
+			sendNotify(workItem.getAsignee());
+		}
 		for (MemberInformation member : getWorkItem().getSubcribers()) {
-			Map model = new HashMap();
-			model.put("member", workItem.getUserLastEdit().getFirstName() + " " + workItem.getUserLastEdit().getLastName());
-			model.put("action", getAction());
-			model.put("workitem", getWorkItem().getId());
-			model.put("time", getWorkItem().getDateLastEdit());
-			try {
-				emailService.sendEmail(member.getAccount().getEmail(), "workitem-notification.vm", model, "");
-			} catch (SendMailException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			sendNotify(member);
 		}
 
+	}
+
+	private void sendNotify(MemberInformation member) {
+		Map model = new HashMap();
+		model.put("member", workItem.getUserLastEdit().getFirstName() + " "
+				+ workItem.getUserLastEdit().getLastName());
+		model.put("action", getAction());
+		model.put("workitem", getWorkItem().getId());
+		model.put("time", getWorkItem().getDateLastEdit());
+		try {
+			emailService.sendEmail(member.getAccount().getEmail(),
+					"workitem-notification.vm", model, "");
+		} catch (SendMailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public EmailService getEmailService() {

@@ -61,6 +61,7 @@ public class WorkItemController {
 		}
 		WorkItem inDatabaseWorkItem = WorkItem.findWorkItem(workItem.getId());
 		workItem.setSubcribers(inDatabaseWorkItem.getSubcribers());
+		workItem.getSubcribers().remove(workItem.getAsignee());
 		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
@@ -101,7 +102,7 @@ public class WorkItemController {
 				.findMemberInformationsByAccountAndProject(account, project)
 				.getSingleResult();
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
-		if (!workItem.getSubcribers().contains(member)) {
+		if (!workItem.getSubcribers().contains(member) && workItem.getAuthor() != member && workItem.getAsignee() != member) {
 			workItem.getSubcribers().add(member);
 			workItem.flush();
 		}
@@ -169,8 +170,10 @@ public class WorkItemController {
 		MemberInformation member = MemberInformation
 				.findMemberInformationsByAccountAndProject(account, project)
 				.getSingleResult();
+		boolean involved =  (workItem.getAuthor() == member || workItem.getAsignee() == member);
 		boolean subscribed = workItem.getSubcribers().contains(member);
 		uiModel.addAttribute("subscribed", subscribed);
+		uiModel.addAttribute("involved", involved);
 		return "workitems/update";
 	}
 

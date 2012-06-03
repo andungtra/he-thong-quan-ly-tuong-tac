@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_hcmus_tis_model_WorkItem" object="${workitem}" path="/projects/${workitem.workItemContainer.parentProjectOrMyself.id}/workitems" llist="/projects/${workitem.workItemContainer.parentProjectOrMyself.id }/task" z="lC/dccXLoVPP5D5b7xbKnNcUqbE=">
         <field:display field="title" id="s_org_hcmus_tis_model_WorkItem_title" object="${workitem}" z="kGeygrNX8VR7sRR+89acCCHFpQ4="/>
-         <field:display field="description" id="s_org_hcmus_tis_model_WorkItem_description" object="${workitem}" z="OkRbHvTZwTg9eHyHS4hKBOvpjcg="/>
+        <field:display field="description" id="s_org_hcmus_tis_model_WorkItem_description" object="${workitem}" z="OkRbHvTZwTg9eHyHS4hKBOvpjcg="/>
         <div class="left-panel">
             <util:fixpanel id="details_panel" title="Detail">
                 <field:display field="status" id="s_org_hcmus_tis_model_WorkItem_status" object="${workitem}" z="chE+pRBiDHXZHre9KieANEoUSnc="/>
@@ -28,10 +28,10 @@
             </util:fixpanel>
         </div>
         <div class="clear"/>
-
         <div id="s_org_hcmus_tis_model_WorkItem_additionalFields"/>
         <field:display field="jaxbContext" id="s_org_hcmus_tis_model_WorkItem_jaxbContext" object="${workitem}" render="false" z="user-managed"/>
         <field:display field="objectFactory" id="s_org_hcmus_tis_model_WorkItem_objectFactory" object="${workitem}" render="false" z="user-managed"/>
-        <field:display render="false" field="userLastEdit" id="s_org_hcmus_tis_model_WorkItem_userLastEdit" object="${workitem}" z="h96lqyWLpLZN+rGa/nM+IwER+to="/>
+        <field:display field="userLastEdit" id="s_org_hcmus_tis_model_WorkItem_userLastEdit" object="${workitem}" render="false" z="user-managed"/>
+        <field:display field="subcribers" id="s_org_hcmus_tis_model_WorkItem_subcribers" object="${workitem}" z="bXeGz794D9U0kJqpqOm6O+CWFPM="/>
     </page:show>
 </div>

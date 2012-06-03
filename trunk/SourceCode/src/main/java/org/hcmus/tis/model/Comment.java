@@ -5,6 +5,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -22,6 +24,7 @@ public class Comment {
     private Date commentDate;
 
     @ManyToOne
+    @NotNull
     private WorkItem workItem;
 
     @ManyToOne

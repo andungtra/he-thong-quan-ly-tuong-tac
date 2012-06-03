@@ -192,7 +192,7 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.when(Project.findProject(itemId)).thenReturn(mockedProject);
 		
-		String result = aut.getRoadmap(itemId, uiModel);
+		String result = aut.getPlan(itemId, uiModel);
 		Mockito.verify(uiModel).addAttribute("project", mockedProject);
 		Assert.assertEquals("projects/roadmap", result);
 	}

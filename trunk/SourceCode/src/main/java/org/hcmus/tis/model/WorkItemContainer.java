@@ -23,6 +23,8 @@ public abstract class WorkItemContainer {
     private org.hcmus.tis.model.WorkItemContainer parentContainer;
     @OneToMany(mappedBy="parentContainer")
     private Collection<WorkItemContainer> children;
+    @OneToMany(mappedBy="workItemContainer")
+    private Collection<WorkItem> workItems;
     public abstract Project getParentProjectOrMyself();
 	public Collection<WorkItemContainer> getChildren() {
 		return children;

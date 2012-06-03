@@ -197,7 +197,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}/roadmap", produces = "text/html")
-	public String getRoadmap(@PathVariable("id") Long id, Model uiModel) {
+	public String getPlan(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("project", Project.findProject(id));
 		uiModel.addAttribute("itemId", id);
 		return "projects/roadmap";

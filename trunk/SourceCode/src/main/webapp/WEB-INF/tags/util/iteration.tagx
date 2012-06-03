@@ -1,0 +1,29 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:output omit-xml-declaration="yes" />
+	<jsp:directive.attribute name="model"
+		type="org.hcmus.tis.model.WorkItemContainer" required="true"
+		rtexprvalue="true" description="model attribute" />
+	<jsp:directive.attribute name="path"
+		type="java.lang.String" required="true"
+		rtexprvalue="true" description="path" />
+	<div>
+		<div>
+			<spring:url value="${path }/${model.id }" var="update_url">
+				<spring:param name="form"></spring:param>
+			</spring:url>
+			<a href="${update_url }" style="color: blue"> ${model.name} </a>
+		</div>
+		<div style="padding-left: 20px;">Open tasks : 10</div>
+		<div style="padding-left: 20px;">Total tasks : 20</div>
+	</div>
+	<ul>
+		<c:forEach items="${model.children}" varStatus="status"
+			var="iteration">
+			<li><util:iteration model="${iteration }" path="${path }"></util:iteration></li>
+		</c:forEach>
+	</ul>
+</jsp:root>

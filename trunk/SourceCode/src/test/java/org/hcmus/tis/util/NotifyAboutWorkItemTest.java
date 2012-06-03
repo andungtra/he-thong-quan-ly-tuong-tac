@@ -31,11 +31,19 @@ public class NotifyAboutWorkItemTest {
 	@Mock
 	private MemberInformation member2;
 	@Mock
+	private MemberInformation author;
+	@Mock
+	private Account authorAccount;
+	@Mock
 	private Account account1;
 	@Mock
 	private Account account2;
 	@Mock
 	private Account lastEdit;
+	@Mock
+	private MemberInformation assignee;
+	@Mock
+	private Account assigneeAccount;
 	@Mock
 	private EmailService mockMailService;
 
@@ -47,6 +55,8 @@ public class NotifyAboutWorkItemTest {
 		doReturn(account2).when(member2).getAccount();
 		doReturn("email1").when(account1).getEmail();
 		doReturn("email2").when(account2).getEmail();
+		doReturn(authorAccount).when(author).getAccount();
+		doReturn(author).when(mockedWorkItem).getAuthor();
 		doReturn(new Date()).when(mockedWorkItem).getDateLastEdit();
 		Collection<MemberInformation> subscribers = new HashSet<MemberInformation>();
 		subscribers.add(member1);
@@ -63,14 +73,56 @@ public class NotifyAboutWorkItemTest {
 		doReturn("firstName").when(lastEdit).getFirstName();
 		doReturn("lastName").when(lastEdit).getLastName();
 		doReturn(lastEdit).when(mockedWorkItem).getUserLastEdit();
+		doReturn(assigneeAccount).when(assignee).getAccount();
+		doReturn("authorEmail").when(authorAccount).getEmail();
+		doReturn("assigneeEmail").when(assigneeAccount).getEmail();
 	}
 
 	Map map;
 
 	@Test
-	public void testRun() throws SendMailException {
+	public void testRunWithoutAsignee() throws SendMailException {
 		aut.run();
-		verify(mockMailService, times(2)).sendEmail(anyString(),
+		verify(mockMailService, times(3)).sendEmail(anyString(),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(mockedWorkItem.getAuthor().getAccount().getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(account1.getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(account2.getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		assertEquals(mockedWorkItem.getUserLastEdit().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getLastName(), (String)map.get("member"));
+		assertEquals(action, map.get("action"));
+		assertEquals(mockedWorkItem.getId(), map.get("workitem"));
+		assertEquals(mockedWorkItem.getDateLastEdit(), map.get("time"));
+	}
+	@Test
+	public void testRunWithAsignee() throws SendMailException {
+		doReturn(assignee).when(mockedWorkItem).getAsignee();
+		aut.run();
+		verify(mockMailService, times(4)).sendEmail(anyString(),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(mockedWorkItem.getAuthor().getAccount().getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(mockedWorkItem.getAsignee()
+				.getAccount().getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(account1.getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(account2.getEmail()),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		assertEquals(mockedWorkItem.getUserLastEdit().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getLastName(), (String)map.get("member"));
+		assertEquals(action, map.get("action"));
+		assertEquals(mockedWorkItem.getId(), map.get("workitem"));
+		assertEquals(mockedWorkItem.getDateLastEdit(), map.get("time"));
+	}
+	@Test
+	public void testRunWithAsigneeEqualAuthor() throws SendMailException{
+		doReturn(author).when(mockedWorkItem).getAsignee();
+		aut.run();
+		verify(mockMailService, times(3)).sendEmail(anyString(),
+				eq("workitem-notification.vm"), anyMap(), anyString());
+		verify(mockMailService).sendEmail(eq(mockedWorkItem.getAuthor().getAccount().getEmail()),
 				eq("workitem-notification.vm"), anyMap(), anyString());
 		verify(mockMailService).sendEmail(eq(account1.getEmail()),
 				eq("workitem-notification.vm"), anyMap(), anyString());
