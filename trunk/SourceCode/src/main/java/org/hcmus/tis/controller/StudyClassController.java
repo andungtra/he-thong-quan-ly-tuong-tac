@@ -55,7 +55,7 @@ public class StudyClassController {
 			if (item.isIsDeleted() != true) {
 				StudyClassDTO dto = new StudyClassDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../studyclasses/"+item.getId()+"'?form>"+item.getName()+"</a>");
+				dto.setName("<a href='../studyclasses/"+item.getId()+"?form'>"+item.getName()+"</a>");
 				dto.setDescription(item.getDescription());
 
 				reply.getAaData().add(dto);

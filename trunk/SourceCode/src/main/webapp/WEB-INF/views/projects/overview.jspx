@@ -14,10 +14,15 @@
 			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
 			path="/projects" update="false" z="user-managed"
 			label="Project : ${project.name}">
-
+			<script>
+			var des = ${project.description};
+			if (des.length > 150)
+				des = des.slice(0,149) + "...";
+			</script>
+			<label>Description : </label> ${des}
 			<field:display field="description"
 				id="s_org_hcmus_tis_model_Project_description" object="${project}"
-				z="wdUFcebJjkZc28b97a5kBc7qxx8=" />
+				z="wdUFcebJjkZc28b97a5kBc7qxx8="  render="false"/>
 
 			<field:display field="parentContainer"
 				id="s_org_hcmus_tis_model_Project_parentContainer"

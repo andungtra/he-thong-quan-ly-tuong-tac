@@ -49,7 +49,7 @@
         	
             
               <c:if test="${delete}">
-                <spring:url value="${path}/${itemId}" var="delete_form_url" />                
+                <spring:url value="${path}/${object.id}" var="delete_form_url" />                
                 <form:form action="${delete_form_url}" method="DELETE">
                   <spring:message arguments="${typeName}" code="entity_delete" var="delete_label" htmlEscape="false" />
                   <c:set var="delete_confirm_msg">
@@ -65,7 +65,7 @@
               </c:if>
             
               <c:if test="${update}">
-                <spring:url value="${path}/${itemId}" var="update_form_url">
+                <spring:url value="${path}/${object.id}" var="update_form_url">
                   <spring:param name="form" />
                 </spring:url>                
                 <spring:message arguments="${typeName}" code="entity_update" var="update_label" htmlEscape="false" />

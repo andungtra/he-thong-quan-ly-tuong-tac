@@ -284,7 +284,7 @@ public class AccountController {
 		for (Account item : list) {
 			AccountDTO dto = new AccountDTO();
 			dto.DT_RowId = item.getId();
-			dto.setFirstName("<a href='../accounts/ID/" + item.getId() + "'>"
+			dto.setFirstName("<a href='../accounts/" + item.getId() + "?form'>"
 					+ item.getFirstName() + "</a>");
 			dto.setLastName(item.getLastName());
 			dto.setEmail(item.getEmail());
@@ -439,5 +439,10 @@ public class AccountController {
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/accounts";
+	}
+	
+	@RequestMapping(value = "/projects/{projectId}", produces = "text/html")
+	public String reDirectProject(@PathVariable("projectId") Long projectId){
+		return "redirect:/projects/" + projectId;
 	}
 }

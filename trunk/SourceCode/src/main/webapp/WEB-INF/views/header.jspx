@@ -43,7 +43,7 @@
 						<spring:url
 							value="/accounts/${sessionScope['account'].id}?userform"
 							var="info" />
-						${loginAs } <a href="${info}">${sessionScope["account"].firstName}
+						<a href="${info}">${sessionScope["account"].firstName}
 						</a>
 					</div>
 				</shiro:user>

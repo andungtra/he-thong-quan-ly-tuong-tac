@@ -135,7 +135,7 @@
 									<spring:url value="${path}/${itemId}?form" var="show_form_url" />
 								</c:when>
 								<c:otherwise>
-									<spring:url value="${path}/ID/${itemId}" var="show_form_url" />
+									<spring:url value="${path}/${itemId}" var="show_form_url" />
 								</c:otherwise>
 							</c:choose> <c:choose>
 								<c:when test="${column eq 'name'}">

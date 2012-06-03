@@ -6,6 +6,7 @@
         <field:select field="account" id="c_org_hcmus_tis_model_MemberInformation_account" itemValue="id" items="${accounts}" path="/accounts" required="true" z="2KoTNIpMz6nvSG9baquLi249zzs="/>
         <field:select field="project" id="c_org_hcmus_tis_model_MemberInformation_project" itemValue="id" items="${projects}" path="/projects" required="true" z="Y8lzPNHcjhQLj4qg8XVD0KTYFgg="/>
         <field:select field="memberRole" id="c_org_hcmus_tis_model_MemberInformation_memberRole" itemValue="id" items="${memberroles}" path="/memberroles" required="true" z="JVn7eIka4ah7zig1PA4DXG1VrhY="/>
-        <field:checkbox field="deleted" id="c_org_hcmus_tis_model_MemberInformation_deleted" z="W9xjWtG8FvQxEG+irzsketjmEHI="/>
+        <field:checkbox field="deleted" id="c_org_hcmus_tis_model_MemberInformation_deleted" z="W9xjWtG8FvQxEG+irzsketjmEHI=" render="false"/>
+        <input type="hidden" name="deleted" value="${memberInformation.deleted}"/>
     </form:update>
 </div>

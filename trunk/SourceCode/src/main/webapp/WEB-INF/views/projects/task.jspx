@@ -95,7 +95,7 @@
 	</spring:url>
 	<field:datatable aoColumns="lName,sStatus,sType,priority" id="tbproject"
 		path="/workitems" source="/projects/${itemId }/workitems"
-		paramName="projectId" paramValue="${itemId}" thead="Name,Status,Type,Priority"
+		paramName="projectId" paramValue="${itemId}" thead="Title,Status,Type,Priority"
 		fshow="true" lshow="/projects/${itemId }/workitems" />
 	<div style="clear: both;" />
 </div>
