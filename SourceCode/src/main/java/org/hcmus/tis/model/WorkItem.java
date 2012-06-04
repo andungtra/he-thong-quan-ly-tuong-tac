@@ -6,8 +6,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -90,11 +88,11 @@ public class WorkItem {
 	private String description;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "M-")
+	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
 	private Date dateCreated;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "M-")
+	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
 	private Date dateLastEdit;
 
 	@ManyToOne
@@ -131,7 +129,7 @@ public class WorkItem {
 	private Collection<Attachment> attachments;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "SS")
+	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
 	private Date dueDate;
 
 	@PrePersist
@@ -277,4 +275,32 @@ public class WorkItem {
 		query.setParameter("containerId", findProject.getId());
 		return query.getResultList();
 	}
-} 
+
+	public static List<WorkItem> findWorkItems(Project project,
+			int iDisplayStart, int iDisplayLength, String sSearch, Long status) {
+		// TODO Auto-generated method stub
+		String hql = "SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
+
+		if(status!=null && status>0)
+			hql += " AND (o.status.id =:statusId)";
+		else hql += " AND (o.status.name <> :statusName)";
+		if (sSearch.length() > 0 && !sSearch.equals("undefined")) {
+			hql += " AND (LOWER(o.title) like LOWER(:sSearch) or LOWER(o.status.name) like LOWER(:sSearch) or LOWER(o.workItemType.name) like LOWER(:sSearch) or LOWER(o.priority.name) like LOWER(:sSearch))";
+		}
+
+		TypedQuery<WorkItem> query = entityManager()
+				.createQuery(hql, WorkItem.class).setFirstResult(iDisplayStart)
+				.setMaxResults(iDisplayLength);
+		if (sSearch.length() > 0 && !sSearch.equals("undefined"))
+			query.setParameter("sSearch", "%" + sSearch + "%");
+
+		query.setParameter("containerId", project.getId());
+		
+		if(status!=null && status>0)
+			query.setParameter("statusId", status);
+		else 
+			query.setParameter("statusName", "Closed");
+		
+		return query.getResultList();
+	}
+}

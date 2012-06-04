@@ -29,14 +29,14 @@ public class Event {
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date startDate;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonSerialize(using = JsonDateSerializer.class)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
 	private Date endDate;
 
 	@JsonIgnore

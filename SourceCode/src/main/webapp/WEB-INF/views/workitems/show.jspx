@@ -19,10 +19,10 @@
         <div class="right-panel">
             <util:fixpanel id="peoples_panel" title="Peoples">
             	<div>
-            		<label>Author : </label> ${workitem.author.firstName} ${workitem.author.lastName}
+            		<label>Author : </label> ${workitem.author.account.firstName} ${workitem.author.account.lastName}
             	</div>
             	<div>
-            		<label>Assignee : </label> ${workitem.asignee.firstName} ${workitem.asignee.lastName}
+            		<label>Assigned : </label> ${workitem.asignee.account.firstName} ${workitem.asignee.account.lastName}
             	</div>
                 <field:display field="author" id="s_org_hcmus_tis_model_WorkItem_author" object="${workitem}" z="9V7KDtLDr6N53jlI8UcH4CGOnYE=" render="false"/>
                 <field:display field="asignee" id="s_org_hcmus_tis_model_WorkItem_asignee" object="${workitem}" z="Gh6OIJpxasrlbrfWQFU+ogOnEGU=" render="false"/>

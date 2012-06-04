@@ -188,7 +188,7 @@ public class AccountController {
 			for (Event event : e) {
 				if (event.getStartDate() != null
 						&& event.getStartDate().getTime() > n.getTime()
-						&& (event.getStartDate().getTime() - n.getTime()) < 7) {
+						&& (event.getStartDate().getTime() - n.getTime()) < (7*86400000)) {
 					newEvent.add(event);
 				}
 			}

@@ -411,6 +411,7 @@ th
 .datatable_buttons
 {
 	float:left;
+	width: 20%;
 }
 
 #tbproject_info
@@ -593,10 +594,22 @@ textarea
 	margin-top: -2px;
 	padding: 2px 4px 2px 10px;
 }
+.comment-box a{
+	color: #3B5998;
+	font-weight: bold;
+}
+.comment-box .time{
+	color: gray;
+}
+
 .box{
 	height: 200px;
 	overflow: auto;
 	border: solid 1px #aaa;
 	border-left:none;
 	margin-bottom: 10px;
+}
+.filter{
+	text-align: right;
+	float:right;
 }

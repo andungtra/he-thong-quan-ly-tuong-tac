@@ -57,6 +57,9 @@
 	<jsp:directive.attribute name="paramValue" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
 
+	<jsp:directive.attribute name="filter" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="filter work item" />
+		
 	<spring:url value="/resources/media/js/jquery.dataTables.js"
 		var="datatables_js" />
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -95,11 +98,13 @@
 	<SCRIPT type="text/javascript">
 	
 	var asInitVals = new Array();
+	var oTable;
+	var statusID=0;
 	$(document)
 			.ready(
 					function() {
-						//debugger;											
-						var oTable= $("#${id}")							
+						//debugger;							
+						oTable= $("#${id}")							
 								.dataTable(
 										{
 											"bProcessing" : true,
@@ -113,6 +118,10 @@
 												aoData.push({
 													"name": "${paramName}",
 													"value": "${paramValue}"
+												},
+												{
+													"name":"status",
+													"value" : statusID
 												});
 											},												
 											"aoColumns" : ${ao},
@@ -133,9 +142,9 @@
 																'<input type="checkbox"/>');
 											}
 
-										});								
-						
+										});	
 					});
+	
 		 $(function() {
 			//debugger;
 			var bt = "";
@@ -153,12 +162,25 @@
 				bt = bt	+'<button onclick="fupdate()">Update</button>';
 			if('${fremove}' != '')
 				bt = bt	+'<button onclick="fremove()">Remove</button>';
+			if('${filter}' != ''){
+				bt = bt + '<div class="filter">Show : <select id="${id}_status"></select></div>';
+				$.getJSON('/TIS/projects/workitemstatuses/listJSON', function(data) {
+					  var items = '<option value="0">All</option>';
+
+					  $.each(data, function(key, val) {
+					    items = items + ('<option value="' + val.id + '">' + val.name + '</option>');
+					  });
+					  //debugger;
+					  document.getElementById('${id}_status').innerHTML = items;
+				});
+			}
+			
 			$('.datatable_buttons')
-					.html(bt);	
-			
-			
+					.html(bt);				
 		}); 
 		
+		
+		 
 		$(function() {
 			$('#${id} thead tr:first-child input[type=checkbox]')
 					.on(
@@ -307,8 +329,16 @@
 				<tr>
 					<td colspan="4">Loading...</td>
 				</tr>
-			</TBODY>			
+			</TBODY>
 		</TABLE>
-
 	</div>
+	<script>
+    $("select").change(function () {
+    	if('${filter}' != ''){
+    		statusID = this.value;
+        	oTable.fnFilter("");
+    	}
+    })
+        .change();
+	</script>
 </jsp:root>

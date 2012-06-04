@@ -1,14 +1,13 @@
 package org.hcmus.tis.controller;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
-import org.hcmus.tis.model.WorkItemContainer;
+
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/projects/{projectid}/iterations")
 @Controller
