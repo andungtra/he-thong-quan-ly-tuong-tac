@@ -7,7 +7,6 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.service.EmailService.SendMailException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class NotifyAboutWorkItemTask implements Runnable {
 	private EmailService emailService;

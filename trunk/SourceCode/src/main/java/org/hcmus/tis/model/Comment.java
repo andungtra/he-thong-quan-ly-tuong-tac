@@ -20,7 +20,7 @@ public class Comment {
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
     private Date commentDate;
 
     @ManyToOne

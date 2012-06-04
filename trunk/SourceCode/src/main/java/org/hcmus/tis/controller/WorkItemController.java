@@ -251,15 +251,13 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(params = { "projectId", "iDisplayStart", "iDisplayLength",
-			"sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2",
-			"sSearch_3" })
+			"sEcho", "sSearch", "status"})
 	@ResponseBody
 	@RequiresPermissions("workitem:list")
 	public DtReply listWorkItemByProject(
 			@PathVariable("projectId") Long projectId, int iDisplayStart,
 			int iDisplayLength, String sEcho, int iSortCol_0,
-			String sSortDir_0, String sSearch, String sSearch_0,
-			String sSearch_1, String sSearch_2, String sSearch_3) {
+			String sSortDir_0, String sSearch, Long status) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Project project = Project.findProject(projectId);
@@ -267,8 +265,7 @@ public class WorkItemController {
 		reply.setiTotalDisplayRecords((int) WorkItem
 				.countWorkItemByProject(project));
 		List<WorkItem> workItems = WorkItem.findWorkItems(project,
-				iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1,
-				sSearch_2, sSearch_3);
+				iDisplayStart, iDisplayLength, sSearch, status);
 
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
@@ -349,5 +346,11 @@ public class WorkItemController {
 
 	public void setEmailService(EmailService emailService) {
 		this.emailService = emailService;
+	}
+	
+	@RequestMapping(value = "/query")
+	@ResponseBody
+	public List filter(){
+		return null;
 	}
 }

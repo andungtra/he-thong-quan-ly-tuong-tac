@@ -1,10 +1,8 @@
 package org.hcmus.tis.controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -24,7 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/projects/{projectId}/workitems/{workitemid}/comments")
 @Controller

@@ -82,11 +82,11 @@ public class WorkItemHistory {
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
     private Date dateCreated;
     
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
     private Date dateLastEdit;
         
     private String additionalFields;
@@ -115,7 +115,7 @@ public class WorkItemHistory {
     private WorkItemStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
     private Date dueDate;
 
     @PrePersist

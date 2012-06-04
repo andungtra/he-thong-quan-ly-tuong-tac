@@ -9,12 +9,12 @@
 	<div class="box">
 		<c:forEach items="${comments }" var="comment">
 			<div class="comment-box">
-				<p>
-					<b>${comment.projectMember.account.firstName }
-						${comment.projectMember.account.lastName }</b> comment at
-					${comment.commentDate }
-				</p>
+				<div>
+					<a>${comment.projectMember.account.firstName }
+						${comment.projectMember.account.lastName }</a>					
+				</div>
 				<div class="comment">${comment.content}</div>
+				<div class="time">at ${comment.commentDate }</div>
 			</div>
 		</c:forEach>
 	</div>

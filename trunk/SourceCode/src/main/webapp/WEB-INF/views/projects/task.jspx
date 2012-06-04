@@ -96,6 +96,6 @@
 	<field:datatable aoColumns="lName,sStatus,sType,priority" id="tbproject"
 		path="/workitems" source="/projects/${itemId }/workitems"
 		paramName="projectId" paramValue="${itemId}" thead="Title,Status,Type,Priority"
-		fshow="true" lshow="/projects/${itemId }/workitems" />
+		fshow="true" lshow="/projects/${itemId }/workitems" filter="true"/>
 	<div style="clear: both;" />
 </div>

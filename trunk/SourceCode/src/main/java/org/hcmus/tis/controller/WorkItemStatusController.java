@@ -1,12 +1,20 @@
 package org.hcmus.tis.controller;
 
+import java.util.List;
+
 import org.hcmus.tis.model.WorkItemStatus;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("/workitemstatuses")
+@RequestMapping("/projects/workitemstatuses")
 @Controller
 @RooWebScaffold(path = "workitemstatuses", formBackingObject = WorkItemStatus.class)
 public class WorkItemStatusController {
+	@RequestMapping(value="/listJSON")
+	@ResponseBody
+	public List<WorkItemStatus> listJSON(){
+		return WorkItemStatus.findAllWorkItemStatuses();
+	}
 }
