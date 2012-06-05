@@ -1,4 +1,4 @@
-package org.hcmus.tis.model;
+package org.hcmus.tis.model.unittest;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +22,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.Assert;
 
+import org.hcmus.tis.model.Field;
+import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.junit.Before;
 import org.junit.Test;

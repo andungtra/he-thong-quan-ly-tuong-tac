@@ -1,4 +1,4 @@
-package org.hcmus.tis.model;
+package org.hcmus.tis.model.unittest;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,9 @@ import javax.persistence.TypedQuery;
 
 import junit.framework.Assert;
 
+import org.hcmus.tis.model.Iteration;
+import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

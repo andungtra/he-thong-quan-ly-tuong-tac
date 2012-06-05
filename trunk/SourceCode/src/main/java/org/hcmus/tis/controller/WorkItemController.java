@@ -250,7 +250,7 @@ public class WorkItemController {
 
 	}
 
-	@RequestMapping(params = { "projectId", "iDisplayStart", "iDisplayLength",
+	@RequestMapping(params = {"iDisplayStart", "iDisplayLength",
 			"sEcho", "sSearch", "status"})
 	@ResponseBody
 	@RequiresPermissions("workitem:list")

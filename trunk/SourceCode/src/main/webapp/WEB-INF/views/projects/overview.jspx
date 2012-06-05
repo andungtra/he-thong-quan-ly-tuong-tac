@@ -15,7 +15,7 @@
 			path="/projects" update="false" z="user-managed"
 			label="Project : ${project.name}">
 			<script>
-			var des = ${project.description};
+			var des = '${project.description}';
 			if (des.length > 150)
 				des = des.slice(0,149) + "...";
 			</script>

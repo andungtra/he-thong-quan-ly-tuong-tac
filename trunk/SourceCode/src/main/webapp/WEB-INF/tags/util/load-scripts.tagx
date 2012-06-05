@@ -16,22 +16,27 @@
 	<spring:url value="/resources/spring/Spring.js" var="spring_url" />
 	<spring:url value="/resources/spring/Spring-Dojo.js"
 		var="spring_dojo_url" />
-	<spring:url value="/resources/scripts/my-custom-tag.js" var="js_customtag_url"></spring:url>
+	<spring:url value="/resources/scripts/my-custom-tag.js"
+		var="js_customtag_url"></spring:url>
 	<spring:url value="/resources/images/favicon.ico" var="favicon" />
-	<spring:url value="/resources/scripts/jquery-1.7.2.min.js" var="jquery_url"></spring:url>
+	<spring:url value="/resources/scripts/jquery-1.7.2.min.js"
+		var="jquery_url"></spring:url>
 	<spring:url value="/${jquery_theme }" var="jquery_theme_url"></spring:url>
-	<spring:url value="/resources/scripts/update-tab.js" var="update_tab_url"></spring:url>
+	<spring:url value="/resources/scripts/update-tab.js"
+		var="update_tab_url"></spring:url>
 	<spring:url value="/resources/scripts/jquery-ui-1.8.20.custom.min.js"
 		var="jquery_all_url"></spring:url>
-		<spring:url value="/resources/scripts/jquery.loadmask.min.js" var="mask_js_url"></spring:url>
-				<spring:url value="/resources/styles/jquery.loadmask.css" var="mask_css_url"></spring:url>
+	<spring:url value="/resources/scripts/jquery.loadmask.min.js"
+		var="mask_js_url"></spring:url>
+	<spring:url value="/resources/styles/jquery.loadmask.css"
+		var="mask_css_url"></spring:url>
 	<link rel="stylesheet" type="text/css" href="${tundra_url}" />
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${roo_css_url}" />
-		<link rel="stylesheet" type="text/css" href="${jquery_theme_url }"/>
+	<link rel="stylesheet" type="text/css" href="${jquery_theme_url }" />
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${my_css_url}" />
-		<link rel="stylesheet" type="text/css" media="screen"
+	<link rel="stylesheet" type="text/css" media="screen"
 		href="${mask_css_url}" />
 	<link rel="SHORTCUT ICON" href="${favicon}" />
 
@@ -51,6 +56,12 @@
 	<script src="${update_tab_url }" type="text/javascript"><!--update tab--></script>
 	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
 	<script src="${jquery_all_url }" type="text/javascript"><!--my cus--></script>
-		<script src="${mask_js_url }" type="text/javascript"><!--mask--></script>
+	<script src="${mask_js_url }" type="text/javascript"><!--mask--></script>
+	<spring:url value="/resources/media/js/jquery.dataTables.js"
+		var="datatables_js" />
+	<script type="text/javascript" language="javascript"
+		src="${datatables_js }">
+		
+	</script>
 
 </jsp:root>

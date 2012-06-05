@@ -13,14 +13,17 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.hcmus.tis.dto.AttributeValueDTO;
 import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.dto.SiteMapItem;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Event;
+import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
@@ -29,6 +32,7 @@ import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,15 +97,16 @@ public class ProjectController {
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
 		int num = 0;
-		while(currentContainer  != null && num <3){			
+		while (currentContainer != null && num < 3) {
 			SiteMapItem item = new SiteMapItem();
 			item.setName(currentContainer.getName());
 			item.setUrl("/projects/" + currentContainer.getId());
 			siteMapItems.add(item);
-			
-			if(currentContainer.equals(currentContainer.getParentContainer()))
+
+			if (currentContainer.equals(currentContainer.getParentContainer()))
 				currentContainer = null;
-			else currentContainer = currentContainer.getParentContainer();
+			else
+				currentContainer = currentContainer.getParentContainer();
 			num++;
 		}
 		Collections.reverse(siteMapItems);
@@ -152,14 +157,16 @@ public class ProjectController {
 		uiModel.addAttribute("project", Project.findProject(id));
 
 		Calendar cal = Calendar.getInstance();
-		
+
 		long now = cal.get(Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = WorkItem.findAllWorkItemsByProject(Project.findProject(id)).getResultList();
-		
-		for (WorkItem workItem : workItemsList) {			
-			if (workItem.getDueDate() != null && !workItem.getStatus().getName().equals("Closed")) {
+		List<WorkItem> workItemsList = WorkItem.findAllWorkItemsByProject(
+				Project.findProject(id)).getResultList();
+
+		for (WorkItem workItem : workItemsList) {
+			if (workItem.getDueDate() != null
+					&& !workItem.getStatus().getName().equals("Closed")) {
 				Calendar dueTime = Calendar.getInstance();
 				dueTime.setTime(workItem.getDueDate());
 				long due = dueTime.get(Calendar.DAY_OF_YEAR);
@@ -176,8 +183,7 @@ public class ProjectController {
 		List<WorkItemHistory> listHistorys = WorkItemHistory
 				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);
-		
-		
+
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
 		uiModel.addAttribute("listStatus", listStatus);
@@ -191,7 +197,47 @@ public class ProjectController {
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
 				.getProjectProcess().getWorkItemTypes());
-		return "projects/workitems";
+		return "projects/tasks";
+	}
+
+	@RequestMapping(value = "/{id}/advancedsearch", produces = "text/html")
+	public String advancedSearch(@PathVariable("id") Long id, Model uiModel,
+			@Valid SearchConditionsDTO searchCondition) {
+		Project project = Project.findProject(id);
+		uiModel.addAttribute("project", project);
+		uiModel.addAttribute("itemId", id);
+		uiModel.addAttribute("statuses",
+				WorkItemStatus.findAllWorkItemStatuses());
+		uiModel.addAttribute("searchcondition", searchCondition);
+		uiModel.addAttribute("members",
+				MemberInformation.findMemberInformationsByProject(project));
+		uiModel.addAttribute("iterations",
+				Iteration.getdescendantIterations(project));
+		uiModel.addAttribute("workItemTypes", Project.findProject(id)
+				.getProjectProcess().getWorkItemTypes());
+		ArrayList<AttributeValueDTO> params = new ArrayList<AttributeValueDTO>();
+		if (searchCondition.getStatus() != null) {
+			params.add(new AttributeValueDTO("status", searchCondition
+					.getStatus().getId().toString()));
+		}
+		if (searchCondition.getOwner() != null) {
+			params.add(new AttributeValueDTO("owner", searchCondition
+					.getOwner().getId().toString()));
+		}
+		if (searchCondition.getAsignee() != null) {
+			params.add(new AttributeValueDTO("assignee", searchCondition
+					.getAsignee().getId().toString()));
+		}
+		if (searchCondition.getIteration() != null) {
+			params.add(new AttributeValueDTO("iteration", searchCondition
+					.getIteration().getId().toString()));
+		}
+		if (searchCondition.getTitleDescription() != null) {
+			params.add(new AttributeValueDTO("titledes", searchCondition
+					.getTitleDescription()));
+		}
+		uiModel.addAttribute("searchparams", params);
+		return "projects/advancedtasks";
 	}
 
 	@RequestMapping(value = "/{id}/roadmap", produces = "text/html")
@@ -224,8 +270,8 @@ public class ProjectController {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../projects/" + item.getId() + "?goto=true'>"
-						+ item.getName() + "</a>");
+				dto.setName("<a href='../projects/" + item.getId()
+						+ "?goto=true'>" + item.getName() + "</a>");
 
 				if (item.getParentContainer() != null)
 					dto.setParentContainer(item.getParentContainer().getName());
@@ -430,9 +476,9 @@ public class ProjectController {
 		restResponse.getResponse().getData().add(event);
 		return restResponse;
 	}
-	
+
 	@RequestMapping(value = "/workitems/{workItemId}/history", produces = "text/html")
-	public String history(Model uiModel,@PathVariable("workItemId") Long id) {
+	public String history(Model uiModel, @PathVariable("workItemId") Long id) {
 		List<WorkItemHistory> history = WorkItemHistory
 				.findAllWorkItemHistorysOfWorkItem(id, 10);
 		uiModel.addAttribute("history", history);

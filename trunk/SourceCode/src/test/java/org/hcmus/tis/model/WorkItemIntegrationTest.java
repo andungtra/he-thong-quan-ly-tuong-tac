@@ -27,13 +27,6 @@ public class WorkItemIntegrationTest {
 
 	@Test
 	public void testCountWorkItemByProject() {
-		// Project project = projectDataOnDemand.getRandomProject();
-		// Iteration iteration = iterationDataOnDemand.getRandomIteration();
-		// iteration.setParentContainer(project);
-		// WorkItem workItem1 = workItemDataOnDemand.getSpecificWorkItem(1);
-		// workItem1.setWorkItemContainer(project);
-		// WorkItem workItem2 = workItemDataOnDemand.getSpecificWorkItem(2);
-		// workItem2.setWorkItemContainer(iteration);
 
 		WorkItem workItem1 = workItemDataOnDemand.getSpecificWorkItem(0);
 		WorkItem workItem2 = workItemDataOnDemand.getSpecificWorkItem(1);

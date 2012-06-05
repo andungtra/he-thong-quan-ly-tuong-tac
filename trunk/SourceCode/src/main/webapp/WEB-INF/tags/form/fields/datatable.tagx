@@ -51,29 +51,18 @@
 	<jsp:directive.attribute name="redirectUrl" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
 
-	<jsp:directive.attribute name="paramName" type="java.lang.String"
-		required="false" rtexprvalue="true" description="The server source" />
-
-	<jsp:directive.attribute name="paramValue" type="java.lang.String"
-		required="false" rtexprvalue="true" description="The server source" />
+	<jsp:directive.attribute name="searchparams" type="java.util.ArrayList"
+		required="false" rtexprvalue="true"
+		description="list parameters sending to server" />
 
 	<jsp:directive.attribute name="filter" type="java.lang.Boolean"
 		required="false" rtexprvalue="true" description="filter work item" />
-		
-	<spring:url value="/resources/media/js/jquery.dataTables.js"
-		var="datatables_js" />
+
+
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
-	<script type="text/javascript" language="javascript"
-		src="${datatables_js }">
-		
-	</script>
 
 	<spring:url value="/resources/scripts/dynatree/jquery-ui.custom.js"
 		var="jquery_ui" />
-
-	<script type="text/javascript" src="${jquery_ui }">
-	<!-- aa -->		
-	</script>
 	<spring:url value="/resources/media/css/table_jui.css"
 		var="demo_table_css" />
 	<spring:url
@@ -94,7 +83,6 @@
 @import "${workitem_content_css}";
 </style>
 
-
 	<SCRIPT type="text/javascript">
 	
 	var asInitVals = new Array();
@@ -103,7 +91,7 @@
 	$(document)
 			.ready(
 					function() {
-						//debugger;							
+						debugger;							
 						oTable= $("#${id}")							
 								.dataTable(
 										{
@@ -115,14 +103,17 @@
 												"sSearch": "Search : "
 											},
 											"fnServerParams" : function(aoData){
-												aoData.push({
-													"name": "${paramName}",
-													"value": "${paramValue}"
-												},
-												{
-													"name":"status",
-													"value" : statusID
-												});
+												aoData.push(
+													<c:forEach items="${searchparams}" var="searchparam" varStatus="status">
+													{
+														"name": "${searchparam.name}",
+														"value": "${searchparam.value}"
+													},
+													</c:forEach>													
+													{
+														"name":"status",
+														"value" : statusID
+													});
 											},												
 											"aoColumns" : ${ao},
 											"bJQueryUI" : true,												

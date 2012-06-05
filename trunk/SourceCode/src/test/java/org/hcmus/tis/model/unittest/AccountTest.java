@@ -1,5 +1,6 @@
-package org.hcmus.tis.model;
+package org.hcmus.tis.model.unittest;
 
+import org.hcmus.tis.model.Account;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

@@ -1,10 +1,11 @@
-package org.hcmus.tis.model;
+package org.hcmus.tis.model.unittest;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hcmus.tis.model.StudyClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
