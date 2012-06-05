@@ -44,6 +44,10 @@ public class Account implements java.io.Serializable {
 	@NotNull
 	@Size(min = 1, max = 50)
 	private String password;
+	
+	public String getFullName(){
+		return firstName + " " + lastName;
+	}
 
 	@NotNull
 	@Value("false")

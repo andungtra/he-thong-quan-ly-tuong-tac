@@ -23,8 +23,11 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/overview.jspx" />
 	</definition>
-	<definition extends="content" name="projects/workitems">
+	<definition extends="content" name="projects/tasks">
 		<put-attribute name="body" value="/WEB-INF/views/projects/task.jspx" />
+	</definition>
+	<definition extends="content" name="projects/advancedtasks">
+		<put-attribute name="body" value="/WEB-INF/views/projects/advancedtask.jspx" />
 	</definition>
 	<definition extends="content" name="projects/wiki">
 		<put-attribute name="body" value="/WEB-INF/views/projects/wiki.jspx" />
@@ -37,7 +40,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/dumpcalendar.jspx" />
 	</definition>
-		<definition extends="calendar" name="projects/calendar">
+	<definition extends="calendar" name="projects/calendar">
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/calendar.jspx" />
 	</definition>
@@ -49,6 +52,6 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/projects/roadmap.jspx" />
 	</definition>
-		<definition extends="project" name="projects/homepage">
+	<definition extends="project" name="projects/homepage">
 	</definition>
 </tiles-definitions>

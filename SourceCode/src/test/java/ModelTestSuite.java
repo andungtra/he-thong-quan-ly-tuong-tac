@@ -1,9 +1,9 @@
 
 
-import org.hcmus.tis.model.AccountTest;
-import org.hcmus.tis.model.ProjectTest;
-import org.hcmus.tis.model.StudyClassTest;
-import org.hcmus.tis.model.WorkItemTest;
+import org.hcmus.tis.model.unittest.AccountTest;
+import org.hcmus.tis.model.unittest.ProjectTest;
+import org.hcmus.tis.model.unittest.StudyClassTest;
+import org.hcmus.tis.model.unittest.WorkItemTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;

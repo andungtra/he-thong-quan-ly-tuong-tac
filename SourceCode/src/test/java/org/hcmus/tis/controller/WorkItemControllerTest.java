@@ -291,51 +291,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		assertEquals("updated", workItemNotifyTask.getAction());
 	}
 
-	@Test
-	@PrepareForTest({ Project.class, WorkItem.class, WorkItemController.class })
-	public void testListWorkItemByProject() {
-		Long projectId = (long) 1;
-		int iDisplayStart = 0;
-		int iDisplayLength = 10;
-		String sEcho = "echo";
-		int iSortCol_0 = 1;
-		String sSortDir_0 = "";
-		String sSearch = "";
-		List<WorkItem> workItems = new ArrayList<WorkItem>();
-		workItems.add(mock(WorkItem.class));
-		workItems.add(mock(WorkItem.class));
-		WorkItemStatus mockedStatus = mock(WorkItemStatus.class);
-		WorkItemType mockedType = mock(WorkItemType.class);
-		for (WorkItem workItem : workItems) {
-			doReturn(mockedStatus).when(workItem).getStatus();
-			doReturn(mockedType).when(workItem).getWorkItemType();
-		}
-		WorkItemStatus testStatus = workItems.get(0).getStatus();
-		Project mockedProject = mock(Project.class);
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(projectId)).thenReturn(
-				mockedProject);
-		TypedQuery<WorkItem> mockedQuery = mock(TypedQuery.class);
-		doReturn(workItems).when(mockedQuery).getResultList();
-		doReturn(mockedQuery).when(mockedQuery).setFirstResult(anyInt());
-		doReturn(mockedQuery).when(mockedQuery).setMaxResults(anyInt());
-		PowerMockito.mockStatic(WorkItem.class);
-		PowerMockito.when(WorkItem.countWorkItemByProject(mockedProject))
-				.thenReturn((long) 2);
-		PowerMockito.when(WorkItem.findWorkItemsByProject(mockedProject))
-				.thenReturn(mockedQuery);
-
-		DtReply dtReply = aut.listWorkItemByProject(projectId, iDisplayStart,
-				iDisplayLength, sEcho, iSortCol_0, sSortDir_0, sSearch, "", "",
-				"", "");
-		PowerMockito.verifyStatic(atLeastOnce());
-		WorkItem.countWorkItemByProject(mockedProject);
-		PowerMockito.verifyStatic();
-		// WorkItem.findWorkItemsByProject(mockedProject);
-		Assert.assertEquals(2, dtReply.getiTotalRecords());
-		Assert.assertEquals(2, dtReply.getiTotalDisplayRecords());
-		Assert.assertEquals(2, dtReply.getAaData().size());
-	}
 
 	@Test
 	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,

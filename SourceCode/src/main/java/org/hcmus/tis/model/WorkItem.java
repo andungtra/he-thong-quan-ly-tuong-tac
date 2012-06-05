@@ -31,6 +31,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.hibernate.mapping.Array;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -77,7 +78,6 @@ public class WorkItem {
 		}
 		return additionFiels;
 	}
-
 	@javax.persistence.Transient
 	@Autowired
 	private JAXBContext jaxbContext;
@@ -208,7 +208,6 @@ public class WorkItem {
 		query.setParameter("containerId", project.getId());
 		return query;
 	}
-
 	public static List<WorkItem> findWorkItems(Project project,
 			int iDisplayStart, int iDisplayLength, String sSearch,
 			String sSearch_0, String sSearch_1, String sSearch_2,
