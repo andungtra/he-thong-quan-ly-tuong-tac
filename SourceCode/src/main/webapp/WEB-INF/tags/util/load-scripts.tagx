@@ -30,6 +30,11 @@
 		var="mask_js_url"></spring:url>
 	<spring:url value="/resources/styles/jquery.loadmask.css"
 		var="mask_css_url"></spring:url>
+			<spring:url value="/resources/media/css/table_jui.css"
+		var="demo_table_css" />
+	<spring:url
+		value="/resources/styles/workitem_content/jquery-ui-1.8.19.custom.css"
+		var="workitem_content_css" />
 	<link rel="stylesheet" type="text/css" href="${tundra_url}" />
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${roo_css_url}" />
@@ -39,12 +44,15 @@
 	<link rel="stylesheet" type="text/css" media="screen"
 		href="${mask_css_url}" />
 	<link rel="SHORTCUT ICON" href="${favicon}" />
-
+	<link rel="stylesheet" type="text/css" href="${demo_table_css }" />
+	<link rel="stylesheet" type="text/css" href="${workitem_content_css }" />
 	<!-- Get the user local from the page context (it was set by Spring MVC's locale resolver) -->
 	<c:set var="userLocale">
 		<c:set var="plocale">${pageContext.response.locale}</c:set>
 		<c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
 	</c:set>
+	<spring:url value="/resources/media/js/jquery.dataTables.js"
+		var="datatables_js" />
 
 	<script type="text/javascript">var djConfig = {parseOnLoad: false, isDebug: false, locale: '${fn:toLowerCase(userLocale)}'};</script>
 
@@ -57,11 +65,7 @@
 	<script src="${js_customtag_url }" type="text/javascript"><!--my cus--></script>
 	<script src="${jquery_all_url }" type="text/javascript"><!--my cus--></script>
 	<script src="${mask_js_url }" type="text/javascript"><!--mask--></script>
-	<spring:url value="/resources/media/js/jquery.dataTables.js"
-		var="datatables_js" />
 	<script type="text/javascript" language="javascript"
-		src="${datatables_js }">
-		
-	</script>
+		src="${datatables_js }"><!--datatables--></script>
 
 </jsp:root>
