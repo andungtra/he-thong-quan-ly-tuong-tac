@@ -1,99 +1,104 @@
 
-#container {
-	width: 100%;
-	margin: 0 auto;
-	position: relative;
+.cssmenu > ul {
+	padding:1px 0;
+	margin:0px;
+	list-style:none;
+	width:100%;
+	height:21px;
+	border-top:1px solid #FFFFFF;
+	border-bottom:1px solid #FFFFFF;
+	font:normal 8pt verdana, arial, helvetica;
 }
-
-#topnav {
-	padding: 10px 0px 12px;
-	line-height: 23px;
-	text-align: left;
+.cssmenu > ul li {
+	margin:0;
+	padding:0;
+	display:block;
+	float:left;
+	position:relative;
+	width:148px;
 }
-
-#topnav .signin {
-	background: #88bbd4;
-	padding: 4px 6px 6px;
-	text-decoration: none;
-	font-weight: bold;
+.cssmenu > ul li a:link, .cssmenu > ul li a:visited {
+	padding:4px 0;
+	display:block;
+	text-align:center;
+	text-decoration:none;
+	background:#666;
+	color:#ffffff;
+	width:148px;
+	height:13px;
+	font-weight:bold;
+}
+.cssmenu > ul li:hover a, .cssmenu > ul li a:hover, .cssmenu > ul li a:active {
+	padding:4px 0;
+	display:block;
+	text-align:center;
+	text-decoration:none;
+	background:#ccc;
+	color:#333;
+	width:146px;
+	height:13px;
+}
+.cssmenu > ul li ul {
+	margin:0;
+	padding:1px 1px 0;
+	list-style:none;
+	display:none;
+	background:#ffffff;
+	width:146px;
+	position:absolute;
+	top:21px;
+	left:-1px;
+	border:1px solid #666;
+	border-top:none;
+}
+.cssmenu > ul li:hover ul {
+	display:block;
+}
+.cssmenu > ul li ul li {
+	width:146px;
+	clear:left;
+	width:146px;
+}
+.cssmenu > ul li ul li a:link, .cssmenu > ul li ul li a:visited {
+	clear:left;
+	background:#666;
+	padding:4px 0;
+	width:146px;
+	border:none;
+	border-bottom:1px solid #ffffff;
+	position:relative;
+	z-index:1000;
+}
+.cssmenu > ul li ul li:hover a, .cssmenu > ul li ul li a:active, .cssmenu > ul li ul li a:hover {
+	clear:left;
+	background:#ccc;
+	padding:4px 0;
+	width:146px;
+	border:none;
+	border-bottom:1px solid #ffffff;
+	position:relative;
+	z-index:1000;
 	color: #333;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	*background: transparent url("images/signin-nav-bg-ie.png") no-repeat 0
-		0;
-	*padding: 4px 12px 6px;
 }
-
-#topnav .signin:hover {
-	background: #59B;
-	*background: transparent url("images/signin-nav-bg-hover-ie.png")
-		no-repeat 0 0;
-	*padding: 4px 12px 6px;
+.cssmenu > ul li ul li ul.navigation-3 {
+	display:none;
+	margin:0;
+	padding:0;
+	list-style:none;
+	position:absolute;
+	left:145px;
+	top:-2px;
+	padding:1px 1px 0 1px;
+	border:1px solid #666;
+	background:#ffffff;
+	z-index:900;
 }
-
-#topnav .signin a:hover {
-	color:#FFF;
+.cssmenu > ul li ul li:hover ul.navigation-3 {
+	display:block;
 }
-
-#topnav .signin,#topnav .signin:hover {
-	*background-position: 0 3px !important;
+.cssmenu > ul li ul li ul.navigation-3 li a:link, .cssmenu > ul li ul li ul.navigation-3 li a:visited {
+	background:#666;
 }
-
-.signin {
-	position: relative;
-	margin-left: 3px;
-}
-
-.signin .img {
-	background-image: url("images/toggle_down_light.png");
-	background-repeat: no-repeat;
-	background-position: 100% 50%;
-	padding: 4px 16px 6px 0;
-}
-
-#topnav .menu-open {
-	background: #ddeef6 !important;
-	color: #666 !important;
-	outline: none;
-}
-
-#small_signup {
-	display: inline;
-	float: none;
-	line-height: 23px;
-	margin: 25px 0 0;
-	width: 170px;
-}
-
-.signin.menu-open .img {
-	background-image: url("images/toggle_up_dark.png");
-	color: #789;
-}
-.signin a{
-	color: white;
-	padding-right: 5px;
-}
-
-#signin_menu {
-	-moz-border-radius-topright: 5px;
-	-moz-border-radius-bottomright: 5px;
-	-moz-border-radius-bottomleft: 5px;
-	-webkit-border-top-right-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	display: none;
-	background-color: #ddeef6;
-	position: absolute;
-	width: 210px;
-	z-index: 100;
-	border: 1px transparent;
-	text-align: left;
-	padding: 12px;
-	top: 24.5px;
-	left: 0px;
-	margin-top: 5px;
-	margin-right: 0px;
-	*margin-right: -1px;
-	color: #789;
+.cssmenu > ul li ul li ul.navigation-3 li:hover a, .cssmenu > ul li ul li ul.navigation-3 li a:hover, .cssmenu > ul li ul li ul.navigation-3 li a:active {
+	background:#ccc;
 }

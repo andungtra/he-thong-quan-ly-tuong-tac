@@ -21,9 +21,9 @@
 			<script type="text/javascript">
 			var des = "${project.description}";
 			
-			if (des.length > 150)
-				des = des.slice(0,149) + "...";
-			alert(des);
+			if (des.length > 50)
+				des = des.slice(0, 49) + " ...";
+			
 			$('.des')
 			.html(des);			
 			</script>
