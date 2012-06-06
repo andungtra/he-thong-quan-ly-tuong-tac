@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,19 +24,38 @@ import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.Assert;
 
+import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.model.Field;
+import org.hcmus.tis.model.Iteration;
+import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
+@RunWith(PowerMockRunner.class)
 public class WorkItemTest {
+	@Mock
+	private TypedQuery<Long> countQuery;
 	private WorkItem aut;
+	@Mock
+	private EntityManager entityManager;
 	@Before
 	public void setUp(){
+		MockitoAnnotations.initMocks(this);
 		aut = new WorkItem();
 	}
 	@Test

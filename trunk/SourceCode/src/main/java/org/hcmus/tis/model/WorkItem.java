@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -28,11 +29,13 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
 import org.hibernate.mapping.Array;
 
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -78,6 +81,7 @@ public class WorkItem {
 		}
 		return additionFiels;
 	}
+
 	@javax.persistence.Transient
 	@Autowired
 	private JAXBContext jaxbContext;
@@ -208,6 +212,7 @@ public class WorkItem {
 		query.setParameter("containerId", project.getId());
 		return query;
 	}
+
 	public static List<WorkItem> findWorkItems(Project project,
 			int iDisplayStart, int iDisplayLength, String sSearch,
 			String sSearch_0, String sSearch_1, String sSearch_2,
@@ -280,9 +285,10 @@ public class WorkItem {
 		// TODO Auto-generated method stub
 		String hql = "SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
 
-		if(status!=null && status>0)
+		if (status != null && status > 0)
 			hql += " AND (o.status.id =:statusId)";
-		else hql += " AND (o.status.name <> :statusName)";
+		else
+			hql += " AND (o.status.name <> :statusName)";
 		if (sSearch.length() > 0 && !sSearch.equals("undefined")) {
 			hql += " AND (LOWER(o.title) like LOWER(:sSearch) or LOWER(o.status.name) like LOWER(:sSearch) or LOWER(o.workItemType.name) like LOWER(:sSearch) or LOWER(o.priority.name) like LOWER(:sSearch))";
 		}
@@ -294,12 +300,136 @@ public class WorkItem {
 			query.setParameter("sSearch", "%" + sSearch + "%");
 
 		query.setParameter("containerId", project.getId());
-		
-		if(status!=null && status>0)
+
+		if (status != null && status > 0)
 			query.setParameter("statusId", status);
-		else 
+		else
 			query.setParameter("statusName", "Closed");
-		
+
+		return query.getResultList();
+	}
+
+	public static long getTotalRecord(SearchConditionsDTO searchCondition) {
+		return getFilteredRecord(null, searchCondition);
+	}
+
+	public static long getFilteredRecord(String filter,
+			SearchConditionsDTO searchCondition) {
+		String hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
+		if (searchCondition.getTitleDescription() != null) {
+			hql = hql
+					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
+		}
+
+		if (searchCondition.getAsignee() != null) {
+			hql = hql + " AND workItem.asignee.id =:asignee";
+		}
+		if (searchCondition.getOwner() != null) {
+			hql = hql + " AND workItem.author.id =:author";
+		}
+		if (searchCondition.getStatus() != null) {
+			hql = hql + " AND workItem.status.id =:status";
+		}
+		if (filter != null && filter.length() > 0) {
+			hql = hql
+					+ " AND (workItem.title LIKE :filter OR workItem.description LIKE :filter)";
+		}
+		ArrayList<Iteration> childContainer = null;
+		if (searchCondition.getContainer() != null) {
+			hql = hql + " AND (workItem.workItemContainer.id =:container";
+			childContainer = new ArrayList<Iteration>(Iteration.getdescendantIterations(searchCondition.getContainer()));
+			for(int index = 0; index < childContainer.size(); ++index){
+				hql = hql + " OR workItem.workItemContainer.id =:container_" + String.valueOf(index);
+			}
+			hql = hql + ")";
+		}
+		EntityManager em = entityManager();
+		Query query = em.createQuery(hql, Long.class);
+		if (searchCondition.getTitleDescription() != null) {
+
+			query.setParameter("titleDescription",
+					"%" + searchCondition.getTitleDescription() + "%");
+		}
+
+		if (searchCondition.getAsignee() != null) {
+			query.setParameter("asignee", searchCondition.getAsignee().getId());
+		}
+		if (searchCondition.getOwner() != null) {
+			query.setParameter("author", searchCondition.getOwner().getId());
+		}
+		if (searchCondition.getStatus() != null) {
+			query.setParameter("status", searchCondition.getStatus().getId());
+		}
+		if (filter != null && filter.length() > 0) {
+			query.setParameter("filter", "%" + filter + "%");
+		}
+		if (searchCondition.getContainer() != null) {
+			query.setParameter("container", searchCondition.getContainer().getId());
+			for(int index = 0; index < childContainer.size(); ++index){
+				query.setParameter("container_" + String.valueOf(index), childContainer.get(index).getId());
+			}
+		}
+		return (Long) query.getSingleResult();
+	}
+
+	public static Collection<WorkItem> findWorkItem(String filter, SearchConditionsDTO searchCondition,
+			int startDisplay, int displayLength) {
+		String hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
+		if (searchCondition.getTitleDescription() != null) {
+			hql = hql
+					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
+		}
+
+		if (searchCondition.getAsignee() != null) {
+			hql = hql + " AND workItem.asignee.id =:asignee";
+		}
+		if (searchCondition.getOwner() != null) {
+			hql = hql + " AND workItem.author.id =:author";
+		}
+		if (searchCondition.getStatus() != null) {
+			hql = hql + " AND workItem.status.id =:status";
+		}
+		if (filter != null && filter.length() > 0) {
+			hql = hql
+					+ " AND (workItem.title LIKE :filter OR workItem.description LIKE :filter)";
+		}
+		ArrayList<Iteration> childContainer = null;
+		if (searchCondition.getContainer() != null) {
+			hql = hql + " AND (workItem.workItemContainer.id =:container";
+			childContainer = new ArrayList<Iteration>(Iteration.getdescendantIterations(searchCondition.getContainer()));
+			for(int index = 0; index < childContainer.size(); ++index){
+				hql = hql + " OR workItem.workItemContainer.id =:container_" + String.valueOf(index);
+			}
+			hql = hql + ")";
+		}
+		EntityManager em = entityManager();
+		Query query = em.createQuery(hql, WorkItem.class);
+		if (searchCondition.getTitleDescription() != null) {
+
+			query.setParameter("titleDescription",
+					"%" + searchCondition.getTitleDescription() + "%");
+		}
+
+		if (searchCondition.getAsignee() != null) {
+			query.setParameter("asignee", searchCondition.getAsignee().getId());
+		}
+		if (searchCondition.getOwner() != null) {
+			query.setParameter("author", searchCondition.getOwner().getId());
+		}
+		if (searchCondition.getStatus() != null) {
+			query.setParameter("status", searchCondition.getStatus().getId());
+		}
+		if (filter != null && filter.length() > 0) {
+			query.setParameter("filter", "%" + filter + "%");
+		}
+		if (searchCondition.getContainer() != null) {
+			query.setParameter("container", searchCondition.getContainer().getId());
+			for(int index = 0; index < childContainer.size(); ++index){
+				query.setParameter("container_" + String.valueOf(index), childContainer.get(index).getId());
+			}
+		}
+		query.setFirstResult(startDisplay);
+		query.setMaxResults(displayLength);
 		return query.getResultList();
 	}
 }

@@ -27,8 +27,15 @@ public class WorkItemDTO {
 	public String getPriority() {
 		return priority;
 	}
+	private String sIteration;
 	public void setPriority(String priority) {
 		this.priority = priority;
+	}
+	public String getsIteration() {
+		return sIteration;
+	}
+	public void setsIteration(String sIteration) {
+		this.sIteration = sIteration;
 	}
 	
 }

@@ -7,6 +7,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -17,6 +18,8 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.SearchConditionsDTO;
+import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Field;
@@ -73,6 +76,14 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private Project mockedProject;
 	@Mock
+	private Priority priority;
+	@Mock
+	private WorkItemStatus workItemStatus;
+	@Mock
+	Iteration iteration;
+	@Mock
+	private SearchConditionsDTO searchConditions;
+	@Mock
 	private TaskExecutor mockedTaskExecutor;
 	private WorkItemController aut;
 
@@ -86,8 +97,13 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		doReturn((long) 3).when(mockedProject).getId();
 		doReturn(mockedProject).when(mockedProject).getParentProjectOrMyself();
 		doReturn(mockedWorkItemType).when(mockedWorkItem).getWorkItemType();
+		doReturn(workItemStatus).when(mockedWorkItem).getStatus();
+		doReturn(priority).when(mockedWorkItem).getPriority();
 		doReturn(mockedLoginedAccount).when(mockedSession).getAttribute(
 				"account");
+		doReturn("statusname").when(workItemStatus).getName();
+		doReturn("workitemtype").when(mockedWorkItemType).getName();
+		doReturn("priorityname").when(priority).getName();
 		doReturn(true).when(mockedSubject).isAuthenticated();
 		doNothing().when(mockedSubject).checkPermissions(any(String[].class));
 		setSubject(mockedSubject);
@@ -291,7 +307,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		assertEquals("updated", workItemNotifyTask.getAction());
 	}
 
-
 	@Test
 	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
 			WorkItem.class })
@@ -464,5 +479,83 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		Assert.assertEquals("redirect:/projects/1/workitems/1?form", result);
 		verify(mockedSubscriber).remove(mockedMember);
 		verify(mockedWorkItem).flush();
+	}
+
+	@Test
+	@PrepareForTest({ WorkItem.class, Project.class })
+	public void testListWorkItemByProjectWithIteration() {
+		PowerMockito.mockStatic(Project.class);
+		doReturn(iteration).when(searchConditions).getContainer();
+		PowerMockito.when(Project.findProject(mockedProject.getId()))
+				.thenReturn(mockedProject);
+		PowerMockito.mockStatic(WorkItem.class);
+		long filteredRecord = (long) 2;
+		long totalRecord = (long) 3;
+		int startDisplay = 10;
+		int displayLength = 10;
+		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
+		workItems.add(mockedWorkItem);
+		String globalSearch = "";
+		PowerMockito.when(
+				WorkItem.findWorkItem(globalSearch, searchConditions,
+						startDisplay, displayLength)).thenReturn(workItems);
+		PowerMockito.when(WorkItem.getTotalRecord(searchConditions))
+				.thenReturn(totalRecord);
+		PowerMockito.when(
+				WorkItem.getFilteredRecord(globalSearch, searchConditions))
+				.thenReturn(filteredRecord);
+		String sEcho = "";
+		String sSearch = "";
+
+		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
+				startDisplay, displayLength, sEcho, sSearch, searchConditions);
+
+		PowerMockito.verifyStatic();
+		WorkItem.getTotalRecord(searchConditions);
+		PowerMockito.verifyStatic();
+		WorkItem.getFilteredRecord(globalSearch, searchConditions);
+		PowerMockito.verifyStatic();
+		WorkItem.findWorkItem(globalSearch, searchConditions, startDisplay,
+				displayLength);
+		verify(searchConditions, times(0)).setContainer(any(WorkItemContainer.class));
+		assertNotNull(result);
+		assertEquals(totalRecord, result.getiTotalRecords());
+		assertEquals(filteredRecord, result.getiTotalDisplayRecords());
+		assertEquals(workItems.size(), result.getAaData().size());
+		WorkItemDTO workItemDto = (WorkItemDTO) result.getAaData().get(0);
+		assertEquals((long) mockedWorkItem.getId(), workItemDto.DT_RowId);
+		assertEquals(workItemStatus.getName(), workItemDto.getsStatus());
+		assertEquals(mockedWorkItemType.getName(), workItemDto.getsType());
+		assertEquals(priority.getName(), workItemDto.getPriority());
+	}
+	@Test
+	@PrepareForTest({ WorkItem.class, Project.class })
+	public void testListWorkItemByProjectWithNonIteration() {
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.when(Project.findProject(mockedProject.getId()))
+				.thenReturn(mockedProject);
+		PowerMockito.mockStatic(WorkItem.class);
+		long filteredRecord = (long) 2;
+		long totalRecord = (long) 3;
+		int startDisplay = 10;
+		int displayLength = 10;
+		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
+		workItems.add(mockedWorkItem);
+		String globalSearch = "";
+		PowerMockito.when(
+				WorkItem.findWorkItem(globalSearch, searchConditions,
+						startDisplay, displayLength)).thenReturn(workItems);
+		PowerMockito.when(WorkItem.getTotalRecord(searchConditions))
+				.thenReturn(totalRecord);
+		PowerMockito.when(
+				WorkItem.getFilteredRecord(globalSearch, searchConditions))
+				.thenReturn(filteredRecord);
+		String sEcho = "";
+		String sSearch = "";
+
+		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
+				startDisplay, displayLength, sEcho, sSearch, searchConditions);
+		verify(searchConditions).setContainer(mockedProject);
+		
 	}
 }

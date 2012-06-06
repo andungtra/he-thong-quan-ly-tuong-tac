@@ -107,7 +107,7 @@
 		<br />
 		<label>Planed for :
 		 <springform:select itemValue="id"
-				itemLabel="name" path="iteration"
+				itemLabel="name" path="container"
 				title="Planed for">
 				<springform:option value="">Choose iteration ...</springform:option>
 				<springform:options items="${iterations }" itemValue="id" itemLabel="name" />
@@ -119,9 +119,9 @@
 	<div style="clear: both;" />
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
-	<field:datatable aoColumns="lName,sStatus,sType,priority"
+	<field:datatable aoColumns="lName,sStatus,sType,priority,sIteration"
 		id="tbprojectdsfsfs" path="/workitems"
-		source="/projects/${itemId }/workitems" searchparams="${searchparams }" thead="Title,Status,Type,Priority" fshow="true"
+		source="/projects/${itemId }/workitems" searchparams="${searchparams }" thead="Title,Status,Type,Priority,Iteration" fshow="true"
 		lshow="/projects/${itemId }/workitems" filter="true" />
 	<div style="clear: both;" />
 </div>

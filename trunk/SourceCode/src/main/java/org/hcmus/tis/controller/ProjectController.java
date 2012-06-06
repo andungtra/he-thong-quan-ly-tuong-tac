@@ -92,7 +92,7 @@ public class ProjectController {
 	@RequestMapping(value = "{id}", produces = "text/html")
 	@RequiresPermissions("project:read")
 	String showhomepage(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("itemId", id);
+		uiModel.addAttribute("projectId", id);
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
 		Project project = Project.findProject(id);
 		WorkItemContainer currentContainer = project;
@@ -225,15 +225,15 @@ public class ProjectController {
 					.getOwner().getId().toString()));
 		}
 		if (searchCondition.getAsignee() != null) {
-			params.add(new AttributeValueDTO("assignee", searchCondition
+			params.add(new AttributeValueDTO("asignee", searchCondition
 					.getAsignee().getId().toString()));
 		}
-		if (searchCondition.getIteration() != null) {
-			params.add(new AttributeValueDTO("iteration", searchCondition
-					.getIteration().getId().toString()));
+		if (searchCondition.getContainer() != null) {
+			params.add(new AttributeValueDTO("container", searchCondition
+					.getContainer().getId().toString()));
 		}
 		if (searchCondition.getTitleDescription() != null) {
-			params.add(new AttributeValueDTO("titledes", searchCondition
+			params.add(new AttributeValueDTO("titleDescription", searchCondition
 					.getTitleDescription()));
 		}
 		uiModel.addAttribute("searchparams", params);
