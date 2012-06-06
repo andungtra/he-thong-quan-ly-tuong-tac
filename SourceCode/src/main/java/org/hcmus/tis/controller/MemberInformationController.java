@@ -172,12 +172,12 @@ public class MemberInformationController {
 			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
 	@ResponseBody
 	public DtReply listByProject(@PathVariable("projectId") Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
+			int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		List<MemberInformation> list = MemberInformation
-				.findMemberInformationsByProjectBaseAccount(Project.findProject(projectId),iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
+				.findMemberInformationsByProjectBaseAccount(Project.findProject(projectId),iDisplayStart, iDisplayLength, sSearch);
 		for (MemberInformation item : list) {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
@@ -189,7 +189,9 @@ public class MemberInformationController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)MemberInformation
+				.countMemberInformationsByProjectBaseAccount(Project.findProject(projectId),sSearch));
+		reply.setiTotalRecords((int)MemberInformation.countMemberInformationsByProject(Project.findProject(projectId)));
 		return reply;
 	}
 }

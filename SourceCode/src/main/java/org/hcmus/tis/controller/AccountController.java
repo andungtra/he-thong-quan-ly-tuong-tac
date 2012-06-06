@@ -219,9 +219,10 @@ public class AccountController {
 				dto.setDescription(item.getProject().getDescription());
 				reply.getAaData().add(dto);
 			}
-
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)MemberInformation
+				.countMemberInformationEntriesBaseProject(sSearch));
+		reply.setiTotalRecords((int)MemberInformation.countMemberInformationsByAccount(acc));
 		return reply;
 	}
 
@@ -291,7 +292,8 @@ public class AccountController {
 			dto.setStatus(item.getStatus().name());
 			reply.getAaData().add(dto);
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)Account.countAccountEntries(sSearch));
+		reply.setiTotalRecords((int)Account.countAccountsNotDeleted());
 		return reply;
 	}
 

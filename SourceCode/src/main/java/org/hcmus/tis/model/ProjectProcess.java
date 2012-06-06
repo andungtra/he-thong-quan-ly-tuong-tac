@@ -23,62 +23,64 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord
 public class ProjectProcess {
 
-    @NotNull
-    @Size(max = 50, min = 1)
-    private String name;
+	@NotNull
+	@Size(max = 50, min = 1)
+	private String name;
 
-    private String description;
-    
-    @Lob
-    @Basic(fetch=FetchType.LAZY)
-    @NotNull
-    private byte[] processTemplateFile;
+	private String description;
 
-    @NotNull
-    @Column(unique = true)
-    private String uniqueName;
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@NotNull
+	private byte[] processTemplateFile;
 
-    @OneToMany(mappedBy = "projectProcess", cascade = CascadeType.ALL)
-    private List<WorkItemType> workItemTypes;
+	@NotNull
+	@Column(unique = true)
+	private String uniqueName;
 
-    @Value("false")
-    private boolean isDeleted;
+	@OneToMany(mappedBy = "projectProcess", cascade = CascadeType.ALL)
+	private List<WorkItemType> workItemTypes;
+
+	@Value("false")
+	private boolean isDeleted;
 
 	public static List<ProjectProcess> findProjectProcessEntries(
-			int iDisplayStart, int iDisplayLength, String sSearch, String sSearch_0, String sSearch_1) {
+			int iDisplayStart, int iDisplayLength, String sSearch) {
 		// TODO Auto-generated method stub
-		String hql =  "SELECT o FROM ProjectProcess AS o";
-	
-		int h=-1;
-		if(sSearch.length()>0){
+		String hql = "SELECT o FROM ProjectProcess AS o";
+
+		if (sSearch.length() > 0) {
 			hql += " WHERE (LOWER(o.name) LIKE LOWER(:sSearch) or LOWER(o.description) LIKE LOWER(:sSearch))";
-			h =1;
+
 		}
-		if(sSearch_0.length()>0){
-			if(h==1)
-				hql += " AND";
-			else
-				hql += " WHERE";
-			h=1;
-			hql += " LOWER(o.name) LIKE LOWER(:sSearch_0)";
-		}
-		if(sSearch_1.length()>0){
-			if(h==1)
-				hql += " AND";
-			else
-				hql += " WHERE";
-			h=1;
-			hql += " LOWER(o.description) LIKE LOWER(:sSearch_1)";
-		}
+
 		EntityManager entityManager = Project.entityManager();
-		
-		TypedQuery<ProjectProcess> q = entityManager.createQuery(hql, ProjectProcess.class);
-		if(sSearch.length()>0)
-			q.setParameter("sSearch", "%"+sSearch+"%");
-		if(sSearch_0.length()>0)
-			q.setParameter("sSearch_0", "%"+sSearch_0+"%");
-		if(sSearch_1.length()>0)
-			q.setParameter("sSearch_1", "%"+sSearch_1+"%");
+
+		TypedQuery<ProjectProcess> q = entityManager
+				.createQuery(hql, ProjectProcess.class)
+				.setFirstResult(iDisplayStart).setMaxResults(iDisplayLength);
+		if (sSearch.length() > 0)
+			q.setParameter("sSearch", "%" + sSearch + "%");
+
 		return q.getResultList();
 	}
+
+	public static long countProjectProcessEntries(String sSearch) {
+		// TODO Auto-generated method stub
+		String hql = "SELECT COUNT(o) FROM ProjectProcess AS o";
+
+		if (sSearch.length() > 0) {
+			hql += " WHERE (LOWER(o.name) LIKE LOWER(:sSearch) or LOWER(o.description) LIKE LOWER(:sSearch))";
+
+		}
+
+		EntityManager entityManager = Project.entityManager();
+
+		TypedQuery<Long> q = entityManager.createQuery(hql, Long.class);
+		if (sSearch.length() > 0)
+			q.setParameter("sSearch", "%" + sSearch + "%");
+
+		return q.getSingleResult();
+	}
+
 }

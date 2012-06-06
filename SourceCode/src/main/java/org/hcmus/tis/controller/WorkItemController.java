@@ -281,24 +281,17 @@ public class WorkItemController {
 			}
 			workItemDto.setsType(workItem.getWorkItemType().getName());
 			workItemDto.setPriority(workItem.getPriority().getName());
+			if(workItem.getWorkItemContainer() instanceof Iteration)
+				workItemDto.setIteration(workItem.getWorkItemContainer().getName());
+			else
+				workItemDto.setIteration("");
 			reply.getAaData().add(workItemDto);
 		}
 		return reply;
 	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute(
-				"workItem_datecreated_date_format",
-				DateTimeFormat.patternForStyle("M-",
-						LocaleContextHolder.getLocale()));
-		uiModel.addAttribute(
-				"workItem_datelastedit_date_format",
-				DateTimeFormat.patternForStyle("M-",
-						LocaleContextHolder.getLocale()));
-		uiModel.addAttribute(
-				"workItem_duedate_date_format",
-				DateTimeFormat.patternForStyle("SS",
-						LocaleContextHolder.getLocale()));
+		uiModel.addAttribute("date_format","dd-MM-yyyy HH:mm");
 	}
 
 	@RequiresPermissions("workitem:read")

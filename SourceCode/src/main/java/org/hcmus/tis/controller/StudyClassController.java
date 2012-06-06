@@ -43,14 +43,14 @@ public class StudyClassController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1" })
+			"iDisplayLength", "sEcho", "sSearch"})
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 
 		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,
-				iDisplayLength, sSearch, sSearch_0, sSearch_1 );
+				iDisplayLength, sSearch);
 		for (StudyClass item : list) {
 			if (item.isIsDeleted() != true) {
 				StudyClassDTO dto = new StudyClassDTO();
@@ -61,7 +61,8 @@ public class StudyClassController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)StudyClass.StudyClassEntries(sSearch));
+		reply.setiTotalRecords((int)StudyClass.countStudyClassesNotDeleted());
 		return reply;
 	}
 
