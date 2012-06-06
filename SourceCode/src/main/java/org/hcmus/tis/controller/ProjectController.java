@@ -274,8 +274,13 @@ public class ProjectController {
 
 				if (item.getParentContainer() != null)
 					dto.setParentContainer(item.getParentContainer().getName());
-				dto.setDescription(item.getDescription());
-
+				String s;
+				if(item.getDescription() !=null && item.getDescription().length()>50)
+					s = item.getDescription().substring(0, 49) + " ...";
+				else
+					s = item.getDescription();
+				dto.setDescription(s);
+				
 				reply.getAaData().add(dto);
 			}
 		}
