@@ -366,7 +366,7 @@ textarea
 	height:10px;
 	border-bottom: solid 1px #aaa;
 }
-.panel-title a{
+.panel-title a {
 	color: #008040;
 }
 .panel-title a:hover{
@@ -526,7 +526,7 @@ ul
 	background-repeat:no-repeat;
 }
 
-.overdue a, .due a, .history a{
+.overdue a, .due a, .history a, .link a{
 	color: #3375D9;
 	font-weight: bold;
 }

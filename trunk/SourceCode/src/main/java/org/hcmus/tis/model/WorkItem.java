@@ -206,6 +206,15 @@ public class WorkItem {
 		return result;
 	}
 
+	public static long countOpenWorkItemInParent(WorkItemContainer container) {
+		String jql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE (workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId) AND (workItem.status.name <> :statusName)";
+		TypedQuery<Long> query = entityManager().createQuery(jql, Long.class);
+		query.setParameter("containerId", container.getId());
+		query.setParameter("statusName", "Closed");
+		long result = query.getSingleResult();
+		return result;
+	}
+	
 	public static TypedQuery<WorkItem> findWorkItemsByProject(Project project) {
 		String jql = "SELECT workItem FROM WorkItem workItem WHERE workItem.status.name <> :status AND (workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId)";
 		TypedQuery<WorkItem> query = entityManager().createQuery(jql,
