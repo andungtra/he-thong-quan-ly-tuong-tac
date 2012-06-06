@@ -18,8 +18,6 @@ public class DtReply {
 	}
 	public void setiTotalRecords(int iTotalRecords) {
 		this.iTotalRecords = iTotalRecords;
-		if(this.iTotalDisplayRecords> iTotalRecords)
-			this.iTotalDisplayRecords = iTotalRecords;
 	}
 	public int getiTotalDisplayRecords() {
 		return iTotalDisplayRecords;

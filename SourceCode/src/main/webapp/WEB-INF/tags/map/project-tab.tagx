@@ -7,12 +7,12 @@
 
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
-	<spring:url value="/projects/${id}/overview" var="projectOverview" />
-	<spring:url value="/projects/${id}/task" var="projectTask" />
-	<spring:url value="/projects/${id}/roadmap" var="projectRoadmap" />
-	<spring:url value="/projects/${id}/members" var="projectMember" />
-	<spring:url value="/projects/${id}/dumpcalendar" var="projectCalendar" />
-	<spring:url value="/projects/${id}?form" var="projectSetting" />
+	<spring:url value="/projects/${projectId}/overview" var="projectOverview" />
+	<spring:url value="/projects/${projectId}/task" var="projectTask" />
+	<spring:url value="/projects/${projectId}/roadmap" var="projectRoadmap" />
+	<spring:url value="/projects/${projectId}/members" var="projectMember" />
+	<spring:url value="/projects/${projectId}/dumpcalendar" var="projectCalendar" />
+	<spring:url value="/projects/${projectId}?form" var="projectSetting" />
 
 	<div id="menu_menu">
 		<ul>

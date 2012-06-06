@@ -2,6 +2,7 @@ package org.hcmus.tis.dto;
 
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 
 public class SearchConditionsDTO {
@@ -9,7 +10,7 @@ public class SearchConditionsDTO {
 	private WorkItemStatus status;
 	private MemberInformation owner;
 	private MemberInformation asignee;
-	private Iteration iteration;
+	private WorkItemContainer container;
 	public String getTitleDescription() {
 		return titleDescription;
 	}
@@ -34,11 +35,11 @@ public class SearchConditionsDTO {
 	public void setAsignee(MemberInformation asignee) {
 		this.asignee = asignee;
 	}
-	public Iteration getIteration() {
-		return iteration;
+	public WorkItemContainer getContainer() {
+		return container;
 	}
-	public void setIteration(Iteration iteration) {
-		this.iteration = iteration;
+	public void setContainer(WorkItemContainer container) {
+		this.container = container;
 	}	
 
 }

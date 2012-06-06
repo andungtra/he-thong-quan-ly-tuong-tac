@@ -313,12 +313,16 @@
 		</TABLE>
 	</div>
 	<script>
-    $("select").change(function () {
-    	if('${filter}' != ''){
-    		statusID = this.value;
-        	oTable.fnFilter("");
-    	}
-    })
-        .change();
+	$(function(){
+		//debugger;
+		var selector = '#table_${id} select';
+		  $(selector).change(function () {
+		    	if('${filter}' != ''){
+		    		statusID = this.value;
+		        	oTable.fnFilter("");
+		    	}
+		    })
+		        .change();
+	})
 	</script>
 </jsp:root>

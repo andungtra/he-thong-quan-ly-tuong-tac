@@ -2,6 +2,7 @@ package org.hcmus.tis.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.dto.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Attachment;
@@ -251,21 +253,21 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(params = {"iDisplayStart", "iDisplayLength",
-			"sEcho", "sSearch", "status"})
+			"sEcho", "sSearch"})
 	@ResponseBody
 	@RequiresPermissions("workitem:list")
 	public DtReply listWorkItemByProject(
 			@PathVariable("projectId") Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho, int iSortCol_0,
-			String sSortDir_0, String sSearch, Long status) {
+			int iDisplayLength, String sEcho, String sSearch, @Valid SearchConditionsDTO searchCondition) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Project project = Project.findProject(projectId);
-		reply.setiTotalRecords((int) WorkItem.countWorkItemByProject(project));
-		reply.setiTotalDisplayRecords((int) WorkItem
-				.countWorkItemByProject(project));
-		List<WorkItem> workItems = WorkItem.findWorkItems(project,
-				iDisplayStart, iDisplayLength, sSearch, status);
+		if(searchCondition.getContainer() == null){
+			searchCondition.setContainer(project);
+		}
+		reply.setiTotalRecords((int) WorkItem.getTotalRecord(searchCondition));
+		reply.setiTotalDisplayRecords((int) WorkItem.getFilteredRecord (sSearch, searchCondition));
+		Collection<WorkItem> workItems = WorkItem.findWorkItem (sSearch, searchCondition, iDisplayStart, iDisplayLength);
 
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
@@ -274,11 +276,13 @@ public class WorkItemController {
 					+ "/workitems/" + workItem.getId() + "?form'>"
 					+ workItem.getTitle() + "</a>");
 			workItemDto.setsStatus(workItem.getStatus().getName());
+			if(!(workItem.getWorkItemContainer() instanceof Project)){
+				workItemDto.setsIteration(workItem.getWorkItemContainer().getName());
+			}
 			workItemDto.setsType(workItem.getWorkItemType().getName());
 			workItemDto.setPriority(workItem.getPriority().getName());
 			reply.getAaData().add(workItemDto);
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
 		return reply;
 	}
 
