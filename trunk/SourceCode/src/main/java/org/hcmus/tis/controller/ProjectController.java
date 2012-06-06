@@ -257,15 +257,14 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1",
-			"sSearch_2" })
+			"iDisplayLength", "sEcho", "sSearch"})
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch, String sSearch_0, String sSearch_1, String sSearch_2) {
+			String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		List<Project> list = Project.findProjectEntries(iDisplayStart,
-				iDisplayLength, sSearch, sSearch_0, sSearch_1, sSearch_2);
+				iDisplayLength, sSearch);
 		for (Project item : list) {
 			if (item.getStatus() != ProjectStatus.DELETED) {
 				ProjectDTO dto = new ProjectDTO();
@@ -280,7 +279,8 @@ public class ProjectController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)Project.countProjectEntries(sSearch));
+		reply.setiTotalRecords((int) Project.countAllProjectsNotDeleted());
 		return reply;
 	}
 

@@ -48,14 +48,14 @@ public class ProjectProcessController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1" })
+			"iDisplayLength", "sEcho", "sSearch"})
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, String sSearch_0, String sSearch_1) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		
 		List<ProjectProcess> list = ProjectProcess.findProjectProcessEntries(
-				iDisplayStart, iDisplayLength, sSearch, sSearch_0, sSearch_1);
+				iDisplayStart, iDisplayLength, sSearch);
 		for (ProjectProcess item : list) {
 			if (item.isIsDeleted() != true) {
 				ProjectDTO dto = new ProjectDTO();
@@ -65,7 +65,8 @@ public class ProjectProcessController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalRecords(reply.getAaData().size());
+		reply.setiTotalDisplayRecords((int)ProjectProcess.countProjectProcessEntries(sSearch));
+		reply.setiTotalRecords((int)ProjectProcess.countProjectProcesses());
 		return reply;
 	}
 

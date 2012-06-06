@@ -520,15 +520,18 @@ ul
 }
 .overdue li
 {
-	color: #E6820E;
 	padding: 3px;
 	padding-left:25px;
 	background-image:url("../images/post.png");
 	background-repeat:no-repeat;
 }
-.due li
-{
+
+.overdue a, .due a, .history a{
 	color: #3375D9;
+	font-weight: bold;
+}
+.due li
+{	
 	padding: 3px;
 	padding-left:25px;
 	background-image:url("../images/post.png");
@@ -594,10 +597,7 @@ textarea
 	margin-top: -2px;
 	padding: 2px 4px 2px 10px;
 }
-.comment-box a{
-	color: #3B5998;
-	font-weight: bold;
-}
+
 .comment-box .time{
 	color: gray;
 }

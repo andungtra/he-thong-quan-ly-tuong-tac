@@ -3,6 +3,16 @@ package org.hcmus.tis.dto;
 public class WorkItemDTO {
 	public long DT_RowId;	
 	private String lName;
+	private String sStatus;
+	private String sType;
+	private String priority;
+	private String iteration; 
+	public String getIteration() {
+		return iteration;
+	}
+	public void setIteration(String iteration) {
+		this.iteration = iteration;
+	}
 	public String getlName() {
 		return lName;
 	}
@@ -21,9 +31,6 @@ public class WorkItemDTO {
 	public void setsType(String sType) {
 		this.sType = sType;
 	}
-	private String sStatus;
-	private String sType;
-	private String priority;
 	public String getPriority() {
 		return priority;
 	}

@@ -4,6 +4,7 @@
 	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
 	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
 	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"
+	xmlns:date="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:spring="http://www.springframework.org/tags" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
@@ -17,7 +18,7 @@
 				</c:if>
 				<c:forEach items="${overdues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
-					<li><span>${item.dueDate}</span> : <span><a
+					<li><span><date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span><a
 							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
@@ -30,7 +31,7 @@
 				</c:if>
 				<c:forEach items="${indues}" var="item">
 					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
-					<li><span>${item.dueDate}</span> : <span><a
+					<li><span><date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span><a
 							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
@@ -43,7 +44,7 @@
 					You don't have any event !
 				</c:if>
 				<c:forEach items="${newEvent}" var="item">
-					<li><span>${item.startDate}</span> : <span>${item.name}</span>
+					<li><span><date:formatDate value="${item.startDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span>${item.name}</span>
 					</li>
 				</c:forEach>
 			</ul>

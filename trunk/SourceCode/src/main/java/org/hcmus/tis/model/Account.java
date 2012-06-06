@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -119,5 +120,29 @@ public class Account implements java.io.Serializable {
 
 	private void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
+	}
+
+	public static long countAccountsNotDeleted() {
+		// TODO Auto-generated method stub
+		EntityManager entityManager = Project.entityManager();
+		String jpq = "SELECT COUNT(o) FROM Account AS o WHERE o.status <> :status";
+		TypedQuery<Long> q = entityManager.createQuery(jpq, Long.class);
+		q.setParameter("status", AccountStatus.DELETED);
+		return q.getSingleResult();
+	}
+
+	public static long countAccountEntries(String sSearch) {
+		// TODO Auto-generated method stub
+		String hql = "SELECT COUNT(account) FROM Account AS account WHERE account.status <> :status";
+
+		if (sSearch.length() > 0) {
+			hql += " AND (LOWER(account.firstName) like LOWER(:sSearch) or LOWER(account.lastName) like LOWER(:sSearch) or LOWER(account.email) like LOWER(:sSearch) or LOWER(account.status) like LOWER(:sSearch))";
+		}
+
+		TypedQuery<Long> query = entityManager().createQuery(hql, Long.class);
+		if (sSearch.length() > 0)
+			query.setParameter("sSearch", "%" + sSearch + "%");
+		query.setParameter("status", AccountStatus.DELETED);
+		return query.getSingleResult();
 	}
 }
