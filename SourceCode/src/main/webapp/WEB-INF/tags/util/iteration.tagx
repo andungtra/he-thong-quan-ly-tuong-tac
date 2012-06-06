@@ -10,15 +10,15 @@
 	<jsp:directive.attribute name="path"
 		type="java.lang.String" required="true"
 		rtexprvalue="true" description="path" />
-	<div>
+	<div class="link">
 		<div>
 			<spring:url value="${path }/${model.id }" var="update_url">
 				<spring:param name="form"></spring:param>
 			</spring:url>
-			<a href="${update_url }" style="color: blue"> ${model.name} </a>
+			<a href="${update_url }"> ${model.name} </a>
 		</div>
-		<div style="padding-left: 20px;">Open tasks : 10</div>
-		<div style="padding-left: 20px;">Total tasks : 20</div>
+		<div style="padding-left: 20px;">Open tasks : ${model.getOpenTasks() }</div>
+		<div style="padding-left: 20px;">Total tasks : ${model.getTotalTasks() }</div>
 	</div>
 	<ul>
 		<c:forEach items="${model.children}" varStatus="status"

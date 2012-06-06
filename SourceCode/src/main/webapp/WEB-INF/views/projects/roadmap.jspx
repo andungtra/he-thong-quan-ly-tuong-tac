@@ -12,7 +12,7 @@
 		<spring:param name="form"></spring:param>
 		<spring:param name="parentId" value="${itemId }"></spring:param>
 	</spring:url>
-	<a href="${create_roadmap_url }" style="color: blue;">Create Iteration</a>
+	<a href="${create_roadmap_url }"><button>Create Iteration</button></a>
 	<div style="margin-top: 30px;">
 	<c:forEach items="${project.children}" var="iteration">
 		<util:iteration model="${iteration }" path="/projects/${project.id}/iterations"></util:iteration>
