@@ -118,7 +118,7 @@ public class Account implements java.io.Serializable {
 		return calendar;
 	}
 
-	private void setCalendar(Calendar calendar) {
+	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
 	}
 
