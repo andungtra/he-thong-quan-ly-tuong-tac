@@ -3,6 +3,7 @@ package org.hcmus.tis.model;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Temporal;
@@ -29,14 +30,14 @@ public class Event {
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date startDate;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonSerialize(using = JsonDateSerializer.class)
-	@DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date endDate;
 
 	@JsonIgnore
@@ -44,7 +45,7 @@ public class Event {
 	private Collection<Calendar> calendars;
 
 	@PreRemove
-	public void preRemove() {
+	private void preRemove() {
 		if (calendars != null) {
 			for (Calendar calendar : calendars) {
 				calendar.getEvents().remove(this);
