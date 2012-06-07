@@ -245,21 +245,25 @@ public class AccountController {
 		return "accounts/user-update";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	@RequestMapping(method = RequestMethod.PUT, params = { "calendar" }, produces = "text/html")
 	public String update(@Valid Account account, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest) {
+			Model uiModel, HttpServletRequest httpServletRequest, Long calendar) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, account);
 			return "accounts/update";
 		}
+		//accountService.updateAccount(account);
+		account.merge();
 		uiModel.asMap().clear();
-		accountService.updateAccount(account);
+		/*Calendar cal = Calendar.findCalendar(calendar);
+		account.setCalendar(cal);*/
+		
 		return "redirect:/accounts/home";
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "text/html")
+	@RequestMapping(value = "/edit",params = { "newPass" }, method = RequestMethod.PUT, produces = "text/html")
 	public String userupdate(@Valid Account account, String firstName,
-			String lastName, String email, Model uiModel,
+			String lastName, String email, String newPass, Model uiModel,
 			HttpServletRequest httpServletRequest) {
 		Account exist = Account.getAccountbyEmail(email);
 		if (account.getEmail() != email && exist != null) {
@@ -269,6 +273,12 @@ public class AccountController {
 		account.setFirstName(firstName);
 		account.setLastName(lastName);
 		account.setEmail(email);
+		if(!newPass.equals("password") && newPass.trim().length()>0){
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			String encodePassword = encoder.encodePassword(newPass, null);
+			account.setPassword(encodePassword);
+		}
+			
 		accountService.updateAccount(account);
 		return "redirect:/accounts/home";
 	}

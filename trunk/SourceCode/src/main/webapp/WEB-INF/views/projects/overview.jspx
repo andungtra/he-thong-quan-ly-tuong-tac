@@ -62,7 +62,7 @@
 	<div class="right-panel">
 		<util:fixpanel title="Overdue" id="">
 			<ul class="overdue">
-				<c:if test="${empty overdue}">
+				<c:if test="${empty overdues}">
 					You don't have any overdue !
 				</c:if>
 				<c:forEach items="${overdues}" var="item">
