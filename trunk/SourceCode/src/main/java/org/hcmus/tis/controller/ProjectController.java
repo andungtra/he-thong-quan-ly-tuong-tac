@@ -69,6 +69,12 @@ public class ProjectController {
 		uiModel.addAttribute("projects", Project.findAllProjects());
 		return "projects/list";
 	}
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String updateForm(@PathVariable("id") Long id, Model uiModel, @RequestParam(value="keepupdate", required = false) Boolean keepUpdate) {
+        populateEditForm(uiModel, Project.findProject(id));
+        uiModel.addAttribute("keepupdate", keepUpdate);
+        return "projects/update";
+    }
 
 	void populateEditForm(Model uiModel, Project project) {
 		uiModel.addAttribute("project", project);
@@ -233,8 +239,8 @@ public class ProjectController {
 					.getContainer().getId().toString()));
 		}
 		if (searchCondition.getTitleDescription() != null) {
-			params.add(new AttributeValueDTO("titleDescription", searchCondition
-					.getTitleDescription()));
+			params.add(new AttributeValueDTO("titleDescription",
+					searchCondition.getTitleDescription()));
 		}
 		uiModel.addAttribute("searchparams", params);
 		return "projects/advancedtasks";
@@ -257,7 +263,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch"})
+			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
 			String sSearch) {
@@ -275,23 +281,25 @@ public class ProjectController {
 				if (item.getParentContainer() != null)
 					dto.setParentContainer(item.getParentContainer().getName());
 				String s;
-				if(item.getDescription() !=null && item.getDescription().length()>50)
+				if (item.getDescription() != null
+						&& item.getDescription().length() > 50)
 					s = item.getDescription().substring(0, 49) + " ...";
 				else
 					s = item.getDescription();
 				dto.setDescription(s);
-				
+
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalDisplayRecords((int)Project.countProjectEntries(sSearch));
+		reply.setiTotalDisplayRecords((int) Project
+				.countProjectEntries(sSearch));
 		reply.setiTotalRecords((int) Project.countAllProjectsNotDeleted());
 		return reply;
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("project:update")
-	public String update(@Valid Project project, BindingResult bindingResult,
+	public String update(@Valid Project project, @RequestParam(value="keepupdate", required = false) Boolean update, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpServletRequest,
 			HttpSession session) {
 		Account acc = (Account) session.getAttribute("account");
@@ -304,21 +312,18 @@ public class ProjectController {
 				break;
 			}
 		}
-		if (acc != null && acc.getIsAdmin() == true
-				|| (info != null && info.getMemberRole().getId() == 1)) {
-			if (bindingResult.hasErrors()) {
-				populateEditForm(uiModel, project);
-				return "projects/update";
-			}
-			uiModel.asMap().clear();
-			project.merge();
-			uiModel.addAttribute("projects", Project.findAllProjects());
-			return "projects/list";
-		} else {
-			uiModel.addAttribute("error", "You don't have authority !!!");
+		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, project);
 			return "projects/update";
 		}
+		uiModel.asMap().clear();
+		project.merge();
+		if(update != null && update == true){
+			return "redirect:/projects/" + project.getId() + "?form&keepupdate=true";
+		}
+		uiModel.addAttribute("projects", Project.findAllProjects());
+		return "projects/list";
+
 	}
 
 	@RequestMapping(produces = "text/html")

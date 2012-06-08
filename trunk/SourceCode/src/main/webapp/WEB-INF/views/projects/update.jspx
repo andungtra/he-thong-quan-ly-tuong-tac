@@ -17,6 +17,9 @@
         <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         <field:select field="status" id="c_org_hcmus_tis_model_Project_status" items="${projectstatuses}" path="projectstatuses" z="w9DdqX2KzLLAiUAMdvgceSAsNco="/>
         <div id="c_org_hcmus_tis_model_Project_projectProcess"/>
+        <c:if test="${keepupdate }">
+        <input type="hidden" name="keepupdate" value="${keepupdate }"></input>
+        </c:if>
         <field:select field="calendar" id="c_org_hcmus_tis_model_Project_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" z="user-managed"/>
         <input name="projectProcess" type="hidden" value="${project.projectProcess.id}"/>
         <input name="calendar" type="hidden" value="${project.calendar.id}"/>

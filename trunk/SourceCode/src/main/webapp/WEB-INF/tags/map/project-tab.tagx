@@ -12,7 +12,7 @@
 	<spring:url value="/projects/${projectId}/roadmap" var="projectRoadmap" />
 	<spring:url value="/projects/${projectId}/members" var="projectMember" />
 	<spring:url value="/projects/${projectId}/dumpcalendar" var="projectCalendar" />
-	<spring:url value="/projects/${projectId}?form" var="projectSetting" />
+	<spring:url value="/projects/${projectId}?form&amp;keepupdate=true" var="projectSetting" />
 
 	<div id="menu_menu">
 		<ul>

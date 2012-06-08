@@ -28,11 +28,7 @@ privileged aspect ProjectController_Roo_Controller {
         return "projects/create";
     }
     
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String ProjectController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Project.findProject(id));
-        return "projects/update";
-    }
+
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();
