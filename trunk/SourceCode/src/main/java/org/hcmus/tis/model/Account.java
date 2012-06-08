@@ -54,9 +54,6 @@ public class Account implements java.io.Serializable {
 	@Value("false")
 	private Boolean isAdmin;
 
-	@Value("false")
-	private Boolean isEnable;
-
 	@Enumerated
 	@NotNull
 	private AccountStatus status;

@@ -55,7 +55,6 @@ public class InitDatabaseBean {
 			adminAccount.setFirstName("first name");
 			adminAccount.setLastName("last name");
 			adminAccount.setIsAdmin(true);
-			adminAccount.setIsEnable(true);
 			adminAccount.setStatus(AccountStatus.ACTIVE);
 			adminAccount.setPassword("827ccb0eea8a706c4c34a16891f84e7b");
 			adminAccount.persist();

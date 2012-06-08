@@ -60,7 +60,6 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     
     public void AccountDataOnDemand.setIsEnable(Account obj, int index) {
         Boolean isEnable = Boolean.TRUE;
-        obj.setIsEnable(isEnable);
     }
     
     public void AccountDataOnDemand.setLastName(Account obj, int index) {
