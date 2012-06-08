@@ -58,6 +58,28 @@ public class CustomAuthorizingRealmTest {
 		
 	}
 	@Test
+	@PrepareForTest({Account.class, SimpleAuthenticationInfo.class, CustomAuthorizingRealm.class})
+	public void testDoGetAuthenticationInfoWithWrongUserName() throws Exception {
+		UsernamePasswordToken token = new UsernamePasswordToken();
+		token.setUsername("userName");
+		PowerMockito.mockStatic(Account.class);
+		Account mockedAccount = Mockito.mock(Account.class);
+		Mockito.doReturn("email").when(mockedAccount).getEmail();
+		Mockito.doReturn("password").when(mockedAccount).getPassword();
+		TypedQuery<Account> mockedTypedQuery = Mockito.mock(TypedQuery.class);
+		Mockito.doReturn(mockedAccount).when(mockedTypedQuery).getSingleResult();
+		PowerMockito.when(Account.findAccountsByEmailEquals(token.getUsername())).thenReturn(mockedTypedQuery);
+		SimpleAuthenticationInfo expectedReturnInfo = Mockito.mock(SimpleAuthenticationInfo.class);
+		PowerMockito.mock(SimpleAuthenticationInfo.class);
+		PowerMockito.whenNew(SimpleAuthenticationInfo.class).withArguments(mockedAccount.getEmail(), mockedAccount.getPassword(), aut.getName()).thenReturn(expectedReturnInfo);
+		
+		AuthenticationInfo info =  aut.doGetAuthenticationInfo(token);
+		
+		Assert.assertNotNull(info);
+		Assert.assertSame(expectedReturnInfo, info);
+		
+	}
+	@Test
 	@PrepareForTest({Account.class, SecurityUtils.class})
 	public void testDoGetAuthorizationInfoWithAdministratorRole(){
 		String email = "email";
