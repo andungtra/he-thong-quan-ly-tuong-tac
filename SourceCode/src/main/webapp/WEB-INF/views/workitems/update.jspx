@@ -68,7 +68,7 @@
 		});
 	</script>
 	<form:update labelBackList="Tasks" id="fu_org_hcmus_tis_model_WorkItem"
-		label="${workItemType.name } : ${workItem.id }"
+		label="${workItemType.name } : #${workItem.id }"
 		modelAttribute="workItem"
 		path="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems" cancel ="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/task"
 		versionField="Version" z="user-managed">
