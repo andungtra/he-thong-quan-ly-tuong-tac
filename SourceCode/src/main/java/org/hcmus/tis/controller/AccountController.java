@@ -96,7 +96,6 @@ public class AccountController {
 			oldAccount.setFirstName(account.getFirstName());
 			oldAccount.setLastName(account.getLastName());
 			oldAccount.setStatus(AccountStatus.ACTIVE);
-			oldAccount.setIsEnable(true);
 			accountService.updateAccount(oldAccount);
 			uiModel.addAttribute("account", oldAccount);
 			uiModel.addAttribute("itemId", oldAccount.getId());
