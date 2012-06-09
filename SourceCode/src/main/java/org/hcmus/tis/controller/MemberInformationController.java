@@ -182,7 +182,7 @@ public class MemberInformationController {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
 				dto.DT_RowId = item.getId();
-				String redirectUrl = "/projects/"+projectId+"/member";
+				String redirectUrl = "/projects/"+projectId+"/members";
 				dto.setFirstName("<a href='../projects/"+projectId+"/memberinformations/"+item.getId()+"?fromProjectForm&redirectUrl="+redirectUrl+"'>"+item.getAccount().getFirstName()+"</a>");
 				dto.setLastName(item.getAccount().getLastName());
 				dto.setMemberRole(item.getMemberRole().getName());
