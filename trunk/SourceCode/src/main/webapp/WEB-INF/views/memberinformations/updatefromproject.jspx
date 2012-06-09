@@ -35,9 +35,16 @@
 				</div>
 			</div>
 			<div>
-				<label for="email"> Account : </label> <input disabled="disabled"
+			<label for="name"> Name : </label> <input disabled="disabled"
+					type="text" id="name" name="name"
+					value="${memberInformation.account.firstName } ${memberInformation.account.lastName}"></input>
+					<br/>
+					<br/>
+				<label for="email"> Email : </label> <input disabled="disabled"
 					type="text" id="email" name="email"
 					value="${memberInformation.account.email }"></input>
+					<br/>
+					<br/>
 			</div>
 			<div>
 				<label>Role</label> <SELECT name="memberRole">
