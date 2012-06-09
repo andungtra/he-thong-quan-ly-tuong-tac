@@ -30,14 +30,18 @@ public class IterationController {
     }
     
     @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid Iteration iteration, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+    public String update(@PathVariable("projectid") Long projectId, @Valid Iteration iteration, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             populateEditForm(uiModel, iteration, new Project());
             return "iterations/update";
         }
         uiModel.asMap().clear();
-        iterationService.updateIteration(iteration);
-        return "redirect:/iterations/" + encodeUrlPathSegment(iteration.getId().toString(), httpServletRequest);
+        if(iteration.getParentContainer() == null){
+        	Project project = Project.findProject(projectId);
+        	iteration.setParentContainer(project);
+        }
+        iteration.merge();
+        return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/roadmap";
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
@@ -64,6 +68,7 @@ public class IterationController {
     void populateEditForm(Model uiModel, Iteration iteration, Project project) {
         uiModel.addAttribute("iteration", iteration);
         Collection<Iteration> iterations = Iteration.getdescendantIterations(project);
+        iterations.remove(iteration);
         uiModel.addAttribute("iterations", iterations);
         uiModel.addAttribute("projectId", project.getId());
     }
