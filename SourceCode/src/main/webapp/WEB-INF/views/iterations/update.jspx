@@ -2,7 +2,7 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_org_hcmus_tis_model_Iteration" modelAttribute="iteration" path="/iterations" versionField="Version" z="BATt+72WgesR9oQu34gI79D1CTo=">
+    <form:update cancel="/projects/${projectId}/roadmap" id="fu_org_hcmus_tis_model_Iteration" modelAttribute="iteration" path="/projects/${iteration.parentProjectOrMyself.id}/iterations" versionField="Version" z="BATt+72WgesR9oQu34gI79D1CTo=">
         <field:textarea field="name" id="c_org_hcmus_tis_model_Iteration_name" required="true" z="z2GAspdZzRaRL+/8zifgDbUTc6k="/>
         <field:select field="parentContainer" id="c_org_hcmus_tis_model_Iteration_parentContainer" itemValue="id" items="${iterations}" path="/workitemcontainers" z="user-managed"/>
         <field:simple render="false" field="children" id="c_org_hcmus_tis_model_Iteration_children" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Container" z="user-managed"/>

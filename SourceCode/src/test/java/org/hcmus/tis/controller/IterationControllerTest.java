@@ -79,6 +79,7 @@ public class IterationControllerTest extends AbstractShiroTest {
 		aut.populateEditForm(uiModel, mockedIteration, project);
 		PowerMockito.verifyStatic();
 		Iteration.getdescendantIterations(project);
+		verify(iterations).remove(mockedIteration);
 		verify(uiModel).addAttribute("iteration", mockedIteration);
 		verify(uiModel).addAttribute("projectId", project.getId());
 		verify(uiModel).addAttribute("iterations", iterations);
@@ -105,7 +106,16 @@ public class IterationControllerTest extends AbstractShiroTest {
 		
 		verify(subIteration).persist();
 		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
-		verify(subIteration).getParentProjectOrMyself();
+		//verify(subIteration).getParentProjectOrMyself();
+		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+	}
+	@Test
+	public void testUpdateSubIteration(){
+		String result = aut.update(project.getId(),subIteration , bindingResult, uiModel, mockedHttpServletRequest);
+		
+		verify(subIteration).merge();
+		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
+		//verify(subIteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
 	}
 	private Project projectForTestCreateTopIteration;
@@ -131,6 +141,32 @@ public class IterationControllerTest extends AbstractShiroTest {
 		String result = aut.create(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
 		verify(iteration).persist();
+		verify(iteration).setParentContainer(project);
+		verify(iteration).getParentProjectOrMyself();
+		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+	}
+	@Test
+	@PrepareForTest({Project.class})
+	public void testUpdateTopIteration(){
+		PowerMockito.mockStatic(Project.class);
+		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				projectForTestCreateTopIteration = (Project) invocation.getArguments()[0];
+				return null;
+			}
+		}).when(iteration).setParentContainer(project);
+		doAnswer(new Answer<Project>() {
+			@Override
+			public Project answer(InvocationOnMock invocation) throws Throwable {
+				return projectForTestCreateTopIteration;
+			}
+		}).when(iteration).getParentProjectOrMyself();
+		
+		String result = aut.update(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
+		
+		verify(iteration).merge();
 		verify(iteration).setParentContainer(project);
 		verify(iteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
