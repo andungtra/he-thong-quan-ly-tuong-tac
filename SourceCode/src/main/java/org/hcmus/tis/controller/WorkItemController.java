@@ -143,7 +143,13 @@ public class WorkItemController {
 						project).getSingleResult();
 		}catch(Exception ex){}
 		if (memberInformation == null) {
-			throw new NotPermissionException();
+			//throw new NotPermissionException();
+			//uiModel.addAttribute("project", Project.findProject(projectId));
+			uiModel.addAttribute("itemId", projectId);
+			uiModel.addAttribute("workItemTypes", Project.findProject(projectId)
+					.getProjectProcess().getWorkItemTypes());
+			uiModel.addAttribute("error","You are not member of the project !");
+			return "projects/tasks";
 		}
 		uiModel.addAttribute("memberInformationId", memberInformation.getId());
 		if (Priority.countPrioritys() == 0) {

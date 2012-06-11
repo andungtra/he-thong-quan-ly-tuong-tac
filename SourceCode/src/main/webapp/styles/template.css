@@ -282,6 +282,7 @@ table
 
 td a
 {
+	color:#0D44AA !important;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -518,6 +519,10 @@ ul
 {
 	list-style-type: none;
 }
+.overdue
+{
+	color: red;
+}
 .overdue li
 {
 	padding: 3px;
@@ -592,10 +597,12 @@ textarea
 	color:#008040;
 }
 .comment-box{
-	background-color: #eee;
-	border: solid 1px #aaa;
+	background-image: url("../images/Default-Avatar.png");
+	background-repeat:no-repeat;
+	background-color: #FFF;
 	margin-top: -2px;
-	padding: 2px 4px 2px 10px;
+	padding: 2px 4px 2px 55px;
+	min-height: 55px;
 }
 
 .comment-box .time{

@@ -7,7 +7,7 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields></xAddionalFields>
 		</xWorkItem>
-		<xWorkItem refName="userStory" name="User story">
+		<xWorkItem name="User story" refName="userStory">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
 				<xField refName="storyPoint" name="Story point" type="digits">
@@ -15,7 +15,7 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 				<xField refName="difficulty" name="Difficulty" type="digits"></xField>
 			</xAddionalFields>
 		</xWorkItem>
-		<xWorkItem name="bug" refName="Bug">
+		<xWorkItem name="Bug" refName="bug">
 			<xPreDefinedFields></xPreDefinedFields>
 			<xAddionalFields>
 				<xField name="Severity" type="string" refName="severity">
