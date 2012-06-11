@@ -59,9 +59,7 @@ public class AccountController {
 			uiModel.addAttribute("sendEmailError", true);
 			return "accounts/create";
 		}
-		return "redirect:/accounts/ID/"
-				+ encodeUrlPathSegment(account.getId().toString(),
-						httpServletRequest);
+		return list(null,null,uiModel); 
 	}
 
 	public AccountService getAccountService() {
@@ -257,7 +255,7 @@ public class AccountController {
 		/*Calendar cal = Calendar.findCalendar(calendar);
 		account.setCalendar(cal);*/
 		
-		return "redirect:/accounts/home";
+		return list(null,null,uiModel); 
 	}
 
 	@RequestMapping(value = "/edit",params = { "newPass" }, method = RequestMethod.PUT, produces = "text/html")
@@ -441,8 +439,13 @@ public class AccountController {
 	public String delete(@PathVariable("id") Long id,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
+			Model uiModel, HttpSession session) {
+		Account cur = (Account)session.getAttribute("account");
 		Account account = accountService.findAccount(id);
+		if(cur.getEmail().equals(account.getEmail())){
+			uiModel.addAttribute("error", "You can not delete yourself !");
+			return "redirect:/accounts";
+		}
 		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
 		account.merge();

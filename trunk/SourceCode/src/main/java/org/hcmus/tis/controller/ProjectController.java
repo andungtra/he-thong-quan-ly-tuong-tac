@@ -199,7 +199,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/{id}/task", produces = "text/html")
 	public String task(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("project", Project.findProject(id));
+		//uiModel.addAttribute("project", Project.findProject(id));
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
 				.getProjectProcess().getWorkItemTypes());

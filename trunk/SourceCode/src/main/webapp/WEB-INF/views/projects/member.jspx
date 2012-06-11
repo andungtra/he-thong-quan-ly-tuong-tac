@@ -27,5 +27,5 @@
 		path="memberinformations"
 		source="/projects/${projectId}/memberinformations"
 		thead="First Name, Last Name, Member Role" fadd="${lAdd}" fupdate="${update_url}" 
-		fremove="${remove_url}" redirectUrl="${redirectUrl}" />
+		fremove="${remove_url}" redirectUrl="${redirectUrl}"  />
 </div>

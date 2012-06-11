@@ -14,4 +14,10 @@
             <table:column id="c_org_hcmus_tis_model_Account_calendar" property="calendar" z="+oMDtfC3+JjkP3FOGR8YtI8XUZI="/>
         </div>
     </div>
+    <script type="text/javascript">
+	$(document).ready(
+    		function(){if("${error}" !='')
+    			alert("${error}");}   		
+    );
+	</script>
 </div>

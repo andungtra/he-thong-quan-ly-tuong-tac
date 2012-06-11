@@ -39,7 +39,7 @@
 	</div>
 	<div class="right-panel">
 		<util:fixpanel title="Incomming Event" id="">
-			<ul class="overdue">
+			<ul class="due">
 				<c:if test="${empty newEvent}">
 					You don't have any event !
 				</c:if>
