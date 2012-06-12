@@ -1,4 +1,4 @@
-package org.hcmus.tis.dto;
+package org.hcmus.tis.dto.datatables;
 
 public class DSRestResponse {
 	private DSResponse response;

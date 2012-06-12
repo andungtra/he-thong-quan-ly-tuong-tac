@@ -12,8 +12,6 @@ import org.hcmus.tis.controller.CommentController;
 import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
-import org.joda.time.format.DateTimeFormat;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +70,7 @@ privileged aspect CommentController_Roo_Controller {
     }
     
     void CommentController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("comment_commentdate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("comment_commentdate_date_format", "dd-MM-yyyy'T'HH:mm");
     }
     
     void CommentController.populateEditForm(Model uiModel, Comment comment) {

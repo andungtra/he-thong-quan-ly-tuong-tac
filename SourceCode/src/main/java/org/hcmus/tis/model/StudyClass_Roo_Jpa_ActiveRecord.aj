@@ -6,8 +6,6 @@ package org.hcmus.tis.model;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +41,6 @@ privileged aspect StudyClass_Roo_Jpa_ActiveRecord {
     public void StudyClass.persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
-        Logger.getLogger(this.getClass()).info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" + "mô tả" + this.getName());
     }
     
     @Transactional

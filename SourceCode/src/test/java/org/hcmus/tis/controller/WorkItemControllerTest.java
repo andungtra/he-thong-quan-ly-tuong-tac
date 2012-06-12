@@ -19,7 +19,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.SearchConditionsDTO;
-import org.hcmus.tis.dto.WorkItemDTO;
+import org.hcmus.tis.dto.datatables.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Field;
@@ -116,6 +116,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				return null;
 			}
 		}).when(mockedTaskExecutor).execute(any(Runnable.class));
+		doReturn("name").when(iteration).getName();
 	}
 
 	@After
@@ -493,6 +494,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		long totalRecord = (long) 3;
 		int startDisplay = 10;
 		int displayLength = 10;
+		doReturn(iteration).when(mockedWorkItem).getWorkItemContainer();
 		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";
@@ -506,6 +508,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				.thenReturn(filteredRecord);
 		String sEcho = "";
 		String sSearch = "";
+	
 
 		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
 				startDisplay, displayLength, sEcho, sSearch, searchConditions);
@@ -539,6 +542,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		long totalRecord = (long) 3;
 		int startDisplay = 10;
 		int displayLength = 10;
+		doReturn(mockedProject).when(mockedWorkItem).getWorkItemContainer();
 		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";

@@ -13,6 +13,8 @@ import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.Calendar;
+import org.hcmus.tis.model.CalendarDataOnDemand;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,18 +28,26 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     private List<Account> AccountDataOnDemand.data;
     
     @Autowired
+    private CalendarDataOnDemand AccountDataOnDemand.calendarDataOnDemand;
+    
+    @Autowired
     AccountService AccountDataOnDemand.accountService;
     
     public Account AccountDataOnDemand.getNewTransientAccount(int index) {
         Account obj = new Account();
+        setCalendar(obj, index);
         setEmail(obj, index);
         setFirstName(obj, index);
         setIsAdmin(obj, index);
-        setIsEnable(obj, index);
         setLastName(obj, index);
         setPassword(obj, index);
         setStatus(obj, index);
         return obj;
+    }
+    
+    public void AccountDataOnDemand.setCalendar(Account obj, int index) {
+        Calendar calendar = calendarDataOnDemand.getSpecificCalendar(index);
+        obj.setCalendar(calendar);
     }
     
     public void AccountDataOnDemand.setEmail(Account obj, int index) {
@@ -56,10 +66,6 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     public void AccountDataOnDemand.setIsAdmin(Account obj, int index) {
         Boolean isAdmin = Boolean.TRUE;
         obj.setIsAdmin(isAdmin);
-    }
-    
-    public void AccountDataOnDemand.setIsEnable(Account obj, int index) {
-        Boolean isEnable = Boolean.TRUE;
     }
     
     public void AccountDataOnDemand.setLastName(Account obj, int index) {

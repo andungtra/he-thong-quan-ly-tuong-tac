@@ -26,7 +26,7 @@ public class StudyClass {
 
 	private String description;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy="studyClass")
 	private Set<Project> projects = new HashSet<Project>();
 
 	@Value("false")

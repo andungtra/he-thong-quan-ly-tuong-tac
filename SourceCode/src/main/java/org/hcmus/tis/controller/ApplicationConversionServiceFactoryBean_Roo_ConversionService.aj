@@ -18,7 +18,6 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.service.AccountService;
-import org.hcmus.tis.service.IterationService;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -31,9 +30,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     AccountService ApplicationConversionServiceFactoryBean.accountService;
-    
-    @Autowired
-    IterationService ApplicationConversionServiceFactoryBean.iterationService;
     
     @Autowired
     ProjectProcessService ApplicationConversionServiceFactoryBean.projectProcessService;
@@ -113,7 +109,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Iteration> ApplicationConversionServiceFactoryBean.getIdToIterationConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Iteration>() {
             public org.hcmus.tis.model.Iteration convert(java.lang.Long id) {
-                return iterationService.findIteration(id);
+                return Iteration.findIteration(id);
             }
         };
     }

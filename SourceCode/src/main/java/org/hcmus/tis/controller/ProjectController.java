@@ -14,13 +14,13 @@ import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hcmus.tis.dto.AttributeValueDTO;
-import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
-import org.hcmus.tis.dto.DSResponse;
 import org.hcmus.tis.dto.NonEditableEvent;
-import org.hcmus.tis.dto.ProjectDTO;
 import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.dto.SiteMapItem;
+import org.hcmus.tis.dto.datatables.DSResponse;
+import org.hcmus.tis.dto.datatables.DSRestResponse;
+import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.Iteration;
@@ -50,7 +50,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/projects")
 @Controller
 @RooWebScaffold(path = "projects", formBackingObject = Project.class)
-@RooWebFinder
 public class ProjectController {
 	@Autowired
 	private ProjectProcessService projectProcessService;
@@ -120,41 +119,6 @@ public class ProjectController {
 		return "projects/homepage";
 	}
 
-	@RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
-	@RequiresPermissions("project:list")
-	public String findProjectsQuickly(@RequestParam("query") String name,
-			Model uiModel,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size) {
-		int sizeNo = size == null ? 10 : size.intValue();
-		int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-		long totalResult = 0;
-		if (!name.isEmpty()) {
-			uiModel.addAttribute("projects",
-					Project.findProjectsByNameLike(name, firstResult, sizeNo)
-							.getResultList());
-			totalResult = Project.countProjectsByNameLike(name);
-		} else {
-			uiModel.addAttribute("projects",
-					Project.findProjectEntries(firstResult, sizeNo));
-			totalResult = Project.countProjects();
-		}
-		Collection<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(new Parameter("find", "quickFind"));
-		parameters.add(new Parameter("query", name));
-		uiModel.addAttribute("parameters", parameters);
-		int maxPage = (int) (totalResult / sizeNo);
-		if (totalResult % sizeNo != 0) {
-			++maxPage;
-		}
-		uiModel.addAttribute("maxPages", maxPage);
-		uiModel.addAttribute("query", name);
-		return "projects/list";
-	}
-
-	public String findProjectsByNameLike(String name, Model uiModel) {
-		return "projects/list";
-	}
 
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")

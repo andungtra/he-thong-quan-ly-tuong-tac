@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 
 import org.hcmus.tis.dto.DtReply;
-import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.model.ProjectProcess;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;

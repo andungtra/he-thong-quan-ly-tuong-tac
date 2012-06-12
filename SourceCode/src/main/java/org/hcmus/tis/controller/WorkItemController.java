@@ -14,7 +14,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.SearchConditionsDTO;
-import org.hcmus.tis.dto.WorkItemDTO;
+import org.hcmus.tis.dto.datatables.WorkItemDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.Field;

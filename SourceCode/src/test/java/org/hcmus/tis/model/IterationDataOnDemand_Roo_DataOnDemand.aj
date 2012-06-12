@@ -13,8 +13,6 @@ import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.IterationDataOnDemand;
 import org.hcmus.tis.model.WorkItemContainer;
-import org.hcmus.tis.service.IterationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect IterationDataOnDemand_Roo_DataOnDemand {
@@ -24,9 +22,6 @@ privileged aspect IterationDataOnDemand_Roo_DataOnDemand {
     private Random IterationDataOnDemand.rnd = new SecureRandom();
     
     private List<Iteration> IterationDataOnDemand.data;
-    
-    @Autowired
-    IterationService IterationDataOnDemand.iterationService;
     
     public Iteration IterationDataOnDemand.getNewTransientIteration(int index) {
         Iteration obj = new Iteration();
@@ -58,14 +53,14 @@ privileged aspect IterationDataOnDemand_Roo_DataOnDemand {
         }
         Iteration obj = data.get(index);
         Long id = obj.getId();
-        return iterationService.findIteration(id);
+        return Iteration.findIteration(id);
     }
     
     public Iteration IterationDataOnDemand.getRandomIteration() {
         init();
         Iteration obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return iterationService.findIteration(id);
+        return Iteration.findIteration(id);
     }
     
     public boolean IterationDataOnDemand.modifyIteration(Iteration obj) {
@@ -75,7 +70,7 @@ privileged aspect IterationDataOnDemand_Roo_DataOnDemand {
     public void IterationDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = iterationService.findIterationEntries(from, to);
+        data = Iteration.findIterationEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Iteration' illegally returned null");
         }
@@ -87,7 +82,7 @@ privileged aspect IterationDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Iteration obj = getNewTransientIteration(i);
             try {
-                iterationService.saveIteration(obj);
+                obj.persist();
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
