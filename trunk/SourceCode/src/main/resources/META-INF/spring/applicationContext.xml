@@ -48,7 +48,7 @@
 		<property name="driverClassName" value="${database.driverClassName}" />
 		<property name="url" value="${database.url}" />
 
-		  <property name="connectionProperties" value="useUnicode=true;characterEncoding=UTF-8"/>
+		<property name="connectionProperties" value="useUnicode=true;characterEncoding=UTF-8" />
 		<property name="username" value="${database.username}" />
 		<property name="password" value="${database.password}" />
 		<property name="testOnBorrow" value="true" />
@@ -70,6 +70,9 @@
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
 	</bean>
 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl"
 		id="mailSender">

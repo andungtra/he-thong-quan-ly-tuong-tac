@@ -30,7 +30,7 @@ public class StudyClass {
 	private Set<Project> projects = new HashSet<Project>();
 
 	@Value("false")
-	private boolean isDeleted;
+	private boolean deleted;
 
 	public static List<StudyClass> findStudyClassEntries(int iDisplayStart,
 			int iDisplayLength, String sSearch, String sSearch_0,

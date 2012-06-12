@@ -5,6 +5,11 @@ import java.util.List;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.datatables.StudyClassDTO;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.repository.StudyClassRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -20,24 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RooWebScaffold(path = "studyclasses", formBackingObject = StudyClass.class)
 @RooWebFinder
 public class StudyClassController {
-
-	@RequestMapping(params = "find=quickFind", method = RequestMethod.GET)
-	public String findStudyClassesQuickly(@RequestParam("query") String query,
-			Model uiModel) {
-		if (query.isEmpty()) {
-			uiModel.addAttribute("studyclasses",
-					StudyClass.findAllStudyClasses());
-		} else {
-			uiModel.addAttribute("studyclasses", StudyClass
-					.findStudyClassesByNameLike(query).getResultList());
-		}
-		uiModel.addAttribute("query", query);
-		return "studyclasses/list";
-	}
-
 	@RequestMapping(value = "/ID/{id}", produces = "text/html")
 	public String showClass(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("studyclass", StudyClass.findStudyClass(id));
+		uiModel.addAttribute("studyclass", studyClassRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
 		return "studyclasses/show";
 	}
@@ -48,11 +38,17 @@ public class StudyClassController {
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-
-		List<StudyClass> list = StudyClass.findStudyClassEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+		Page<StudyClass> page = null;
+		if(sSearch == null || sSearch.length() == 0){
+			page = studyClassRepository.findByDeleted(false, pageable);
+		}else{
+			sSearch   = "%" + sSearch + "%";
+			page = studyClassRepository.findByNameLikeAndDeleted(sSearch, false, pageable);
+		}
+		List<StudyClass> list = page.getContent();
 		for (StudyClass item : list) {
-			if (item.isIsDeleted() != true) {
+			if (item.isDeleted() != true) {
 				StudyClassDTO dto = new StudyClassDTO();
 				dto.DT_RowId = item.getId();
 				dto.setName("<a href='../studyclasses/"+item.getId()+"?form'>"+item.getName()+"</a>");
@@ -61,8 +57,8 @@ public class StudyClassController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalDisplayRecords((int)StudyClass.StudyClassEntries(sSearch));
-		reply.setiTotalRecords((int)StudyClass.countStudyClassesNotDeleted());
+		reply.setiTotalDisplayRecords((int)page.getTotalElements());
+		reply.setiTotalRecords((int)studyClassRepository.countStudyClassesNotDeleted());
 		return reply;
 	}
 
@@ -75,50 +71,21 @@ public class StudyClassController {
 		if (listId != null && listId.length() > 0) {
 			String [] lst = listId.split(",");
 			for (String string : lst) {
-				StudyClass studyClass = StudyClass.findStudyClass(Long.valueOf(string));
-				studyClass.setIsDeleted(true);
-				studyClass.merge();
+				StudyClass studyClass = studyClassRepository.findOne(Long.valueOf(string));
+				studyClass.setDeleted(true);
+				studyClassRepository.save(studyClass);
 			}
 		} else {
 			StudyClass studyClass = StudyClass.findStudyClass(id);
-			studyClass.setIsDeleted(true);
-			studyClass.merge();
+			studyClass.setDeleted(true);
+			studyClassRepository.save(studyClass);
 		}
 		// studyClass.remove();
 		//uiModel.asMap().clear();
+		studyClassRepository.flush();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/studyclasses";
 
-	}
-
-	@RequestMapping(produces = "text/html")
-	public String list(
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
-
-		List<StudyClass> list = null;
-		if (page != null || size != null) {
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1)
-					* sizeNo;
-			list = StudyClass.findStudyClassEntries(firstResult, sizeNo);
-
-			float nrOfPages = (float) StudyClass.countStudyClasses() / sizeNo;
-			uiModel.addAttribute(
-					"maxPages",
-					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
-							: nrOfPages));
-		} else {
-			list = StudyClass.findAllStudyClasses();
-		}
-
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).isIsDeleted() == true)
-				list.remove(i);
-		}
-		uiModel.addAttribute("studyclasses", list);
-		return "studyclasses/list";
 	}
 }

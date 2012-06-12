@@ -18,30 +18,4 @@ import org.springframework.ui.Model;
 @MockStaticEntityMethods
 public class StudyClassControllerTest {
 
-	@Test
-	public void testFindStudyClassByNameLikeWithEmptyInput() {
-		PowerMockito.mockStatic(StudyClass.class);
-		PowerMockito.when(StudyClass.findAllStudyClasses()).thenReturn(null);
-		Model mockUIModel = Mockito.mock(Model.class);
-		StudyClassController controller = new StudyClassController();
-		controller.findStudyClassesQuickly("", mockUIModel);
-		PowerMockito.verifyStatic();
-		StudyClass.findAllStudyClasses();
-		Mockito.verify(mockUIModel).addAttribute("query", "");
-		
-	}
-	@Test
-	public void testFindStudyClassByNameLikeWithNonEmptyInput(){
-		PowerMockito.mockStatic(StudyClass.class);
-		TypedQuery<StudyClass> mockedResult = Mockito.mock(TypedQuery.class);
-		String name= "name";
-		PowerMockito.when(StudyClass.findStudyClassesByNameLike(name)).thenReturn(mockedResult);
-		Model mockUIModel = Mockito.mock(Model.class);
-		StudyClassController controller = new StudyClassController();
-		controller.findStudyClassesQuickly(name, mockUIModel);
-		PowerMockito.verifyStatic();
-		StudyClass.findStudyClassesByNameLike(name);
-		Mockito.verify(mockUIModel).addAttribute("query", name);
-	}
-
 }
