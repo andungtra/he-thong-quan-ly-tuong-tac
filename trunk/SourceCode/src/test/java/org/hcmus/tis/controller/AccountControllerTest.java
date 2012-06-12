@@ -11,8 +11,8 @@ import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
-import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.NonEditableEvent;
+import org.hcmus.tis.dto.datatables.DSRestResponse;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;

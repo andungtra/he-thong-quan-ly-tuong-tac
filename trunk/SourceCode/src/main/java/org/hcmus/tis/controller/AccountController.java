@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.hcmus.tis.dto.AccountDTO;
-import org.hcmus.tis.dto.DSResponse;
-import org.hcmus.tis.dto.DSRestResponse;
 import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.NonEditableEvent;
-import org.hcmus.tis.dto.ProjectDTO;
+import org.hcmus.tis.dto.datatables.AccountDTO;
+import org.hcmus.tis.dto.datatables.DSResponse;
+import org.hcmus.tis.dto.datatables.DSRestResponse;
+import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;

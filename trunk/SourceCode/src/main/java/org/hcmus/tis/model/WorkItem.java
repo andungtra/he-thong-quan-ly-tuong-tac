@@ -157,7 +157,7 @@ public class WorkItem {
 	void preUpdate() {
 		WorkItemHistory history = new WorkItemHistory();
 		WorkItem oldWorKitem = WorkItem.findWorkItem(this.getId());
-		if (oldWorKitem.getSubcribers().size() == this.getSubcribers().size()) {
+		if (oldWorKitem.getSubcribers() == null || this.getSubcribers() == null || oldWorKitem.getSubcribers().size() == this.getSubcribers().size()) {
 			history.setType(WorkItemHistoryType.updated);
 			writeHistory(history);
 		}

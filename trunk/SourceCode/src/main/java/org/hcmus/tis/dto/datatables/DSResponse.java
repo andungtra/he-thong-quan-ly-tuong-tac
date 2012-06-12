@@ -1,4 +1,4 @@
-package org.hcmus.tis.dto;
+package org.hcmus.tis.dto.datatables;
 
 import java.util.List;
 

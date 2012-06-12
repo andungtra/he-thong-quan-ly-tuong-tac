@@ -4,9 +4,9 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
+import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.IterationDataOnDemand;
 import org.hcmus.tis.model.IterationIntegrationTest;
-import org.hcmus.tis.service.IterationService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,13 +26,10 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private IterationDataOnDemand IterationIntegrationTest.dod;
     
-    @Autowired
-    IterationService IterationIntegrationTest.iterationService;
-    
     @Test
-    public void IterationIntegrationTest.testCountAllIterations() {
+    public void IterationIntegrationTest.testCountIterations() {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", dod.getRandomIteration());
-        long count = iterationService.countAllIterations();
+        long count = Iteration.countIterations();
         Assert.assertTrue("Counter for 'Iteration' incorrectly reported there were no entries", count > 0);
     }
     
@@ -42,7 +39,7 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to provide an identifier", id);
-        obj = iterationService.findIteration(id);
+        obj = Iteration.findIteration(id);
         Assert.assertNotNull("Find method for 'Iteration' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Iteration' returned the incorrect identifier", id, obj.getId());
     }
@@ -50,9 +47,9 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
     @Test
     public void IterationIntegrationTest.testFindAllIterations() {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", dod.getRandomIteration());
-        long count = iterationService.countAllIterations();
+        long count = Iteration.countIterations();
         Assert.assertTrue("Too expensive to perform a find all test for 'Iteration', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Iteration> result = iterationService.findAllIterations();
+        List<Iteration> result = Iteration.findAllIterations();
         Assert.assertNotNull("Find all method for 'Iteration' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Iteration' failed to return any data", result.size() > 0);
     }
@@ -60,11 +57,11 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
     @Test
     public void IterationIntegrationTest.testFindIterationEntries() {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", dod.getRandomIteration());
-        long count = iterationService.countAllIterations();
+        long count = Iteration.countIterations();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Iteration> result = iterationService.findIterationEntries(firstResult, maxResults);
+        List<Iteration> result = Iteration.findIterationEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Iteration' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Iteration' returned an incorrect number of entries", count, result.size());
     }
@@ -75,7 +72,7 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to provide an identifier", id);
-        obj = iterationService.findIteration(id);
+        obj = Iteration.findIteration(id);
         Assert.assertNotNull("Find method for 'Iteration' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyIteration(obj);
         Integer currentVersion = obj.getVersion();
@@ -84,41 +81,41 @@ privileged aspect IterationIntegrationTest_Roo_IntegrationTest {
     }
     
     @Test
-    public void IterationIntegrationTest.testUpdateIterationUpdate() {
+    public void IterationIntegrationTest.testMergeUpdate() {
         Iteration obj = dod.getRandomIteration();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to provide an identifier", id);
-        obj = iterationService.findIteration(id);
+        obj = Iteration.findIteration(id);
         boolean modified =  dod.modifyIteration(obj);
         Integer currentVersion = obj.getVersion();
-        Iteration merged = (Iteration)iterationService.updateIteration(obj);
+        Iteration merged = (Iteration)obj.merge();
         obj.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Iteration' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void IterationIntegrationTest.testSaveIteration() {
+    public void IterationIntegrationTest.testPersist() {
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", dod.getRandomIteration());
         Iteration obj = dod.getNewTransientIteration(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Iteration' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Iteration' identifier to be null", obj.getId());
-        iterationService.saveIteration(obj);
+        obj.persist();
         obj.flush();
         Assert.assertNotNull("Expected 'Iteration' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void IterationIntegrationTest.testDeleteIteration() {
+    public void IterationIntegrationTest.testRemove() {
         Iteration obj = dod.getRandomIteration();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Iteration' failed to provide an identifier", id);
-        obj = iterationService.findIteration(id);
-        iterationService.deleteIteration(obj);
+        obj = Iteration.findIteration(id);
+        obj.remove();
         obj.flush();
-        Assert.assertNull("Failed to remove 'Iteration' with identifier '" + id + "'", iterationService.findIteration(id));
+        Assert.assertNull("Failed to remove 'Iteration' with identifier '" + id + "'", Iteration.findIteration(id));
     }
     
 }

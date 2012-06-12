@@ -3,7 +3,7 @@ package org.hcmus.tis.controller;
 import java.util.List;
 
 import org.hcmus.tis.dto.DtReply;
-import org.hcmus.tis.dto.StudyClassDTO;
+import org.hcmus.tis.dto.datatables.StudyClassDTO;
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;

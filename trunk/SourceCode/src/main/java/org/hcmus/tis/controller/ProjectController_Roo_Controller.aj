@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.ProjectController;
 import org.hcmus.tis.model.Project;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
@@ -27,8 +26,6 @@ privileged aspect ProjectController_Roo_Controller {
         uiModel.addAttribute("dependencies", dependencies);
         return "projects/create";
     }
-    
-
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();
