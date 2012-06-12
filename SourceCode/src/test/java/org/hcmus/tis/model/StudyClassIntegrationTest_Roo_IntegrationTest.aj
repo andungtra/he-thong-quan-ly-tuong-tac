@@ -4,9 +4,9 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
-import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
 import org.hcmus.tis.model.StudyClassIntegrationTest;
+import org.hcmus.tis.repository.StudyClassRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,42 +26,45 @@ privileged aspect StudyClassIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private StudyClassDataOnDemand StudyClassIntegrationTest.dod;
     
+    @Autowired
+    StudyClassRepository StudyClassIntegrationTest.studyClassRepository;
+    
     @Test
-    public void StudyClassIntegrationTest.testCountStudyClasses() {
+    public void StudyClassIntegrationTest.testCount() {
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", dod.getRandomStudyClass());
-        long count = StudyClass.countStudyClasses();
+        long count = studyClassRepository.count();
         Assert.assertTrue("Counter for 'StudyClass' incorrectly reported there were no entries", count > 0);
     }
     
     @Test
-    public void StudyClassIntegrationTest.testFindStudyClass() {
+    public void StudyClassIntegrationTest.testFind() {
         StudyClass obj = dod.getRandomStudyClass();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to provide an identifier", id);
-        obj = StudyClass.findStudyClass(id);
+        obj = studyClassRepository.findOne(id);
         Assert.assertNotNull("Find method for 'StudyClass' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyClass' returned the incorrect identifier", id, obj.getId());
     }
     
     @Test
-    public void StudyClassIntegrationTest.testFindAllStudyClasses() {
+    public void StudyClassIntegrationTest.testFindAll() {
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", dod.getRandomStudyClass());
-        long count = StudyClass.countStudyClasses();
+        long count = studyClassRepository.count();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyClass', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyClass> result = StudyClass.findAllStudyClasses();
+        List<StudyClass> result = studyClassRepository.findAll();
         Assert.assertNotNull("Find all method for 'StudyClass' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyClass' failed to return any data", result.size() > 0);
     }
     
     @Test
-    public void StudyClassIntegrationTest.testFindStudyClassEntries() {
+    public void StudyClassIntegrationTest.testFindEntries() {
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", dod.getRandomStudyClass());
-        long count = StudyClass.countStudyClasses();
+        long count = studyClassRepository.count();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyClass> result = StudyClass.findStudyClassEntries(firstResult, maxResults);
+        List<StudyClass> result = studyClassRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / maxResults, maxResults)).getContent();
         Assert.assertNotNull("Find entries method for 'StudyClass' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyClass' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +75,50 @@ privileged aspect StudyClassIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to provide an identifier", id);
-        obj = StudyClass.findStudyClass(id);
+        obj = studyClassRepository.findOne(id);
         Assert.assertNotNull("Find method for 'StudyClass' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyStudyClass(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        studyClassRepository.flush();
         Assert.assertTrue("Version for 'StudyClass' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void StudyClassIntegrationTest.testMergeUpdate() {
+    public void StudyClassIntegrationTest.testSaveUpdate() {
         StudyClass obj = dod.getRandomStudyClass();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to provide an identifier", id);
-        obj = StudyClass.findStudyClass(id);
+        obj = studyClassRepository.findOne(id);
         boolean modified =  dod.modifyStudyClass(obj);
         Integer currentVersion = obj.getVersion();
-        StudyClass merged = obj.merge();
-        obj.flush();
+        StudyClass merged = studyClassRepository.save(obj);
+        studyClassRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'StudyClass' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void StudyClassIntegrationTest.testPersist() {
+    public void StudyClassIntegrationTest.testSave() {
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", dod.getRandomStudyClass());
         StudyClass obj = dod.getNewTransientStudyClass(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'StudyClass' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        studyClassRepository.save(obj);
+        studyClassRepository.flush();
         Assert.assertNotNull("Expected 'StudyClass' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyClassIntegrationTest.testRemove() {
+    public void StudyClassIntegrationTest.testDelete() {
         StudyClass obj = dod.getRandomStudyClass();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyClass' failed to provide an identifier", id);
-        obj = StudyClass.findStudyClass(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'StudyClass' with identifier '" + id + "'", StudyClass.findStudyClass(id));
+        obj = studyClassRepository.findOne(id);
+        studyClassRepository.delete(obj);
+        studyClassRepository.flush();
+        Assert.assertNull("Failed to remove 'StudyClass' with identifier '" + id + "'", studyClassRepository.findOne(id));
     }
     
 }

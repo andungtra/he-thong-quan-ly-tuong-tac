@@ -12,6 +12,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
+import org.hcmus.tis.repository.StudyClassRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
@@ -22,22 +24,25 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
     
     private List<StudyClass> StudyClassDataOnDemand.data;
     
+    @Autowired
+    StudyClassRepository StudyClassDataOnDemand.studyClassRepository;
+    
     public StudyClass StudyClassDataOnDemand.getNewTransientStudyClass(int index) {
         StudyClass obj = new StudyClass();
+        setDeleted(obj, index);
         setDescription(obj, index);
-        setIsDeleted(obj, index);
         setName(obj, index);
         return obj;
+    }
+    
+    public void StudyClassDataOnDemand.setDeleted(StudyClass obj, int index) {
+        Boolean deleted = true;
+        obj.setDeleted(deleted);
     }
     
     public void StudyClassDataOnDemand.setDescription(StudyClass obj, int index) {
         String description = "description_" + index;
         obj.setDescription(description);
-    }
-    
-    public void StudyClassDataOnDemand.setIsDeleted(StudyClass obj, int index) {
-        Boolean isDeleted = true;
-        obj.setIsDeleted(isDeleted);
     }
     
     public void StudyClassDataOnDemand.setName(StudyClass obj, int index) {
@@ -58,14 +63,14 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
         }
         StudyClass obj = data.get(index);
         Long id = obj.getId();
-        return StudyClass.findStudyClass(id);
+        return studyClassRepository.findOne(id);
     }
     
     public StudyClass StudyClassDataOnDemand.getRandomStudyClass() {
         init();
         StudyClass obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return StudyClass.findStudyClass(id);
+        return studyClassRepository.findOne(id);
     }
     
     public boolean StudyClassDataOnDemand.modifyStudyClass(StudyClass obj) {
@@ -75,7 +80,7 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
     public void StudyClassDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyClass.findStudyClassEntries(from, to);
+        data = studyClassRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyClass' illegally returned null");
         }
@@ -87,7 +92,7 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyClass obj = getNewTransientStudyClass(i);
             try {
-                obj.persist();
+                studyClassRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -96,7 +101,7 @@ privileged aspect StudyClassDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            studyClassRepository.flush();
             data.add(obj);
         }
     }
