@@ -76,7 +76,7 @@ public class StudyClassController {
 				studyClassRepository.save(studyClass);
 			}
 		} else {
-			StudyClass studyClass = StudyClass.findStudyClass(id);
+			StudyClass studyClass = studyClassRepository.findOne(id);
 			studyClass.setDeleted(true);
 			studyClassRepository.save(studyClass);
 		}

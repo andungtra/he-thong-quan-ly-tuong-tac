@@ -33,6 +33,7 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProjectController {
 	@Autowired
 	private ProjectProcessService projectProcessService;
+	@Autowired
+	private StudyClassRepository studyClassRepository;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	@RequiresPermissions("project:create")
@@ -79,7 +82,7 @@ public class ProjectController {
 		uiModel.addAttribute("project", project);
 		uiModel.addAttribute("memberinformations",
 				MemberInformation.findAllMemberInformations());
-		uiModel.addAttribute("studyclasses", StudyClass.findAllStudyClasses());
+		uiModel.addAttribute("studyclasses", studyClassRepository.findByDeleted(false) );
 		uiModel.addAttribute("workitemcontainers",
 				WorkItemContainer.findAllWorkItemContainers());
 		uiModel.addAttribute("projectprocesses",

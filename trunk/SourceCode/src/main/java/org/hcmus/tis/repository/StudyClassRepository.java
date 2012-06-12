@@ -1,5 +1,7 @@
 package org.hcmus.tis.repository;
 
+import java.util.List;
+
 import org.hcmus.tis.model.StudyClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,4 +14,5 @@ public interface StudyClassRepository {
 	public  long countStudyClassesNotDeleted();
 	public Page<StudyClass> findByNameLikeAndDeleted(String search, Boolean deleted, Pageable pageable);
 	public Page<StudyClass> findByDeleted(Boolean deleted, Pageable pageable);
+	public List<StudyClass> findByDeleted(Boolean deleted);
 }

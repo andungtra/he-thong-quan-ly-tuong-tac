@@ -13,11 +13,12 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findStudyClassesByNameLike" })
+@RooJpaEntity
 public class StudyClass {
 
 	@NotNull
@@ -31,8 +32,9 @@ public class StudyClass {
 
 	@Value("false")
 	private boolean deleted;
+}
 
-	public static List<StudyClass> findStudyClassEntries(int iDisplayStart,
+/*	public static List<StudyClass> findStudyClassEntries(int iDisplayStart,
 			int iDisplayLength, String sSearch, String sSearch_0,
 			String sSearch_1) {
 		// TODO Auto-generated method stub
@@ -111,5 +113,4 @@ public class StudyClass {
 			query.setParameter("sSearch", "%" + sSearch + "%");
 		query.setParameter("isDeleted", false);
 		return query.getSingleResult();
-	}
-}
+	}*/
