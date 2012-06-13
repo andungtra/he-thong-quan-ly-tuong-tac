@@ -25,6 +25,10 @@ privileged aspect WorkItemContainer_Roo_JavaBean {
         this.parentContainer = parentContainer;
     }
     
+    public Collection<WorkItemContainer> WorkItemContainer.getChildren() {
+        return this.children;
+    }
+    
     public void WorkItemContainer.setChildren(Collection<WorkItemContainer> children) {
         this.children = children;
     }

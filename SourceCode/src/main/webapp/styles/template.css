@@ -620,3 +620,9 @@ textarea
 	text-align: right;
 	float:right;
 }
+.hide{
+	display: none;
+}
+.show{
+	display: block;
+}

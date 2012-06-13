@@ -11,52 +11,54 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both;" />
-	<div class="left-panel" id="overview">
+	<div id="overview">
+
 		<page:show create="false" delete="false"
 			id="ps_org_hcmus_tis_model_Project" list="false" object="${project}"
 			path="/projects" update="false" z="user-managed"
 			label="Project : ${project.name}">
-			
-			<label>Description : </label> <span class="des"></span> 
-			<script type="text/javascript">
-			var des = "${project.description}";
-			
-			if (des.length > 50)
-				des = des.slice(0, 49) + " ...";
-			
-			$('.des')
-			.html(des);			
-			</script>
-			<field:display field="description"
-				id="s_org_hcmus_tis_model_Project_description" object="${project}"
-				z="wdUFcebJjkZc28b97a5kBc7qxx8="  render="false"/>
+			<div id="col" class="hide">
+				<label>Description : </label> <span class="des"></span>
 
-			<field:display field="parentContainer"
-				id="s_org_hcmus_tis_model_Project_parentContainer"
-				label="Parent project" object="${project}" z="user-managed" />
-			<c:choose>
-				<c:when test="${project.studyClass ne null}">
-					<field:display field="name"
-						id="s_org_hcmus_tis_model_Project_studyClass" label="Class"
-						object="${project.studyClass}" z="user-managed" />
-				</c:when>
-				<c:otherwise>
-					<field:display field="studyClass"
-						id="s_org_hcmus_tis_model_Project_studyClass" label="Class"
-						object="${project}" z="user-managed" />
-				</c:otherwise>
-			</c:choose>
-			<c:if test="${not empty listStatus}">
-				<util:fixpanel title="WorkItem status" id="">
-					<c:forEach items="${listStatus}" var="item">
-						<div>
-							<label>${item[0]} : </label> ${item[1]}
-						</div>
-					</c:forEach>
+			</div>
+
+			<div id="full" class="hide">
+				<field:display field="description"
+					id="s_org_hcmus_tis_model_Project_description" object="${project}"
+					z="wdUFcebJjkZc28b97a5kBc7qxx8=" />
+				<span id="lhide" style="float: right"><button onclick="hide()">Hide</button></span>
+				<span class='clear'/>
+			</div>
+			<div class="left-panel">
+				<util:fixpanel id="" title="Detail">
+					<field:display field="parentContainer"
+						id="s_org_hcmus_tis_model_Project_parentContainer"
+						label="Parent project" object="${project}" z="user-managed" />
+					<c:choose>
+						<c:when test="${project.studyClass ne null}">
+							<field:display field="name"
+								id="s_org_hcmus_tis_model_Project_studyClass" label="Class"
+								object="${project.studyClass}" z="user-managed" />
+						</c:when>
+						<c:otherwise>
+							<field:display field="studyClass"
+								id="s_org_hcmus_tis_model_Project_studyClass" label="Class"
+								object="${project}" z="user-managed" />
+						</c:otherwise>
+					</c:choose>
+					<c:if test="${not empty listStatus}">
+						<util:fixpanel title="WorkItem status" id="">
+							<c:forEach items="${listStatus}" var="item">
+								<div>
+									<label>${item[0]} : </label> ${item[1]}
+								</div>
+							</c:forEach>
+						</util:fixpanel>
+					</c:if>
 				</util:fixpanel>
-			</c:if>
-		</page:show>
+			</div>
 
+		</page:show>
 	</div>
 
 	<div class="right-panel">
@@ -69,8 +71,8 @@
 					<spring:url
 						value="/projects/${project.id }/workitems/${item.id }?form"
 						var="link"></spring:url>
-					<li><span><date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy"/>	</span> : <span><a
-							href="${link }">${item.title}</a></span></li>
+					<li><span><date:formatDate value="${item.dueDate}"
+								pattern="dd-MM-yyyy" /> </span> : <span><a href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
@@ -84,10 +86,9 @@
 					<spring:url
 						value="/projects/${project.id }/workitems/${item.id }?form"
 						var="link"></spring:url>
-					<li><span>
-					<date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy"/>	
-					</span> : <span><a
-							href="${link }">${item.title}</a></span></li>
+					<li><span> <date:formatDate value="${item.dueDate}"
+								pattern="dd-MM-yyyy" />
+					</span> : <span><a href="${link }">${item.title}</a></span></li>
 				</c:forEach>
 			</ul>
 		</util:fixpanel>
@@ -105,10 +106,35 @@
 				<div class="history">
 					<span class="changedBy">${item.changedBy.firstName}</span>
 					${item.type} workitem <a href="${link }">${item.title }</a> <span
-						class="time"> at 
-						<date:formatDate value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm"/>	</span>
+						class="time"> at <date:formatDate
+							value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm" />
+					</span>
 				</div>
 			</c:forEach>
 		</util:fixpanel>
 	</div>
+	<script type="text/javascript">
+		var des = "${project.description}";
+
+		if (des.length > 150) {
+			des = des.slice(0, 149) + " ...";
+			des += "&lt;button onclick='show()' style='float: right'&gt;View more&lt;/button&gt;&lt;span class='clear'/&gt;";
+			$('.des').html(des);
+			$("#col").removeClass("hide").addClass("show");
+		} else {
+			$("#full").removeClass("hide").addClass("show");
+			$('#lhide').html("");
+		}
+		function show() {
+			$("#full").removeClass("hide").addClass("show");
+			$("#col").removeClass("show").addClass("hide");
+			return false;
+		}
+
+		function hide() {
+			$("#col").removeClass("hide").addClass("show");
+			$("#full").removeClass("show").addClass("hide");
+			return false;
+		}
+	</script>
 </div>
