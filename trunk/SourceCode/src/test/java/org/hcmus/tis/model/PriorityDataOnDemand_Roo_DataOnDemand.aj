@@ -12,6 +12,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.PriorityDataOnDemand;
+import org.hcmus.tis.repository.PriorityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
@@ -21,6 +23,9 @@ privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
     private Random PriorityDataOnDemand.rnd = new SecureRandom();
     
     private List<Priority> PriorityDataOnDemand.data;
+    
+    @Autowired
+    PriorityRepository PriorityDataOnDemand.priorityRepository;
     
     public Priority PriorityDataOnDemand.getNewTransientPriority(int index) {
         Priority obj = new Priority();
@@ -46,14 +51,14 @@ privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
         }
         Priority obj = data.get(index);
         Long id = obj.getId();
-        return Priority.findPriority(id);
+        return priorityRepository.findOne(id);
     }
     
     public Priority PriorityDataOnDemand.getRandomPriority() {
         init();
         Priority obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Priority.findPriority(id);
+        return priorityRepository.findOne(id);
     }
     
     public boolean PriorityDataOnDemand.modifyPriority(Priority obj) {
@@ -63,7 +68,7 @@ privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
     public void PriorityDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Priority.findPriorityEntries(from, to);
+        data = priorityRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Priority' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Priority obj = getNewTransientPriority(i);
             try {
-                obj.persist();
+                priorityRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -84,7 +89,7 @@ privileged aspect PriorityDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            priorityRepository.flush();
             data.add(obj);
         }
     }

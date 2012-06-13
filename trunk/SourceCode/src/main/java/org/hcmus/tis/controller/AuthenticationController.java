@@ -12,6 +12,8 @@ import org.apache.shiro.web.util.WebUtils;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Permission;
+import org.hcmus.tis.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AuthenticationController {
 	//for development mode
 	volatile private static boolean completeInit = false;
-
+	@Autowired
+	private AccountRepository accountRepository;
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(HttpServletRequest request, HttpServletRequest post,
 			String username, String password, HttpServletResponse response)
@@ -55,8 +58,7 @@ public class AuthenticationController {
 				.getSession()
 				.setAttribute(
 						"account",
-						Account.findAccountsByEmailEquals(username)
-								.getSingleResult());
+						accountRepository.getByEmail(username));
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET, produces = "text/html")

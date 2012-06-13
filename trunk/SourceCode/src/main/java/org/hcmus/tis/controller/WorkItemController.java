@@ -28,6 +28,8 @@ import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.joda.time.format.DateTimeFormat;
@@ -52,6 +54,23 @@ public class WorkItemController {
 	private TaskExecutor taskExecutor;
 	@Autowired
 	private EmailService emailService;
+	public AccountRepository getAccountRepository() {
+		return accountRepository;
+	}
+    public PriorityRepository getPriorityRepository() {
+		return priorityRepository;
+	}
+
+	public void setPriorityRepository(PriorityRepository priorityRepository) {
+		this.priorityRepository = priorityRepository;
+	}
+
+	public void setAccountRepository(AccountRepository accountRepository) {
+		this.accountRepository = accountRepository;
+	}
+
+	@Autowired
+	private AccountRepository accountRepository;
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
@@ -96,9 +115,8 @@ public class WorkItemController {
 	public String subscribe(@PathVariable("projectId") Long projectId,
 			@PathVariable("workItemId") Long workItemId,
 			HttpServletRequest httpServletRequest) {
-		Account account = Account.findAccountsByEmailEquals(
-				(String) SecurityUtils.getSubject().getPrincipal())
-				.getSingleResult();
+		Account account = accountRepository.getByEmail(
+				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = Project.findProject(projectId);
 		MemberInformation member = MemberInformation
 				.findMemberInformationsByAccountAndProject(account, project)
@@ -120,8 +138,7 @@ public class WorkItemController {
 	@RequestMapping(params = "form", produces = "text/html")
 	@RequiresPermissions("workitem:create")
 	public String createForm(@PathVariable("projectId") Long projectId,
-			Long workItemTypeId, String redirectUrl, Model uiModel,
-			Principal principal) throws NotPermissionException {
+			Long workItemTypeId, String redirectUrl, Model uiModel) throws NotPermissionException {
 		WorkItem workItem = new WorkItem();
 		Project project = Project.findProject(projectId);
 		workItem.setWorkItemContainer(project);
@@ -131,9 +148,8 @@ public class WorkItemController {
 		populateEditFormCustomly(uiModel, workItem);
 		List<String[]> dependencies = new ArrayList<String[]>();
 		uiModel.addAttribute("projectId", projectId);
-		String name = principal.getName();
-		Account loginAccount = Account.findAccountsByEmailEquals(name)
-				.getSingleResult();
+		String name = (String) SecurityUtils.getSubject().getPrincipal();
+		Account loginAccount = accountRepository.getByEmail(name);
 		MemberInformation memberInformation =null;
 		
 		try {
@@ -152,7 +168,7 @@ public class WorkItemController {
 			return "projects/tasks";
 		}
 		uiModel.addAttribute("memberInformationId", memberInformation.getId());
-		if (Priority.countPrioritys() == 0) {
+		if (priorityRepository.count() == 0) {
 			dependencies.add(new String[] { "priority", "prioritys" });
 		}
 		if (WorkItemStatus.countWorkItemStatuses() == 0) {
@@ -172,9 +188,8 @@ public class WorkItemController {
 		WorkItem workItem = WorkItem.findWorkItem(id);
 		populateEditFormCustomly(uiModel, workItem);
 		Project project = Project.findProject(projectId);
-		Account account = Account.findAccountsByEmailEquals(
-				(String) SecurityUtils.getSubject().getPrincipal())
-				.getSingleResult();
+		Account account = accountRepository.getByEmail(
+				(String) SecurityUtils.getSubject().getPrincipal());
 		MemberInformation member = MemberInformation
 				.findMemberInformationsByAccountAndProject(account, project)
 				.getSingleResult();
@@ -190,7 +205,7 @@ public class WorkItemController {
 		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("memberinformations",
 				MemberInformation.findAllMemberInformations());
-		uiModel.addAttribute("prioritys", Priority.findAllPrioritys());
+		uiModel.addAttribute("prioritys", priorityRepository.findAll());
 		workItem.setWorkItemContainer(WorkItemContainer
 				.findWorkItemContainer(workItem.getWorkItemContainer().getId()));
 		Project project = workItem.getWorkItemContainer()
@@ -314,9 +329,8 @@ public class WorkItemController {
 	public String unSubscribe(@PathVariable("projectId") Long projectId,
 			@PathVariable("workItemId") Long workItemId,
 			HttpServletRequest httpServletRequest){
-		Account account = Account.findAccountsByEmailEquals(
-				(String) SecurityUtils.getSubject().getPrincipal())
-				.getSingleResult();
+		Account account = accountRepository.getByEmail(
+				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = Project.findProject(projectId);
 		MemberInformation member = MemberInformation
 				.findMemberInformationsByAccountAndProject(account, project)

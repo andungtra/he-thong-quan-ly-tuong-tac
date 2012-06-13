@@ -32,6 +32,8 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.junit.After;
 import org.junit.Assert;
@@ -55,7 +57,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 @RunWith(PowerMockRunner.class)
-@MockStaticEntityMethods
 public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private Model mockedUIModel;
@@ -85,12 +86,20 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	private SearchConditionsDTO searchConditions;
 	@Mock
 	private TaskExecutor mockedTaskExecutor;
+	@Mock
+	private AccountRepository accountRepository;
+	@Mock
+	private PriorityRepository priorityRepository;
+	@Mock
+	private Account account;
 	private WorkItemController aut;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		aut = new WorkItemController();
+		aut.setPriorityRepository(priorityRepository);
+		aut.setAccountRepository(accountRepository);
 		doReturn(mockedSession).when(mockedSubject).getSession();
 		doReturn((long) 1).when(mockedWorkItem).getId();
 		doReturn((long) 2).when(mockedWorkItemType).getId();
@@ -107,6 +116,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		doReturn(true).when(mockedSubject).isAuthenticated();
 		doNothing().when(mockedSubject).checkPermissions(any(String[].class));
 		setSubject(mockedSubject);
+		doReturn("email").when(mockedSubject).getPrincipal();
 		aut.setTaskExecutor(mockedTaskExecutor);
 		doAnswer(new Answer<Void>() {
 			@Override
@@ -117,6 +127,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 			}
 		}).when(mockedTaskExecutor).execute(any(Runnable.class));
 		doReturn("name").when(iteration).getName();
+		
+		doReturn((long)1).when(account).getId();
+		doReturn("email").when(account).getEmail();
 	}
 
 	@After
@@ -132,18 +145,11 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		PowerMockito.mockStatic(Priority.class);
 		PowerMockito.mockStatic(WorkItemType.class);
 		PowerMockito.mockStatic(WorkItemStatus.class);
-		Principal mockedPrincipal = mock(Principal.class);
-		doReturn("email").when(mockedPrincipal).getName();
 		WorkItemController spyAut = spy(aut);
 		doNothing().when(spyAut).populateEditFormCustomly(eq(mockedUIModel),
 				any(WorkItem.class));
-
-		Account account = new Account();
-		TypedQuery<Account> mockedAccountTypedQuery = mock(TypedQuery.class);
-		doReturn(account).when(mockedAccountTypedQuery).getSingleResult();
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccountsByEmailEquals(eq("email")))
-				.thenReturn(mockedAccountTypedQuery);
+		String email = (String) mockedSubject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 
 		TypedQuery<MemberInformation> mockedMemberInformation = mock(TypedQuery.class);
 		MemberInformation memberInformation = new MemberInformation();
@@ -155,8 +161,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 						eq(account), any(Project.class))).thenReturn(
 				mockedMemberInformation);
 
-		spyAut.createForm((long) 1, (long) 1, null, mockedUIModel,
-				mockedPrincipal);
+		spyAut.createForm((long) 1, (long) 1, null, mockedUIModel);
 
 		verify(mockedUIModel).addAttribute(eq("projectId"), anyLong());
 		verify(mockedUIModel)
@@ -309,10 +314,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+	@PrepareForTest({Project.class, MemberInformation.class,
 			WorkItem.class })
 	public void testSubscibeWithNonSubscibedMember() {
-		PowerMockito.mockStatic(Account.class);
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.mockStatic(MemberInformation.class);
 		PowerMockito.mockStatic(WorkItem.class);
@@ -327,14 +331,11 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		TypedQuery<MemberInformation> mockedQuery = mock(TypedQuery.class);
 		doReturn(mockedMember).when(mockedQuery).getSingleResult();
-		Account mockedAccount = mock(Account.class);
-		TypedQuery<Account> mockedAccountQuery = mock(TypedQuery.class);
-		doReturn(mockedAccount).when(mockedAccountQuery).getSingleResult();
-		PowerMockito.when(Account.findAccountsByEmailEquals(anyString()))
-				.thenReturn(mockedAccountQuery);
+		String email = (String) mockedSubject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 		PowerMockito.when(
 				MemberInformation.findMemberInformationsByAccountAndProject(
-						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+						account, mockedProject)).thenReturn(mockedQuery);
 		Collection<MemberInformation> mockedSubscriber = mock(Collection.class);
 		doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
 		doReturn(false).when(mockedSubscriber).contains(mockedMember);
@@ -353,10 +354,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+	@PrepareForTest({Project.class, MemberInformation.class,
 			WorkItem.class })
 	public void testSubscibeWithSubscibedMember() {
-		PowerMockito.mockStatic(Account.class);
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.mockStatic(MemberInformation.class);
 		PowerMockito.mockStatic(WorkItem.class);
@@ -372,13 +372,11 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		TypedQuery<MemberInformation> mockedQuery = mock(TypedQuery.class);
 		doReturn(mockedMember).when(mockedQuery).getSingleResult();
 		Account mockedAccount = mock(Account.class);
-		TypedQuery<Account> mockedAccountQuery = mock(TypedQuery.class);
-		doReturn(mockedAccount).when(mockedAccountQuery).getSingleResult();
-		PowerMockito.when(Account.findAccountsByEmailEquals(anyString()))
-				.thenReturn(mockedAccountQuery);
+		String email = (String) mockedSubject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 		PowerMockito.when(
 				MemberInformation.findMemberInformationsByAccountAndProject(
-						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+						account, mockedProject)).thenReturn(mockedQuery);
 		Collection<MemberInformation> mockedSubscriber = mock(Collection.class);
 		doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
 		doReturn(true).when(mockedSubscriber).contains(mockedMember);
@@ -397,16 +395,14 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ WorkItem.class, WorkItemController.class, Account.class,
+	@PrepareForTest({ WorkItem.class, WorkItemController.class,
 			Project.class, MemberInformation.class })
 	public void testUpdateForm() {
 		Long projectId = (long) 1;
 		Long workItemId = (long) 2;
 		PowerMockito.mockStatic(WorkItem.class);
-		PowerMockito.mockStatic(Account.class);
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.mockStatic(MemberInformation.class);
-		Account mockedAccount = mock(Account.class);
 		Project mockedProject = mock(Project.class);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
 		MemberInformation mockedMember = mock(MemberInformation.class);
@@ -415,15 +411,13 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				mockedWorkItem);
 		PowerMockito.when(Project.findProject(projectId)).thenReturn(
 				mockedProject);
-		TypedQuery<Account> mockedAccountQuery = mock(TypedQuery.class);
-		doReturn(mockedAccount).when(mockedAccountQuery).getSingleResult();
-		PowerMockito.when(Account.findAccountsByEmailEquals(anyString()))
-				.thenReturn(mockedAccountQuery);
+		String email = (String) mockedSubject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 		TypedQuery<MemberInformation> mockedMemberQuery = mock(TypedQuery.class);
 		doReturn(mockedMember).when(mockedMemberQuery).getSingleResult();
 		PowerMockito.when(
 				MemberInformation.findMemberInformationsByAccountAndProject(
-						mockedAccount, mockedProject)).thenReturn(
+						account, mockedProject)).thenReturn(
 				mockedMemberQuery);
 		Collection<MemberInformation> mockedSubscribers = mock(Collection.class);
 		doReturn(true).when(mockedSubscribers).contains(mockedMember);
@@ -440,10 +434,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ Account.class, Project.class, MemberInformation.class,
+	@PrepareForTest({Project.class, MemberInformation.class,
 			WorkItem.class })
 	public void testUnSubscribe() {
-		PowerMockito.mockStatic(Account.class);
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.mockStatic(MemberInformation.class);
 		PowerMockito.mockStatic(WorkItem.class);
@@ -458,14 +451,11 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		TypedQuery<MemberInformation> mockedQuery = mock(TypedQuery.class);
 		doReturn(mockedMember).when(mockedQuery).getSingleResult();
-		Account mockedAccount = mock(Account.class);
-		TypedQuery<Account> mockedAccountQuery = mock(TypedQuery.class);
-		doReturn(mockedAccount).when(mockedAccountQuery).getSingleResult();
-		PowerMockito.when(Account.findAccountsByEmailEquals(anyString()))
-				.thenReturn(mockedAccountQuery);
+		String email = (String) mockedSubject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 		PowerMockito.when(
 				MemberInformation.findMemberInformationsByAccountAndProject(
-						mockedAccount, mockedProject)).thenReturn(mockedQuery);
+						account, mockedProject)).thenReturn(mockedQuery);
 		Collection<MemberInformation> mockedSubscriber = mock(Collection.class);
 		doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
 		doReturn(true).when(mockedSubscriber).contains(mockedMember);

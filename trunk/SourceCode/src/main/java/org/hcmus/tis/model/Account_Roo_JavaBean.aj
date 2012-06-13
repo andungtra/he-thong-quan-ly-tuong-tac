@@ -5,6 +5,7 @@ package org.hcmus.tis.model;
 
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.Calendar;
 
 privileged aspect Account_Roo_JavaBean {
     
@@ -54,6 +55,14 @@ privileged aspect Account_Roo_JavaBean {
     
     public void Account.setStatus(AccountStatus status) {
         this.status = status;
+    }
+    
+    public Calendar Account.getCalendar() {
+        return this.calendar;
+    }
+    
+    public void Account.setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
     
 }

@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.EmailService.SendMailException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
@@ -17,69 +18,56 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.mock.staticmock.MockStaticEntityMethods;
-@RunWith(PowerMockRunner.class)
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-@PrepareForTest(Account.class)
-@MockStaticEntityMethods
+import static org.mockito.Mockito.*;
+import org.springframework.mock.staticmock.MockStaticEntityMethods;
 public class AccountServiceImplTest {
+	@Mock
 	private EmailServiceImpl mockEmailService;
+	@Mock
 	private Account mockedAccount;
+	@Mock
+	private AccountRepository accountRepository;
 	AccountServiceImpl aut;
+	@Mock
 	private ServletContext servletContext;
 	@Before
 	public void setUp()
 	{
-		mockedAccount = Mockito.spy(new Account());
-		mockedAccount.setId((long)1);
-		mockedAccount.setFirstName("firstName");
-		mockedAccount.setLastName("lastName");
-		mockedAccount.setEmail("email@email.com");
-		
-		mockEmailService = Mockito.mock(EmailServiceImpl.class);
+		MockitoAnnotations.initMocks(this);
+		doReturn((long)1).when(mockedAccount).getId();
+		doReturn("email").when(mockedAccount).getEmail();
+		doReturn("firstName").when(mockedAccount).getFirstName();
+		doReturn("lastName").when(mockedAccount).getLastName();
 		aut = new AccountServiceImpl();
+		aut.setAccountRepository(accountRepository);
 		aut.setEmailService(mockEmailService);
-		servletContext = Mockito.mock(ServletContext.class);
-		Mockito.doReturn("/tis").when(servletContext).getContextPath();
+		doReturn("/tis").when(servletContext).getContextPath();
 		aut.setServletContext(servletContext);
 		
 	}
 	@Test
-	public void testSaveAccount() throws DuplicateException, SendMailException {
-		Mockito.doNothing().when(mockedAccount).persist();
-		
-
-		TypedQuery<Account> mockResult = Mockito.mock(TypedQuery.class);
-		Mockito.when(mockResult.getResultList()).thenReturn(new ArrayList<Account>());
+	public void testCreateAccount() throws DuplicateException, SendMailException {
 		String email = mockedAccount.getEmail();
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccountsByEmailEquals(Mockito.anyString())).thenReturn(mockResult);
+		doReturn((long)0).when(accountRepository).countByEmail(email);
 		
 		aut.createAccount(mockedAccount);
 		
-		Mockito.verify(mockedAccount).setPassword(Mockito.anyString());
-		Mockito.verify(mockedAccount).setStatus(AccountStatus.INACTIVE);
-		Mockito.verify(mockedAccount).persist();
-		Mockito.verify(mockEmailService).sendEmail(Mockito.eq(mockedAccount.getEmail()), Mockito.eq("account-confirmation.vm"), Mockito.anyMap(), Mockito.anyString());
+		verify(mockedAccount).setPassword(anyString());
+		verify(mockedAccount).setStatus(AccountStatus.INACTIVE);
+		verify(accountRepository).save(mockedAccount);
+		verify(mockEmailService).sendEmail(eq(mockedAccount.getEmail()), eq("account-confirmation.vm"), anyMap(), anyString());
 	}
 	@Test(expected=DuplicateException.class)
-	public void testSaveDuplicateAccount() throws DuplicateException, SendMailException {
-		List<Account> accountList = new ArrayList<Account>();
-		accountList.add(new Account());
-		TypedQuery<Account> mockTypedQuery = Mockito.mock(TypedQuery.class);
-		Mockito.when(mockTypedQuery.getResultList()).thenReturn(accountList);
+	public void testCreateDuplicateAccount() throws DuplicateException, SendMailException {
+		String email = mockedAccount.getEmail();
+		doReturn((long)1).when(accountRepository).countByEmail(email);
+
 		
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccountsByEmailEquals(Mockito.anyString())).thenReturn(mockTypedQuery);
-		 
 		aut.createAccount(mockedAccount);
-		 
-		Mockito.verify(mockedAccount).setPassword(Mockito.anyString());
-		Mockito.verify(mockedAccount).setStatus(AccountStatus.INACTIVE);
+		
 	}
 
 }

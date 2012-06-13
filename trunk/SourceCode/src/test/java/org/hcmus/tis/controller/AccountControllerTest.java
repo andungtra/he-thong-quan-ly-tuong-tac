@@ -18,6 +18,8 @@ import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService;
@@ -26,7 +28,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import static  org.mockito.Mockito.*;
+import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -34,100 +38,104 @@ import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Account.class)
-@MockStaticEntityMethods
 public class AccountControllerTest extends AbstractShiroTest {
-	private Account spyAccount;
+	@Mock
+	private Account account;
 	private AccountController aut;
+	@Mock
 	private AccountService mockedAccountService;
+	@Mock
 	private Model uiModel;
-
+	@Mock
+	private EventRepository eventRepository;
+	@Mock
+	private AccountRepository accountRepository;
+	@Mock
+	private Event event;
 	@Before
 	public void setUp() {
-		spyAccount = Mockito.spy(new Account());
-		Mockito.doNothing().when(spyAccount).persist();
-		spyAccount.setEmail("email.com");
-		spyAccount.setFirstName("firstName");
-		spyAccount.setLastName("lastName");
-		spyAccount.setId((long) 1);
-
+		MockitoAnnotations.initMocks(this);
+		doReturn("email.com").when(account).getEmail();
+		doReturn("firstName").when(account).getFirstName();
+		doReturn("lastName").when(account).getLastName();
+		doReturn("pass").when(account).getPassword();
+		doReturn((long)1).when(account).getId();
+		doReturn((long)1).when(event).getId();
+		doReturn("name").when(event).getName();
 		aut = new AccountController();
-		mockedAccountService = Mockito.mock(AccountService.class);
 		aut.setAccountService(mockedAccountService);
-
-		uiModel = Mockito.mock(Model.class);
+		aut.setEventRepository(eventRepository);
+		aut.setAccountRepository(accountRepository);
 	}
 
 	@Test
 	public void testCreate() throws DuplicateException, SendMailException {
 
-		BindingResult bindingResult = Mockito.mock(BindingResult.class);
-		Mockito.when(bindingResult.hasErrors()).thenReturn(false);
-		Model uiModel = Mockito.mock(Model.class);
-		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		BindingResult bindingResult = mock(BindingResult.class);
+		when(bindingResult.hasErrors()).thenReturn(false);
+		Model uiModel = mock(Model.class);
+		HttpServletRequest request = mock(HttpServletRequest.class);
 
-		String result = aut.create(spyAccount, bindingResult, uiModel, request);
+		String result = aut.create(account, bindingResult, uiModel, request);
 
-		Mockito.verify(mockedAccountService).createAccount(spyAccount);
-		Assert.assertTrue(result.contains("redirect:/accounts/"));
+		verify(mockedAccountService).createAccount(account);
+		assertEquals("accounts/list", result);
 	}
 
 	@Test
 	public void testCreateDuplicateEmail() throws DuplicateException,
 			SendMailException {
-		BindingResult bindingResult = Mockito.mock(BindingResult.class);
-		Mockito.when(bindingResult.hasErrors()).thenReturn(false);
-		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		BindingResult bindingResult = mock(BindingResult.class);
+		when(bindingResult.hasErrors()).thenReturn(false);
+		HttpServletRequest request = mock(HttpServletRequest.class);
 
-		Mockito.doThrow(new DuplicateException()).when(mockedAccountService)
-				.createAccount(spyAccount);	
-		AccountController spyAut = Mockito.spy(aut);
-		Mockito.doNothing().when(spyAut).populateEditForm(Mockito.any(Model.class), Mockito.any(Account.class));
+		doThrow(new DuplicateException()).when(mockedAccountService)
+				.createAccount(account);	
+		AccountController spyAut = spy(aut);
+		doNothing().when(spyAut).populateEditForm(any(Model.class), any(Account.class));
 		
-		String result = spyAut.create(spyAccount, bindingResult, uiModel, request);
+		String result = spyAut.create(account, bindingResult, uiModel, request);
 
-		Mockito.verify(mockedAccountService).createAccount(spyAccount);
-		Mockito.verify(uiModel).addAttribute("existedEmail", true);
+		verify(mockedAccountService).createAccount(account);
+		verify(uiModel).addAttribute("existedEmail", true);
 		Assert.assertTrue(result.contains("accounts/create"));
 	}
 
 	@Test
 	public void testCreateSendEmailError() throws DuplicateException,
 			SendMailException {
-		BindingResult bindingResult = Mockito.mock(BindingResult.class);
-		Mockito.when(bindingResult.hasErrors()).thenReturn(false);
-		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+		BindingResult bindingResult = mock(BindingResult.class);
+		when(bindingResult.hasErrors()).thenReturn(false);
+		HttpServletRequest request = mock(HttpServletRequest.class);
 
-		Mockito.doThrow(new SendMailException()).when(mockedAccountService)
-				.createAccount(spyAccount);
-		AccountController spyAut = Mockito.spy(aut);
-		Mockito.doNothing()
+		doThrow(new SendMailException()).when(mockedAccountService)
+				.createAccount(account);
+		AccountController spyAut = spy(aut);
+		doNothing()
 				.when(spyAut)
-				.populateEditForm(Mockito.any(Model.class),
-						Mockito.any(Account.class));
-		String result = spyAut.create(spyAccount, bindingResult, uiModel, request);
+				.populateEditForm(any(Model.class),
+						any(Account.class));
+		String result = spyAut.create(account, bindingResult, uiModel, request);
 
-		Mockito.verify(mockedAccountService).createAccount(spyAccount);
-		Mockito.verify(uiModel).addAttribute("sendEmailError", true);
+		verify(mockedAccountService).createAccount(account);
+		verify(uiModel).addAttribute("sendEmailError", true);
 		Assert.assertTrue(result.contains("accounts/create"));
 	}
 
 	@Test
 	public void testActiveAccountFormToInactiveAccount() {
-		spyAccount.setStatus(AccountStatus.INACTIVE);
+		doReturn(AccountStatus.INACTIVE).when(account).getStatus();
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword(activeKey);
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
-		AccountController spyAut = Mockito.spy(aut);
-		Mockito.doNothing()
+		doReturn(activeKey).when(account).getPassword();
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
+		AccountController spyAut = spy(aut);
+		doNothing()
 				.when(spyAut)
-				.populateEditForm(Mockito.any(Model.class),
-						Mockito.any(Account.class));
+				.populateEditForm(any(Model.class),
+						any(Account.class));
 
-		String result = spyAut.activeForm(spyAccount.getId(), activeKey,
+		String result = spyAut.activeForm(account.getId(), activeKey,
 				uiModel);
 
 		Assert.assertEquals("accounts/active", result);
@@ -135,37 +143,37 @@ public class AccountControllerTest extends AbstractShiroTest {
 
 	@Test
 	public void testActiveAccountFormToActivedAccount() {
-		spyAccount.setStatus(AccountStatus.ACTIVE);
+		doReturn(AccountStatus.ACTIVE).when(account).getStatus();
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword(activeKey);
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
+		doReturn(activeKey).when(account).getPassword();
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
 
-		String result = aut.activeForm(spyAccount.getId(), activeKey, uiModel);
+		String result = aut.activeForm(account.getId(), activeKey, uiModel);
 
 		Assert.assertEquals("accounts/invalidactive", result);
 	}
 
 	@Test
 	public void testActiveAccountFormWithInvalidActiveKey() {
-		spyAccount.setStatus(AccountStatus.INACTIVE);
+		account.setStatus(AccountStatus.INACTIVE);
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword("password");
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
+		account.setPassword("password");
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
 
-		String result = aut.activeForm(spyAccount.getId(), activeKey, uiModel);
+		String result = aut.activeForm(account.getId(), activeKey, uiModel);
 
 		Assert.assertEquals("accounts/invalidactive", result);
 	}
 
 	@Test
 	public void testActiveAccountValidActiveKey() {
-		spyAccount.setStatus(AccountStatus.INACTIVE);
+		doReturn(AccountStatus.INACTIVE).when(account).getStatus();
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword(activeKey);
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
+		doReturn(activeKey).when(account).getPassword();
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
 
 		Account updatedAccount = new Account();
 		updatedAccount.setId((long) 1);
@@ -173,23 +181,23 @@ public class AccountControllerTest extends AbstractShiroTest {
 		updatedAccount.setFirstName("firstName");
 		updatedAccount.setLastName("lastName");
 
-		Mockito.doReturn(spyAccount).when(mockedAccountService)
+		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
 		String result = aut.active(updatedAccount, activeKey, uiModel);
 
-		Mockito.verify(mockedAccountService).updateAccount(
-				Mockito.any(Account.class));
+		verify(mockedAccountService).updateAccount(
+				any(Account.class));
 		Assert.assertEquals("accounts/home", result);
 	}
 
 	@Test
 	public void testActiveAccountInvalidActiveKey() {
-		spyAccount.setStatus(AccountStatus.INACTIVE);
+		doReturn(AccountStatus.INACTIVE).when(account).getStatus();
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword("password");
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
+		doReturn(activeKey + "jlsdjl").when(account).getPassword();
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
 
 		Account updatedAccount = new Account();
 		updatedAccount.setId((long) 1);
@@ -197,22 +205,22 @@ public class AccountControllerTest extends AbstractShiroTest {
 		updatedAccount.setFirstName("firstName");
 		updatedAccount.setLastName("lastName");
 
-		Mockito.doReturn(spyAccount).when(mockedAccountService)
+		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
 		String result = aut.active(updatedAccount, activeKey, uiModel);
-		Mockito.verify(mockedAccountService, Mockito.times(0)).updateAccount(
-				Mockito.any(Account.class));
+		verify(mockedAccountService, times(0)).updateAccount(
+				any(Account.class));
 		Assert.assertEquals("accounts/activeFailure", result);
 	}
 
 	@Test
 	public void testActiveForActivedAccount() {
-		spyAccount.setStatus(AccountStatus.ACTIVE);
+		account.setStatus(AccountStatus.ACTIVE);
 		String activeKey = UUID.randomUUID().toString();
-		spyAccount.setPassword(activeKey);
-		long id = spyAccount.getId();
-		Mockito.doReturn(spyAccount).when(mockedAccountService).findAccount(id);
+		account.setPassword(activeKey);
+		long id = account.getId();
+		doReturn(account).when(mockedAccountService).findAccount(id);
 
 		Account updatedAccount = new Account();
 		updatedAccount.setId((long) 1);
@@ -220,73 +228,62 @@ public class AccountControllerTest extends AbstractShiroTest {
 		updatedAccount.setFirstName("firstName");
 		updatedAccount.setLastName("lastName");
 
-		Mockito.doReturn(spyAccount).when(mockedAccountService)
+		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
 		String result = aut.active(updatedAccount, activeKey, uiModel);
-		Mockito.verify(mockedAccountService, Mockito.times(0)).updateAccount(
-				Mockito.any(Account.class));
+		verify(mockedAccountService, times(0)).updateAccount(
+				any(Account.class));
 		Assert.assertEquals("accounts/activeFailure", result);
 	}
 
-	@Test
+/*	@Test
 	public void testFindAccount() {
 		PowerMockito.mockStatic(Account.class);
 		String term = "term";
-		TypedQuery<Account> mockedQuery = Mockito.mock(TypedQuery.class);
-		// PowerMockito.doReturn(mockedQuery).when(Account.findAccount(Mockito.eq(term),
-		// Mockito.anyInt(), Mockito.anyInt()));
+		TypedQuery<Account> mockedQuery = mock(TypedQuery.class);
+		// PowerMockito.doReturn(mockedQuery).when(Account.findAccount(eq(term),
+		// anyInt(), anyInt()));
 		aut.findAccount(term);
 
 		PowerMockito.verifyStatic();
-		Account.findAccount(Mockito.eq(term), Mockito.anyInt(),
-				Mockito.anyInt());
-	}
+		Account.findAccount(eq(term), anyInt(),
+				anyInt());
+	}*/
 
 	@Test
-	@PrepareForTest(Account.class)
 	public void testCreatEvent() {
-		Event event = new Event();
-		event.setName("name");
-		Event spyEvent = Mockito.spy(event);
-		Mockito.doNothing().when(spyEvent).persist();
-		Long accountId = (long) 1;
-		BindingResult bindingResult = Mockito.mock(BindingResult.class);
-		Mockito.doReturn(false).when(bindingResult).hasErrors();
-		Account mockedAccount = Mockito.mock(Account.class);
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccount(accountId)).thenReturn(
-				mockedAccount);
-		Calendar mockedCalender = Mockito.mock(Calendar.class);
-		Mockito.doReturn(mockedCalender).when(mockedAccount).getCalendar();
+		BindingResult bindingResult = mock(BindingResult.class);
+		doReturn(false).when(bindingResult).hasErrors();
+		Long accountId = account.getId();
+		doReturn(account).when(accountRepository).findOne(accountId);
+		Calendar mockedCalender = mock(Calendar.class);
+		doReturn(mockedCalender).when(account).getCalendar();
 		Collection<Event> events = new HashSet<Event>();
-		Mockito.doReturn(events).when(mockedCalender).getEvents();
+		doReturn(events).when(mockedCalender).getEvents();
 
-		DSRestResponse result = aut.creatEvent(accountId, spyEvent,
+		DSRestResponse result = aut.creatEvent(account.getId(), event,
 				bindingResult);
-		Mockito.verify(spyEvent).persist();
-		assertTrue(events.contains(spyEvent));
+		eventRepository.save(event);
+		assertTrue(events.contains(event));
 		assertEquals(0, result.getResponse().getStatus());
 		assertEquals(1, result.getResponse().getData().size());
 		Event resultEvent = (Event) result.getResponse().getData().get(0);
-		assertEquals("name", resultEvent.getName());
+		assertEquals(event.getName(), resultEvent.getName());
 	}
 
 	@Test
 	public void testUpdateEvent() {
-		Event event = new Event();
-		event.setName("name");
-		Event spyEvent = Mockito.spy(event);
-		Event returnEvent = new Event();
-		Mockito.doReturn(returnEvent).when(spyEvent).merge();
-		Mockito.doNothing().when(spyEvent).setId((long) 10);
+		Event returnEvent = mock(Event.class);
+		Long eventId  = event.getId();
+		doReturn(returnEvent).when(eventRepository).findOne(eventId);
 		Long accountId = (long) 1;
-		BindingResult bindingResult = Mockito.mock(BindingResult.class);
-		Mockito.doReturn(false).when(bindingResult).hasErrors();
-		DSRestResponse result = aut.updateEvent(accountId, (long) 10, spyEvent,
+		BindingResult bindingResult = mock(BindingResult.class);
+		doReturn(false).when(bindingResult).hasErrors();
+		DSRestResponse result = aut.updateEvent(accountId, (long) 10, event,
 				bindingResult);
-		Mockito.verify(spyEvent).merge();
-		Mockito.verify(spyEvent).setId((long) 10);
+		verify(eventRepository).save(event);
+		verify(event).setId((long) 10);
 		assertEquals(0, result.getResponse().getStatus());
 		assertEquals(1, result.getResponse().getData().size());
 		assertSame(returnEvent, (Event) result.getResponse().getData().get(0));
@@ -295,18 +292,16 @@ public class AccountControllerTest extends AbstractShiroTest {
 	@Test
 	@PrepareForTest(Account.class)
 	public void testGetEvents() {
-		Long accountId = (long)1;
-		Account mockedAccount = Mockito.mock(Account.class);
+		Long accountId = account.getId();
 		Calendar calendar = new Calendar();
-		Mockito.doReturn(calendar).when(mockedAccount).getCalendar();
+		doReturn(calendar).when(account).getCalendar();
 		Collection<Event> events = new HashSet<Event>();
 		calendar.setEvents(events);
 		Event event = new Event();
 		event.setCalendars(new HashSet<Calendar>());
 		event.getCalendars().add(calendar);
 		events.add(event);
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccount(accountId)).thenReturn(mockedAccount);
+		doReturn(account).when(accountRepository).findOne(accountId);
 		
 		DSRestResponse restResponse = aut.getEvents(accountId);
 		
@@ -318,10 +313,8 @@ public class AccountControllerTest extends AbstractShiroTest {
 	@Test
 	@PrepareForTest({Account.class, AccountController.class})
 	public void testGetSharedEvents() {
-		Long accountId = (long)1;
-		Account mockedAccount = Mockito.mock(Account.class);
 		Calendar accountCalendar = new Calendar();
-		Mockito.doReturn(accountCalendar).when(mockedAccount).getCalendar();
+		doReturn(accountCalendar).when(account).getCalendar();
 		accountCalendar.setEvents(new HashSet<Event>());
 		Event event = new Event();
 		event.setCalendars(new HashSet<Calendar>());
@@ -339,10 +332,10 @@ public class AccountControllerTest extends AbstractShiroTest {
 		accountCalendar.getEvents().add(event);
 		accountCalendar.getEvents().add(sharedEvent);
 		projectCalendar.getEvents().add(sharedEvent);
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(Account.findAccount(accountId)).thenReturn(mockedAccount);
+		Long accountId = account.getId();
+		doReturn(account).when(accountRepository).findOne(accountId);
 		
-		DSRestResponse restResponse = aut.getEvents(accountId);
+		DSRestResponse restResponse = aut.getEvents(account.getId());
 		
 		assertEquals(0, restResponse.getResponse().getStatus());
 		assertEquals(2, restResponse.getResponse().getData().size());
@@ -351,26 +344,22 @@ public class AccountControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest(Event.class)
 	public void testDeleteEvents() {
 		Long id = (long) 1;
-		PowerMockito.mockStatic(Event.class);
-		Event mockedEvent = Mockito.mock(Event.class);
-		Calendar mockedCalendar = Mockito.mock(Calendar.class);
+		Calendar mockedCalendar = mock(Calendar.class);
 		Collection<Calendar> calendars = new HashSet<Calendar>();
 		calendars.add(mockedCalendar);
-		Mockito.doReturn(calendars).when(mockedEvent).getCalendars();
-		Collection<Event> mockedEvents = Mockito.mock(Collection.class);
-		Mockito.doReturn(mockedEvents).when(mockedCalendar).getEvents();
-		PowerMockito.when(Event.findEvent(id)).thenReturn(mockedEvent);
+		doReturn(calendars).when(event).getCalendars();
+		Collection<Event> mockedEvents = mock(Collection.class);
+		doReturn(mockedEvents).when(mockedCalendar).getEvents();
+		doReturn(event).when(eventRepository).findOne(id);
 
 		DSRestResponse result = aut.deleteEvent((long) 1, id);
 
-		PowerMockito.verifyStatic();
-		Event.findEvent(id);
-		Mockito.verify(mockedEvents).remove(mockedEvent);
-		Mockito.verify(mockedEvent).remove();
-		assertSame(mockedEvent, result.getResponse().getData().get(0));
+		verify(eventRepository).findOne(id);
+		verify(mockedEvents).remove(event);
+		verify(eventRepository).delete(event);
+		assertSame(event, result.getResponse().getData().get(0));
 	}
 
 }

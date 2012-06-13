@@ -17,11 +17,12 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findAccountsByEmailEquals" })
+@RooJpaEntity
 public class Account implements java.io.Serializable {
 
 	/**
@@ -71,7 +72,7 @@ public class Account implements java.io.Serializable {
 		return email;
 	}
 
-	public static Collection<org.hcmus.tis.model.Account> findAccount(
+/*	public static Collection<org.hcmus.tis.model.Account> findAccount(
 			String email, int firstIndex, int maxResult) {
 		email = "%" + email + "%";
 		String queryString = "SELECT account FROM Account AS account WHERE account.email LIKE :email AND account.status <> :status";
@@ -141,5 +142,5 @@ public class Account implements java.io.Serializable {
 			query.setParameter("sSearch", "%" + sSearch + "%");
 		query.setParameter("status", AccountStatus.DELETED);
 		return query.getSingleResult();
-	}
+	}*/
 }

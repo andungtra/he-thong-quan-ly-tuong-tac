@@ -11,8 +11,15 @@ import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.PriorityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class InitDatabaseBean {
+	@Autowired
+	PriorityRepository priorityRepository;
+	@Autowired
+	AccountRepository accountRepository;
 	@PostConstruct
 	public void init() {
 		String statusNames[] = { "New", "In Process", "Resolved", "Closed",
@@ -26,11 +33,11 @@ public class InitDatabaseBean {
 		}
 		String priorityNames[] = { "High", "Medium", "Low", "Urgent",
 				"Immediate" };
-		if (Priority.countPrioritys() == 0) {
+		if (priorityRepository.count() == 0) {
 			for (String name : priorityNames) {
 				Priority priority = new Priority();
 				priority.setName(name);
-				priority.persist();
+				priorityRepository.save(priority);
 			}
 		}
 		String memberRoleNames[] = { "Project Manager", "Project Member" };
@@ -52,7 +59,7 @@ public class InitDatabaseBean {
 				permission.persist();
 			}
 		}
-		if (Account.countAccounts() == 0) {
+		if (accountRepository.count() == 0) {
 			Account adminAccount = new Account();
 			adminAccount.setEmail("admin@yahoo.com");
 			adminAccount.setFirstName("admin");
@@ -60,7 +67,7 @@ public class InitDatabaseBean {
 			adminAccount.setIsAdmin(true);
 			adminAccount.setStatus(AccountStatus.ACTIVE);
 			adminAccount.setPassword("827ccb0eea8a706c4c34a16891f84e7b");
-			adminAccount.persist();
+			accountRepository.save(adminAccount);
 		}
 		if(ProjectProcess.countProjectProcesses()==0){
 			ProjectProcess defaultProcess = new ProjectProcess();

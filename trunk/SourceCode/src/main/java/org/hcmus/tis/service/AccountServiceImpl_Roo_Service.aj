@@ -5,7 +5,9 @@ package org.hcmus.tis.service;
 
 import java.util.List;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.AccountServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,32 +17,33 @@ privileged aspect AccountServiceImpl_Roo_Service {
     
     declare @type: AccountServiceImpl: @Transactional;
     
+    
     public long AccountServiceImpl.countAllAccounts() {
-        return Account.countAccounts();
+        return accountRepository.count();
     }
     
     public void AccountServiceImpl.deleteAccount(Account account) {
-        account.remove();
+        accountRepository.delete(account);
     }
     
     public Account AccountServiceImpl.findAccount(Long id) {
-        return Account.findAccount(id);
+        return accountRepository.findOne(id);
     }
     
     public List<Account> AccountServiceImpl.findAllAccounts() {
-        return Account.findAllAccounts();
+        return accountRepository.findAll();
     }
     
     public List<Account> AccountServiceImpl.findAccountEntries(int firstResult, int maxResults) {
-        return Account.findAccountEntries(firstResult, maxResults);
+        return accountRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / maxResults, maxResults)).getContent();
     }
     
     public void AccountServiceImpl.saveAccount(Account account) {
-        account.persist();
+        accountRepository.save(account);
     }
     
     public Account AccountServiceImpl.updateAccount(Account account) {
-        return account.merge();
+        return accountRepository.save(account);
     }
     
 }

@@ -15,6 +15,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.EventDataOnDemand;
+import org.hcmus.tis.repository.EventRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect EventDataOnDemand_Roo_DataOnDemand {
@@ -24,6 +26,9 @@ privileged aspect EventDataOnDemand_Roo_DataOnDemand {
     private Random EventDataOnDemand.rnd = new SecureRandom();
     
     private List<Event> EventDataOnDemand.data;
+    
+    @Autowired
+    EventRepository EventDataOnDemand.eventRepository;
     
     public Event EventDataOnDemand.getNewTransientEvent(int index) {
         Event obj = new Event();
@@ -64,14 +69,14 @@ privileged aspect EventDataOnDemand_Roo_DataOnDemand {
         }
         Event obj = data.get(index);
         Long id = obj.getId();
-        return Event.findEvent(id);
+        return eventRepository.findOne(id);
     }
     
     public Event EventDataOnDemand.getRandomEvent() {
         init();
         Event obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Event.findEvent(id);
+        return eventRepository.findOne(id);
     }
     
     public boolean EventDataOnDemand.modifyEvent(Event obj) {
@@ -81,7 +86,7 @@ privileged aspect EventDataOnDemand_Roo_DataOnDemand {
     public void EventDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Event.findEventEntries(from, to);
+        data = eventRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Event' illegally returned null");
         }
@@ -93,7 +98,7 @@ privileged aspect EventDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Event obj = getNewTransientEvent(i);
             try {
-                obj.persist();
+                eventRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -102,7 +107,7 @@ privileged aspect EventDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            eventRepository.flush();
             data.add(obj);
         }
     }

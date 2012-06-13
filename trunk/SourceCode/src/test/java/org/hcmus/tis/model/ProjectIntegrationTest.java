@@ -75,13 +75,13 @@ public class ProjectIntegrationTest {
 		account1.getCalendar().setEvents(new HashSet<Event>());
 		Event ev1 = eventDataOnDemand.getNewTransientEvent(11);
 		account1.getCalendar().getEvents().add(ev1);
-		ev1.persist();
+		//ev1.persist();
 		
 		Account account2 = accountDataOnDemand.getSpecificAccount(1);
 		account2.getCalendar().setEvents(new HashSet<Event>());
 		Event ev2 = eventDataOnDemand.getNewTransientEvent(12);
 		account2.getCalendar().getEvents().add(ev2);
-		ev2.persist();
+		//ev2.persist();
 		MemberInformation memberInformation1 = new MemberInformation();
 		memberInformation1.setAccount(account1);
 		memberInformation1.setMemberRole(memberRoleDataOnDemand.getRandomMemberRole());
@@ -91,7 +91,7 @@ public class ProjectIntegrationTest {
 		Event sharedEvent = eventDataOnDemand.getNewTransientEvent(13);
 		account1.getCalendar().getEvents().add(sharedEvent);
 		account2.getCalendar().getEvents().add(sharedEvent);
-		sharedEvent.persist();
+		//sharedEvent.persist();
 		account1.getCalendar().flush();
 		account2.getCalendar().flush();
 		project.getMemberInformations().add(memberInformation1);

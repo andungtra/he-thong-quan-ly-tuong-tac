@@ -5,6 +5,7 @@ package org.hcmus.tis.model;
 
 import java.util.List;
 import org.hcmus.tis.model.AccountIntegrationTest;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.AccountService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -75,7 +76,7 @@ privileged aspect AccountIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Find method for 'Account' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyAccount(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        accountRepository.flush();
         Assert.assertTrue("Version for 'Account' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
@@ -89,7 +90,7 @@ privileged aspect AccountIntegrationTest_Roo_IntegrationTest {
         boolean modified =  dod.modifyAccount(obj);
         Integer currentVersion = obj.getVersion();
         Account merged = accountService.updateAccount(obj);
-        obj.flush();
+        accountRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Account' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
@@ -101,7 +102,7 @@ privileged aspect AccountIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Account' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Account' identifier to be null", obj.getId());
         accountService.saveAccount(obj);
-        obj.flush();
+        accountRepository.flush();
         Assert.assertNotNull("Expected 'Account' identifier to no longer be null", obj.getId());
     }
     
@@ -113,7 +114,7 @@ privileged aspect AccountIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Account' failed to provide an identifier", id);
         obj = accountService.findAccount(id);
         accountService.deleteAccount(obj);
-        obj.flush();
+        accountRepository.flush();
         Assert.assertNull("Failed to remove 'Account' with identifier '" + id + "'", accountService.findAccount(id));
     }
     
