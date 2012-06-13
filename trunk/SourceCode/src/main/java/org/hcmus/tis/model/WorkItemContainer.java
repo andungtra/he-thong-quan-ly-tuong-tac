@@ -26,7 +26,4 @@ public abstract class WorkItemContainer {
     @OneToMany(mappedBy="workItemContainer")
     private Collection<WorkItem> workItems;
     public abstract Project getParentProjectOrMyself();
-	public Collection<WorkItemContainer> getChildren() {
-		return children;
-	}
 }
