@@ -22,9 +22,15 @@ import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -40,6 +46,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RooWebScaffold(path = "accounts", formBackingObject = Account.class)
 public class AccountController {
+	@Autowired
+	EventRepository eventRepository;
+	@Autowired
+	AccountRepository accountRepository;
+	public AccountRepository getAccountRepository() {
+		return accountRepository;
+	}
+
+	public void setAccountRepository(AccountRepository accountRepository) {
+		this.accountRepository = accountRepository;
+	}
+
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Account account, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpServletRequest) {
@@ -105,7 +123,8 @@ public class AccountController {
 	@RequestMapping(params = "term")
 	public @ResponseBody
 	Collection<String> findAccount(String term) {
-		Collection<Account> accounts = Account.findAccount(term, 0, 50);
+		Pageable pageable = new  PageRequest(0, 50);
+		Collection<Account> accounts = accountRepository.findByEmailLikeAndStatus("%" + term  + "%", AccountStatus.ACTIVE, pageable).getContent();
 		Collection<String> result = new ArrayList<String>();
 		for (Account account : accounts) {
 			result.add(account.getEmail());
@@ -129,7 +148,7 @@ public class AccountController {
 
 		if (!email.endsWith(".com"))
 			email = email + ".com";
-		Account acc = Account.getAccountbyEmail(email);
+		Account acc = accountRepository.getByEmail(email);
 		if (acc != null)
 			return "redirect:/accounts/" + acc.getId() + "/home";
 		else
@@ -242,15 +261,15 @@ public class AccountController {
 		return "accounts/user-update";
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, params = { "calendar" }, produces = "text/html")
+	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	public String update(@Valid Account account, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest, Long calendar) {
+			Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, account);
 			return "accounts/update";
 		}
 		//accountService.updateAccount(account);
-		account.merge();
+		accountRepository.save(account);
 		uiModel.asMap().clear();
 		/*Calendar cal = Calendar.findCalendar(calendar);
 		account.setCalendar(cal);*/
@@ -262,7 +281,7 @@ public class AccountController {
 	public String userupdate(@Valid Account account, String firstName,
 			String lastName, String email, String newPass, Model uiModel,
 			HttpServletRequest httpServletRequest) {
-		Account exist = Account.getAccountbyEmail(email);
+		Account exist = accountRepository.getByEmail(email);
 		if (account.getEmail() != email && exist != null) {
 			uiModel.addAttribute("error", "Email is exist");
 			return "accounts/user-update";
@@ -276,7 +295,7 @@ public class AccountController {
 			account.setPassword(encodePassword);
 		}
 			
-		accountService.updateAccount(account);
+		accountRepository.save(account);
 		return "redirect:/accounts/home";
 	}
 
@@ -287,8 +306,9 @@ public class AccountController {
 			String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		List<Account> list = Account.findAccountEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+		Page<Account> page = accountRepository.find("%" + sSearch + "%", pageable);
+		List<Account> list = page.getContent();
 		for (Account item : list) {
 			AccountDTO dto = new AccountDTO();
 			dto.DT_RowId = item.getId();
@@ -299,8 +319,8 @@ public class AccountController {
 			dto.setStatus(item.getStatus().name());
 			reply.getAaData().add(dto);
 		}
-		reply.setiTotalDisplayRecords((int)Account.countAccountEntries(sSearch));
-		reply.setiTotalRecords((int)Account.countAccountsNotDeleted());
+		reply.setiTotalDisplayRecords((int)page.getTotalElements());
+		reply.setiTotalRecords((int)accountRepository.countNotDeleted());
 		return reply;
 	}
 
@@ -321,7 +341,7 @@ public class AccountController {
 	public DSRestResponse getEvents(@PathVariable("id") Long id) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		Account account = Account.findAccount(id);
+		Account account = accountRepository.findOne(id);
 		List<Object> datas = new ArrayList<Object>();
 		for (Event event : account.getCalendar().getEvents()) {
 			if (event.getCalendars().size() > 1) {
@@ -362,13 +382,22 @@ public class AccountController {
 			restResponse.getResponse().setStatus(1);
 		}
 		event.setCalendars(new ArrayList<Calendar>());
-		Calendar calender = Account.findAccount(accountId).getCalendar();
+		Calendar calender = accountRepository.findOne(accountId).getCalendar();
 		calender.getEvents().add(event);
-		event.persist();
+		
+		eventRepository.save(event);
 		List<Object> data = new ArrayList<Object>();
 		data.add(event);
 		restResponse.getResponse().setData(data);
 		return restResponse;
+	}
+
+	public EventRepository getEventRepository() {
+		return eventRepository;
+	}
+
+	public void setEventRepository(EventRepository eventRepository) {
+		this.eventRepository = eventRepository;
 	}
 
 	@RequestMapping(value = "/{id}/calendar/events", params = { "_operationType=update" })
@@ -381,7 +410,8 @@ public class AccountController {
 		if (bindingResult.hasErrors()) {
 			restResponse.getResponse().setStatus(1);
 		}
-		Event managedEvent = event.merge();
+		eventRepository.save(event);
+		Event managedEvent = eventRepository.findOne(event.getId());
 		List<Object> data = new ArrayList<Object>();
 		data.add(managedEvent);
 		restResponse.getResponse().setData(data);
@@ -394,11 +424,11 @@ public class AccountController {
 			Long id) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		Event event = Event.findEvent(id);
+		Event event = eventRepository.findOne(id);
 		for (Calendar calendar : event.getCalendars()) {
 			calendar.getEvents().remove(event);
 		}
-		event.remove();
+		eventRepository.delete(event);
 		List<Object> data = new ArrayList<Object>();
 		data.add(event);
 		restResponse.getResponse().setData(data);
@@ -448,7 +478,7 @@ public class AccountController {
 		}
 		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
-		account.merge();
+		accountRepository.save(account);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

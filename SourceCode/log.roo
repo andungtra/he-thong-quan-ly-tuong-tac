@@ -747,3 +747,11 @@ hint
 hint
 hint
 repository jpa --entity ~.model.StudyClass --interface org.hcmus.tis.repository.StudyClassRepository
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-12 22:50:02
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-13 08:58:38
+hint
+hint
+repository jpa --entity ~.model.Priority --interface org.hcmus.tis.repository.PriorityRepository
+repository jpa --entity ~.model.Event --interface org.hcmus.tis.repository.EventRepository
+repository jpa --entity ~.model.Account --interface org.hcmus.tis.repository.AccountRepository
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-13 11:25:57

@@ -17,8 +17,21 @@ import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Permission;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.SpecificAccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CustomAuthorizingRealm extends AuthorizingRealm {
+	@Autowired
+	SpecificAccountRepository accountRepository;
+	public SpecificAccountRepository getAccountRepository() {
+		return accountRepository;
+	}
+
+	public void setAccountRepository(SpecificAccountRepository accountRepository) {
+		this.accountRepository = accountRepository;
+	}
+
 	public CustomAuthorizingRealm() {
 		super(new HashedCredentialsMatcher("MD5"));
 	}
@@ -27,8 +40,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
 		try {
 			String email = (String) arg0.getPrimaryPrincipal();
-			Account account = Account.findAccountsByEmailEquals(email)
-					.getSingleResult();
+			Account account = accountRepository.getByEmail(email);
 			if (account != null) {
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				info.setRoles(new HashSet<String>());
@@ -72,12 +84,13 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 		try{
 		if (arg0 instanceof UsernamePasswordToken) {
 			UsernamePasswordToken userNamePasswordToken = (UsernamePasswordToken) arg0;
-			Account account = Account.findAccountsByEmailEquals(
-					userNamePasswordToken.getUsername()).getSingleResult();
+			Account account = accountRepository.getByEmail(
+					userNamePasswordToken.getUsername());
 			return new SimpleAuthenticationInfo(account.getEmail(),
 					account.getPassword(), this.getName());
 		}
 		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

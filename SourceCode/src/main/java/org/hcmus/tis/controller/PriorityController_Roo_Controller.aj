@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.PriorityController;
 import org.hcmus.tis.model.Priority;
+import org.hcmus.tis.repository.PriorityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,9 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect PriorityController_Roo_Controller {
     
+    @Autowired
+    PriorityRepository PriorityController.priorityRepository;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PriorityController.create(@Valid Priority priority, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -26,7 +31,7 @@ privileged aspect PriorityController_Roo_Controller {
             return "prioritys/create";
         }
         uiModel.asMap().clear();
-        priority.persist();
+        priorityRepository.save(priority);
         return "redirect:/prioritys/" + encodeUrlPathSegment(priority.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +43,7 @@ privileged aspect PriorityController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PriorityController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("priority", Priority.findPriority(id));
+        uiModel.addAttribute("priority", priorityRepository.findOne(id));
         uiModel.addAttribute("itemId", id);
         return "prioritys/show";
     }
@@ -48,11 +53,11 @@ privileged aspect PriorityController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("prioritys", Priority.findPriorityEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Priority.countPrioritys() / sizeNo;
+            uiModel.addAttribute("prioritys", priorityRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo)).getContent());
+            float nrOfPages = (float) priorityRepository.count() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("prioritys", Priority.findAllPrioritys());
+            uiModel.addAttribute("prioritys", priorityRepository.findAll());
         }
         return "prioritys/list";
     }
@@ -64,20 +69,20 @@ privileged aspect PriorityController_Roo_Controller {
             return "prioritys/update";
         }
         uiModel.asMap().clear();
-        priority.merge();
+        priorityRepository.save(priority);
         return "redirect:/prioritys/" + encodeUrlPathSegment(priority.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PriorityController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Priority.findPriority(id));
+        populateEditForm(uiModel, priorityRepository.findOne(id));
         return "prioritys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PriorityController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Priority priority = Priority.findPriority(id);
-        priority.remove();
+        Priority priority = priorityRepository.findOne(id);
+        priorityRepository.delete(priority);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

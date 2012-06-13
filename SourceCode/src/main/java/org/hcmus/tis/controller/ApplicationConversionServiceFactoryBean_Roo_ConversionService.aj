@@ -17,6 +17,7 @@ import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.ProjectProcessService;
@@ -31,6 +32,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     AccountService ApplicationConversionServiceFactoryBean.accountService;
+    
+    @Autowired
+    PriorityRepository ApplicationConversionServiceFactoryBean.priorityRepository;
     
     @Autowired
     ProjectProcessService ApplicationConversionServiceFactoryBean.projectProcessService;
@@ -169,7 +173,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Priority> ApplicationConversionServiceFactoryBean.getIdToPriorityConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Priority>() {
             public org.hcmus.tis.model.Priority convert(java.lang.Long id) {
-                return Priority.findPriority(id);
+                return priorityRepository.findOne(id);
             }
         };
     }

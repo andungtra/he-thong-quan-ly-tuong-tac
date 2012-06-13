@@ -16,6 +16,8 @@ import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RooWebScaffold(path = "memberinformations", formBackingObject = MemberInformation.class)
 public class MemberInformationController {
-
+	@Autowired
+	private AccountRepository accountRepository;
 	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
 	public String createForm(Model uiModel,@PathVariable("projectId") Long projectId, String redirectUrl) {
 		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
@@ -50,7 +53,7 @@ public class MemberInformationController {
 			HttpServletRequest httpServletRequest) {
 		Account account = null;
 		try {
-			account = Account.getAccountbyEmail(email);
+			account = accountRepository.getByEmail(email);
 		} catch (Exception e) {
 			Collection<MemberRole> memberRoles = MemberRole
 					.findAllMemberRoles();

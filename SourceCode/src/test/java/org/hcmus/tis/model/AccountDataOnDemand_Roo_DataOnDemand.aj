@@ -15,6 +15,7 @@ import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.CalendarDataOnDemand;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,9 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     AccountService AccountDataOnDemand.accountService;
+    
+    @Autowired
+    AccountRepository AccountDataOnDemand.accountRepository;
     
     public Account AccountDataOnDemand.getNewTransientAccount(int index) {
         Account obj = new Account();
@@ -137,7 +141,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            accountRepository.flush();
             data.add(obj);
         }
     }

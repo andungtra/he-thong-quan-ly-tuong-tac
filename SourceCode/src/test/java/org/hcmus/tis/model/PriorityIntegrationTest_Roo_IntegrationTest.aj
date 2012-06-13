@@ -4,9 +4,9 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
-import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.PriorityDataOnDemand;
 import org.hcmus.tis.model.PriorityIntegrationTest;
+import org.hcmus.tis.repository.PriorityRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,42 +26,45 @@ privileged aspect PriorityIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private PriorityDataOnDemand PriorityIntegrationTest.dod;
     
+    @Autowired
+    PriorityRepository PriorityIntegrationTest.priorityRepository;
+    
     @Test
-    public void PriorityIntegrationTest.testCountPrioritys() {
+    public void PriorityIntegrationTest.testCount() {
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", dod.getRandomPriority());
-        long count = Priority.countPrioritys();
+        long count = priorityRepository.count();
         Assert.assertTrue("Counter for 'Priority' incorrectly reported there were no entries", count > 0);
     }
     
     @Test
-    public void PriorityIntegrationTest.testFindPriority() {
+    public void PriorityIntegrationTest.testFind() {
         Priority obj = dod.getRandomPriority();
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Priority' failed to provide an identifier", id);
-        obj = Priority.findPriority(id);
+        obj = priorityRepository.findOne(id);
         Assert.assertNotNull("Find method for 'Priority' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Priority' returned the incorrect identifier", id, obj.getId());
     }
     
     @Test
-    public void PriorityIntegrationTest.testFindAllPrioritys() {
+    public void PriorityIntegrationTest.testFindAll() {
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", dod.getRandomPriority());
-        long count = Priority.countPrioritys();
+        long count = priorityRepository.count();
         Assert.assertTrue("Too expensive to perform a find all test for 'Priority', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Priority> result = Priority.findAllPrioritys();
+        List<Priority> result = priorityRepository.findAll();
         Assert.assertNotNull("Find all method for 'Priority' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Priority' failed to return any data", result.size() > 0);
     }
     
     @Test
-    public void PriorityIntegrationTest.testFindPriorityEntries() {
+    public void PriorityIntegrationTest.testFindEntries() {
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", dod.getRandomPriority());
-        long count = Priority.countPrioritys();
+        long count = priorityRepository.count();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Priority> result = Priority.findPriorityEntries(firstResult, maxResults);
+        List<Priority> result = priorityRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / maxResults, maxResults)).getContent();
         Assert.assertNotNull("Find entries method for 'Priority' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Priority' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +75,50 @@ privileged aspect PriorityIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Priority' failed to provide an identifier", id);
-        obj = Priority.findPriority(id);
+        obj = priorityRepository.findOne(id);
         Assert.assertNotNull("Find method for 'Priority' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyPriority(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        priorityRepository.flush();
         Assert.assertTrue("Version for 'Priority' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void PriorityIntegrationTest.testMergeUpdate() {
+    public void PriorityIntegrationTest.testSaveUpdate() {
         Priority obj = dod.getRandomPriority();
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Priority' failed to provide an identifier", id);
-        obj = Priority.findPriority(id);
+        obj = priorityRepository.findOne(id);
         boolean modified =  dod.modifyPriority(obj);
         Integer currentVersion = obj.getVersion();
-        Priority merged = obj.merge();
-        obj.flush();
+        Priority merged = priorityRepository.save(obj);
+        priorityRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Priority' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void PriorityIntegrationTest.testPersist() {
+    public void PriorityIntegrationTest.testSave() {
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", dod.getRandomPriority());
         Priority obj = dod.getNewTransientPriority(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Priority' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Priority' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        priorityRepository.save(obj);
+        priorityRepository.flush();
         Assert.assertNotNull("Expected 'Priority' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void PriorityIntegrationTest.testRemove() {
+    public void PriorityIntegrationTest.testDelete() {
         Priority obj = dod.getRandomPriority();
         Assert.assertNotNull("Data on demand for 'Priority' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Priority' failed to provide an identifier", id);
-        obj = Priority.findPriority(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'Priority' with identifier '" + id + "'", Priority.findPriority(id));
+        obj = priorityRepository.findOne(id);
+        priorityRepository.delete(obj);
+        priorityRepository.flush();
+        Assert.assertNull("Failed to remove 'Priority' with identifier '" + id + "'", priorityRepository.findOne(id));
     }
     
 }

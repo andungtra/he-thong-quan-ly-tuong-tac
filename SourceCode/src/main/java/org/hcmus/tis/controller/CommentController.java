@@ -11,6 +11,7 @@ import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,16 @@ public class CommentController {
 	private EmailService emailService;
 	@Autowired
 	private TaskExecutor taskExecutor;
+	public AccountRepository getAccountRepository() {
+		return accountRepository;
+	}
+
+	public void setAccountRepository(AccountRepository accountRepository) {
+		this.accountRepository = accountRepository;
+	}
+
+	@Autowired
+	private AccountRepository accountRepository;
 	@RequestMapping(produces = "text/html")
 	public String listCommentsByWorkItem(
 			@PathVariable("workitemid") Long workItemId,
@@ -64,8 +75,7 @@ public class CommentController {
 		String name = (String) SecurityUtils.getSubject().getPrincipal();
 		WorkItem workItem = comment.getWorkItem();
 		Project project = workItem.getWorkItemContainer().getParentProjectOrMyself();
-		Account loginAccount = Account.findAccountsByEmailEquals(name)
-				.getSingleResult();
+		Account loginAccount = accountRepository.getByEmail(name);
 		MemberInformation memberInformation = MemberInformation
 				.findMemberInformationsByAccountAndProject(loginAccount,
 						project).getSingleResult();

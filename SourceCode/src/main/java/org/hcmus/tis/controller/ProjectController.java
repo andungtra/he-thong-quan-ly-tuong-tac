@@ -33,6 +33,7 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
@@ -56,7 +57,27 @@ public class ProjectController {
 	private ProjectProcessService projectProcessService;
 	@Autowired
 	private StudyClassRepository studyClassRepository;
+	@Autowired
+	private EventRepository eventRepository;
 
+	public ProjectProcessService getProjectProcessService() {
+		return projectProcessService;
+	}
+	public void setProjectProcessService(ProjectProcessService projectProcessService) {
+		this.projectProcessService = projectProcessService;
+	}
+	public StudyClassRepository getStudyClassRepository() {
+		return studyClassRepository;
+	}
+	public void setStudyClassRepository(StudyClassRepository studyClassRepository) {
+		this.studyClassRepository = studyClassRepository;
+	}
+	public EventRepository getEventRepository() {
+		return eventRepository;
+	}
+	public void setEventRepository(EventRepository eventRepository) {
+		this.eventRepository = eventRepository;
+	}
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	@RequiresPermissions("project:create")
 	public String create(@Valid Project project, BindingResult bindingResult,
@@ -414,7 +435,7 @@ public class ProjectController {
 				.getMemberInformations()) {
 			memberInformation.getAccount().getCalendar().getEvents().add(event);
 		}
-		event.persist();
+		eventRepository.save(event);
 		restResponse.getResponse().setData(new ArrayList<Object>());
 		restResponse.getResponse().getData().add(event);
 		restResponse.getResponse().setStatus(0);
@@ -429,7 +450,8 @@ public class ProjectController {
 		DSRestResponse restResonse = new DSRestResponse();
 		restResonse.setResponse(new DSResponse());
 		event.setId(id);
-		Event resultEvent = event.merge();
+		eventRepository.save(event);
+		Event resultEvent = eventRepository.findOne(event.getId());
 
 		restResonse.getResponse().setStatus(0);
 		restResonse.getResponse().setData(new ArrayList<Object>());
@@ -443,11 +465,11 @@ public class ProjectController {
 			Long id) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		Event event = Event.findEvent(id);
+		Event event = eventRepository.findOne(id);
 		for (org.hcmus.tis.model.Calendar calendar : event.getCalendars()) {
 			calendar.getEvents().remove(event);
 		}
-		event.remove();
+		eventRepository.delete(event);
 		restResponse.getResponse().setStatus(0);
 		restResponse.getResponse().setData(new ArrayList<Object>());
 		restResponse.getResponse().getData().add(event);

@@ -14,6 +14,7 @@ import org.hcmus.tis.model.Comment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 
 import static org.junit.Assert.*;
@@ -36,7 +37,6 @@ import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-@MockStaticEntityMethods
 @RunWith(PowerMockRunner.class)
 public class CommentControllerTest extends AbstractShiroTest {
 	private CommentController aut;
@@ -63,11 +63,11 @@ public class CommentControllerTest extends AbstractShiroTest {
 	@Mock
 	TypedQuery<Comment> commentQuery;
 	@Mock
-	TypedQuery<Account> accountQuery;
-	@Mock
 	TaskExecutor taskExecutor;
 	@Mock
 	BindingResult bindingResult;
+	@Mock
+	AccountRepository accountRepository;
 
 	@Before
 	public void setUp() {
@@ -76,7 +76,6 @@ public class CommentControllerTest extends AbstractShiroTest {
 		doReturn("email").when(subject).getPrincipal();
 		doReturn(comments).when(commentQuery).getResultList();
 		doReturn(member).when(memberQuery).getSingleResult();
-		doReturn(account).when(accountQuery).getSingleResult();
 		doReturn((long) 1).when(project).getId();
 		doReturn((long) 2).when(account).getId();
 		doReturn((long) 3).when(member).getId();
@@ -85,6 +84,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		doReturn(project).when(workItem).getWorkItemContainer();
 		doReturn(workItem).when(comment).getWorkItem();
 		aut = new CommentController();
+		aut.setAccountRepository(accountRepository);
 		aut.setTaskExecutor(taskExecutor);
 		doAnswer(new Answer<Void>() {
 			@Override
@@ -124,7 +124,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask notifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItem.class, Project.class, Account.class,
+	@PrepareForTest({ WorkItem.class, Project.class,
 			MemberInformation.class })
 	public void testCreate() {
 		PowerMockito.mockStatic(WorkItem.class);
@@ -133,10 +133,8 @@ public class CommentControllerTest extends AbstractShiroTest {
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.when(Project.findProject(project.getId())).thenReturn(
 				project);
-		PowerMockito.mockStatic(Account.class);
-		PowerMockito.when(
-				Account.findAccountsByEmailEquals((String) subject
-						.getPrincipal())).thenReturn(accountQuery);
+		String email = (String) subject.getPrincipal();
+		doReturn(account).when(accountRepository).getByEmail(email);
 		PowerMockito.mockStatic(MemberInformation.class);
 		PowerMockito.when(
 				MemberInformation.findMemberInformationsByAccountAndProject(
