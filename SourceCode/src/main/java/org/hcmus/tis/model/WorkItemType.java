@@ -17,13 +17,16 @@ import org.hcmus.tis.model.xml.XField;
 import org.hcmus.tis.model.xml.XProjectProcess;
 import org.hcmus.tis.model.xml.XWorkItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
+@RooJpaEntity
+@Configurable
 public class WorkItemType {
 
 	@NotNull

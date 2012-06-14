@@ -10,9 +10,9 @@ import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
-import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -33,6 +33,9 @@ privileged aspect WorkItemController_Roo_Controller {
     
     @Autowired
     WorkItemStatusRepository WorkItemController.workItemStatusRepository;
+    
+    @Autowired
+    WorkItemTypeRepository WorkItemController.workItemTypeRepository;
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String WorkItemController.show(@PathVariable("id") Long id, Model uiModel) {
@@ -76,7 +79,7 @@ privileged aspect WorkItemController_Roo_Controller {
         uiModel.addAttribute("prioritys", priorityRepository.findAll());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
         uiModel.addAttribute("workitemstatuses", workItemStatusRepository.findAll());
-        uiModel.addAttribute("workitemtypes", WorkItemType.findAllWorkItemTypes());
+        uiModel.addAttribute("workitemtypes", workItemTypeRepository.findAll());
     }
     
     String WorkItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

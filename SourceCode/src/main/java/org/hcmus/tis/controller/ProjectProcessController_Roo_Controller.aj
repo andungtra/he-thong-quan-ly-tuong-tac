@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.hcmus.tis.controller.ProjectProcessController;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -23,6 +24,8 @@ privileged aspect ProjectProcessController_Roo_Controller {
     
     @Autowired
     ProjectProcessService ProjectProcessController.projectProcessService;
+    @Autowired
+    WorkItemTypeRepository ProjectProcessController.workItemTypeRepository;
     
     @RequestMapping(params = "form", produces = "text/html")
     public String ProjectProcessController.createForm(Model uiModel) {
@@ -56,7 +59,7 @@ privileged aspect ProjectProcessController_Roo_Controller {
     
     void ProjectProcessController.populateEditForm(Model uiModel, ProjectProcess projectProcess) {
         uiModel.addAttribute("projectProcess", projectProcess);
-        uiModel.addAttribute("workitemtypes", WorkItemType.findAllWorkItemTypes());
+        uiModel.addAttribute("workitemtypes", workItemTypeRepository.findAll());
     }
     
     String ProjectProcessController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

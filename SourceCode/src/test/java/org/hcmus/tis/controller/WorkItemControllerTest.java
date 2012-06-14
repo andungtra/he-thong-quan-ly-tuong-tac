@@ -35,6 +35,7 @@ import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.junit.After;
 import org.junit.Assert;
@@ -94,6 +95,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private WorkItemStatusRepository workItemStatusRepository;
 	@Mock
+	private WorkItemTypeRepository workItemTypeRepository;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -122,6 +125,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		doReturn("email").when(mockedSubject).getPrincipal();
 		aut.setTaskExecutor(mockedTaskExecutor);
 		aut.setWorkItemStatusRepository(workItemStatusRepository);
+		aut.setWorkItemTypeRepository(workItemTypeRepository);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -142,12 +146,10 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ Account.class, MemberInformation.class, Project.class,
-			WorkItemType.class, Priority.class, WorkItemStatus.class })
+	@PrepareForTest({ Account.class, MemberInformation.class, Project.class, Priority.class, WorkItemStatus.class })
 	public void testCreateForm() throws NotPermissionException {
 		PowerMockito.mockStatic(Project.class);
 		PowerMockito.mockStatic(Priority.class);
-		PowerMockito.mockStatic(WorkItemType.class);
 		PowerMockito.mockStatic(WorkItemStatus.class);
 		WorkItemController spyAut = spy(aut);
 		doNothing().when(spyAut).populateEditFormCustomly(eq(mockedUIModel),
@@ -170,8 +172,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		verify(mockedUIModel).addAttribute(eq("projectId"), anyLong());
 		verify(mockedUIModel)
 				.addAttribute(eq("memberInformationId"), anyLong());
-		PowerMockito.verifyStatic();
-		WorkItemType.findWorkItemType(anyLong());
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	private List<Field> finalField;
 
 	@Test
-	@PrepareForTest({ WorkItemType.class, Attachment.class })
+	@PrepareForTest({Attachment.class })
 	public void testCreate() throws JAXBException {
 		WorkItem workItem = new WorkItem();
 		workItem.setId((long) 4);
@@ -233,9 +233,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		WorkItemType mockedWorkItemType = mock(WorkItemType.class);
 		doReturn(fieldDefines).when(mockedWorkItemType)
 				.getAdditionalFieldDefines();
-		PowerMockito.mockStatic(WorkItemType.class);
-		PowerMockito.when(WorkItemType.findWorkItemType(anyLong())).thenReturn(
-				mockedWorkItemType);
+		Long workItemTypeId = workItem.getWorkItemType().getId();
+		doReturn(mockedWorkItemType).when(workItemTypeRepository).findOne(workItemTypeId);
 		WorkItem spyWorkItem = spy(workItem);
 		doNothing().when(spyWorkItem).persist();
 
@@ -258,7 +257,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		PowerMockito.when(Attachment.findAttachment((long) 2)).thenReturn(
 				mockedAttachment1);
 
-		aut.create(spyWorkItem, mockedBindingResult, (long) 1, mockedUIModel,
+		aut.create(spyWorkItem, mockedBindingResult, (long)1, mockedUIModel,
 				attachmentIds, mockedHttpRequest);
 
 		verify(mockedHttpRequest).getParameter("name");
@@ -275,7 +274,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask workItemNotifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItemType.class, WorkItem.class })
+	@PrepareForTest({ WorkItem.class })
 	public void testUpdate() throws JAXBException {
 		PowerMockito.mockStatic(WorkItem.class);
 		WorkItem oldWorkItem = Mockito.mock(WorkItem.class);
@@ -288,10 +287,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		fieldDefines.add(fieldDefine);
 		doReturn(fieldDefines).when(mockedWorkItemType)
 				.getAdditionalFieldDefines();
-		PowerMockito.mockStatic(WorkItemType.class);
-		PowerMockito.when(
-				WorkItemType.findWorkItemType(mockedWorkItem.getWorkItemType()
-						.getId())).thenReturn(mockedWorkItemType);
+		Long workItemTyeId = mockedWorkItem.getWorkItemType()
+				.getId();
+		doReturn(mockedWorkItemType).when(workItemTypeRepository).findOne(workItemTyeId);
 		doReturn("utf-8").when(mockedHttpRequest).getCharacterEncoding();
 		doAnswer(new Answer<Void>() {
 			@Override
