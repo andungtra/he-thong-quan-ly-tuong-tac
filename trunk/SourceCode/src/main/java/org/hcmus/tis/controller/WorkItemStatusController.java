@@ -3,6 +3,8 @@ package org.hcmus.tis.controller;
 import java.util.List;
 
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,6 @@ public class WorkItemStatusController {
 	@RequestMapping(value="/listJSON")
 	@ResponseBody
 	public List<WorkItemStatus> listJSON(){
-		return WorkItemStatus.findAllWorkItemStatuses();
+		return workItemStatusRepository.findAll();
 	}
 }

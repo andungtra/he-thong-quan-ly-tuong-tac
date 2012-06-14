@@ -19,6 +19,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     StudyClassRepository ApplicationConversionServiceFactoryBean.studyClassRepository;
+    
+    @Autowired
+    WorkItemStatusRepository ApplicationConversionServiceFactoryBean.workItemStatusRepository;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -277,7 +281,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, WorkItemStatus> ApplicationConversionServiceFactoryBean.getIdToWorkItemStatusConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.WorkItemStatus>() {
             public org.hcmus.tis.model.WorkItemStatus convert(java.lang.Long id) {
-                return WorkItemStatus.findWorkItemStatus(id);
+                return workItemStatusRepository.findOne(id);
             }
         };
     }

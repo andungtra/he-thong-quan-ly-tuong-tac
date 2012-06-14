@@ -170,8 +170,8 @@ public class WorkItemIntegrationTest {
 	public void testGetTotalRecordWithStatus(){
 		WorkItemStatus status1 = workItemStatusDataOnDemand.getNewTransientWorkItemStatus(11);
 		WorkItemStatus status2 = workItemStatusDataOnDemand.getNewTransientWorkItemStatus(12);
-		status1.persist();
-		status2.persist();
+		//status1.persist();
+		//status2.persist();
 		WorkItem workItem1 = workItemDataOnDemand.getNewTransientWorkItem(11);
 		workItem1.setStatus(status1);
 		workItem1.persist();

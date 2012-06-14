@@ -30,6 +30,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.joda.time.format.DateTimeFormat;
@@ -57,7 +58,14 @@ public class WorkItemController {
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
-    public PriorityRepository getPriorityRepository() {
+    public WorkItemStatusRepository getWorkItemStatusRepository() {
+		return workItemStatusRepository;
+	}
+	public void setWorkItemStatusRepository(
+			WorkItemStatusRepository workItemStatusRepository) {
+		this.workItemStatusRepository = workItemStatusRepository;
+	}
+	public PriorityRepository getPriorityRepository() {
 		return priorityRepository;
 	}
 
@@ -171,7 +179,7 @@ public class WorkItemController {
 		if (priorityRepository.count() == 0) {
 			dependencies.add(new String[] { "priority", "prioritys" });
 		}
-		if (WorkItemStatus.countWorkItemStatuses() == 0) {
+		if ( workItemStatusRepository.count() == 0) {
 			dependencies.add(new String[] { "workitemstatus",
 					"workitemstatuses" });
 		}
@@ -222,7 +230,7 @@ public class WorkItemController {
 		}
 		uiModel.addAttribute("workitemcontainers", containers);
 		uiModel.addAttribute("workitemstatuses",
-				WorkItemStatus.findAllWorkItemStatuses());
+				workItemStatusRepository.findAll());
 		uiModel.addAttribute("workItemType", workItem.getWorkItemType());
 	}
 

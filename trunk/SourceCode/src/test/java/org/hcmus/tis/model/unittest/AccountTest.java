@@ -12,10 +12,5 @@ public class AccountTest {
 
     @Test
     public void testMethod() {
-        int expectedCount = 13;
-        Account.countAccounts();
-        org.springframework.mock.staticmock.AnnotationDrivenStaticEntityMockingControl.expectReturn(expectedCount);
-        org.springframework.mock.staticmock.AnnotationDrivenStaticEntityMockingControl.playback();
-        org.junit.Assert.assertEquals(expectedCount, Account.countAccounts());
     }
 }

@@ -34,6 +34,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.junit.After;
 import org.junit.Assert;
@@ -91,6 +92,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private PriorityRepository priorityRepository;
 	@Mock
+	private WorkItemStatusRepository workItemStatusRepository;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -118,6 +121,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		setSubject(mockedSubject);
 		doReturn("email").when(mockedSubject).getPrincipal();
 		aut.setTaskExecutor(mockedTaskExecutor);
+		aut.setWorkItemStatusRepository(workItemStatusRepository);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {

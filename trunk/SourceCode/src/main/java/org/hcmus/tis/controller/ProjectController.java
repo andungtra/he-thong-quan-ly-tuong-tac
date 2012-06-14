@@ -35,6 +35,7 @@ import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,15 @@ public class ProjectController {
 	private StudyClassRepository studyClassRepository;
 	@Autowired
 	private EventRepository eventRepository;
-
+	@Autowired
+private WorkItemStatusRepository workItemStatusRepository;
+	public WorkItemStatusRepository getWorkItemStatusRepository() {
+		return workItemStatusRepository;
+	}
+	public void setWorkItemStatusRepository(
+			WorkItemStatusRepository workItemStatusRepository) {
+		this.workItemStatusRepository = workItemStatusRepository;
+	}
 	public ProjectProcessService getProjectProcessService() {
 		return projectProcessService;
 	}
@@ -201,7 +210,7 @@ public class ProjectController {
 		uiModel.addAttribute("project", project);
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("statuses",
-				WorkItemStatus.findAllWorkItemStatuses());
+				workItemStatusRepository.findAll());
 		uiModel.addAttribute("searchcondition", searchCondition);
 		uiModel.addAttribute("members",
 				MemberInformation.findMemberInformationsByProject(project));
