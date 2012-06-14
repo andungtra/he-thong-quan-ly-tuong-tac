@@ -14,6 +14,7 @@ import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.ProjectProcessDataOnDemand;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.WorkItemTypeDataOnDemand;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,9 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private ProjectProcessDataOnDemand WorkItemTypeDataOnDemand.projectProcessDataOnDemand;
+    
+    @Autowired
+    WorkItemTypeRepository WorkItemTypeDataOnDemand.workItemTypeRepository;
     
     public WorkItemType WorkItemTypeDataOnDemand.getNewTransientWorkItemType(int index) {
         WorkItemType obj = new WorkItemType();
@@ -70,14 +74,14 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
         }
         WorkItemType obj = data.get(index);
         Long id = obj.getId();
-        return WorkItemType.findWorkItemType(id);
+        return workItemTypeRepository.findOne(id);
     }
     
     public WorkItemType WorkItemTypeDataOnDemand.getRandomWorkItemType() {
         init();
         WorkItemType obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return WorkItemType.findWorkItemType(id);
+        return workItemTypeRepository.findOne(id);
     }
     
     public boolean WorkItemTypeDataOnDemand.modifyWorkItemType(WorkItemType obj) {
@@ -87,7 +91,7 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
     public void WorkItemTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = WorkItemType.findWorkItemTypeEntries(from, to);
+        data = workItemTypeRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'WorkItemType' illegally returned null");
         }
@@ -99,7 +103,7 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             WorkItemType obj = getNewTransientWorkItemType(i);
             try {
-                obj.persist();
+                workItemTypeRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -108,7 +112,7 @@ privileged aspect WorkItemTypeDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            workItemTypeRepository.flush();
             data.add(obj);
         }
     }

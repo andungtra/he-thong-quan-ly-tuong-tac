@@ -4,9 +4,9 @@
 package org.hcmus.tis.model;
 
 import java.util.List;
-import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.WorkItemTypeDataOnDemand;
 import org.hcmus.tis.model.WorkItemTypeIntegrationTest;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,42 +26,45 @@ privileged aspect WorkItemTypeIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private WorkItemTypeDataOnDemand WorkItemTypeIntegrationTest.dod;
     
+    @Autowired
+    WorkItemTypeRepository WorkItemTypeIntegrationTest.workItemTypeRepository;
+    
     @Test
-    public void WorkItemTypeIntegrationTest.testCountWorkItemTypes() {
+    public void WorkItemTypeIntegrationTest.testCount() {
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", dod.getRandomWorkItemType());
-        long count = WorkItemType.countWorkItemTypes();
+        long count = workItemTypeRepository.count();
         Assert.assertTrue("Counter for 'WorkItemType' incorrectly reported there were no entries", count > 0);
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testFindWorkItemType() {
+    public void WorkItemTypeIntegrationTest.testFind() {
         WorkItemType obj = dod.getRandomWorkItemType();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to provide an identifier", id);
-        obj = WorkItemType.findWorkItemType(id);
+        obj = workItemTypeRepository.findOne(id);
         Assert.assertNotNull("Find method for 'WorkItemType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'WorkItemType' returned the incorrect identifier", id, obj.getId());
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testFindAllWorkItemTypes() {
+    public void WorkItemTypeIntegrationTest.testFindAll() {
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", dod.getRandomWorkItemType());
-        long count = WorkItemType.countWorkItemTypes();
+        long count = workItemTypeRepository.count();
         Assert.assertTrue("Too expensive to perform a find all test for 'WorkItemType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<WorkItemType> result = WorkItemType.findAllWorkItemTypes();
+        List<WorkItemType> result = workItemTypeRepository.findAll();
         Assert.assertNotNull("Find all method for 'WorkItemType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'WorkItemType' failed to return any data", result.size() > 0);
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testFindWorkItemTypeEntries() {
+    public void WorkItemTypeIntegrationTest.testFindEntries() {
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", dod.getRandomWorkItemType());
-        long count = WorkItemType.countWorkItemTypes();
+        long count = workItemTypeRepository.count();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<WorkItemType> result = WorkItemType.findWorkItemTypeEntries(firstResult, maxResults);
+        List<WorkItemType> result = workItemTypeRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / maxResults, maxResults)).getContent();
         Assert.assertNotNull("Find entries method for 'WorkItemType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'WorkItemType' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +75,50 @@ privileged aspect WorkItemTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to provide an identifier", id);
-        obj = WorkItemType.findWorkItemType(id);
+        obj = workItemTypeRepository.findOne(id);
         Assert.assertNotNull("Find method for 'WorkItemType' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyWorkItemType(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        workItemTypeRepository.flush();
         Assert.assertTrue("Version for 'WorkItemType' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testMergeUpdate() {
+    public void WorkItemTypeIntegrationTest.testSaveUpdate() {
         WorkItemType obj = dod.getRandomWorkItemType();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to provide an identifier", id);
-        obj = WorkItemType.findWorkItemType(id);
+        obj = workItemTypeRepository.findOne(id);
         boolean modified =  dod.modifyWorkItemType(obj);
         Integer currentVersion = obj.getVersion();
-        WorkItemType merged = obj.merge();
-        obj.flush();
+        WorkItemType merged = workItemTypeRepository.save(obj);
+        workItemTypeRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'WorkItemType' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testPersist() {
+    public void WorkItemTypeIntegrationTest.testSave() {
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", dod.getRandomWorkItemType());
         WorkItemType obj = dod.getNewTransientWorkItemType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'WorkItemType' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        workItemTypeRepository.save(obj);
+        workItemTypeRepository.flush();
         Assert.assertNotNull("Expected 'WorkItemType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void WorkItemTypeIntegrationTest.testRemove() {
+    public void WorkItemTypeIntegrationTest.testDelete() {
         WorkItemType obj = dod.getRandomWorkItemType();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'WorkItemType' failed to provide an identifier", id);
-        obj = WorkItemType.findWorkItemType(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'WorkItemType' with identifier '" + id + "'", WorkItemType.findWorkItemType(id));
+        obj = workItemTypeRepository.findOne(id);
+        workItemTypeRepository.delete(obj);
+        workItemTypeRepository.flush();
+        Assert.assertNull("Failed to remove 'WorkItemType' with identifier '" + id + "'", workItemTypeRepository.findOne(id));
     }
     
 }

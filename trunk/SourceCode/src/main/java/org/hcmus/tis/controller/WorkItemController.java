@@ -31,6 +31,7 @@ import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.joda.time.format.DateTimeFormat;
@@ -68,7 +69,13 @@ public class WorkItemController {
 	public PriorityRepository getPriorityRepository() {
 		return priorityRepository;
 	}
-
+	public WorkItemTypeRepository getWorkItemTypeRepository() {
+		return workItemTypeRepository;
+	}
+	public void setWorkItemTypeRepository(
+			WorkItemTypeRepository workItemTypeRepository) {
+		this.workItemTypeRepository = workItemTypeRepository;
+	}
 	public void setPriorityRepository(PriorityRepository priorityRepository) {
 		this.priorityRepository = priorityRepository;
 	}
@@ -91,7 +98,7 @@ public class WorkItemController {
 		WorkItem inDatabaseWorkItem = WorkItem.findWorkItem(workItem.getId());
 		workItem.setSubcribers(inDatabaseWorkItem.getSubcribers());
 		workItem.getSubcribers().remove(workItem.getAsignee());
-		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
+		WorkItemType workItemType = workItemTypeRepository.findOne(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
 		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {
@@ -150,8 +157,8 @@ public class WorkItemController {
 		WorkItem workItem = new WorkItem();
 		Project project = Project.findProject(projectId);
 		workItem.setWorkItemContainer(project);
-		WorkItemType workItemType = WorkItemType
-				.findWorkItemType(workItemTypeId);
+		WorkItemType workItemType = workItemTypeRepository
+				.findOne(workItemTypeId);
 		workItem.setWorkItemType(workItemType);
 		populateEditFormCustomly(uiModel, workItem);
 		List<String[]> dependencies = new ArrayList<String[]>();
@@ -247,7 +254,7 @@ public class WorkItemController {
 			populateEditFormCustomly(uiModel, workItem);
 			return "workitems/create";
 		}
-		WorkItemType workItemType = WorkItemType.findWorkItemType(workItem
+		WorkItemType workItemType = workItemTypeRepository.findOne(workItem
 				.getWorkItemType().getId());
 		List<Field> fields = new ArrayList<Field>();
 		for (FieldDefine fieldDefine : workItemType.getAdditionalFieldDefines()) {

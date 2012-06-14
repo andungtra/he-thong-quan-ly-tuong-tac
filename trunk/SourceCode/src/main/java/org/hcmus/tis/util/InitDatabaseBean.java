@@ -14,6 +14,7 @@ import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class InitDatabaseBean {
@@ -23,6 +24,8 @@ public class InitDatabaseBean {
 	AccountRepository accountRepository;
 	@Autowired
 	WorkItemStatusRepository workItemStatusRepository;
+	@Autowired
+	WorkItemTypeRepository workItemTypeRepository;
 	@PostConstruct
 	public void init() {
 		String statusNames[] = { "New", "In Process", "Resolved", "Closed",
@@ -124,7 +127,7 @@ public class InitDatabaseBean {
 			w1.setRefName("task");
 			w1.setVersion(0);
 			w1.setProjectProcess(ProjectProcess.findProjectProcess((long) 1));
-			w1.persist();
+			workItemTypeRepository.save(w1);
 			
 			WorkItemType w2 = new WorkItemType();
 			w2.setAdditionalFieldsDefine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<xAdditionalFields xmlns=\"http://www.w3schools.com\"><xField ref=\"storyPoint\"/><xField ref=\"difficulty\"/></xAdditionalFields>");
@@ -132,7 +135,7 @@ public class InitDatabaseBean {
 			w2.setRefName("userStory");
 			w2.setVersion(0);
 			w2.setProjectProcess(ProjectProcess.findProjectProcess((long) 1));
-			w2.persist();
+			workItemTypeRepository.save(w2);
 			
 			WorkItemType w3 = new WorkItemType();
 			w3.setAdditionalFieldsDefine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<xAdditionalFields xmlns=\"http://www.w3schools.com\"><xField ref=\"severity\"/><xField ref=\"environment\"/><xField ref=\"type\"/></xAdditionalFields>");
@@ -140,7 +143,7 @@ public class InitDatabaseBean {
 			w3.setRefName("bug");
 			w3.setVersion(0);
 			w3.setProjectProcess(ProjectProcess.findProjectProcess((long) 1));
-			w3.persist();		
+			workItemTypeRepository.save(w3);		
 		}
 	}
 }
