@@ -21,6 +21,7 @@ import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.SpecificAccountRepository;
+import org.hcmus.tis.util.CustomAuthorizingRealm;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

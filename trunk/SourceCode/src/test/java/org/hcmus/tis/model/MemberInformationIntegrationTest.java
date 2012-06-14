@@ -17,7 +17,7 @@ public class MemberInformationIntegrationTest {
     @Test
     public void testMarkerMethod() {
     }
-    @Test
+ /*   @Test
     public void testCustomRemove(){
     	MemberInformation memberInformation = dod.getRandomMemberInformation();
     	Project mockedProject = Mockito.mock(Project.class);
@@ -29,7 +29,7 @@ public class MemberInformationIntegrationTest {
     	memberInformation.remove();
 
     	Mockito.verify(mockedMemberInformation).remove(Mockito.any(MemberInformation.class));
-    }
+    }*/
     @Test
     public void testRemove() {
     }

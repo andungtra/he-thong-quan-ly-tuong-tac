@@ -12,6 +12,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,17 @@ public class CommentController {
 
 	@Autowired
 	private AccountRepository accountRepository;
+	@Autowired
+	private MemberInformationRepository memberInformationRepository;
+	public MemberInformationRepository getMemberInformationRepository() {
+		return memberInformationRepository;
+	}
+
+	public void setMemberInformationRepository(
+			MemberInformationRepository memberInformationRepository) {
+		this.memberInformationRepository = memberInformationRepository;
+	}
+
 	@RequestMapping(produces = "text/html")
 	public String listCommentsByWorkItem(
 			@PathVariable("workitemid") Long workItemId,
@@ -63,7 +75,12 @@ public class CommentController {
 		uiModel.addAttribute("workitem", workItem);
 		return "comments/listByWorkItem";
 	}
-
+    void populateEditForm(Model uiModel, Comment comment) {
+        uiModel.addAttribute("comment", comment);
+        addDateTimeFormatPatterns(uiModel);
+/*        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
+        uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());*/
+    }
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Comment comment, BindingResult bindingResult,
 			Model uiModel) {
@@ -76,9 +93,8 @@ public class CommentController {
 		WorkItem workItem = comment.getWorkItem();
 		Project project = workItem.getWorkItemContainer().getParentProjectOrMyself();
 		Account loginAccount = accountRepository.getByEmail(name);
-		MemberInformation memberInformation = MemberInformation
-				.findMemberInformationsByAccountAndProject(loginAccount,
-						project).getSingleResult();
+		MemberInformation memberInformation = memberInformationRepository.findByAccountAndProjectAndDeleted(loginAccount,
+						project, false);
 		comment.setProjectMember(memberInformation);
 		comment.persist();
 		workItem.getSubcribers().toArray();

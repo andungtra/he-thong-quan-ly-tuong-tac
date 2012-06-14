@@ -1,4 +1,4 @@
-package org.hcmus.tis.service;
+package org.hcmus.tis.util;
 
 import java.util.HashSet;
 
@@ -18,6 +18,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Permission;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.SpecificAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +38,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 	}
 
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
 		try {
 			String email = (String) arg0.getPrimaryPrincipal();
 			Account account = accountRepository.getByEmail(email);
@@ -57,9 +58,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 							.getSession().getAttribute("projectid");
 					Project project = Project.findProject(projectId);
 					if (project != null) {
-						MemberInformation member = MemberInformation
-								.findMemberInformationsByAccountAndProject(
-										account, project).getSingleResult();
+						MemberInformation member = accountRepository.findByAccountAndProjectAndDeleted(account, project, false);
 						info.getRoles()
 								.add(member.getMemberRole().getRefName());
 						for (Permission permission : member.getMemberRole()
@@ -73,13 +72,13 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 				return info;
 			}
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(
+	public AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken arg0) throws AuthenticationException {
 		try{
 		if (arg0 instanceof UsernamePasswordToken) {

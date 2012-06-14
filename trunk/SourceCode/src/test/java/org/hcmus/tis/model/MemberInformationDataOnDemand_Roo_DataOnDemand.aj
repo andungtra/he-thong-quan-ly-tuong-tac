@@ -18,6 +18,7 @@ import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.MemberRoleDataOnDemand;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,9 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private ProjectDataOnDemand MemberInformationDataOnDemand.projectDataOnDemand;
+    
+    @Autowired
+    MemberInformationRepository MemberInformationDataOnDemand.memberInformationRepository;
     
     public MemberInformation MemberInformationDataOnDemand.getNewTransientMemberInformation(int index) {
         MemberInformation obj = new MemberInformation();
@@ -77,14 +81,14 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
         }
         MemberInformation obj = data.get(index);
         Long id = obj.getId();
-        return MemberInformation.findMemberInformation(id);
+        return memberInformationRepository.findOne(id);
     }
     
     public MemberInformation MemberInformationDataOnDemand.getRandomMemberInformation() {
         init();
         MemberInformation obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return MemberInformation.findMemberInformation(id);
+        return memberInformationRepository.findOne(id);
     }
     
     public boolean MemberInformationDataOnDemand.modifyMemberInformation(MemberInformation obj) {
@@ -94,7 +98,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     public void MemberInformationDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = MemberInformation.findMemberInformationEntries(from, to);
+        data = memberInformationRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'MemberInformation' illegally returned null");
         }
@@ -106,7 +110,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             MemberInformation obj = getNewTransientMemberInformation(i);
             try {
-                obj.persist();
+                memberInformationRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -115,7 +119,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            memberInformationRepository.flush();
             data.add(obj);
         }
     }

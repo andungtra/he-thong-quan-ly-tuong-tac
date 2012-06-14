@@ -24,6 +24,7 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.EventRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
@@ -50,6 +51,8 @@ public class AccountController {
 	EventRepository eventRepository;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	MemberInformationRepository memberInformationRepository;
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
@@ -101,7 +104,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/{id}", params = "activeKey", method = RequestMethod.PUT, produces = "text/html")
-	public String active(@Valid Account account, String activeKey, Model uiModel) {
+	public String active(@Valid Account account, String activeKey, Model uiModel, BindingResult bindingResult) {
 		Account oldAccount = accountService.findAccount(account.getId());
 		if (oldAccount.getPassword().compareTo(activeKey) == 0
 				&& oldAccount.getStatus() == AccountStatus.INACTIVE) {
@@ -220,10 +223,10 @@ public class AccountController {
 			String sEcho, String sSearch, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
 		Account acc = (Account) session.getAttribute("account");
-		List<MemberInformation> list = MemberInformation
-				.findMemberInformationEntriesBaseProject(iDisplayStart,
-						iDisplayLength, sSearch);
+		Page<MemberInformation> page = memberInformationRepository.findByAccountAndProjectLikeAndDeleted(acc,"%" + sSearch +"%", false, pageable);
+		List<MemberInformation> list = page.getContent();
 		for (MemberInformation item : list) {
 			if (item.getAccount().getEmail().equals(acc.getEmail())
 					&& item.getDeleted() == false) {
@@ -236,9 +239,8 @@ public class AccountController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalDisplayRecords((int)MemberInformation
-				.countMemberInformationEntriesBaseProject(sSearch));
-		reply.setiTotalRecords((int)MemberInformation.countMemberInformationsByAccount(acc));
+		reply.setiTotalDisplayRecords((int)page.getTotalElements());
+		reply.setiTotalRecords((int)memberInformationRepository.countByAccountAndDeleted(acc, false));
 		return reply;
 	}
 
@@ -440,7 +442,7 @@ public class AccountController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-		List<Account> lst = null;
+/*		List<Account> lst = null;
 		if (page != null || size != null) {
 			int sizeNo = size == null ? 10 : size.intValue();
 			final int firstResult = page == null ? 0 : (page.intValue() - 1)
@@ -461,10 +463,9 @@ public class AccountController {
 				lst.remove(i);
 		}
 
-		uiModel.addAttribute("accounts", lst);
+		uiModel.addAttribute("accounts", lst);*/
 		return "accounts/list";
 	}
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("id") Long id,
 			@RequestParam(value = "page", required = false) Integer page,
@@ -479,6 +480,10 @@ public class AccountController {
 		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
 		accountRepository.save(account);
+		for(MemberInformation member : account.getMembers()){
+			member.setDeleted(true);
+			memberInformationRepository.save(member);
+		}
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

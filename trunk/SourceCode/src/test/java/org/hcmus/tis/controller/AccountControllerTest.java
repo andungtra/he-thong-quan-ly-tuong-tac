@@ -166,7 +166,8 @@ public class AccountControllerTest extends AbstractShiroTest {
 
 		Assert.assertEquals("accounts/invalidactive", result);
 	}
-
+	@Mock
+	BindingResult bindingResult;
 	@Test
 	public void testActiveAccountValidActiveKey() {
 		doReturn(AccountStatus.INACTIVE).when(account).getStatus();
@@ -184,7 +185,7 @@ public class AccountControllerTest extends AbstractShiroTest {
 		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
-		String result = aut.active(updatedAccount, activeKey, uiModel);
+		String result = aut.active(updatedAccount, activeKey, uiModel, bindingResult);
 
 		verify(mockedAccountService).updateAccount(
 				any(Account.class));
@@ -208,7 +209,7 @@ public class AccountControllerTest extends AbstractShiroTest {
 		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
-		String result = aut.active(updatedAccount, activeKey, uiModel);
+		String result = aut.active(updatedAccount, activeKey, uiModel, bindingResult);
 		verify(mockedAccountService, times(0)).updateAccount(
 				any(Account.class));
 		Assert.assertEquals("accounts/activeFailure", result);
@@ -231,7 +232,7 @@ public class AccountControllerTest extends AbstractShiroTest {
 		doReturn(account).when(mockedAccountService)
 				.findAccount(updatedAccount.getId());
 
-		String result = aut.active(updatedAccount, activeKey, uiModel);
+		String result = aut.active(updatedAccount, activeKey, uiModel, bindingResult);
 		verify(mockedAccountService, times(0)).updateAccount(
 				any(Account.class));
 		Assert.assertEquals("accounts/activeFailure", result);

@@ -171,11 +171,12 @@
 	<!-- Define the Shiro Realm implementation you want to use to connect to 
 		your back-end -->
 	<!-- security datasource: -->
-	<bean id="myRealm" class="org.hcmus.tis.service.CustomAuthorizingRealm">
+	<bean name="myrealm" id="myRealm" class="org.hcmus.tis.util.CustomAuthorizingRealm">
 	</bean>
 	<bean name="projectPermissionFilter" id="projectPermissionFilter"
 		class="org.hcmus.tis.util.ProjectPermissionFilter" />
 	<bean name="initBean" id="initBean" class="org.hcmus.tis.util.InitDatabaseBean"></bean>
+		
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="5" />

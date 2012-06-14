@@ -6,15 +6,7 @@ package org.hcmus.tis.controller;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.WorkItemController;
-import org.hcmus.tis.model.Attachment;
-import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
-import org.hcmus.tis.model.WorkItemContainer;
-import org.hcmus.tis.repository.PriorityRepository;
-import org.hcmus.tis.repository.WorkItemStatusRepository;
-import org.hcmus.tis.repository.WorkItemTypeRepository;
-import org.hcmus.tis.service.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,18 +16,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemController_Roo_Controller {
-    
-    @Autowired
-    AccountService WorkItemController.accountService;
-    
-    @Autowired
-    PriorityRepository WorkItemController.priorityRepository;
-    
-    @Autowired
-    WorkItemStatusRepository WorkItemController.workItemStatusRepository;
-    
-    @Autowired
-    WorkItemTypeRepository WorkItemController.workItemTypeRepository;
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String WorkItemController.show(@PathVariable("id") Long id, Model uiModel) {
@@ -68,18 +48,6 @@ privileged aspect WorkItemController_Roo_Controller {
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/workitems";
-    }
-    
-    void WorkItemController.populateEditForm(Model uiModel, WorkItem workItem) {
-        uiModel.addAttribute("workItem", workItem);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("accounts", accountService.findAllAccounts());
-        uiModel.addAttribute("attachments", Attachment.findAllAttachments());
-        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
-        uiModel.addAttribute("prioritys", priorityRepository.findAll());
-        uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
-        uiModel.addAttribute("workitemstatuses", workItemStatusRepository.findAll());
-        uiModel.addAttribute("workitemtypes", workItemTypeRepository.findAll());
     }
     
     String WorkItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

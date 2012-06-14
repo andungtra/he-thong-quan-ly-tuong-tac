@@ -1,5 +1,3 @@
-
-
 package org.hcmus.tis.controller;
 
 import java.util.Collection;
@@ -17,7 +15,11 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +36,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MemberInformationController {
 	@Autowired
 	private AccountRepository accountRepository;
+
 	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
-	public String createForm(Model uiModel,@PathVariable("projectId") Long projectId, String redirectUrl) {
+	public String createForm(Model uiModel,
+			@PathVariable("projectId") Long projectId, String redirectUrl) {
 		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
 		uiModel.addAttribute("memberRoles", memberRoles);
 		uiModel.addAttribute("projectId", projectId);
@@ -66,18 +70,18 @@ public class MemberInformationController {
 		MemberRole memberRole = MemberRole.findMemberRole(memberRoleId);
 		Project project = Project.findProject(projectId);
 
-		List<MemberInformation> exist = MemberInformation
-				.findMemberInformationsByAccountAndProject(account, project)
-				.getResultList();
-
+		MemberInformation exist = memberInformationRepository
+				.findByAccountAndProjectAndDeleted(account, project, false);
+		MemberInformation deletedMember = memberInformationRepository
+				.findByAccountAndProjectAndDeleted(account, project, true);
 		if (account != null && account.getStatus().equals(AccountStatus.ACTIVE)
-				&& exist.size() == 0) {
+				&& exist == null && deletedMember == null) {
 
 			MemberInformation memberInformation = new MemberInformation();
 			memberInformation.setAccount(account);
 			memberInformation.setMemberRole(memberRole);
 			memberInformation.setProject(project);
-			memberInformation.persist();
+			memberInformationRepository.save(memberInformation);
 
 			/*
 			 * if (redirectUrl != null) { return "redirect:" + redirectUrl; }
@@ -91,18 +95,12 @@ public class MemberInformationController {
 			uiModel.addAttribute("projectId", projectId);
 			return "projects/member";
 
-		} else if (account != null
-				&& account.getStatus().equals(AccountStatus.ACTIVE)
-				&& exist.size() > 0 && exist.get(0).getDeleted() == true) {
-			MemberInformation memberInformation = exist.get(0);
-			memberInformation.setDeleted(false);
-			memberInformation.merge();
+		}
 
-			/*
-			 * if (redirectUrl != null) { return "redirect:" + redirectUrl; }
-			 * return "redirect:/memberinformations/" + encodeUrlPathSegment(
-			 * memberInformation.getId().toString(), httpServletRequest);
-			 */
+		if (account != null && account.getStatus().equals(AccountStatus.ACTIVE)
+				&& deletedMember != null) {
+			deletedMember.setDeleted(false);
+			memberInformationRepository.save(deletedMember);
 			Set<MemberInformation> memberInformations = Project.findProject(
 					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
@@ -110,14 +108,11 @@ public class MemberInformationController {
 			return "projects/member";
 		}
 
-		else {
-			Collection<MemberRole> memberRoles = MemberRole
-					.findAllMemberRoles();
-			uiModel.addAttribute("memberRoles", memberRoles);
-			uiModel.addAttribute("projectId", projectId);
-			uiModel.addAttribute("redirectUrl", redirectUrl);
-			return "memberinformations/createfromproject";
-		}
+		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
+		uiModel.addAttribute("memberRoles", memberRoles);
+		uiModel.addAttribute("projectId", projectId);
+		uiModel.addAttribute("redirectUrl", redirectUrl);
+		return "memberinformations/createfromproject";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
@@ -127,10 +122,9 @@ public class MemberInformationController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-		MemberInformation memberInformation = MemberInformation
-				.findMemberInformation(id);
+		MemberInformation memberInformation = memberInformationRepository.findOne(id);
 		memberInformation.setDeleted(true);
-		memberInformation.merge();
+		memberInformationRepository.save(memberInformation);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -140,11 +134,10 @@ public class MemberInformationController {
 		return "redirect:/memberinformations";
 	}
 
-	@RequestMapping(value = "/{id}", params = {"redirectUrl" }, produces = "text/html")
+	@RequestMapping(value = "/{id}", params = { "redirectUrl" }, produces = "text/html")
 	public String updateFromProjectForm(@PathVariable("id") Long id,
 			Model uiModel, String redirectUrl) {
-		MemberInformation memberInformation = MemberInformation
-				.findMemberInformation(id);
+		MemberInformation memberInformation = memberInformationRepository.findOne(id);
 		uiModel.addAttribute("memberInformation", memberInformation);
 		uiModel.addAttribute("memberRoles", MemberRole.findAllMemberRoles());
 		uiModel.addAttribute("redirectUrl", redirectUrl);
@@ -162,7 +155,7 @@ public class MemberInformationController {
 			return "memberinformations/update";
 		}
 		uiModel.asMap().clear();
-		memberInformation.merge();
+		memberInformationRepository.save(memberInformation);
 		if (redirectUrl != null) {
 			return "redirect:" + redirectUrl;
 		}
@@ -171,30 +164,33 @@ public class MemberInformationController {
 						httpServletRequest);
 	}
 
-	@RequestMapping(params = { "iDisplayStart",
-			"iDisplayLength", "sEcho", "sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
+	@RequestMapping(params = { "iDisplayStart", "iDisplayLength", "sEcho",
+			"sSearch", "sSearch_0", "sSearch_1", "sSearch_2" })
 	@ResponseBody
-	public DtReply listByProject(@PathVariable("projectId") Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply listByProject(@PathVariable("projectId") Long projectId,
+			int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-
-		List<MemberInformation> list = MemberInformation
-				.findMemberInformationsByProjectBaseAccount(Project.findProject(projectId),iDisplayStart, iDisplayLength, sSearch);
+		Project project = Project.findProject(projectId);
+		Pageable pageRequest = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+		Page<MemberInformation> page = memberInformationRepository.findByProjectAndAccountLikeAndDeleted(project, "%" + sSearch + "%", false, pageRequest);
+		List<MemberInformation> list = page.getContent();
 		for (MemberInformation item : list) {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
 				dto.DT_RowId = item.getId();
-				String redirectUrl = "/projects/"+projectId+"/members";
-				dto.setFirstName("<a href='../projects/"+projectId+"/memberinformations/"+item.getId()+"?fromProjectForm&redirectUrl="+redirectUrl+"'>"+item.getAccount().getFirstName()+"</a>");
+				String redirectUrl = "/projects/" + projectId + "/members";
+				dto.setFirstName("<a href='../projects/" + projectId
+						+ "/memberinformations/" + item.getId()
+						+ "?fromProjectForm&redirectUrl=" + redirectUrl + "'>"
+						+ item.getAccount().getFirstName() + "</a>");
 				dto.setLastName(item.getAccount().getLastName());
 				dto.setMemberRole(item.getMemberRole().getName());
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalDisplayRecords((int)MemberInformation
-				.countMemberInformationsByProjectBaseAccount(Project.findProject(projectId),sSearch));
-		reply.setiTotalRecords((int)MemberInformation.countMemberInformationsByProject(Project.findProject(projectId)));
+		reply.setiTotalDisplayRecords((int) page.getTotalElements());
+		reply.setiTotalRecords((int)memberInformationRepository.countByProjectAndDeleted(project, false));
 		return reply;
 	}
 }

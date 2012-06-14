@@ -34,6 +34,7 @@ import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.EventRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
@@ -62,6 +63,16 @@ public class ProjectController {
 	private EventRepository eventRepository;
 	@Autowired
 private WorkItemStatusRepository workItemStatusRepository;
+	public MemberInformationRepository getMemberInformationRepository() {
+		return memberInformationRepository;
+	}
+	public void setMemberInformationRepository(
+			MemberInformationRepository memberInformationRepository) {
+		this.memberInformationRepository = memberInformationRepository;
+	}
+
+	@Autowired
+	private MemberInformationRepository memberInformationRepository;
 	public WorkItemStatusRepository getWorkItemStatusRepository() {
 		return workItemStatusRepository;
 	}
@@ -110,8 +121,6 @@ private WorkItemStatusRepository workItemStatusRepository;
 
 	void populateEditForm(Model uiModel, Project project) {
 		uiModel.addAttribute("project", project);
-		uiModel.addAttribute("memberinformations",
-				MemberInformation.findAllMemberInformations());
 		uiModel.addAttribute("studyclasses", studyClassRepository.findByDeleted(false) );
 		uiModel.addAttribute("workitemcontainers",
 				WorkItemContainer.findAllWorkItemContainers());
@@ -212,8 +221,7 @@ private WorkItemStatusRepository workItemStatusRepository;
 		uiModel.addAttribute("statuses",
 				workItemStatusRepository.findAll());
 		uiModel.addAttribute("searchcondition", searchCondition);
-		uiModel.addAttribute("members",
-				MemberInformation.findMemberInformationsByProject(project));
+		uiModel.addAttribute("members",memberInformationRepository.findByProjectAndDeleted(project, false));
 		uiModel.addAttribute("iterations",
 				Iteration.getdescendantIterations(project));
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
@@ -300,8 +308,7 @@ private WorkItemStatusRepository workItemStatusRepository;
 			Model uiModel, HttpServletRequest httpServletRequest,
 			HttpSession session) {
 		Account acc = (Account) session.getAttribute("account");
-		List<MemberInformation> listInfo = MemberInformation
-				.findMemberInformationsByProject(project);
+		List<MemberInformation> listInfo = memberInformationRepository.findByProjectAndDeleted(project, false);
 		MemberInformation info = null;
 		for (MemberInformation memberInformation : listInfo) {
 			if (memberInformation.getAccount().equals(acc)) {

@@ -153,8 +153,8 @@ public class WorkItemIntegrationTest {
 	public void testGetTotalRecordWithOwner(){
 		MemberInformation member1 = memberInformationDataOnDemand.getNewTransientMemberInformation(11);
 		MemberInformation member2 = memberInformationDataOnDemand.getNewTransientMemberInformation(12);
-		member1.persist();
-		member2.persist();
+		//member1.persist();
+		//member2.persist();
 		WorkItem workItem1 = workItemDataOnDemand.getNewTransientWorkItem(11);
 		workItem1.setAuthor(member1);
 		workItem1.persist();
