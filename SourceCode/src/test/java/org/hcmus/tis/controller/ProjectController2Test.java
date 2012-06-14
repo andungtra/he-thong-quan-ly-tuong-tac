@@ -8,6 +8,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,8 @@ public class ProjectController2Test {
 	MemberInformation owner ;
 	@Mock
 	ProjectProcess projectProcess;
+	@Mock
+	WorkItemStatusRepository workItemStatusRepository;
 	private ProjectController aut;
 	@Before
 	public void setUp(){
@@ -39,6 +42,7 @@ public class ProjectController2Test {
 		doReturn((long)1).when(owner).getId();
 		doReturn(owner).when(searchCondition).getOwner();
 		aut = new ProjectController();
+		aut.setWorkItemStatusRepository(workItemStatusRepository);
 
 	}
 	@Test

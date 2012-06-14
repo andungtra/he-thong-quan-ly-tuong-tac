@@ -12,6 +12,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemStatusDataOnDemand;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
@@ -21,6 +23,9 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
     private Random WorkItemStatusDataOnDemand.rnd = new SecureRandom();
     
     private List<WorkItemStatus> WorkItemStatusDataOnDemand.data;
+    
+    @Autowired
+    WorkItemStatusRepository WorkItemStatusDataOnDemand.workItemStatusRepository;
     
     public WorkItemStatus WorkItemStatusDataOnDemand.getNewTransientWorkItemStatus(int index) {
         WorkItemStatus obj = new WorkItemStatus();
@@ -46,14 +51,14 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
         }
         WorkItemStatus obj = data.get(index);
         Long id = obj.getId();
-        return WorkItemStatus.findWorkItemStatus(id);
+        return workItemStatusRepository.findOne(id);
     }
     
     public WorkItemStatus WorkItemStatusDataOnDemand.getRandomWorkItemStatus() {
         init();
         WorkItemStatus obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return WorkItemStatus.findWorkItemStatus(id);
+        return workItemStatusRepository.findOne(id);
     }
     
     public boolean WorkItemStatusDataOnDemand.modifyWorkItemStatus(WorkItemStatus obj) {
@@ -63,7 +68,7 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
     public void WorkItemStatusDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = WorkItemStatus.findWorkItemStatusEntries(from, to);
+        data = workItemStatusRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'WorkItemStatus' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             WorkItemStatus obj = getNewTransientWorkItemStatus(i);
             try {
-                obj.persist();
+                workItemStatusRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -84,7 +89,7 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            workItemStatusRepository.flush();
             data.add(obj);
         }
     }

@@ -13,6 +13,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.PriorityRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class InitDatabaseBean {
@@ -20,15 +21,17 @@ public class InitDatabaseBean {
 	PriorityRepository priorityRepository;
 	@Autowired
 	AccountRepository accountRepository;
+	@Autowired
+	WorkItemStatusRepository workItemStatusRepository;
 	@PostConstruct
 	public void init() {
 		String statusNames[] = { "New", "In Process", "Resolved", "Closed",
 				"Rejected" };
-		if (WorkItemStatus.countWorkItemStatuses() == 0) {
+		if (workItemStatusRepository.count() == 0) {
 			for (String name : statusNames) {
 				WorkItemStatus status = new WorkItemStatus();
 				status.setName(name);
-				status.persist();
+				workItemStatusRepository.save(status);
 			}
 		}
 		String priorityNames[] = { "High", "Medium", "Low", "Urgent",

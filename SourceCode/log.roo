@@ -755,3 +755,16 @@ repository jpa --entity ~.model.Priority --interface org.hcmus.tis.repository.Pr
 repository jpa --entity ~.model.Event --interface org.hcmus.tis.repository.EventRepository
 repository jpa --entity ~.model.Account --interface org.hcmus.tis.repository.AccountRepository
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-13 11:25:57
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-13 23:23:38
+hint
+repository jpa --entity ~.model.WorkItemStatus --interface org.hcmus.tis.model.WorkItemStatusRepository
+repository jpa --entity ~.model.WorkItemStatus --interface org.hcmus.tis.repository.WorkItemStatusRepository
+repository jpa --entity ~.model.WorkItemStatus --interface org.hcmus.tis.repository.WorkItemStatusRepository
+repository jpa --entity ~.model.WorkItemStatus --interface org.hcmus.tis.repository.WorkItemStatusRepository
+repository jpa --entity ~.model.WorkItemStatus --interface org.hcmus.tis.repository.WorkItemStatusRepository
+hint
+hint
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-14 00:27:58
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-14 08:26:37
+hint

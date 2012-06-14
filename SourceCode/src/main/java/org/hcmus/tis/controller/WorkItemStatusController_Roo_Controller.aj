@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.WorkItemStatusController;
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,9 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemStatusController_Roo_Controller {
     
+    @Autowired
+    WorkItemStatusRepository WorkItemStatusController.workItemStatusRepository;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String WorkItemStatusController.create(@Valid WorkItemStatus workItemStatus, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -26,7 +31,7 @@ privileged aspect WorkItemStatusController_Roo_Controller {
             return "workitemstatuses/create";
         }
         uiModel.asMap().clear();
-        workItemStatus.persist();
+        workItemStatusRepository.save(workItemStatus);
         return "redirect:/workitemstatuses/" + encodeUrlPathSegment(workItemStatus.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +43,7 @@ privileged aspect WorkItemStatusController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String WorkItemStatusController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("workitemstatus", WorkItemStatus.findWorkItemStatus(id));
+        uiModel.addAttribute("workitemstatus", workItemStatusRepository.findOne(id));
         uiModel.addAttribute("itemId", id);
         return "workitemstatuses/show";
     }
@@ -48,11 +53,11 @@ privileged aspect WorkItemStatusController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("workitemstatuses", WorkItemStatus.findWorkItemStatusEntries(firstResult, sizeNo));
-            float nrOfPages = (float) WorkItemStatus.countWorkItemStatuses() / sizeNo;
+            uiModel.addAttribute("workitemstatuses", workItemStatusRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo)).getContent());
+            float nrOfPages = (float) workItemStatusRepository.count() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("workitemstatuses", WorkItemStatus.findAllWorkItemStatuses());
+            uiModel.addAttribute("workitemstatuses", workItemStatusRepository.findAll());
         }
         return "workitemstatuses/list";
     }
@@ -64,20 +69,20 @@ privileged aspect WorkItemStatusController_Roo_Controller {
             return "workitemstatuses/update";
         }
         uiModel.asMap().clear();
-        workItemStatus.merge();
+        workItemStatusRepository.save(workItemStatus);
         return "redirect:/workitemstatuses/" + encodeUrlPathSegment(workItemStatus.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String WorkItemStatusController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, WorkItemStatus.findWorkItemStatus(id));
+        populateEditForm(uiModel, workItemStatusRepository.findOne(id));
         return "workitemstatuses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String WorkItemStatusController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        WorkItemStatus workItemStatus = WorkItemStatus.findWorkItemStatus(id);
-        workItemStatus.remove();
+        WorkItemStatus workItemStatus = workItemStatusRepository.findOne(id);
+        workItemStatusRepository.delete(workItemStatus);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
