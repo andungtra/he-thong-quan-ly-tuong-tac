@@ -86,7 +86,7 @@ public class ProjectIntegrationTest {
 		memberInformation1.setAccount(account1);
 		memberInformation1.setMemberRole(memberRoleDataOnDemand.getRandomMemberRole());
 		memberInformation1.setProject(project);
-		memberInformation1.persist();
+		//memberInformation1.persist();
 		
 		Event sharedEvent = eventDataOnDemand.getNewTransientEvent(13);
 		account1.getCalendar().getEvents().add(sharedEvent);
@@ -99,7 +99,7 @@ public class ProjectIntegrationTest {
 		member2.setAccount(account2);
 		member2.setMemberRole(memberRoleDataOnDemand.getRandomMemberRole());
 		member2.setProject(project);
-		member2.persist();
+		//member2.persist();
 		project.getMemberInformations().add(member2);
 		Assert.assertEquals(2, projectDataOnDemand.getSpecificProject(0).getMemberInformations().size());
 		Assert.assertEquals(3, project.getEventsOfMembers().size());

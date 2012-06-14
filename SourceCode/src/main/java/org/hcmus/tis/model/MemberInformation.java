@@ -9,10 +9,11 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 @RooJavaBean
-@RooJpaActiveRecord(finders = { "findMemberInformationsByAccountAndProject" })
+@RooJpaEntity
 public class MemberInformation {
 
 	@ManyToOne
@@ -28,13 +29,13 @@ public class MemberInformation {
 	private MemberRole memberRole;
 
 	@Value("false")
-	private Boolean deleted;
+	private boolean deleted;
 
 	public String toString() {
 		return account.getEmail();
 	}
 
-	@Transactional
+/*	@Transactional
 	public void remove() {
 		if (this.entityManager == null) {
 			this.entityManager = entityManager();
@@ -49,9 +50,9 @@ public class MemberInformation {
 					.findMemberInformation(this.getId());
 			attached.setDeleted(true);
 		}
-	}
+	}*/
 
-	public static List<MemberInformation> findMemberInformationsByProject(
+/*	public static List<MemberInformation> findMemberInformationsByProject(
 			Project project) {
 		// TODO Auto-generated method stub
 		if (project == null)
@@ -247,5 +248,5 @@ public class MemberInformation {
 		q.setParameter("deleted", false);
 		q.setParameter("project", findProject);
 		return q.getSingleResult();
-	}
+	}*/
 }

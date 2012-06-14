@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.hcmus.tis.controller.CommentController;
 import org.hcmus.tis.model.Comment;
-import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.WorkItem;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,13 +70,6 @@ privileged aspect CommentController_Roo_Controller {
     
     void CommentController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("comment_commentdate_date_format", "dd-MM-yyyy'T'HH:mm");
-    }
-    
-    void CommentController.populateEditForm(Model uiModel, Comment comment) {
-        uiModel.addAttribute("comment", comment);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
-        uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());
     }
     
     String CommentController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -29,6 +29,7 @@ import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
@@ -56,6 +57,14 @@ public class WorkItemController {
 	private TaskExecutor taskExecutor;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	WorkItemStatusRepository workItemStatusRepository;
+	@Autowired
+	private MemberInformationRepository memberInformationRepository;
+	@Autowired
+	private PriorityRepository priorityRepository;
+	@Autowired
+	WorkItemTypeRepository workItemTypeRepository;
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
@@ -83,7 +92,6 @@ public class WorkItemController {
 	public void setAccountRepository(AccountRepository accountRepository) {
 		this.accountRepository = accountRepository;
 	}
-
 	@Autowired
 	private AccountRepository accountRepository;
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
@@ -133,9 +141,7 @@ public class WorkItemController {
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = Project.findProject(projectId);
-		MemberInformation member = MemberInformation
-				.findMemberInformationsByAccountAndProject(account, project)
-				.getSingleResult();
+		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
 		if (!workItem.getSubcribers().contains(member) && workItem.getAuthor() != member && workItem.getAsignee() != member) {
 			workItem.getSubcribers().add(member);
@@ -150,6 +156,13 @@ public class WorkItemController {
 
 	}
 
+	public MemberInformationRepository getMemberInformationRepository() {
+		return memberInformationRepository;
+	}
+	public void setMemberInformationRepository(
+			MemberInformationRepository memberInformationRepository) {
+		this.memberInformationRepository = memberInformationRepository;
+	}
 	@RequestMapping(params = "form", produces = "text/html")
 	@RequiresPermissions("workitem:create")
 	public String createForm(@PathVariable("projectId") Long projectId,
@@ -160,7 +173,7 @@ public class WorkItemController {
 		WorkItemType workItemType = workItemTypeRepository
 				.findOne(workItemTypeId);
 		workItem.setWorkItemType(workItemType);
-		populateEditFormCustomly(uiModel, workItem);
+		populateEditForm(uiModel, workItem);
 		List<String[]> dependencies = new ArrayList<String[]>();
 		uiModel.addAttribute("projectId", projectId);
 		String name = (String) SecurityUtils.getSubject().getPrincipal();
@@ -168,10 +181,7 @@ public class WorkItemController {
 		MemberInformation memberInformation =null;
 		
 		try {
-			memberInformation= MemberInformation
-		
-				.findMemberInformationsByAccountAndProject(loginAccount,
-						project).getSingleResult();
+			memberInformation= memberInformationRepository.findByAccountAndProjectAndDeleted(loginAccount, project, false);
 		}catch(Exception ex){}
 		if (memberInformation == null) {
 			//throw new NotPermissionException();
@@ -201,13 +211,11 @@ public class WorkItemController {
 	public String updateForm(@PathVariable("projectId") Long projectId,
 			@PathVariable("id") Long id, Model uiModel) {
 		WorkItem workItem = WorkItem.findWorkItem(id);
-		populateEditFormCustomly(uiModel, workItem);
+		populateEditForm(uiModel, workItem);
 		Project project = Project.findProject(projectId);
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
-		MemberInformation member = MemberInformation
-				.findMemberInformationsByAccountAndProject(account, project)
-				.getSingleResult();
+		MemberInformation member =memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
 		boolean involved =  (workItem.getAuthor() == member || workItem.getAsignee() == member);
 		boolean subscribed = workItem.getSubcribers().contains(member);
 		uiModel.addAttribute("subscribed", subscribed);
@@ -215,11 +223,10 @@ public class WorkItemController {
 		return "workitems/update";
 	}
 
-	void populateEditFormCustomly(Model uiModel, WorkItem workItem) {
+	void populateEditForm(Model uiModel, WorkItem workItem) {
 		uiModel.addAttribute("workItem", workItem);
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("memberinformations",
-				MemberInformation.findAllMemberInformations());
+		uiModel.addAttribute("memberinformations",memberInformationRepository.findByProjectAndDeleted(workItem.getWorkItemContainer().getParentProjectOrMyself(), false));
 		uiModel.addAttribute("prioritys", priorityRepository.findAll());
 		workItem.setWorkItemContainer(WorkItemContainer
 				.findWorkItemContainer(workItem.getWorkItemContainer().getId()));
@@ -251,7 +258,7 @@ public class WorkItemController {
 			@RequestParam(value = "attachment", required = false) Long[] attachmentIds,
 			HttpServletRequest httpServletRequest) throws JAXBException {
 		if (bindingResult.hasErrors()) {
-			populateEditFormCustomly(uiModel, workItem);
+			populateEditForm(uiModel, workItem);
 			return "workitems/create";
 		}
 		WorkItemType workItemType = workItemTypeRepository.findOne(workItem
@@ -347,9 +354,7 @@ public class WorkItemController {
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = Project.findProject(projectId);
-		MemberInformation member = MemberInformation
-				.findMemberInformationsByAccountAndProject(account, project)
-				.getSingleResult();
+		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
 		if (workItem.getSubcribers().contains(member)) {
 			workItem.getSubcribers().remove(member);

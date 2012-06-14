@@ -9,6 +9,7 @@ import org.hcmus.tis.controller.MemberInformationController;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -21,11 +22,14 @@ import org.springframework.web.util.WebUtils;
 privileged aspect MemberInformationController_Roo_Controller {
     
     @Autowired
+    MemberInformationRepository MemberInformationController.memberInformationRepository;
+    
+    @Autowired
     AccountService MemberInformationController.accountService;
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String MemberInformationController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("memberinformation", MemberInformation.findMemberInformation(id));
+        uiModel.addAttribute("memberinformation", memberInformationRepository.findOne(id));
         uiModel.addAttribute("itemId", id);
         return "memberinformations/show";
     }
@@ -35,18 +39,18 @@ privileged aspect MemberInformationController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("memberinformations", MemberInformation.findMemberInformationEntries(firstResult, sizeNo));
-            float nrOfPages = (float) MemberInformation.countMemberInformations() / sizeNo;
+            uiModel.addAttribute("memberinformations", memberInformationRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo)).getContent());
+            float nrOfPages = (float) memberInformationRepository.count() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());
+            uiModel.addAttribute("memberinformations", memberInformationRepository.findAll());
         }
         return "memberinformations/list";
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String MemberInformationController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, MemberInformation.findMemberInformation(id));
+        populateEditForm(uiModel, memberInformationRepository.findOne(id));
         return "memberinformations/update";
     }
     

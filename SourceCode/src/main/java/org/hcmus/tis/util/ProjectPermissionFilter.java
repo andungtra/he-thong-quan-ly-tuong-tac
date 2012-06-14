@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.hcmus.tis.service.CustomAuthorizingRealm;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -15,6 +15,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 
 import static org.junit.Assert.*;
@@ -59,13 +60,13 @@ public class CommentControllerTest extends AbstractShiroTest {
 	@Mock
 	MemberInformation member;
 	@Mock
-	TypedQuery<MemberInformation> memberQuery;
-	@Mock
 	TypedQuery<Comment> commentQuery;
 	@Mock
 	TaskExecutor taskExecutor;
 	@Mock
 	BindingResult bindingResult;
+	@Mock
+	MemberInformationRepository memberInformationRepository;
 	@Mock
 	AccountRepository accountRepository;
 
@@ -75,7 +76,6 @@ public class CommentControllerTest extends AbstractShiroTest {
 		doReturn(session).when(subject).getSession();
 		doReturn("email").when(subject).getPrincipal();
 		doReturn(comments).when(commentQuery).getResultList();
-		doReturn(member).when(memberQuery).getSingleResult();
 		doReturn((long) 1).when(project).getId();
 		doReturn((long) 2).when(account).getId();
 		doReturn((long) 3).when(member).getId();
@@ -86,6 +86,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		aut = new CommentController();
 		aut.setAccountRepository(accountRepository);
 		aut.setTaskExecutor(taskExecutor);
+		aut.setMemberInformationRepository(memberInformationRepository);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -124,8 +125,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask notifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItem.class, Project.class,
-			MemberInformation.class })
+	@PrepareForTest({ WorkItem.class, Project.class})
 	public void testCreate() {
 		PowerMockito.mockStatic(WorkItem.class);
 		PowerMockito.when(WorkItem.findWorkItem(workItem.getId())).thenReturn(
@@ -135,10 +135,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 				project);
 		String email = (String) subject.getPrincipal();
 		doReturn(account).when(accountRepository).getByEmail(email);
-		PowerMockito.mockStatic(MemberInformation.class);
-		PowerMockito.when(
-				MemberInformation.findMemberInformationsByAccountAndProject(
-						account, project)).thenReturn(memberQuery);
+		doReturn(member).when(memberInformationRepository).findByAccountAndProjectAndDeleted(account, project, false);
 		doReturn(false).when(bindingResult).hasErrors();
 		String result = aut.create(comment, bindingResult, uiModel);
 		verify(taskExecutor).execute(any(Runnable.class));
