@@ -125,10 +125,10 @@
                     <spring:param name="subscribe"/>
                 </spring:url>
                 <c:if test="${!subscribed }">
-                	<c:if test="${!involved}">
-                    <p>
-                        <a href="${subscribe_url }">Subscribe</a>
-                    </p>
+                    <c:if test="${!involved}">
+                        <p>
+                            <a href="${subscribe_url }">Subscribe</a>
+                        </p>
                     </c:if>
                     <p>${fn:length(workItem.subcribers)} members subscribed this</p>
                 </c:if>

@@ -8,6 +8,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemStatus;
+import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.junit.Before;
@@ -36,6 +37,8 @@ public class ProjectController2Test {
 	WorkItemStatusRepository workItemStatusRepository;
 	@Mock
 	MemberInformationRepository memberInformationRepository;
+	@Mock
+	IterationRepository iterationRepository;
 	private ProjectController aut;
 	@Before
 	public void setUp(){
@@ -47,6 +50,7 @@ public class ProjectController2Test {
 		aut = new ProjectController();
 		aut.setWorkItemStatusRepository(workItemStatusRepository);
 		aut.setMemberInformationRepository(memberInformationRepository);
+		aut.setIterationRepository(iterationRepository);
 
 	}
 	@Test

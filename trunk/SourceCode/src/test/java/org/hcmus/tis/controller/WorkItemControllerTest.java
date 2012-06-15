@@ -34,6 +34,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.AttachmentRepository;
+import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -104,6 +105,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private AttachmentRepository attachmentRepository;
 	@Mock
+	private IterationRepository iterationRepository;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -115,6 +118,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		aut.setAccountRepository(accountRepository);
 		doReturn(mockedSession).when(mockedSubject).getSession();
 		aut.setAttachmentRepository(attachmentRepository);
+		aut.setIterationRepository(iterationRepository);
 		doReturn((long) 1).when(mockedWorkItem).getId();
 		doReturn((long) 2).when(mockedWorkItemType).getId();
 		doReturn((long) 3).when(mockedProject).getId();
@@ -175,8 +179,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ MemberInformation.class, Priority.class,
-			WorkItemContainer.class, Iteration.class, WorkItemStatus.class })
+	@PrepareForTest({WorkItemContainer.class})
 	public void testPopulateEditFormCustomly() {
 		Long projectId = (long) 1;
 		WorkItem workItem = new WorkItem();
@@ -185,21 +188,13 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		WorkItemType workItemType = new WorkItemType();
 		workItem.setWorkItemType(workItemType);
 		workItem.setWorkItemContainer(workItemContainer);
-		PowerMockito.mockStatic(MemberInformation.class);
-		PowerMockito.mockStatic(Priority.class);
-		PowerMockito.mockStatic(WorkItemStatus.class);
 		PowerMockito.mockStatic(WorkItemContainer.class);
 		PowerMockito.when(
 				WorkItemContainer.findWorkItemContainer(workItemContainer
 						.getId())).thenReturn(workItemContainer);
 
-		TypedQuery<Iteration> mockedTypedQuery = mock(TypedQuery.class);
 		List<Iteration> iterations = new ArrayList<Iteration>();
-		doReturn(iterations).when(mockedTypedQuery).getResultList();
-		PowerMockito.mockStatic(Iteration.class);
-		PowerMockito.when(
-				Iteration.findIterationsByParentContainer(workItemContainer))
-				.thenReturn(mockedTypedQuery);
+		doReturn(iterations).when(iterationRepository).findByAncestor(workItemContainer);
 		aut.populateEditForm(mockedUIModel, workItem);
 
 		verify(mockedUIModel).addAttribute(eq("workItem"), eq(workItem));

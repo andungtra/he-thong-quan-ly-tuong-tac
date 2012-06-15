@@ -12,6 +12,8 @@ import junit.framework.Assert;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.repository.IterationRepository;
+import org.hcmus.tis.repository.IterationRepositoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +33,7 @@ public class IterationTest {
 	Iteration subIteration;
 	@Mock
 	private Iteration iteration;
-	
-	private Iteration aut;
+	private IterationRepositoryImpl aut;
 	Collection<WorkItemContainer> projectChildren;
 	@Before
 	public void setUp() throws Exception {
@@ -53,13 +54,14 @@ public class IterationTest {
 		doReturn(parentChildren).when(parentIteration).getChildren();
 		doReturn(childChildren).when(subIteration).getChildren();
 		doReturn(childChildren).when(iteration).getChildren();
+		aut = new IterationRepositoryImpl();
 	}
 	@After
 	public void tearDown() throws Exception {
 	}
 	@Test
 	public void testGetdescendantIterations(){
-		Collection<Iteration> result = Iteration.getdescendantIterations(project);
+		Collection<Iteration> result = aut.findByAncestor(project);
 		assertEquals(3, result.size());
 		assertTrue(result.contains(iteration));
 		assertTrue(result.contains(parentIteration));

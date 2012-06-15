@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -326,7 +327,7 @@ public class WorkItem {
 
 	public static long getFilteredRecord(String filter,
 			SearchConditionsDTO searchCondition) {
-		String hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
+/*		String hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
 		if (searchCondition.getTitleDescription() != null) {
 			hql = hql
 					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
@@ -380,12 +381,13 @@ public class WorkItem {
 				query.setParameter("container_" + String.valueOf(index), childContainer.get(index).getId());
 			}
 		}
-		return (Long) query.getSingleResult();
+		return (Long) query.getSingleResult();*/
+		return (long)1;
 	}
 
 	public static Collection<WorkItem> findWorkItem(String filter, SearchConditionsDTO searchCondition,
 			int startDisplay, int displayLength) {
-		String hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
+	/*	String hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
 		if (searchCondition.getTitleDescription() != null) {
 			hql = hql
 					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
@@ -441,7 +443,8 @@ public class WorkItem {
 		}
 		query.setFirstResult(startDisplay);
 		query.setMaxResults(displayLength);
-		return query.getResultList();
+		return query.getResultList();*/
+		return new HashSet<WorkItem>();
 	}
 
 	public static long countWorkItems(Project project, String sSearch,

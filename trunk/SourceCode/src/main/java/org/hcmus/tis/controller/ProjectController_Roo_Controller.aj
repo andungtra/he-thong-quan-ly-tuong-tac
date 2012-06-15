@@ -9,12 +9,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.ProjectController;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.ProjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect ProjectController_Roo_Controller {
+    
+    @Autowired
+    ProjectRepository ProjectController.projectRepository;
     
     @RequestMapping(params = "form", produces = "text/html")
     public String ProjectController.createForm(Model uiModel) {

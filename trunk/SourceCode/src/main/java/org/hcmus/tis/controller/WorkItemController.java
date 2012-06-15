@@ -30,6 +30,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.AttachmentRepository;
+import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -68,6 +69,14 @@ public class WorkItemController {
 	WorkItemTypeRepository workItemTypeRepository;
 	@Autowired
 	AttachmentRepository attachmentRepository;
+	@Autowired
+	private IterationRepository iterationRepository;
+	public IterationRepository getIterationRepository() {
+		return iterationRepository;
+	}
+	public void setIterationRepository(IterationRepository iterationRepository) {
+		this.iterationRepository = iterationRepository;
+	}
 	public AttachmentRepository getAttachmentRepository() {
 		return attachmentRepository;
 	}
@@ -241,8 +250,7 @@ public class WorkItemController {
 				.findWorkItemContainer(workItem.getWorkItemContainer().getId()));
 		Project project = workItem.getWorkItemContainer()
 				.getParentProjectOrMyself();
-		List<Iteration> iterations = Iteration.findIterationsByParentContainer(
-				project).getResultList();
+		Collection<Iteration> iterations = iterationRepository.findByAncestor(project);
 		List<WorkItemContainer> containers = new ArrayList<WorkItemContainer>();
 		Project dumpProject = new Project();
 		dumpProject.setId(project.getId());
