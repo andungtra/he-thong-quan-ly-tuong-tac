@@ -7,8 +7,8 @@
             <table:column id="c_org_hcmus_tis_model_WorkItem_objectFactory" property="objectFactory" z="cbr4wW+jHlxyxDsGNR24q04qFVo="/>
             <table:column id="c_org_hcmus_tis_model_WorkItem_jaxbContext" property="jaxbContext" z="7IVNMlx2mzbLkFlQcl79GtS4OwY="/>
             <table:column id="c_org_hcmus_tis_model_WorkItem_title" property="title" z="U9Lqa96WZsJ2ml86Cvq8KsolvWI="/>
-            <table:column id="c_org_hcmus_tis_model_WorkItem_description" property="description" z="ojjccL8MeMe493Va/8aw2PxmVIc="/>
             <table:column id="c_org_hcmus_tis_model_WorkItem_subcribers" property="subcribers" z="0xIRE4GVSqyRprlDZmtrDSm55jE="/>
+            <table:column id="c_org_hcmus_tis_model_WorkItem_description" property="description" z="ojjccL8MeMe493Va/8aw2PxmVIc="/>
         </table:table>
     </page:list>
 </div>

@@ -7,7 +7,9 @@ import javax.validation.Valid;
 
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.IterationRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RooWebScaffold(path = "iterations", formBackingObject = Iteration.class)
 public class IterationController {
+	@Autowired
+	private IterationRepository iterationRepository;
     @RequestMapping(params = "form", produces = "text/html")
     public String createForm(@PathVariable("projectid") Long projectId, Model uiModel) {
     	Project project = Project.findProject(projectId);
@@ -47,7 +51,7 @@ public class IterationController {
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String updateForm(@PathVariable("projectid") Long projectId, @PathVariable("id") Long id, Model uiModel) {
     	Project project = Project.findProject(projectId);
-        populateEditForm(uiModel, Iteration.findIteration(id), project);
+        populateEditForm(uiModel, iterationRepository.findOne(id), project);
         return "iterations/update";
     }
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -67,9 +71,17 @@ public class IterationController {
     }
     void populateEditForm(Model uiModel, Iteration iteration, Project project) {
         uiModel.addAttribute("iteration", iteration);
-        Collection<Iteration> iterations = Iteration.getdescendantIterations(project);
+        Collection<Iteration> iterations = iterationRepository.findByAncestor(project);
         iterations.remove(iteration);
         uiModel.addAttribute("iterations", iterations);
         uiModel.addAttribute("projectId", project.getId());
     }
+
+	public IterationRepository getIterationRepository() {
+		return iterationRepository;
+	}
+
+	public void setIterationRepository(IterationRepository iterationRepository) {
+		this.iterationRepository = iterationRepository;
+	}
 }

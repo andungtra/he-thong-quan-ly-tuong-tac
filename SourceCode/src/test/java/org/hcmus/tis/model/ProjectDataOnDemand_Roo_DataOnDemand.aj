@@ -18,6 +18,7 @@ import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,9 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private StudyClassDataOnDemand ProjectDataOnDemand.studyClassDataOnDemand;
+    
+    @Autowired
+    ProjectRepository ProjectDataOnDemand.projectRepository;
     
     public Project ProjectDataOnDemand.getNewTransientProject(int index) {
         Project obj = new Project();
@@ -89,14 +93,14 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
         }
         Project obj = data.get(index);
         Long id = obj.getId();
-        return Project.findProject(id);
+        return projectRepository.findOne(id);
     }
     
     public Project ProjectDataOnDemand.getRandomProject() {
         init();
         Project obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Project.findProject(id);
+        return projectRepository.findOne(id);
     }
     
     public boolean ProjectDataOnDemand.modifyProject(Project obj) {
@@ -106,7 +110,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     public void ProjectDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Project.findProjectEntries(from, to);
+        data = projectRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Project' illegally returned null");
         }
@@ -118,7 +122,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Project obj = getNewTransientProject(i);
             try {
-                obj.persist();
+                projectRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -127,7 +131,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            projectRepository.flush();
             data.add(obj);
         }
     }

@@ -34,6 +34,7 @@ import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.EventRepository;
+import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -62,10 +63,22 @@ public class ProjectController {
 	@Autowired
 	private EventRepository eventRepository;
 	@Autowired
-private WorkItemStatusRepository workItemStatusRepository;
+	private WorkItemStatusRepository workItemStatusRepository;
+	@Autowired
+	private IterationRepository iterationRepository;
+
+	public IterationRepository getIterationRepository() {
+		return iterationRepository;
+	}
+
+	public void setIterationRepository(IterationRepository iterationRepository) {
+		this.iterationRepository = iterationRepository;
+	}
+
 	public MemberInformationRepository getMemberInformationRepository() {
 		return memberInformationRepository;
 	}
+
 	public void setMemberInformationRepository(
 			MemberInformationRepository memberInformationRepository) {
 		this.memberInformationRepository = memberInformationRepository;
@@ -73,31 +86,42 @@ private WorkItemStatusRepository workItemStatusRepository;
 
 	@Autowired
 	private MemberInformationRepository memberInformationRepository;
+
 	public WorkItemStatusRepository getWorkItemStatusRepository() {
 		return workItemStatusRepository;
 	}
+
 	public void setWorkItemStatusRepository(
 			WorkItemStatusRepository workItemStatusRepository) {
 		this.workItemStatusRepository = workItemStatusRepository;
 	}
+
 	public ProjectProcessService getProjectProcessService() {
 		return projectProcessService;
 	}
-	public void setProjectProcessService(ProjectProcessService projectProcessService) {
+
+	public void setProjectProcessService(
+			ProjectProcessService projectProcessService) {
 		this.projectProcessService = projectProcessService;
 	}
+
 	public StudyClassRepository getStudyClassRepository() {
 		return studyClassRepository;
 	}
-	public void setStudyClassRepository(StudyClassRepository studyClassRepository) {
+
+	public void setStudyClassRepository(
+			StudyClassRepository studyClassRepository) {
 		this.studyClassRepository = studyClassRepository;
 	}
+
 	public EventRepository getEventRepository() {
 		return eventRepository;
 	}
+
 	public void setEventRepository(EventRepository eventRepository) {
 		this.eventRepository = eventRepository;
 	}
+
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	@RequiresPermissions("project:create")
 	public String create(@Valid Project project, BindingResult bindingResult,
@@ -112,16 +136,21 @@ private WorkItemStatusRepository workItemStatusRepository;
 		uiModel.addAttribute("projects", Project.findAllProjects());
 		return "projects/list";
 	}
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String updateForm(@PathVariable("id") Long id, Model uiModel, @RequestParam(value="keepupdate", required = false) Boolean keepUpdate) {
-        populateEditForm(uiModel, Project.findProject(id));
-        uiModel.addAttribute("keepupdate", keepUpdate);
-        return "projects/update";
-    }
+
+	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+	public String updateForm(
+			@PathVariable("id") Long id,
+			Model uiModel,
+			@RequestParam(value = "keepupdate", required = false) Boolean keepUpdate) {
+		populateEditForm(uiModel, Project.findProject(id));
+		uiModel.addAttribute("keepupdate", keepUpdate);
+		return "projects/update";
+	}
 
 	void populateEditForm(Model uiModel, Project project) {
 		uiModel.addAttribute("project", project);
-		uiModel.addAttribute("studyclasses", studyClassRepository.findByDeleted(false) );
+		uiModel.addAttribute("studyclasses",
+				studyClassRepository.findByDeleted(false));
 		uiModel.addAttribute("workitemcontainers",
 				WorkItemContainer.findAllWorkItemContainers());
 		uiModel.addAttribute("projectprocesses",
@@ -160,7 +189,6 @@ private WorkItemStatusRepository workItemStatusRepository;
 		uiModel.addAttribute("siteMapItems", siteMapItems);
 		return "projects/homepage";
 	}
-
 
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")
@@ -205,7 +233,7 @@ private WorkItemStatusRepository workItemStatusRepository;
 
 	@RequestMapping(value = "/{id}/task", produces = "text/html")
 	public String task(@PathVariable("id") Long id, Model uiModel) {
-		//uiModel.addAttribute("project", Project.findProject(id));
+		// uiModel.addAttribute("project", Project.findProject(id));
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
 				.getProjectProcess().getWorkItemTypes());
@@ -218,12 +246,11 @@ private WorkItemStatusRepository workItemStatusRepository;
 		Project project = Project.findProject(id);
 		uiModel.addAttribute("project", project);
 		uiModel.addAttribute("itemId", id);
-		uiModel.addAttribute("statuses",
-				workItemStatusRepository.findAll());
+		uiModel.addAttribute("statuses", workItemStatusRepository.findAll());
 		uiModel.addAttribute("searchcondition", searchCondition);
-		uiModel.addAttribute("members",memberInformationRepository.findByProjectAndDeleted(project, false));
-		uiModel.addAttribute("iterations",
-				Iteration.getdescendantIterations(project));
+		uiModel.addAttribute("members", memberInformationRepository
+				.findByProjectAndDeleted(project, false));
+		uiModel.addAttribute("iterations",iterationRepository.findByAncestor(project));
 		uiModel.addAttribute("workItemTypes", Project.findProject(id)
 				.getProjectProcess().getWorkItemTypes());
 		ArrayList<AttributeValueDTO> params = new ArrayList<AttributeValueDTO>();
@@ -304,11 +331,14 @@ private WorkItemStatusRepository workItemStatusRepository;
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("project:update")
-	public String update(@Valid Project project, @RequestParam(value="keepupdate", required = false) Boolean update, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest,
-			HttpSession session) {
+	public String update(
+			@Valid Project project,
+			@RequestParam(value = "keepupdate", required = false) Boolean update,
+			BindingResult bindingResult, Model uiModel,
+			HttpServletRequest httpServletRequest, HttpSession session) {
 		Account acc = (Account) session.getAttribute("account");
-		List<MemberInformation> listInfo = memberInformationRepository.findByProjectAndDeleted(project, false);
+		List<MemberInformation> listInfo = memberInformationRepository
+				.findByProjectAndDeleted(project, false);
 		MemberInformation info = null;
 		for (MemberInformation memberInformation : listInfo) {
 			if (memberInformation.getAccount().equals(acc)) {
@@ -322,8 +352,9 @@ private WorkItemStatusRepository workItemStatusRepository;
 		}
 		uiModel.asMap().clear();
 		project.merge();
-		if(update != null && update == true){
-			return "redirect:/projects/" + project.getId() + "?form&keepupdate=true";
+		if (update != null && update == true) {
+			return "redirect:/projects/" + project.getId()
+					+ "?form&keepupdate=true";
 		}
 		uiModel.addAttribute("projects", Project.findAllProjects());
 		return "projects/list";

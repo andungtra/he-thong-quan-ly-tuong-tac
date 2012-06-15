@@ -6,11 +6,12 @@ import java.util.HashSet;
 import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findIterationsByParentContainer" })
+@RooJpaEntity
 public class Iteration extends WorkItemContainer {
 	public Project getParentProjectOrMyself(){
 		WorkItemContainer parentProject = this.getParentContainer();
@@ -19,7 +20,7 @@ public class Iteration extends WorkItemContainer {
 		}
 		return (Project) parentProject;
 	}
-	public static Collection<Iteration> getdescendantIterations (WorkItemContainer parent){
+/*	public static Collection<Iteration> getdescendantIterations (WorkItemContainer parent){
 		Collection<Iteration> iterations = new HashSet<Iteration>();
 		for(WorkItemContainer workItemContainer : parent.getChildren()){
 			if(workItemContainer instanceof Iteration && !iterations.contains(workItemContainer)){
@@ -28,7 +29,7 @@ public class Iteration extends WorkItemContainer {
 			}
 		}
 		return iterations;		
-	}
+	}*/
 	
 	public int getTotalTasks(){
 		SearchConditionsDTO condition = new SearchConditionsDTO();

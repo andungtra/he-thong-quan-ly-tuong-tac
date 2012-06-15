@@ -57,7 +57,7 @@ privileged aspect MemberInformationDataOnDemand_Roo_DataOnDemand {
     }
     
     public void MemberInformationDataOnDemand.setDeleted(MemberInformation obj, int index) {
-        Boolean deleted = Boolean.TRUE;
+        Boolean deleted = true;
         obj.setDeleted(deleted);
     }
     

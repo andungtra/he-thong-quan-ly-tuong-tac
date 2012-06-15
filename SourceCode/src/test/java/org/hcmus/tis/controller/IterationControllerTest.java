@@ -11,6 +11,7 @@ import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.repository.IterationRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,11 +50,14 @@ public class IterationControllerTest extends AbstractShiroTest {
 	@Mock
 	private Project project;
 	@Mock
+	private IterationRepository iterationRepository;
+	@Mock
 	BindingResult bindingResult;
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		aut = new IterationController();
+		aut.setIterationRepository(iterationRepository);
 		doReturn((long)1).when(project).getId();
 		doReturn((long)2).when(parentIteration).getId();
 		doReturn((long)3).when(subIteration).getId();
@@ -70,15 +74,12 @@ public class IterationControllerTest extends AbstractShiroTest {
 		clearSubject();
 	}
 	@Test
-	@PrepareForTest({Iteration.class})
 	public void testPopulateEditForm() {
-		PowerMockito.mockStatic(Iteration.class);
-		PowerMockito.when(Iteration.getdescendantIterations(project)).thenReturn(iterations);
+		doReturn(iterations).when(iterationRepository).findByAncestor(project);
 		Iteration mockedIteration = mock(Iteration.class);
 		
 		aut.populateEditForm(uiModel, mockedIteration, project);
-		PowerMockito.verifyStatic();
-		Iteration.getdescendantIterations(project);
+		verify(iterationRepository).findByAncestor(project);
 		verify(iterations).remove(mockedIteration);
 		verify(uiModel).addAttribute("iteration", mockedIteration);
 		verify(uiModel).addAttribute("projectId", project.getId());
@@ -172,12 +173,12 @@ public class IterationControllerTest extends AbstractShiroTest {
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
 	}
 	@Test
-	@PrepareForTest({Project.class, Iteration.class})
+	@PrepareForTest({Project.class})
 	public void testUpdateForm(){
 		PowerMockito.mockStatic(Project.class);
-		PowerMockito.mockStatic(Iteration.class);
 		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
-		PowerMockito.when(Iteration.findIteration(subIteration.getId())).thenReturn(subIteration);
+		Long iterationId = subIteration.getId();
+		doReturn(subIteration).when(iterationRepository).findOne(iterationId);
 		IterationController spy = spy(aut);
 		doNothing().when(spy).populateEditForm(uiModel, subIteration, project);
 		String result = spy.updateForm(project.getId(), subIteration.getId(), uiModel);
