@@ -79,7 +79,7 @@
 	</spring:url>
 	<field:datatable aoColumns="lName,sStatus,sType,priority,sIteration"
 		id="tbproject" path="/workitems"
-		source="/projects/${itemId }/workitems" thead="Title,Status,Type,Priority,Iteration" fshow="true"
+		source="/projects/${itemId }/workitems" thead="Title,Status,Type,Priority,Plan for" fshow="true"
 		lshow="/projects/${itemId }/workitems" filter="true" />
 	<div style="clear: both;" />
 </div>
