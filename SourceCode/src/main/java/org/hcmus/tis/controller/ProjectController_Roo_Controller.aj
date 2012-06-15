@@ -18,19 +18,7 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect ProjectController_Roo_Controller {
     
-    @Autowired
-    ProjectRepository ProjectController.projectRepository;
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String ProjectController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new Project());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (projectProcessService.countAllProjectProcesses() == 0) {
-            dependencies.add(new String[] { "projectprocess", "projectprocesses" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
-        return "projects/create";
-    }
+
     
     String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();

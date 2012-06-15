@@ -19,18 +19,18 @@ import org.hcmus.tis.model.Permission;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
-import org.hcmus.tis.repository.SpecificAccountRepository;
+import org.hcmus.tis.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CustomAuthorizingRealm extends AuthorizingRealm {
 	@Autowired
-	SpecificAccountRepository accountRepository;
-	public SpecificAccountRepository getAccountRepository() {
-		return accountRepository;
+	AuthorityRepository authorizingRepository;
+	public AuthorityRepository getAccountRepository() {
+		return authorizingRepository;
 	}
 
-	public void setAccountRepository(SpecificAccountRepository accountRepository) {
-		this.accountRepository = accountRepository;
+	public void setAccountRepository(AuthorityRepository accountRepository) {
+		this.authorizingRepository = accountRepository;
 	}
 
 	public CustomAuthorizingRealm() {
@@ -41,7 +41,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 	public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
 		try {
 			String email = (String) arg0.getPrimaryPrincipal();
-			Account account = accountRepository.getByEmail(email);
+			Account account = authorizingRepository.getByEmail(email);
 			if (account != null) {
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 				info.setRoles(new HashSet<String>());
@@ -56,9 +56,9 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 						&& SecurityUtils.getSubject().getSession() != null) {
 					Long projectId = (Long) SecurityUtils.getSubject()
 							.getSession().getAttribute("projectid");
-					Project project = Project.findProject(projectId);
+					Project project = authorizingRepository.findProject(projectId);
 					if (project != null) {
-						MemberInformation member = accountRepository.findByAccountAndProjectAndDeleted(account, project, false);
+						MemberInformation member = authorizingRepository.findByAccountAndProjectAndDeleted(account, project, false);
 						info.getRoles()
 								.add(member.getMemberRole().getRefName());
 						for (Permission permission : member.getMemberRole()
@@ -83,7 +83,7 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 		try{
 		if (arg0 instanceof UsernamePasswordToken) {
 			UsernamePasswordToken userNamePasswordToken = (UsernamePasswordToken) arg0;
-			Account account = accountRepository.getByEmail(
+			Account account = authorizingRepository.getByEmail(
 					userNamePasswordToken.getUsername());
 			return new SimpleAuthenticationInfo(account.getEmail(),
 					account.getPassword(), this.getName());

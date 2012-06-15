@@ -22,6 +22,7 @@ import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
@@ -60,6 +61,8 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     CommentRepository ApplicationConversionServiceFactoryBean.commentRepository;
     @Autowired
     IterationRepository ApplicationConversionServiceFactoryBean.iterationRepository;
+    @Autowired
+    ProjectRepository ApplicationConversionServiceFactoryBean.projectRepository;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -208,7 +211,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Project> ApplicationConversionServiceFactoryBean.getIdToProjectConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Project>() {
             public org.hcmus.tis.model.Project convert(java.lang.Long id) {
-                return Project.findProject(id);
+                return projectRepository.findOne(id);
             }
         };
     }

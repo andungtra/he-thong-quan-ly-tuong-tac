@@ -36,11 +36,15 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -66,6 +70,8 @@ public class ProjectController {
 	private WorkItemStatusRepository workItemStatusRepository;
 	@Autowired
 	private IterationRepository iterationRepository;
+	@Autowired
+	private ProjectRepository projectRepository;
 
 	public IterationRepository getIterationRepository() {
 		return iterationRepository;
@@ -121,7 +127,18 @@ public class ProjectController {
 	public void setEventRepository(EventRepository eventRepository) {
 		this.eventRepository = eventRepository;
 	}
-
+    @RequestMapping(params = "form", produces = "text/html")
+    public String createForm(Model uiModel) {
+    	Project project = new Project();
+    	project.setStatus(ProjectStatus.OPEN);
+        populateEditForm(uiModel, project);
+        List<String[]> dependencies = new ArrayList<String[]>();
+        if (projectProcessService.countAllProjectProcesses() == 0) {
+            dependencies.add(new String[] { "projectprocess", "projectprocesses" });
+        }
+        uiModel.addAttribute("dependencies", dependencies);
+        return "projects/create";
+    }
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	@RequiresPermissions("project:create")
 	public String create(@Valid Project project, BindingResult bindingResult,
@@ -130,10 +147,11 @@ public class ProjectController {
 			populateEditForm(uiModel, project);
 			return "projects/create";
 		}
+		project.setStatus(ProjectStatus.OPEN);
 		uiModel.asMap().clear();
 		project.persist();
 		uiModel.addAttribute("projectId", project.getId());
-		uiModel.addAttribute("projects", Project.findAllProjects());
+		uiModel.addAttribute("projects", projectRepository.findAll());
 		return "projects/list";
 	}
 
@@ -142,7 +160,7 @@ public class ProjectController {
 			@PathVariable("id") Long id,
 			Model uiModel,
 			@RequestParam(value = "keepupdate", required = false) Boolean keepUpdate) {
-		populateEditForm(uiModel, Project.findProject(id));
+		populateEditForm(uiModel, projectRepository.findOne(id));
 		uiModel.addAttribute("keepupdate", keepUpdate);
 		return "projects/update";
 	}
@@ -160,7 +178,7 @@ public class ProjectController {
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
 	@RequiresPermissions("project:read")
 	public String show(@PathVariable("id") Long id, Model uiModel) {
-		Project p = Project.findProject(id);
+		Project p = projectRepository.findOne(id);
 		uiModel.addAttribute("project", p);
 		return "projects/show";
 	}
@@ -170,7 +188,7 @@ public class ProjectController {
 	String showhomepage(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("projectId", id);
 		List<SiteMapItem> siteMapItems = new ArrayList<SiteMapItem>();
-		Project project = Project.findProject(id);
+		Project project = projectRepository.findOne(id);
 		WorkItemContainer currentContainer = project;
 		int num = 0;
 		while (currentContainer != null && num < 3) {
@@ -194,7 +212,7 @@ public class ProjectController {
 	@RequiresPermissions("project:read")
 	public String overview(@PathVariable("id") Long id, Model uiModel)
 			throws IOException {
-		uiModel.addAttribute("project", Project.findProject(id));
+		uiModel.addAttribute("project", projectRepository.findOne(id));
 
 		Calendar cal = Calendar.getInstance();
 
@@ -202,7 +220,7 @@ public class ProjectController {
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
 		List<WorkItem> workItemsList = WorkItem.findAllWorkItemsByProject(
-				Project.findProject(id)).getResultList();
+				projectRepository.findOne(id)).getResultList();
 
 		for (WorkItem workItem : workItemsList) {
 			if (workItem.getDueDate() != null
@@ -219,7 +237,8 @@ public class ProjectController {
 					indues.add(workItem);
 			}
 		}
-		List listStatus = WorkItem.listStatusByProject(Project.findProject(id));
+		List listStatus = WorkItem.listStatusByProject(projectRepository
+				.findOne(id));
 		List<WorkItemHistory> listHistorys = WorkItemHistory
 				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);
@@ -233,9 +252,9 @@ public class ProjectController {
 
 	@RequestMapping(value = "/{id}/task", produces = "text/html")
 	public String task(@PathVariable("id") Long id, Model uiModel) {
-		// uiModel.addAttribute("project", Project.findProject(id));
+		// uiModel.addAttribute("project", projectRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
-		uiModel.addAttribute("workItemTypes", Project.findProject(id)
+		uiModel.addAttribute("workItemTypes", projectRepository.findOne(id)
 				.getProjectProcess().getWorkItemTypes());
 		return "projects/tasks";
 	}
@@ -243,15 +262,16 @@ public class ProjectController {
 	@RequestMapping(value = "/{id}/advancedsearch", produces = "text/html")
 	public String advancedSearch(@PathVariable("id") Long id, Model uiModel,
 			@Valid SearchConditionsDTO searchCondition) {
-		Project project = Project.findProject(id);
+		Project project = projectRepository.findOne(id);
 		uiModel.addAttribute("project", project);
 		uiModel.addAttribute("itemId", id);
 		uiModel.addAttribute("statuses", workItemStatusRepository.findAll());
 		uiModel.addAttribute("searchcondition", searchCondition);
 		uiModel.addAttribute("members", memberInformationRepository
 				.findByProjectAndDeleted(project, false));
-		uiModel.addAttribute("iterations",iterationRepository.findByAncestor(project));
-		uiModel.addAttribute("workItemTypes", Project.findProject(id)
+		uiModel.addAttribute("iterations",
+				iterationRepository.findByAncestor(project));
+		uiModel.addAttribute("workItemTypes", projectRepository.findOne(id)
 				.getProjectProcess().getWorkItemTypes());
 		ArrayList<AttributeValueDTO> params = new ArrayList<AttributeValueDTO>();
 		if (searchCondition.getStatus() != null) {
@@ -278,17 +298,25 @@ public class ProjectController {
 		return "projects/advancedtasks";
 	}
 
+	public ProjectRepository getProjectRepository() {
+		return projectRepository;
+	}
+
+	public void setProjectRepository(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
+	}
+
 	@RequestMapping(value = "/{id}/roadmap", produces = "text/html")
 	public String getPlan(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("project", Project.findProject(id));
+		uiModel.addAttribute("project", projectRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
 		return "projects/roadmap";
 	}
 
 	@RequestMapping(value = "/{id}/members", produces = "text/html")
 	public String listMembers(@PathVariable("id") Long id, Model uiModel) {
-		Set<MemberInformation> memberInformations = Project.findProject(id)
-				.getMemberInformations();
+		Set<MemberInformation> memberInformations = projectRepository.findOne(
+				id).getMemberInformations();
 		uiModel.addAttribute("memberinformations", memberInformations);
 		uiModel.addAttribute("projectId", id);
 		return "projects/member";
@@ -301,31 +329,32 @@ public class ProjectController {
 			String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		List<Project> list = Project.findProjectEntries(iDisplayStart,
-				iDisplayLength, sSearch);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
+				iDisplayLength);
+		Page<Project> page = projectRepository.findByNameLikeAndStatusNot("%"
+				+ sSearch + "%", ProjectStatus.DELETED, pageable);
+		List<Project> list = page.getContent();
 		for (Project item : list) {
-			if (item.getStatus() != ProjectStatus.DELETED) {
-				ProjectDTO dto = new ProjectDTO();
-				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../projects/" + item.getId()
-						+ "?goto=true'>" + item.getName() + "</a>");
+			ProjectDTO dto = new ProjectDTO();
+			dto.DT_RowId = item.getId();
+			dto.setName("<a href='../projects/" + item.getId() + "?goto=true'>"
+					+ item.getName() + "</a>");
 
-				if (item.getParentContainer() != null)
-					dto.setParentContainer(item.getParentContainer().getName());
-				String s;
-				if (item.getDescription() != null
-						&& item.getDescription().length() > 50)
-					s = item.getDescription().substring(0, 49) + " ...";
-				else
-					s = item.getDescription();
-				dto.setDescription(s);
+			if (item.getParentContainer() != null)
+				dto.setParentContainer(item.getParentContainer().getName());
+			String s;
+			if (item.getDescription() != null
+					&& item.getDescription().length() > 50)
+				s = item.getDescription().substring(0, 49) + " ...";
+			else
+				s = item.getDescription();
+			dto.setDescription(s);
 
-				reply.getAaData().add(dto);
-			}
+			reply.getAaData().add(dto);
 		}
-		reply.setiTotalDisplayRecords((int) Project
-				.countProjectEntries(sSearch));
-		reply.setiTotalRecords((int) Project.countAllProjectsNotDeleted());
+		reply.setiTotalDisplayRecords((int) page.getTotalElements());
+		reply.setiTotalRecords((int) projectRepository
+				.countByStatusNot(ProjectStatus.DELETED));
 		return reply;
 	}
 
@@ -356,50 +385,47 @@ public class ProjectController {
 			return "redirect:/projects/" + project.getId()
 					+ "?form&keepupdate=true";
 		}
-		uiModel.addAttribute("projects", Project.findAllProjects());
+		uiModel.addAttribute("projects", projectRepository.findAll());
 		return "projects/list";
 
 	}
 
 	@RequestMapping(produces = "text/html")
-	@RequiresPermissions("project:list")
-	public String list(
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
-		List<Project> lst = null;
+	  @RequiresPermissions("project:list")
+	public String list(	@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model
+	 uiModel) 
+	{ 
+/*		List<Project> lst = null;
 		if (page != null || size != null) {
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1)
-					* sizeNo;
-			lst = Project.findProjectEntries(firstResult, sizeNo);
+	 int sizeNo = size == null ? 10 : size.intValue(); 
+	 final int firstResult =	 page == null ? 0 : (page.intValue() - 1) sizeNo; 
+	 lst =	 Project.findProjectEntries(firstResult, sizeNo);
+	 
+	 float nrOfPages = (float) Project.countProjects() / sizeNo;
+	 uiModel.addAttribute( "maxPages", (int) ((nrOfPages > (int) nrOfPages ||
+	 nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages)); } else { lst =
+	 Project.findAllProjects(); }
+	 
+	  for (int i = 0; i < lst.size(); i++) { if (lst.get(i).getStatus() != null
+	 && lst.get(i).getStatus().equals(ProjectStatus.DELETED)) lst.remove(i); }
+	 
+	 uiModel.addAttribute("projects", lst);*/
+	 return "projects/list"; }
 
-			float nrOfPages = (float) Project.countProjects() / sizeNo;
-			uiModel.addAttribute(
-					"maxPages",
-					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
-							: nrOfPages));
-		} else {
-			lst = Project.findAllProjects();
-		}
-
-		for (int i = 0; i < lst.size(); i++) {
-			if (lst.get(i).getStatus() != null
-					&& lst.get(i).getStatus().equals(ProjectStatus.DELETED))
-				lst.remove(i);
-		}
-
-		uiModel.addAttribute("projects", lst);
-		return "projects/list";
-	}
-
+	/**
+	 * @param id
+	 * @param page
+	 * @param size
+	 * @param uiModel
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
 	@RequiresPermissions("project:delete")
 	public String delete(@PathVariable("id") Long id,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-		Project project = Project.findProject(id);
+		Project project = projectRepository.findOne(id);
 		project.setStatus(ProjectStatus.DELETED);
 		project.merge();
 		// project.remove();
@@ -430,7 +456,7 @@ public class ProjectController {
 			@PathVariable("encodedmemberids") String encodedMemberIds) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		Project project = Project.findProject(id);
+		Project project = projectRepository.findOne(id);
 		restResponse.getResponse().setData(new ArrayList<Object>());
 		for (Event event : project.getCalendar().getEvents()) {
 			restResponse.getResponse().getData().add(event);
@@ -476,7 +502,7 @@ public class ProjectController {
 			@Valid Event event, BindingResult bindingResult) {
 		DSRestResponse restResponse = new DSRestResponse();
 		restResponse.setResponse(new DSResponse());
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		project.getCalendar().getEvents().add(event);
 		for (MemberInformation memberInformation : project
 				.getMemberInformations()) {

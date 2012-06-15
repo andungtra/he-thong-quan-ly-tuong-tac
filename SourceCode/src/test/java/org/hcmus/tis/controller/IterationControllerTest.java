@@ -12,6 +12,7 @@ import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.repository.IterationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -53,11 +54,14 @@ public class IterationControllerTest extends AbstractShiroTest {
 	private IterationRepository iterationRepository;
 	@Mock
 	BindingResult bindingResult;
+	@Mock
+	ProjectRepository projectRepository;
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		aut = new IterationController();
 		aut.setIterationRepository(iterationRepository);
+		aut.setProjectRepository(projectRepository);
 		doReturn((long)1).when(project).getId();
 		doReturn((long)2).when(parentIteration).getId();
 		doReturn((long)3).when(subIteration).getId();
@@ -86,10 +90,10 @@ public class IterationControllerTest extends AbstractShiroTest {
 		verify(uiModel).addAttribute("iterations", iterations);
 	}
 	@Test
-	@PrepareForTest({Project.class, IterationController.class})
+	@PrepareForTest({IterationController.class})
 	public void testCreateForm() throws Exception{
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		PowerMockito.whenNew(Iteration.class).withNoArguments().thenReturn(iteration);
 		
 		IterationController spyAUT = spy(aut);
@@ -121,10 +125,9 @@ public class IterationControllerTest extends AbstractShiroTest {
 	}
 	private Project projectForTestCreateTopIteration;
 	@Test
-	@PrepareForTest({Project.class})
 	public void testCreateTopIteration(){
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -147,10 +150,9 @@ public class IterationControllerTest extends AbstractShiroTest {
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
 	}
 	@Test
-	@PrepareForTest({Project.class})
 	public void testUpdateTopIteration(){
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -173,10 +175,9 @@ public class IterationControllerTest extends AbstractShiroTest {
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
 	}
 	@Test
-	@PrepareForTest({Project.class})
 	public void testUpdateForm(){
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		Long iterationId = subIteration.getId();
 		doReturn(subIteration).when(iterationRepository).findOne(iterationId);
 		IterationController spy = spy(aut);

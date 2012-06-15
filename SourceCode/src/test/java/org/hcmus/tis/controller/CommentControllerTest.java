@@ -17,6 +17,7 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 
 import static org.junit.Assert.*;
@@ -110,6 +111,8 @@ public class CommentControllerTest extends AbstractShiroTest {
 	}
 	@Mock
 	Pageable pageable;
+	@Mock
+	ProjectRepository projectRepository;
 	@Test
 	@PrepareForTest({WorkItem.class })
 	public void testList() {
@@ -130,14 +133,13 @@ public class CommentControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask notifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItem.class, Project.class})
+	@PrepareForTest({ WorkItem.class})
 	public void testCreate() {
 		PowerMockito.mockStatic(WorkItem.class);
 		PowerMockito.when(WorkItem.findWorkItem(workItem.getId())).thenReturn(
 				workItem);
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(
-				project);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		String email = (String) subject.getPrincipal();
 		doReturn(account).when(accountRepository).getByEmail(email);
 		doReturn(member).when(memberInformationRepository).findByAccountAndProjectAndDeleted(account, project, false);

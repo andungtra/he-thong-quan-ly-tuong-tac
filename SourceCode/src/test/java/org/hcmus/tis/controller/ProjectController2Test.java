@@ -10,6 +10,7 @@ import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.ui.Model;
-@RunWith(PowerMockRunner.class)
+
 public class ProjectController2Test {
 	@Mock
 	private SearchConditionsDTO searchCondition;
@@ -39,6 +40,8 @@ public class ProjectController2Test {
 	MemberInformationRepository memberInformationRepository;
 	@Mock
 	IterationRepository iterationRepository;
+	@Mock
+	ProjectRepository projectRepository;
 	private ProjectController aut;
 	@Before
 	public void setUp(){
@@ -51,16 +54,13 @@ public class ProjectController2Test {
 		aut.setWorkItemStatusRepository(workItemStatusRepository);
 		aut.setMemberInformationRepository(memberInformationRepository);
 		aut.setIterationRepository(iterationRepository);
+		aut.setProjectRepository(projectRepository);
 
 	}
 	@Test
-	@PrepareForTest({Project.class, MemberInformation.class, Iteration.class, WorkItemStatus.class})
 	public void testAdvancedSearch() {
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(project.getId())).thenReturn(project);
-		PowerMockito.mockStatic(WorkItemStatus.class);
-		PowerMockito.mockStatic(MemberInformation.class);
-		PowerMockito.mockStatic(Iteration.class);
+		Long projectId = project.getId();
+		doReturn(project).when(projectRepository).findOne(projectId);
 		String result =  aut.advancedSearch(project.getId(), uiModel, searchCondition);
 		assertEquals("projects/advancedtasks", result);
 	}

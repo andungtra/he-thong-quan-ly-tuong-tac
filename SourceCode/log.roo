@@ -782,3 +782,5 @@ repository jpa --entity ~.model.Comment --interface org.hcmus.tis.repository.Com
 repository jpa --entity ~.model.Iteration --interface org.hcmus.tis.repository.IterationRepository
 repository jpa --entity ~.model.WorkItemContainer --interface org.hcmus.tis.repository.WorkItemContainerRepository
 repository jpa --entity ~.model.Project --interface org.hcmus.tis.repository.ProjectRepository
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-15 14:02:25
+hint

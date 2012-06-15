@@ -19,6 +19,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.repository.EventRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.util.Parameter;
 import org.hibernate.mapping.Array;
 import org.junit.Assert;
@@ -34,12 +35,11 @@ import static  org.mockito.Mockito.*;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Project.class)
-@MockStaticEntityMethods
+
 public class ProjectControllerTest extends AbstractShiroTest{
 	private ProjectController aut;
 	@Mock
@@ -52,11 +52,15 @@ public class ProjectControllerTest extends AbstractShiroTest{
 	private Account mockedLoginedAccount;
 	@Mock
 	private EventRepository eventRepository;
+	@Mock
+	private Project mockedProject;
+	@Mock
+	private ProjectRepository projectRepository;
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		aut = new ProjectController();
-		PowerMockito.mockStatic(Project.class);
+		aut.setProjectRepository(projectRepository);
 		 doReturn(mockedSession).when(mockedSubject).getSession();
 		 doReturn(mockedLoginedAccount).when(mockedSession).getAttribute("account");
 		doReturn(true).when(mockedSubject).isAuthenticated();
@@ -95,17 +99,15 @@ public class ProjectControllerTest extends AbstractShiroTest{
 //	}
 	@Test
 	public void testListMembers(){
-	
-		Project mockedProject = mock(Project.class);
 		doReturn(new HashSet<MemberInformation>()).when(mockedProject).getMemberInformations();
-		PowerMockito.when(Project.findProject((long)1)).thenReturn(mockedProject);
+		doReturn(mockedProject).when(projectRepository).findOne((long)1);
 		String result = aut.listMembers((long)1, uiModel);
 		
 		verify(uiModel).addAttribute(eq("memberinformations"), anyCollection());
 	}
 	@Test
 	public void testGetEvents(){
-		Long id = (long)1;
+		Long id = (long)mockedProject.getId();
 		String encodedMemberIds = "";
 		Project mockedProject = mock(Project.class);
 		Calendar mockedCalendar = mock(Calendar.class);
@@ -116,8 +118,8 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		doReturn(events).when(mockedCalendar).getEvents();
 		Collection<Event> eventsOfMember = new HashSet<Event>();
 		Event mockedMemberEvent = mock(Event.class);
+		doReturn(mockedProject).when(projectRepository).findOne(id);
 		eventsOfMember.add(mockedMemberEvent);
-		PowerMockito.when(Project.findProject(id)).thenReturn(mockedProject);
 		doReturn(eventsOfMember).when(mockedProject).getEventsOfMembers();
 		
 		DSRestResponse restResponse = aut.getEvents(id, encodedMemberIds);
@@ -129,7 +131,7 @@ public class ProjectControllerTest extends AbstractShiroTest{
 	@Test
 	public void testCreateEvent(){
 		
-		Long projectId = (long)1;
+		Long projectId = mockedProject.getId();
 		Event mockedEvent = mock(Event.class);
 		BindingResult mockedBindingResult = mock(BindingResult.class);
 		Project mockedProject = mock(Project.class);
@@ -137,12 +139,11 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		doReturn(mockedCalendar).when(mockedProject).getCalendar();
 		Collection<Event> mockedEvents = mock(Collection.class);
 		doReturn(mockedEvents).when(mockedCalendar).getEvents();
-		PowerMockito.when(Project.findProject(projectId)).thenReturn(mockedProject);
+		doReturn(mockedProject).when(projectRepository).findOne(projectId);
 		
 		DSRestResponse restResponse = aut.creatEvent(projectId, mockedEvent, mockedBindingResult);
 		
-		PowerMockito.verifyStatic();
-		Project.findProject(projectId);
+		verify(projectRepository).findOne(projectId);
 		verify(mockedEvents).add(mockedEvent);
 		Assert.assertEquals(0, restResponse.getResponse().getStatus());
 		Assert.assertEquals(1, restResponse.getResponse().getData().size());
@@ -189,12 +190,10 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		
 	}
 	@Test
-	@PrepareForTest({Project.class})
 	public void testGetRoadmap(){
-		Long itemId = (long)1;
+		Long itemId = mockedProject.getId();
 		Project mockedProject = mock(Project.class);
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(itemId)).thenReturn(mockedProject);
+		doReturn(mockedProject).when(projectRepository).findOne(itemId);
 		
 		String result = aut.getPlan(itemId, uiModel);
 		verify(uiModel).addAttribute("project", mockedProject);
@@ -202,7 +201,6 @@ public class ProjectControllerTest extends AbstractShiroTest{
 	}
 	List<SiteMapItem> siteMapItems;
 	@Test
-	@PrepareForTest({Project.class})
 	public void testshowHomepage(){
 		long id = (long)2;
 		Project mockedProject = mock(Project.class);
@@ -212,8 +210,7 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		doReturn((long)1).when(mockedProject).getId();
 		doReturn("name parent").when(mockedParentProject).getName();
 		doReturn((long)2).when(mockedParentProject).getId();
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.when(Project.findProject(id)).thenReturn(mockedProject);
+		doReturn(mockedProject).when(projectRepository).findOne(id);
 		doAnswer(new Answer<Void>() {
 
 			@Override
@@ -224,8 +221,7 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		}).when(uiModel).addAttribute(eq("siteMapItems"), any(List.class));
 		String result = aut.showhomepage(id, uiModel);
 		
-		PowerMockito.verifyStatic();
-		Project.findProject(id);
+		verify(projectRepository).findOne(id);
 		Assert.assertEquals("projects/homepage", result);
 		verify(uiModel).addAttribute(eq("siteMapItems"), any(List.class));
 		Assert.assertEquals(2, siteMapItems.size());

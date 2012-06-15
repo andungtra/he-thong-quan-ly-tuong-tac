@@ -3,6 +3,7 @@ package org.hcmus.tis.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -197,8 +198,12 @@ public class AccountController {
 		}
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
-
-		Collection<Project> listProject = Project.findProjectsByAccount(id);
+		Account account = accountRepository.findOne(id);
+		Collection<MemberInformation> members = memberInformationRepository.findByAccountAndDeleted(account, false);
+		Collection<Project> listProject = new HashSet<Project>();
+		for(MemberInformation member : members){
+			listProject.add(member.getProject());
+		}
 		ArrayList<Event> newEvent = new ArrayList<Event>();
 		Date n = new Date();
 		for (Project project : listProject) {
