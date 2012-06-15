@@ -12,11 +12,15 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +37,16 @@ public class CommentController {
 	private EmailService emailService;
 	@Autowired
 	private TaskExecutor taskExecutor;
+	@Autowired
+	private CommentRepository commentRepository;
+	public CommentRepository getCommentRepository() {
+		return commentRepository;
+	}
+
+	public void setCommentRepository(CommentRepository commentRepository) {
+		this.commentRepository = commentRepository;
+	}
+
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
@@ -58,19 +72,16 @@ public class CommentController {
 	public String listCommentsByWorkItem(
 			@PathVariable("workitemid") Long workItemId,
 			Integer firstResult, Integer maxResult, Model uiModel) {
-		WorkItem workItem = WorkItem.findWorkItem(workItemId);
-		TypedQuery<Comment> commentsQuery = Comment
-				.findCommentsByWorkItem(workItem);
 		if (firstResult == null) {
 			firstResult = 0;
 		}
 		if (maxResult == null) {
 			maxResult = 100;
 		}
-
-		commentsQuery.setFirstResult(firstResult);
-		commentsQuery.setMaxResults(maxResult);
-		List<Comment> comments = commentsQuery.getResultList();
+		Pageable pageable = new PageRequest(firstResult / maxResult, maxResult);
+		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		Page<Comment> page = commentRepository.findByWorkItem(workItem, pageable);
+		List<Comment> comments = page.getContent();
 		uiModel.addAttribute("comments", comments);
 		uiModel.addAttribute("workitem", workItem);
 		return "comments/listByWorkItem";
@@ -96,13 +107,13 @@ public class CommentController {
 		MemberInformation memberInformation = memberInformationRepository.findByAccountAndProjectAndDeleted(loginAccount,
 						project, false);
 		comment.setProjectMember(memberInformation);
-		comment.persist();
+		commentRepository.save(comment);
 		workItem.getSubcribers().toArray();
 		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "commented", emailService));
 		return "redirect:/projects/" + project.getId() + "/workitems/" + workItem.getId() + "/comments";
 	}
 
-	public String list(Integer page, Integer size, Model uiModel) {
+	/*public String list(Integer page, Integer size, Model uiModel) {
 		if (page != null || size != null) {
 			int sizeNo = size == null ? 10 : size.intValue();
 			final int firstResult = page == null ? 0 : (page.intValue() - 1)
@@ -119,7 +130,7 @@ public class CommentController {
 		}
 		addDateTimeFormatPatterns(uiModel);
 		return "comments/list";
-	}
+	}*/
 
 	public TaskExecutor getTaskExecutor() {
 		return taskExecutor;

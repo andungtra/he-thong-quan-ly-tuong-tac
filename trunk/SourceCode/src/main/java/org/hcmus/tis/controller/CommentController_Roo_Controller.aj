@@ -33,41 +33,6 @@ privileged aspect CommentController_Roo_Controller {
         return "comments/create";
     }
     
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String CommentController.show(@PathVariable("id") Long id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("comment", Comment.findComment(id));
-        uiModel.addAttribute("itemId", id);
-        return "comments/show";
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String CommentController.update(@Valid Comment comment, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, comment);
-            return "comments/update";
-        }
-        uiModel.asMap().clear();
-        comment.merge();
-        return "redirect:/comments/" + encodeUrlPathSegment(comment.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String CommentController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Comment.findComment(id));
-        return "comments/update";
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String CommentController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Comment comment = Comment.findComment(id);
-        comment.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/comments";
-    }
-    
     void CommentController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("comment_commentdate_date_format", "dd-MM-yyyy'T'HH:mm");
     }

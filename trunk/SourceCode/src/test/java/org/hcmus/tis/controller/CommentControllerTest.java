@@ -15,6 +15,7 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 
@@ -34,6 +35,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -60,8 +63,6 @@ public class CommentControllerTest extends AbstractShiroTest {
 	@Mock
 	MemberInformation member;
 	@Mock
-	TypedQuery<Comment> commentQuery;
-	@Mock
 	TaskExecutor taskExecutor;
 	@Mock
 	BindingResult bindingResult;
@@ -69,13 +70,17 @@ public class CommentControllerTest extends AbstractShiroTest {
 	MemberInformationRepository memberInformationRepository;
 	@Mock
 	AccountRepository accountRepository;
+	@Mock
+	CommentRepository commentRepository;
+	@Mock
+	Page<Comment> pageComment;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		doReturn(session).when(subject).getSession();
 		doReturn("email").when(subject).getPrincipal();
-		doReturn(comments).when(commentQuery).getResultList();
+		doReturn(comments).when(pageComment).getContent();
 		doReturn((long) 1).when(project).getId();
 		doReturn((long) 2).when(account).getId();
 		doReturn((long) 3).when(member).getId();
@@ -87,6 +92,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		aut.setAccountRepository(accountRepository);
 		aut.setTaskExecutor(taskExecutor);
 		aut.setMemberInformationRepository(memberInformationRepository);
+		aut.setCommentRepository(commentRepository);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -102,9 +108,10 @@ public class CommentControllerTest extends AbstractShiroTest {
 	public void tearDown() {
 		clearSubject();
 	}
-
+	@Mock
+	Pageable pageable;
 	@Test
-	@PrepareForTest({ Comment.class, WorkItem.class })
+	@PrepareForTest({WorkItem.class })
 	public void testList() {
 		Long workItemId = (long) 1;
 		Integer firstResult = 1;
@@ -112,9 +119,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		PowerMockito.mockStatic(WorkItem.class);
 		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
 				workItem);
-		PowerMockito.mockStatic(Comment.class);
-		PowerMockito.when(Comment.findCommentsByWorkItem(any(WorkItem.class)))
-				.thenReturn(commentQuery);
+		doReturn(pageComment).when(commentRepository).findByWorkItem(eq(workItem), any(Pageable.class) );
 		String result = aut.listCommentsByWorkItem(workItemId, firstResult,
 				maxResult, uiModel);
 		assertEquals("comments/listByWorkItem", result);

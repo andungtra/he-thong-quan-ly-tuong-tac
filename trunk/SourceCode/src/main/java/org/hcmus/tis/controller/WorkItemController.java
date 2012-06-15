@@ -29,6 +29,7 @@ import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -65,6 +66,14 @@ public class WorkItemController {
 	private PriorityRepository priorityRepository;
 	@Autowired
 	WorkItemTypeRepository workItemTypeRepository;
+	@Autowired
+	AttachmentRepository attachmentRepository;
+	public AttachmentRepository getAttachmentRepository() {
+		return attachmentRepository;
+	}
+	public void setAttachmentRepository(AttachmentRepository attachmentRepository) {
+		this.attachmentRepository = attachmentRepository;
+	}
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
@@ -282,9 +291,9 @@ public class WorkItemController {
 		workItem.persist();
 		if (attachmentIds != null) {
 			for (Long attachmentId : attachmentIds) {
-				Attachment attachment = Attachment.findAttachment(attachmentId);
+				Attachment attachment = attachmentRepository.findOne(attachmentId);
 				attachment.setWorkItem(workItem);
-				attachment.flush();
+				attachmentRepository.flush();
 			}
 		}
 		return "redirect:/projects/"

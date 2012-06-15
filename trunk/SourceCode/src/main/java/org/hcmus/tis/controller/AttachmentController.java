@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
@@ -37,11 +38,21 @@ public class AttachmentController {
 	private ServletContext context;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private AttachmentRepository attachmentRepository;
+
+	public AttachmentRepository getAttachmentRepository() {
+		return attachmentRepository;
+	}
+
+	public void setAttachmentRepository(AttachmentRepository attachmentRepository) {
+		this.attachmentRepository = attachmentRepository;
+	}
 
 	@RequestMapping(value = "/{id}/{fileName}", method = RequestMethod.GET)
 	public void show(@PathVariable("id") Long id, HttpServletResponse response)
 			throws IOException {
-		Attachment attachment = Attachment.findAttachment(id);
+		Attachment attachment = attachmentRepository.findOne(id);
 		ServletOutputStream outPutSteam = response.getOutputStream();
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-Disposition", "attachment; filename=\""
@@ -68,14 +79,14 @@ public class AttachmentController {
 		try {
 			is = httpServletRequest.getInputStream();
 			attachment.setDisplayFileName(filename);
-			attachment.persist();
+			attachmentRepository.save(attachment);
 			String realPath = getContext().getRealPath(DESTINATION_DIR_PATH);
 			String realFileName = realPath + File.separatorChar
 					+ attachment.getId();
 			fos = fileService.getFileOutPutStream(realFileName);
 			IOUtils.copy(is, fos);
 			attachment.setRealFileName(realFileName);
-			attachment.flush();
+			attachmentRepository.flush();
 		} finally {
 			try {
 				if (fos != null) {
@@ -107,7 +118,7 @@ public class AttachmentController {
 		try {
 			is = httpServletRequest.getInputStream();
 			attachment.setDisplayFileName(filename);
-			attachment.persist();
+			attachmentRepository.save(attachment);
 			String realPath = getContext().getRealPath(DESTINATION_DIR_PATH);
 			String realFileName = realPath + File.separatorChar
 					+ attachment.getId();
@@ -115,7 +126,7 @@ public class AttachmentController {
 			IOUtils.copy(is, fos);
 			attachment.setRealFileName(realFileName);
 			attachment.setWorkItem(workItem);
-			attachment.flush();
+			attachmentRepository.flush();
 		} finally {
 			try {
 				if (fos != null) {
@@ -164,8 +175,8 @@ public class AttachmentController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public FileUploaderResponse delete(@PathVariable("id") Long id) {
-		Attachment attachment = Attachment.findAttachment(id);
-		attachment.remove();
+		Attachment attachment = attachmentRepository.findOne(id);
+		attachmentRepository.delete(attachment);
 		FileUploaderResponse response = new FileUploaderResponse();
 		response.setSuccess(true);
 		response.setAttachmentId(id);
