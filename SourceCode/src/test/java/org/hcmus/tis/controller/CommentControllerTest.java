@@ -18,6 +18,7 @@ import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 
 import static org.junit.Assert.*;
@@ -42,7 +43,6 @@ import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-@RunWith(PowerMockRunner.class)
 public class CommentControllerTest extends AbstractShiroTest {
 	private CommentController aut;
 	@Mock
@@ -74,6 +74,8 @@ public class CommentControllerTest extends AbstractShiroTest {
 	@Mock
 	CommentRepository commentRepository;
 	@Mock
+	WorkItemRepository workItemRepository;
+	@Mock
 	Page<Comment> pageComment;
 
 	@Before
@@ -94,6 +96,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		aut.setTaskExecutor(taskExecutor);
 		aut.setMemberInformationRepository(memberInformationRepository);
 		aut.setCommentRepository(commentRepository);
+		aut.setWorkItemRepository(workItemRepository);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -114,14 +117,11 @@ public class CommentControllerTest extends AbstractShiroTest {
 	@Mock
 	ProjectRepository projectRepository;
 	@Test
-	@PrepareForTest({WorkItem.class })
 	public void testList() {
 		Long workItemId = (long) 1;
 		Integer firstResult = 1;
 		Integer maxResult = 5;
-		PowerMockito.mockStatic(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
-				workItem);
+		doReturn(workItem).when(workItemRepository).findOne(workItemId);
 		doReturn(pageComment).when(commentRepository).findByWorkItem(eq(workItem), any(Pageable.class) );
 		String result = aut.listCommentsByWorkItem(workItemId, firstResult,
 				maxResult, uiModel);
@@ -133,11 +133,9 @@ public class CommentControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask notifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItem.class})
 	public void testCreate() {
-		PowerMockito.mockStatic(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItem.getId())).thenReturn(
-				workItem);
+		Long workItemId = workItem.getId();
+		doReturn(workItem).when(workItemRepository).findOne(workItemId);
 		Long projectId = project.getId();
 		doReturn(project).when(projectRepository).findOne(projectId);
 		String email = (String) subject.getPrincipal();

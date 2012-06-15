@@ -14,6 +14,7 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.service.EmailService;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class CommentController {
 	private TaskExecutor taskExecutor;
 	@Autowired
 	private CommentRepository commentRepository;
+	@Autowired
+	private WorkItemRepository workItemRepository;
 	public CommentRepository getCommentRepository() {
 		return commentRepository;
 	}
@@ -79,14 +82,22 @@ public class CommentController {
 			maxResult = 100;
 		}
 		Pageable pageable = new PageRequest(firstResult / maxResult, maxResult);
-		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		WorkItem workItem = workItemRepository.findOne(workItemId);
 		Page<Comment> page = commentRepository.findByWorkItem(workItem, pageable);
 		List<Comment> comments = page.getContent();
 		uiModel.addAttribute("comments", comments);
 		uiModel.addAttribute("workitem", workItem);
 		return "comments/listByWorkItem";
 	}
-    void populateEditForm(Model uiModel, Comment comment) {
+    public WorkItemRepository getWorkItemRepository() {
+		return workItemRepository;
+	}
+
+	public void setWorkItemRepository(WorkItemRepository workItemRepository) {
+		this.workItemRepository = workItemRepository;
+	}
+
+	void populateEditForm(Model uiModel, Comment comment) {
         uiModel.addAttribute("comment", comment);
         addDateTimeFormatPatterns(uiModel);
 /*        uiModel.addAttribute("memberinformations", MemberInformation.findAllMemberInformations());

@@ -17,6 +17,7 @@ import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AttachmentRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
@@ -40,6 +41,8 @@ public class AttachmentController {
 	private FileService fileService;
 	@Autowired
 	private AttachmentRepository attachmentRepository;
+	@Autowired
+	private WorkItemRepository workItemRepository;
 
 	public AttachmentRepository getAttachmentRepository() {
 		return attachmentRepository;
@@ -112,7 +115,7 @@ public class AttachmentController {
 			JAXBException {
 		InputStream is = null;
 		FileOutputStream fos = null;
-		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		WorkItem workItem = workItemRepository.findOne(workItemId);
 		String filename = httpServletRequest.getHeader("X-File-Name");
 		Attachment attachment = new Attachment();
 		try {
@@ -142,6 +145,14 @@ public class AttachmentController {
 		response.setAttachmentId(attachment.getId());
 		response.setSuccess(true);
 		return response;
+	}
+
+	public WorkItemRepository getWorkItemRepository() {
+		return workItemRepository;
+	}
+
+	public void setWorkItemRepository(WorkItemRepository workItemRepository) {
+		this.workItemRepository = workItemRepository;
 	}
 
 	@RequestMapping(value = "/kkk")

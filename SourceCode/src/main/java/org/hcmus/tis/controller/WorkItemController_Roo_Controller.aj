@@ -16,39 +16,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect WorkItemController_Roo_Controller {
-    
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String WorkItemController.show(@PathVariable("id") Long id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("workitem", WorkItem.findWorkItem(id));
-        uiModel.addAttribute("itemId", id);
-        return "workitems/show";
-    }
-    
-    @RequestMapping(produces = "text/html")
-    public String WorkItemController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("workitems", WorkItem.findWorkItemEntries(firstResult, sizeNo));
-            float nrOfPages = (float) WorkItem.countWorkItems() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());
-        }
-        addDateTimeFormatPatterns(uiModel);
-        return "workitems/list";
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String WorkItemController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        WorkItem workItem = WorkItem.findWorkItem(id);
-        workItem.remove();
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/workitems";
-    }
+   
     
     String WorkItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();

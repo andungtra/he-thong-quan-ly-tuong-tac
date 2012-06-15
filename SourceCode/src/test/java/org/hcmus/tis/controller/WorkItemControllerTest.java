@@ -38,6 +38,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.util.NotifyAboutWorkItemTask;
@@ -110,6 +111,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private ProjectRepository projectRepository;
 	@Mock
+	private WorkItemRepository workItemRepository;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -123,6 +126,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		aut.setAttachmentRepository(attachmentRepository);
 		aut.setIterationRepository(iterationRepository);
 		aut.setProjectRepository(projectRepository);
+		aut.setWorkItemRepository(workItemRepository);
 		doReturn((long) 1).when(mockedWorkItem).getId();
 		doReturn((long) 2).when(mockedWorkItemType).getId();
 		doReturn((long) 3).when(mockedProject).getId();
@@ -163,7 +167,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({Project.class,})
 	public void testCreateForm() throws NotPermissionException {
 		PowerMockito.mockStatic(Project.class);
 		WorkItemController spyAut = spy(aut);
@@ -219,11 +222,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 
 	@Test
 	public void testCreate() throws JAXBException {
-		WorkItem workItem = new WorkItem();
-		workItem.setId((long) 4);
 		WorkItemType workItemType = new WorkItemType();
 		workItemType.setId((long) 1);
-		workItem.setWorkItemType(workItemType);
+		doReturn(workItemType).when(mockedWorkItem).getWorkItemType();
 		List<FieldDefine> fieldDefines = new ArrayList<FieldDefine>();
 		FieldDefine fieldDefine = new FieldDefine();
 		fieldDefine.setRefName("name");
@@ -231,10 +232,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		WorkItemType mockedWorkItemType = mock(WorkItemType.class);
 		doReturn(fieldDefines).when(mockedWorkItemType)
 				.getAdditionalFieldDefines();
-		Long workItemTypeId = workItem.getWorkItemType().getId();
+		Long workItemTypeId = mockedWorkItem.getWorkItemType().getId();
 		doReturn(mockedWorkItemType).when(workItemTypeRepository).findOne(workItemTypeId);
-		WorkItem spyWorkItem = spy(workItem);
-		doNothing().when(spyWorkItem).persist();
 
 		doReturn("utf-8").when(mockedHttpRequest).getCharacterEncoding();
 		doAnswer(new Answer<Void>() {
@@ -243,7 +242,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				finalField = (List<Field>) invocation.getArguments()[0];
 				return null;
 			}
-		}).when(spyWorkItem).setAdditionFiels(any(List.class));
+		}).when(mockedWorkItem).setAdditionFiels(any(List.class));
 
 		doReturn("value").when(mockedHttpRequest).getParameter("name");
 		Long attachmentIds[] = { (long) 1, (long) 2 };
@@ -252,14 +251,14 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		doReturn(mocedAttachment2).when(attachmentRepository).findOne((long)1);
 		doReturn(mockedAttachment1).when(attachmentRepository).findOne((long)2);
 
-		aut.create(spyWorkItem, mockedBindingResult, (long)1, mockedUIModel,
+		aut.create(mockedWorkItem, mockedBindingResult, (long)1, mockedUIModel,
 				attachmentIds, mockedHttpRequest);
 
 		verify(mockedHttpRequest).getParameter("name");
-		verify(spyWorkItem).persist();
-		verify(mockedAttachment1).setWorkItem(spyWorkItem);
+		verify(workItemRepository).save(mockedWorkItem);
+		verify(mockedAttachment1).setWorkItem(mockedWorkItem);
 		verify(attachmentRepository, atLeastOnce()).flush();
-		verify(mocedAttachment2).setWorkItem(spyWorkItem);
+		verify(mocedAttachment2).setWorkItem(mockedWorkItem);
 		assertEquals(1, finalField.size());
 		assertEquals("name", finalField.get(0).getName());
 		assertEquals("value", finalField.get(0).getValue());
@@ -268,12 +267,11 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	private NotifyAboutWorkItemTask workItemNotifyTask;
 
 	@Test
-	@PrepareForTest({ WorkItem.class })
 	public void testUpdate() throws JAXBException {
-		PowerMockito.mockStatic(WorkItem.class);
+		
 		WorkItem oldWorkItem = Mockito.mock(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(mockedWorkItem.getId()))
-				.thenReturn(oldWorkItem);
+		Long workItemId = mockedWorkItem.getId();
+		doReturn(oldWorkItem).when(workItemRepository).findOne(workItemId);
 		doReturn(mockedProject).when(mockedWorkItem).getWorkItemContainer();
 		List<FieldDefine> fieldDefines = new ArrayList<FieldDefine>();
 		FieldDefine fieldDefine = new FieldDefine();
@@ -299,7 +297,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				mockedHttpRequest);
 
 		verify(mockedHttpRequest).getParameter("name");
-		verify(mockedWorkItem).merge();
+		verify(workItemRepository).save(mockedWorkItem);
 		assertEquals(1, finalField.size());
 		verify(mockedWorkItem).setSubcribers(oldWorkItem.getSubcribers());
 		assertEquals("name", finalField.get(0).getName());
@@ -310,16 +308,12 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({WorkItem.class })
 	public void testSubscibeWithNonSubscibedMember() {
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.mockStatic(WorkItem.class);
 		Long projectId = (long) 1;
 		Long workItemId = (long) 1;
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
-				mockedWorkItem);
+		doReturn(mockedWorkItem).when(workItemRepository).findOne(workItemId);
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		String email = (String) mockedSubject.getPrincipal();
 		doReturn(account).when(accountRepository).getByEmail(email);
@@ -337,21 +331,17 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 
 		Assert.assertEquals("redirect:/projects/1/workitems/1?form", result);
 		verify(mockedSubscriber).add(mockedMember);
-		verify(mockedWorkItem).flush();
+		verify(workItemRepository).save(mockedWorkItem);
 
 	}
 
 	@Test
-	@PrepareForTest({WorkItem.class })
 	public void testSubscibeWithSubscibedMember() {
-		PowerMockito.mockStatic(Project.class);
-		PowerMockito.mockStatic(WorkItem.class);
 		Long projectId = (long) 1;
 		Long workItemId = (long) 1;
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
-				mockedWorkItem);
+		doReturn(mockedWorkItem).when(workItemRepository).findOne(workItemId);
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		Account mockedAccount = mock(Account.class);
 		String email = (String) mockedSubject.getPrincipal();
@@ -375,17 +365,14 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({ WorkItem.class, WorkItemController.class})
 	public void testUpdateForm() {
 		Long projectId = (long) 1;
 		Long workItemId = (long) 2;
-		PowerMockito.mockStatic(WorkItem.class);
 		Project mockedProject = mock(Project.class);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		MemberInformation member = mock(MemberInformation.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
-				mockedWorkItem);
+		doReturn(mockedWorkItem).when(workItemRepository).findOne(workItemId);
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
 		String email = (String) mockedSubject.getPrincipal();
 		doReturn(account).when(accountRepository).getByEmail(email);
@@ -405,21 +392,19 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	}
 
 	@Test
-	@PrepareForTest({WorkItem.class })
 	public void testUnSubscribe() {
-		PowerMockito.mockStatic(WorkItem.class);
 		Long projectId = (long) 1;
 		Long workItemId = (long) 1;
 		Project mockedProject = mock(Project.class);
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(
-				mockedWorkItem);
+		doReturn(mockedWorkItem).when(workItemRepository).findOne(workItemId);
 		MemberInformation mockedMember = mock(MemberInformation.class);
 		String email = (String) mockedSubject.getPrincipal();
 		doReturn(account).when(accountRepository).getByEmail(email);
 	doReturn(mockedMember).when(memberInformationRepository).findByAccountAndProjectAndDeleted(account, mockedProject, false);
 		Collection<MemberInformation> mockedSubscriber = mock(Collection.class);
+		doReturn(true).when(mockedSubscriber).contains(mockedMember);
 		doReturn(mockedSubscriber).when(mockedWorkItem).getSubcribers();
 		doReturn(true).when(mockedSubscriber).contains(mockedMember);
 		HttpServletRequest mockedHttpServletRequest = mock(HttpServletRequest.class);
@@ -432,46 +417,34 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 
 		Assert.assertEquals("redirect:/projects/1/workitems/1?form", result);
 		verify(mockedSubscriber).remove(mockedMember);
-		verify(mockedWorkItem).flush();
+		verify(workItemRepository).save(mockedWorkItem);
 	}
 
 	@Test
-	@PrepareForTest({ WorkItem.class})
 	public void testListWorkItemByProjectWithIteration() {
 		doReturn(iteration).when(searchConditions).getContainer();
 		Long projectId = mockedProject.getId();
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
-		PowerMockito.mockStatic(WorkItem.class);
 		long filteredRecord = (long) 2;
 		long totalRecord = (long) 3;
 		int startDisplay = 10;
 		int displayLength = 10;
 		doReturn(iteration).when(mockedWorkItem).getWorkItemContainer();
-		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
+		ArrayList<WorkItem> workItems = new ArrayList<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";
-		PowerMockito.when(
-				WorkItem.findWorkItem(globalSearch, searchConditions,
-						startDisplay, displayLength)).thenReturn(workItems);
-		PowerMockito.when(WorkItem.getTotalRecord(searchConditions))
-				.thenReturn(totalRecord);
-		PowerMockito.when(
-				WorkItem.getFilteredRecord(globalSearch, searchConditions))
-				.thenReturn(filteredRecord);
+		doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
+		doReturn(totalRecord).when(workItemRepository).countBy(null, searchConditions);
+		doReturn(filteredRecord).when(workItemRepository).countBy(globalSearch, searchConditions);
 		String sEcho = "";
 		String sSearch = "";
 	
 
 		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
 				startDisplay, displayLength, sEcho, sSearch, searchConditions);
-
-		PowerMockito.verifyStatic();
-		WorkItem.getTotalRecord(searchConditions);
-		PowerMockito.verifyStatic();
-		WorkItem.getFilteredRecord(globalSearch, searchConditions);
-		PowerMockito.verifyStatic();
-		WorkItem.findWorkItem(globalSearch, searchConditions, startDisplay,
-				displayLength);
+		verify(workItemRepository).countBy(null, searchConditions);
+		verify(workItemRepository).countBy(globalSearch, searchConditions);
+		verify(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
 		verify(searchConditions, times(0)).setContainer(any(WorkItemContainer.class));
 		assertNotNull(result);
 		assertEquals(totalRecord, result.getiTotalRecords());
@@ -484,28 +457,20 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		assertEquals(priority.getName(), workItemDto.getPriority());
 	}
 	@Test
-	@PrepareForTest({ WorkItem.class, Project.class })
 	public void testListWorkItemByProjectWithNonIteration() {
-		PowerMockito.mockStatic(Project.class);
 		Long projectId = mockedProject.getId();
 		doReturn(mockedProject).when(projectRepository).findOne(projectId);
-		PowerMockito.mockStatic(WorkItem.class);
 		long filteredRecord = (long) 2;
 		long totalRecord = (long) 3;
 		int startDisplay = 10;
 		int displayLength = 10;
 		doReturn(mockedProject).when(mockedWorkItem).getWorkItemContainer();
-		HashSet<WorkItem> workItems = new HashSet<WorkItem>();
+		ArrayList<WorkItem> workItems = new ArrayList<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";
-		PowerMockito.when(
-				WorkItem.findWorkItem(globalSearch, searchConditions,
-						startDisplay, displayLength)).thenReturn(workItems);
-		PowerMockito.when(WorkItem.getTotalRecord(searchConditions))
-				.thenReturn(totalRecord);
-		PowerMockito.when(
-				WorkItem.getFilteredRecord(globalSearch, searchConditions))
-				.thenReturn(filteredRecord);
+		doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
+		doReturn(totalRecord).when(workItemRepository).countBy(null, searchConditions);
+		doReturn(filteredRecord).when(workItemRepository).countBy(globalSearch, searchConditions);
 		String sEcho = "";
 		String sSearch = "";
 

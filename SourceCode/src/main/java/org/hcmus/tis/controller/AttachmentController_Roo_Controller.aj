@@ -29,7 +29,6 @@ privileged aspect AttachmentController_Roo_Controller {
     
     void AttachmentController.populateEditForm(Model uiModel, Attachment attachment) {
         uiModel.addAttribute("attachment", attachment);
-        uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());
     }
     
     String AttachmentController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

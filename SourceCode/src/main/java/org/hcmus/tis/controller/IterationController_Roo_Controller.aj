@@ -39,7 +39,6 @@ privileged aspect IterationController_Roo_Controller {
     
     void IterationController.populateEditForm(Model uiModel, Iteration iteration) {
         uiModel.addAttribute("iteration", iteration);
-        uiModel.addAttribute("workitems", WorkItem.findAllWorkItems());
         uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
     }
     

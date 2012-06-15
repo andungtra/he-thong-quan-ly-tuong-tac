@@ -784,3 +784,8 @@ repository jpa --entity ~.model.WorkItemContainer --interface org.hcmus.tis.repo
 repository jpa --entity ~.model.Project --interface org.hcmus.tis.repository.ProjectRepository
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-15 14:02:25
 hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-15 15:14:23
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-15 20:01:15
+hint
+repository jpa --entity ~.model.WorkItem --interface org.hcmus.tis.repository.WorkItemRepository
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-16 00:10:34
