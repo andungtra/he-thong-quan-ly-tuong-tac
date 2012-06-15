@@ -38,6 +38,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
 import org.hcmus.tis.util.Parameter;
@@ -207,7 +208,8 @@ public class ProjectController {
 		uiModel.addAttribute("siteMapItems", siteMapItems);
 		return "projects/homepage";
 	}
-
+	@Autowired
+	WorkItemRepository workItemRepository;
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")
 	public String overview(@PathVariable("id") Long id, Model uiModel)
@@ -219,8 +221,8 @@ public class ProjectController {
 		long now = cal.get(Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = WorkItem.findAllWorkItemsByProject(
-				projectRepository.findOne(id)).getResultList();
+		Project project = projectRepository.findOne(id);
+		List<WorkItem> workItemsList = workItemRepository.findByAncestor(project, false);
 
 		for (WorkItem workItem : workItemsList) {
 			if (workItem.getDueDate() != null
@@ -237,8 +239,12 @@ public class ProjectController {
 					indues.add(workItem);
 			}
 		}
-		List listStatus = WorkItem.listStatusByProject(projectRepository
-				.findOne(id));
+		List<WorkItemStatus> statuses = workItemStatusRepository.findAll();
+		Object[][] listStatus = new Object[statuses.size()][2];
+		for(int index = 0 ; index < statuses.size(); ++index){
+			listStatus[index][0] = statuses.get(index).getName();
+			listStatus[index][1] = workItemRepository.countByAncestorContainerAndStatus(project, statuses.get(index));
+		}
 		List<WorkItemHistory> listHistorys = WorkItemHistory
 				.findAllWorkItemHistorysInProject(id, 10);
 		uiModel.addAttribute("listHistorys", listHistorys);

@@ -34,6 +34,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.EmailService;
@@ -70,6 +71,15 @@ public class WorkItemController {
 	WorkItemTypeRepository workItemTypeRepository;
 	@Autowired
 	AttachmentRepository attachmentRepository;
+	@Autowired
+	WorkItemRepository workItemRepository;
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String show(@PathVariable("id") Long id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("workitem", workItemRepository.findOne(id));
+        uiModel.addAttribute("itemId", id);
+        return "workitems/show";
+    }
 	@Autowired
 	private IterationRepository iterationRepository;
 	public IterationRepository getIterationRepository() {
@@ -124,7 +134,7 @@ public class WorkItemController {
 			populateEditForm(uiModel, workItem);
 			return "workitems/update";
 		}
-		WorkItem inDatabaseWorkItem = WorkItem.findWorkItem(workItem.getId());
+		WorkItem inDatabaseWorkItem = workItemRepository.findOne(workItem.getId());
 		workItem.setSubcribers(inDatabaseWorkItem.getSubcribers());
 		workItem.getSubcribers().remove(workItem.getAsignee());
 		WorkItemType workItemType = workItemTypeRepository.findOne(workItem
@@ -145,7 +155,7 @@ public class WorkItemController {
 				.getAttribute("account");
 		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
-		workItem.merge();
+		workItemRepository.save(workItem);
 		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "updated", emailService));
 		return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
@@ -163,10 +173,10 @@ public class WorkItemController {
 				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = projectRepository.findOne(projectId);
 		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
-		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		WorkItem workItem = workItemRepository.findOne(workItemId);
 		if (!workItem.getSubcribers().contains(member) && workItem.getAuthor() != member && workItem.getAsignee() != member) {
 			workItem.getSubcribers().add(member);
-			workItem.flush();
+			workItemRepository.save(workItem);
 		}
 		return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
@@ -231,7 +241,7 @@ public class WorkItemController {
 	@RequiresPermissions("workitem:update")
 	public String updateForm(@PathVariable("projectId") Long projectId,
 			@PathVariable("id") Long id, Model uiModel) {
-		WorkItem workItem = WorkItem.findWorkItem(id);
+		WorkItem workItem = workItemRepository.findOne(id);
 		populateEditForm(uiModel, workItem);
 		Project project = projectRepository.findOne(projectId);
 		Account account = accountRepository.getByEmail(
@@ -299,7 +309,7 @@ public class WorkItemController {
 				.getAttribute("account");
 		workItem.setUserLastEdit(acc);
 		uiModel.asMap().clear();
-		workItem.persist();
+		workItemRepository.save(workItem);
 		if (attachmentIds != null) {
 			for (Long attachmentId : attachmentIds) {
 				Attachment attachment = attachmentRepository.findOne(attachmentId);
@@ -315,6 +325,12 @@ public class WorkItemController {
 
 	}
 
+	public WorkItemRepository getWorkItemRepository() {
+		return workItemRepository;
+	}
+	public void setWorkItemRepository(WorkItemRepository workItemRepository) {
+		this.workItemRepository = workItemRepository;
+	}
 	@RequestMapping(params = {"iDisplayStart", "iDisplayLength",
 			"sEcho", "sSearch"})
 	@ResponseBody
@@ -328,9 +344,9 @@ public class WorkItemController {
 		if(searchCondition.getContainer() == null){
 			searchCondition.setContainer(project);
 		}
-		reply.setiTotalRecords((int) WorkItem.getTotalRecord(searchCondition));
-		reply.setiTotalDisplayRecords((int) WorkItem.getFilteredRecord (sSearch, searchCondition));
-		Collection<WorkItem> workItems = WorkItem.findWorkItem (sSearch, searchCondition, iDisplayStart, iDisplayLength);
+		reply.setiTotalRecords((int) workItemRepository.countBy(null, searchCondition));
+		reply.setiTotalDisplayRecords((int) workItemRepository.countBy(sSearch, searchCondition));
+		Collection<WorkItem> workItems = workItemRepository.findBy(sSearch, searchCondition, iDisplayStart, iDisplayLength);
 
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();
@@ -381,10 +397,10 @@ public class WorkItemController {
 				(String) SecurityUtils.getSubject().getPrincipal());
 		Project project = projectRepository.findOne(projectId);
 		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
-		WorkItem workItem = WorkItem.findWorkItem(workItemId);
+		WorkItem workItem = workItemRepository.findOne(workItemId);
 		if (workItem.getSubcribers().contains(member)) {
 			workItem.getSubcribers().remove(member);
-			workItem.flush();
+			workItemRepository.save(workItem);
 		}
 		return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()

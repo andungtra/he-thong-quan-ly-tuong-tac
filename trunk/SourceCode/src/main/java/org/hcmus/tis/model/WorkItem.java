@@ -21,6 +21,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,22 +36,29 @@ import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hibernate.mapping.Array;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findWorkItemsByWorkItemContainer" })
+@RooJpaEntity
+@Configurable
 public class WorkItem {
 	@javax.persistence.Transient
 	@Autowired
 	private ObjectFactory objectFactory;
+	@Autowired
+	@Transient
+	private WorkItemRepository workItemRepository;
 
 	public void setAdditionFiels(List<Field> additionalFields)
 			throws JAXBException {
@@ -157,7 +165,7 @@ public class WorkItem {
 	@PreUpdate
 	void preUpdate() {
 		WorkItemHistory history = new WorkItemHistory();
-		WorkItem oldWorKitem = WorkItem.findWorkItem(this.getId());
+		WorkItem oldWorKitem = workItemRepository.findOne(this.getId());
 		if (oldWorKitem.getSubcribers() == null || this.getSubcribers() == null || oldWorKitem.getSubcribers().size() == this.getSubcribers().size()) {
 			history.setType(WorkItemHistoryType.updated);
 			writeHistory(history);
@@ -199,7 +207,7 @@ public class WorkItem {
 		history.persist();
 	}
 
-	public static long countWorkItemByProject(Project project) {
+	/*public static long countWorkItemByProject(Project project) {
 		String jql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
 		TypedQuery<Long> query = entityManager().createQuery(jql, Long.class);
 		query.setParameter("containerId", project.getId());
@@ -223,9 +231,9 @@ public class WorkItem {
 		query.setParameter("status", "Closed");
 		query.setParameter("containerId", project.getId());
 		return query;
-	}
+	}*/
 
-	public static List<WorkItem> findWorkItems(Project project,
+	/*public static List<WorkItem> findWorkItems(Project project,
 			int iDisplayStart, int iDisplayLength, String sSearch,
 			String sSearch_0, String sSearch_1, String sSearch_2,
 			String sSearch_3) {
@@ -264,7 +272,7 @@ public class WorkItem {
 			query.setParameter("sSearch_3", "%" + sSearch_3 + "%");
 		query.setParameter("containerId", project.getId());
 		return query.getResultList();
-	}
+	}*/
 
 	public Collection<MemberInformation> getSubcribers() {
 		return subcribers;
@@ -274,7 +282,7 @@ public class WorkItem {
 		this.subcribers = subcribers;
 	}
 
-	public static TypedQuery<WorkItem> findAllWorkItemsByProject(
+	/*public static TypedQuery<WorkItem> findAllWorkItemsByProject(
 			Project findProject) {
 		// TODO Auto-generated method stub
 		String jql = "SELECT workItem FROM WorkItem workItem WHERE workitem.workItemContainer.id =:containerId OR workItem.workItemContainer.parentContainer.id =:containerId";
@@ -290,9 +298,9 @@ public class WorkItem {
 		Query query = entityManager().createQuery(jql);
 		query.setParameter("containerId", findProject.getId());
 		return query.getResultList();
-	}
+	}*/
 
-	public static List<WorkItem> findWorkItems(Project project,
+	/*public static List<WorkItem> findWorkItems(Project project,
 			int iDisplayStart, int iDisplayLength, String sSearch, Long status) {
 		// TODO Auto-generated method stub
 		String hql = "SELECT o FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
@@ -319,15 +327,15 @@ public class WorkItem {
 			query.setParameter("statusName", "Closed");
 
 		return query.getResultList();
-	}
+	}*/
 
-	public static long getTotalRecord(SearchConditionsDTO searchCondition) {
+	/*public static long getTotalRecord(SearchConditionsDTO searchCondition) {
 		return getFilteredRecord(null, searchCondition);
-	}
+	}*/
 
-	public static long getFilteredRecord(String filter,
+	/*public static long getFilteredRecord(String filter,
 			SearchConditionsDTO searchCondition) {
-/*		String hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
+		String hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
 		if (searchCondition.getTitleDescription() != null) {
 			hql = hql
 					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
@@ -381,13 +389,13 @@ public class WorkItem {
 				query.setParameter("container_" + String.valueOf(index), childContainer.get(index).getId());
 			}
 		}
-		return (Long) query.getSingleResult();*/
+		return (Long) query.getSingleResult();
 		return (long)1;
-	}
+	}*/
 
-	public static Collection<WorkItem> findWorkItem(String filter, SearchConditionsDTO searchCondition,
+	/*public static Collection<WorkItem> findWorkItem(String filter, SearchConditionsDTO searchCondition,
 			int startDisplay, int displayLength) {
-	/*	String hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
+		String hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
 		if (searchCondition.getTitleDescription() != null) {
 			hql = hql
 					+ " AND (workItem.title LIKE :titleDescription OR workItem.description LIKE :titleDescription)";
@@ -443,11 +451,11 @@ public class WorkItem {
 		}
 		query.setFirstResult(startDisplay);
 		query.setMaxResults(displayLength);
-		return query.getResultList();*/
+		return query.getResultList();
 		return new HashSet<WorkItem>();
-	}
+	}*/
 
-	public static long countWorkItems(Project project, String sSearch,
+/*	public static long countWorkItems(Project project, String sSearch,
 			Long status) {
 		// TODO Auto-generated method stub
 		String hql = "SELECT COUNT(o) FROM WorkItem as o WHERE (o.workItemContainer.id =:containerId or o.workItemContainer.parentContainer.id =:containerId)";
@@ -472,5 +480,5 @@ public class WorkItem {
 			query.setParameter("statusName", "Closed");
 
 		return query.getSingleResult();
-	}
+	}*/
 }

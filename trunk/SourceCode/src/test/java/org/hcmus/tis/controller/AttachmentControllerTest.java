@@ -23,6 +23,7 @@ import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AttachmentRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.service.FileService;
 import org.junit.After;
 import org.junit.Assert;
@@ -53,6 +54,8 @@ public class AttachmentControllerTest extends AbstractShiroTest{
 	private Subject mockedSubject;
 	@Mock
 	AttachmentRepository attachmentRepository;
+	@Mock
+	WorkItemRepository workItemRepository;
 
 	@Before
 	public void setUp() {
@@ -61,6 +64,7 @@ public class AttachmentControllerTest extends AbstractShiroTest{
 		aut.setContext(servletContext);
 		aut.setFileService(fileService);
 		aut.setAttachmentRepository(attachmentRepository);
+		aut.setWorkItemRepository(workItemRepository);
 		doReturn(true).when(mockedSubject).isAuthenticated();
 		doThrow(UnauthorizedException.class).when(mockedSubject).checkPermission(anyString());
 		setSubject(mockedSubject);
@@ -98,7 +102,7 @@ public class AttachmentControllerTest extends AbstractShiroTest{
 
 	@Test
 	@PrepareForTest({AttachmentController.class,
-			IOUtils.class, WorkItem.class })
+			IOUtils.class})
 	public void testCreateFromWorkItem() throws Exception {
 		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
 		Long workItemId = (long)1;
@@ -110,9 +114,8 @@ public class AttachmentControllerTest extends AbstractShiroTest{
 		doReturn(fileName).when(httpServletRequest)
 				.getHeader("X-File-Name");
 		PowerMockito.mockStatic(IOUtils.class);
-		PowerMockito.mockStatic(WorkItem.class);
 		WorkItem mockedWorkItem = mock(WorkItem.class);
-		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(mockedWorkItem);
+		doReturn(mockedWorkItem).when(workItemRepository).findOne(workItemId);
 
 		FileUploaderResponse result = aut.createFromWorkItem(uiModel, workItemId,httpServletRequest);
 		PowerMockito.verifyStatic();

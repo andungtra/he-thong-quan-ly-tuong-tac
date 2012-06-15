@@ -21,17 +21,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect CommentController_Roo_Controller {
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String CommentController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new Comment());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (WorkItem.countWorkItems() == 0) {
-            dependencies.add(new String[] { "workitem", "workitems" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
-        return "comments/create";
-    }
+   
     
     void CommentController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("comment_commentdate_date_format", "dd-MM-yyyy'T'HH:mm");

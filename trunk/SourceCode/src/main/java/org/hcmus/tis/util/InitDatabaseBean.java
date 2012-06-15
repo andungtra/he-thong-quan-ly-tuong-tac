@@ -30,10 +30,12 @@ public class InitDatabaseBean {
 	public void init() {
 		String statusNames[] = { "New", "In Process", "Resolved", "Closed",
 				"Rejected" };
+		Boolean closeds[] ={false, false, true, true, true};
 		if (workItemStatusRepository.count() == 0) {
-			for (String name : statusNames) {
+			for (int index = 0; index < statusNames.length; ++index) {
 				WorkItemStatus status = new WorkItemStatus();
-				status.setName(name);
+				status.setClosed(closeds[index]);
+				status.setName(statusNames[index]);
 				workItemStatusRepository.save(status);
 			}
 		}

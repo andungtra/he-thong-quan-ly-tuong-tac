@@ -29,8 +29,14 @@ privileged aspect WorkItemStatusDataOnDemand_Roo_DataOnDemand {
     
     public WorkItemStatus WorkItemStatusDataOnDemand.getNewTransientWorkItemStatus(int index) {
         WorkItemStatus obj = new WorkItemStatus();
+        setClosed(obj, index);
         setName(obj, index);
         return obj;
+    }
+    
+    public void WorkItemStatusDataOnDemand.setClosed(WorkItemStatus obj, int index) {
+        Boolean closed = true;
+        obj.setClosed(closed);
     }
     
     public void WorkItemStatusDataOnDemand.setName(WorkItemStatus obj, int index) {

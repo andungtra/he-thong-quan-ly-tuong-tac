@@ -26,6 +26,8 @@ import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
+import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
 import org.hcmus.tis.service.EmailService.SendMailException;
@@ -54,6 +56,8 @@ public class AccountController {
 	AccountRepository accountRepository;
 	@Autowired
 	MemberInformationRepository memberInformationRepository;
+	@Autowired
+	WorkItemRepository workItemRepository;
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
@@ -171,11 +175,12 @@ public class AccountController {
 
 	@RequestMapping(value = "/{id}/dashboard", produces = "text/html")
 	public String showDashBoard(@PathVariable("id") Long id, Model uiModel) {
+		Account account = accountRepository.findOne(id);
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		long now = cal.get(java.util.Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = WorkItem.findAllWorkItems();
+		List<WorkItem> workItemsList = workItemRepository.findByAsigneeAndFinalStatus(account, false);
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
 				if (workItem.getAsignee() != null
@@ -198,7 +203,6 @@ public class AccountController {
 		}
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
-		Account account = accountRepository.findOne(id);
 		Collection<MemberInformation> members = memberInformationRepository.findByAccountAndDeleted(account, false);
 		Collection<Project> listProject = new HashSet<Project>();
 		for(MemberInformation member : members){

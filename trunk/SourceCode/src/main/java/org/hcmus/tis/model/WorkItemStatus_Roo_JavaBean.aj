@@ -15,4 +15,12 @@ privileged aspect WorkItemStatus_Roo_JavaBean {
         this.name = name;
     }
     
+    public boolean WorkItemStatus.isClosed() {
+        return this.closed;
+    }
+    
+    public void WorkItemStatus.setClosed(boolean closed) {
+        this.closed = closed;
+    }
+    
 }

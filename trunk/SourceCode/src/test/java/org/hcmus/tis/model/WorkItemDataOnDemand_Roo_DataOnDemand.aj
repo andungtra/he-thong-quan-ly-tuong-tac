@@ -25,6 +25,7 @@ import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemStatusDataOnDemand;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.model.WorkItemTypeDataOnDemand;
+import org.hcmus.tis.repository.WorkItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,9 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private WorkItemTypeDataOnDemand WorkItemDataOnDemand.workItemTypeDataOnDemand;
+    
+    @Autowired
+    WorkItemRepository WorkItemDataOnDemand.workItemRepository;
     
     public WorkItem WorkItemDataOnDemand.getNewTransientWorkItem(int index) {
         WorkItem obj = new WorkItem();
@@ -142,14 +146,14 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         }
         WorkItem obj = data.get(index);
         Long id = obj.getId();
-        return WorkItem.findWorkItem(id);
+        return workItemRepository.findOne(id);
     }
     
     public WorkItem WorkItemDataOnDemand.getRandomWorkItem() {
         init();
         WorkItem obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return WorkItem.findWorkItem(id);
+        return workItemRepository.findOne(id);
     }
     
     public boolean WorkItemDataOnDemand.modifyWorkItem(WorkItem obj) {
@@ -159,7 +163,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
     public void WorkItemDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = WorkItem.findWorkItemEntries(from, to);
+        data = workItemRepository.findAll(new org.springframework.data.domain.PageRequest(from / to, to)).getContent();
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'WorkItem' illegally returned null");
         }
@@ -171,7 +175,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             WorkItem obj = getNewTransientWorkItem(i);
             try {
-                obj.persist();
+                workItemRepository.save(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -180,7 +184,7 @@ privileged aspect WorkItemDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            workItemRepository.flush();
             data.add(obj);
         }
     }

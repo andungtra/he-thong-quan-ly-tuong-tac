@@ -69,7 +69,7 @@ public class WorkItemIntegrationTest {
 		Collection<WorkItem> result = WorkItem.findWorkItemsByProject(project).getResultList();
 		Assert.assertEquals(2, result.size());*/
 	}
-	@Test
+/*	@Test
 	public void testGetTotalRecord1(){
 		Project project = projectDataOnDemand.getNewTransientProject(11);
 		project.persist();
@@ -215,7 +215,7 @@ public class WorkItemIntegrationTest {
 		searchCondition.setTitleDescription("aa");
 		Collection<WorkItem>  result = WorkItem.findWorkItem( null, searchCondition, 1, 1);
 		Assert.assertEquals(1, result.size());
-	}
+	}*/
 	@Test
 	public void testSearchWorkItemWithTreeIteration(){
 		/*Iteration parentIte = iterationDataOnDemand.getNewTransientIteration(11);
