@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.hcmus.tis.controller.StudyClassController;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -24,6 +25,8 @@ privileged aspect StudyClassController_Roo_Controller {
     
     @Autowired
     StudyClassRepository StudyClassController.studyClassRepository;
+    @Autowired
+    ProjectRepository StudyClassController.projectRepository;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyClassController.create(@Valid StudyClass studyClass, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -82,7 +85,7 @@ privileged aspect StudyClassController_Roo_Controller {
     
     void StudyClassController.populateEditForm(Model uiModel, StudyClass studyClass) {
         uiModel.addAttribute("studyClass", studyClass);
-        uiModel.addAttribute("projects", Project.findAllProjects());
+        uiModel.addAttribute("projects", projectRepository.findAll());
     }
     
     String StudyClassController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -7,9 +7,10 @@ import javax.persistence.TypedQuery;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectStatus;
 import org.springframework.stereotype.Repository;
 @Repository
-public class SpecificAccountRepository {
+public class AuthorityRepository {
 	@PersistenceContext
 	EntityManager entityManger;
 	public Account getByEmail(String email){
@@ -24,6 +25,13 @@ public class SpecificAccountRepository {
 		query.setParameter("accountId", account.getId());
 		query.setParameter("projectId", project.getId());
 		query.setParameter("deleted", deleted);
+		return query.getSingleResult();
+	}
+	public Project findProject(Long projectId){
+		String hql = "SELECT o FROM Project o WHERE o.id =:id AND o.status <> :status";
+		TypedQuery<Project> query = entityManger.createQuery(hql, Project.class);
+		query.setParameter("id", projectId);
+		query.setParameter("status", ProjectStatus.DELETED);
 		return query.getSingleResult();
 	}
 

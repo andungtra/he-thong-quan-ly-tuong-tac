@@ -16,6 +16,8 @@ import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MemberInformationController {
 	@Autowired
 	private AccountRepository accountRepository;
+	@Autowired
+	private ProjectRepository projectRepository;
+	@Autowired
+	private MemberInformationRepository memberInformationRepository;
+	@Autowired
+	private AccountService accountService;
 
 	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
 	public String createForm(Model uiModel,
@@ -46,7 +54,7 @@ public class MemberInformationController {
 		uiModel.addAttribute("redirectUrl", redirectUrl);
 		return "memberinformations/createfromproject";
 	}
-
+	
 	@RequestMapping(params = { "email", "memberRoleId", "projectId" }, method = RequestMethod.POST, produces = "text/html")
 	public String create(
 			Model uiModel,
@@ -68,7 +76,7 @@ public class MemberInformationController {
 		}
 
 		MemberRole memberRole = MemberRole.findMemberRole(memberRoleId);
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 
 		MemberInformation exist = memberInformationRepository
 				.findByAccountAndProjectAndDeleted(account, project, false);
@@ -89,7 +97,7 @@ public class MemberInformationController {
 			 * memberInformation.getId().toString(), httpServletRequest);
 			 */
 
-			Set<MemberInformation> memberInformations = Project.findProject(
+			Set<MemberInformation> memberInformations = projectRepository.findOne(
 					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
 			uiModel.addAttribute("projectId", projectId);
@@ -101,7 +109,7 @@ public class MemberInformationController {
 				&& deletedMember != null) {
 			deletedMember.setDeleted(false);
 			memberInformationRepository.save(deletedMember);
-			Set<MemberInformation> memberInformations = Project.findProject(
+			Set<MemberInformation> memberInformations = projectRepository.findOne(
 					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
 			uiModel.addAttribute("projectId", projectId);
@@ -171,7 +179,7 @@ public class MemberInformationController {
 			int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		Pageable pageRequest = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
 		Page<MemberInformation> page = memberInformationRepository.findByProjectAndAccountLikeAndDeleted(project, "%" + sSearch + "%", false, pageRequest);
 		List<MemberInformation> list = page.getContent();
@@ -193,4 +201,10 @@ public class MemberInformationController {
 		reply.setiTotalRecords((int)memberInformationRepository.countByProjectAndDeleted(project, false));
 		return reply;
 	}
+    void populateEditForm(Model uiModel, MemberInformation memberInformation) {
+        uiModel.addAttribute("memberInformation", memberInformation);
+        uiModel.addAttribute("accounts", accountService.findAllAccounts());
+        uiModel.addAttribute("memberroles", MemberRole.findAllMemberRoles());
+        uiModel.addAttribute("projects", projectRepository.findAll());
+    }
 }

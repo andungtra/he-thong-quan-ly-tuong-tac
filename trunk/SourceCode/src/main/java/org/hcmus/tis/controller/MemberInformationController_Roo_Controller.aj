@@ -6,11 +6,7 @@ package org.hcmus.tis.controller;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.MemberInformationController;
-import org.hcmus.tis.model.MemberInformation;
-import org.hcmus.tis.model.MemberRole;
-import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.MemberInformationRepository;
-import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +16,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 privileged aspect MemberInformationController_Roo_Controller {
-    
-    @Autowired
-    MemberInformationRepository MemberInformationController.memberInformationRepository;
-    
-    @Autowired
-    AccountService MemberInformationController.accountService;
+
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String MemberInformationController.show(@PathVariable("id") Long id, Model uiModel) {
@@ -52,13 +43,6 @@ privileged aspect MemberInformationController_Roo_Controller {
     public String MemberInformationController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, memberInformationRepository.findOne(id));
         return "memberinformations/update";
-    }
-    
-    void MemberInformationController.populateEditForm(Model uiModel, MemberInformation memberInformation) {
-        uiModel.addAttribute("memberInformation", memberInformation);
-        uiModel.addAttribute("accounts", accountService.findAllAccounts());
-        uiModel.addAttribute("memberroles", MemberRole.findAllMemberRoles());
-        uiModel.addAttribute("projects", Project.findAllProjects());
     }
     
     String MemberInformationController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

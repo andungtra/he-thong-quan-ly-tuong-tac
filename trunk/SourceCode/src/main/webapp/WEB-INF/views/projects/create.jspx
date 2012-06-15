@@ -7,17 +7,17 @@
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
         <field:select field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="RtYHYGN7PFWC0YJisGpaT3tVlyw="/>
         <util:advancedpanel title="Advanced">
-            <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
+            <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" label="Parent project" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="user-managed"/>
             <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         </util:advancedpanel>
         <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" render="false" z="user-managed"/>
         <input name="c_org_hcmus_tis_model_Project_memberInformations" type="hidden" value="${project.memberInformations}"/>
+        <input type="hidden" name="status" value="${project.status }"></input>
         <field:select field="status" id="c_org_hcmus_tis_model_Project_status" items="${projectstatuses}" path="projectstatuses" render="false" required="true" z="user-managed"/>
-        <input name="c_org_hcmus_tis_model_Project_status" type="hidden" value="${projectstatuses[0]}"/>
         <field:select field="calendar" id="c_org_hcmus_tis_model_Project_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" z="user-managed"/>
         <input name="c_org_hcmus_tis_model_Project_calendar" type="hidden" value=""/>
-        <field:simple field="children" id="c_org_hcmus_tis_model_Project_children" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Container" z="aqnVLOiOH4rOg5fcgMLNj4CnDG0="/>
-        <field:simple field="workItems" id="c_org_hcmus_tis_model_Project_workItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item" z="MEuC24NAziha6JAPTp/CwEUbm8g="/>
+        <field:simple render="false" field="children" id="c_org_hcmus_tis_model_Project_children" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Container" z="user-managed"/>
+        <field:simple render="false" field="workItems" id="c_org_hcmus_tis_model_Project_workItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item" z="user-managed"/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Project" render="${not empty dependencies}" z="oUwFVkWRLSvnxKFthMXtrdbKIJU="/>
 </div>

@@ -33,6 +33,7 @@ import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.EmailService;
@@ -111,6 +112,8 @@ public class WorkItemController {
 		this.accountRepository = accountRepository;
 	}
 	@Autowired
+	ProjectRepository projectRepository;
+	@Autowired
 	private AccountRepository accountRepository;
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
@@ -158,7 +161,7 @@ public class WorkItemController {
 			HttpServletRequest httpServletRequest) {
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
 		if (!workItem.getSubcribers().contains(member) && workItem.getAuthor() != member && workItem.getAsignee() != member) {
@@ -186,7 +189,7 @@ public class WorkItemController {
 	public String createForm(@PathVariable("projectId") Long projectId,
 			Long workItemTypeId, String redirectUrl, Model uiModel) throws NotPermissionException {
 		WorkItem workItem = new WorkItem();
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		workItem.setWorkItemContainer(project);
 		WorkItemType workItemType = workItemTypeRepository
 				.findOne(workItemTypeId);
@@ -203,9 +206,9 @@ public class WorkItemController {
 		}catch(Exception ex){}
 		if (memberInformation == null) {
 			//throw new NotPermissionException();
-			//uiModel.addAttribute("project", Project.findProject(projectId));
+			//uiModel.addAttribute("project", projectRepository.findOne(projectId));
 			uiModel.addAttribute("itemId", projectId);
-			uiModel.addAttribute("workItemTypes", Project.findProject(projectId)
+			uiModel.addAttribute("workItemTypes", projectRepository.findOne(projectId)
 					.getProjectProcess().getWorkItemTypes());
 			uiModel.addAttribute("error","You are not member of the project !");
 			return "projects/tasks";
@@ -230,7 +233,7 @@ public class WorkItemController {
 			@PathVariable("id") Long id, Model uiModel) {
 		WorkItem workItem = WorkItem.findWorkItem(id);
 		populateEditForm(uiModel, workItem);
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
 		MemberInformation member =memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
@@ -321,7 +324,7 @@ public class WorkItemController {
 			int iDisplayLength, String sEcho, String sSearch, @Valid SearchConditionsDTO searchCondition) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		if(searchCondition.getContainer() == null){
 			searchCondition.setContainer(project);
 		}
@@ -350,6 +353,12 @@ public class WorkItemController {
 		return reply;
 	}
 
+	public ProjectRepository getProjectRepository() {
+		return projectRepository;
+	}
+	public void setProjectRepository(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
+	}
 	void addDateTimeFormatPatterns(Model uiModel) {
 		uiModel.addAttribute("date_format","dd-MM-yyyy HH:mm");
 	}
@@ -370,7 +379,7 @@ public class WorkItemController {
 			HttpServletRequest httpServletRequest){
 		Account account = accountRepository.getByEmail(
 				(String) SecurityUtils.getSubject().getPrincipal());
-		Project project = Project.findProject(projectId);
+		Project project = projectRepository.findOne(projectId);
 		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(account, project, false);
 		WorkItem workItem = WorkItem.findWorkItem(workItemId);
 		if (workItem.getSubcribers().contains(member)) {

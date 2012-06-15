@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -20,13 +21,15 @@ import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findProjectsByNameLike" })
+@RooJpaEntity
 public class Project extends WorkItemContainer {
 	@Type(type="text")
 	private String description;
@@ -49,11 +52,11 @@ public class Project extends WorkItemContainer {
 	public void prePersit() {
 		calendar = new Calendar();
 	}
-
+	@NotNull
 	@Enumerated
 	private ProjectStatus status;
 
-	public static long countProjectsByNameLike(String name) {
+/*	public static long countProjectsByNameLike(String name) {
 		if (name == null || name.length() == 0)
 			throw new IllegalArgumentException("The name argument is required");
 		name = name.replace('*', '%');
@@ -105,7 +108,7 @@ public class Project extends WorkItemContainer {
 			rs.add(info.getProject());
 		}
 		return rs;
-	}
+	}*/
 
 	public Project getParentProjectOrMyself() {
 		return this;
@@ -136,7 +139,7 @@ public class Project extends WorkItemContainer {
 		return q.getResultList();
 	}
 
-	public static List<Project> findProjectEntries(int iDisplayStart,
+	/*public static List<Project> findProjectEntries(int iDisplayStart,
 			int iDisplayLength, String sSearch, String sSearch_0,
 			String sSearch_1, String sSearch_2) {
 		// TODO Auto-generated method stub
@@ -235,5 +238,5 @@ public class Project extends WorkItemContainer {
 		q.setParameter("status", ProjectStatus.DELETED);
 
 		return q.getSingleResult();
-	}
+	}*/
 }

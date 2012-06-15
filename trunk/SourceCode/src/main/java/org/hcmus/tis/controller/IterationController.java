@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.IterationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IterationController {
 	@Autowired
 	private IterationRepository iterationRepository;
+	@Autowired
+	private ProjectRepository projectRepository;
     @RequestMapping(params = "form", produces = "text/html")
     public String createForm(@PathVariable("projectid") Long projectId, Model uiModel) {
-    	Project project = Project.findProject(projectId);
+    	Project project = projectRepository.findOne(projectId);
     	Iteration iteration = new Iteration();
     	iteration.setParentContainer(project);
         populateEditForm(uiModel, iteration, project);
@@ -41,7 +44,7 @@ public class IterationController {
         }
         uiModel.asMap().clear();
         if(iteration.getParentContainer() == null){
-        	Project project = Project.findProject(projectId);
+        	Project project = projectRepository.findOne(projectId);
         	iteration.setParentContainer(project);
         }
         iteration.merge();
@@ -50,26 +53,34 @@ public class IterationController {
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String updateForm(@PathVariable("projectid") Long projectId, @PathVariable("id") Long id, Model uiModel) {
-    	Project project = Project.findProject(projectId);
+    	Project project = projectRepository.findOne(projectId);
         populateEditForm(uiModel, iterationRepository.findOne(id), project);
         return "iterations/update";
     }
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@PathVariable("projectid")  Long projectId, @Valid Iteration iteration, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
-        	Project project = Project.findProject(projectId);
+        	Project project = projectRepository.findOne(projectId);
             populateEditForm(uiModel, iteration, project);
             return "iterations/create";
         }
         uiModel.asMap().clear();
         if(iteration.getParentContainer() == null){
-        	Project project = Project.findProject(projectId);
+        	Project project = projectRepository.findOne(projectId);
         	iteration.setParentContainer(project);
         }
         iteration.persist();
         return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/roadmap";
     }
-    void populateEditForm(Model uiModel, Iteration iteration, Project project) {
+    public ProjectRepository getProjectRepository() {
+		return projectRepository;
+	}
+
+	public void setProjectRepository(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
+	}
+
+	void populateEditForm(Model uiModel, Iteration iteration, Project project) {
         uiModel.addAttribute("iteration", iteration);
         Collection<Iteration> iterations = iterationRepository.findByAncestor(project);
         iterations.remove(iteration);
