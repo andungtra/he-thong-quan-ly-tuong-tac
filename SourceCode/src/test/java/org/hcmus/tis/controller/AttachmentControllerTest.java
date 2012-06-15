@@ -22,13 +22,18 @@ import org.apache.shiro.subject.Subject;
 import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.service.FileService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.*;
+
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -38,22 +43,26 @@ import org.springframework.ui.Model;
 @RunWith(PowerMockRunner.class)
 public class AttachmentControllerTest extends AbstractShiroTest{
 	private AttachmentController aut;
+	@Mock
 	private Model uiModel;
+	@Mock
 	private FileService fileService;
+	@Mock
 	private ServletContext servletContext;
+	@Mock
 	private Subject mockedSubject;
+	@Mock
+	AttachmentRepository attachmentRepository;
 
 	@Before
 	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 		aut = new AttachmentController();
-		uiModel = Mockito.mock(Model.class);
-		fileService = Mockito.mock(FileService.class);
-		servletContext = Mockito.mock(ServletContext.class);
 		aut.setContext(servletContext);
 		aut.setFileService(fileService);
-		Subject mockedSubject = Mockito.mock(Subject.class);
-		Mockito.doReturn(true).when(mockedSubject).isAuthenticated();
-		Mockito.doThrow(UnauthorizedException.class).when(mockedSubject).checkPermission(Mockito.anyString());
+		aut.setAttachmentRepository(attachmentRepository);
+		doReturn(true).when(mockedSubject).isAuthenticated();
+		doThrow(UnauthorizedException.class).when(mockedSubject).checkPermission(anyString());
 		setSubject(mockedSubject);
 	}
 	@After
@@ -61,104 +70,98 @@ public class AttachmentControllerTest extends AbstractShiroTest{
 		clearSubject();
 	}
 	@Test
-	@PrepareForTest({ Attachment.class, AttachmentController.class,
+	@PrepareForTest({AttachmentController.class,
 			IOUtils.class })
 	public void testCreate() throws Exception {
-		HttpServletRequest httpServletRequest = Mockito
-				.mock(HttpServletRequest.class);
-		Attachment mockedAttachment = Mockito.mock(Attachment.class);
-		Mockito.doReturn((long) 1).when(mockedAttachment).getId();
+		HttpServletRequest httpServletRequest =mock(HttpServletRequest.class);
+		Attachment mockedAttachment = mock(Attachment.class);
+		doReturn((long) 1).when(mockedAttachment).getId();
 		PowerMockito.whenNew(Attachment.class).withNoArguments()
 				.thenReturn(mockedAttachment);
 		String fileName = "fileName";
-		Mockito.doReturn(fileName).when(httpServletRequest)
+		doReturn(fileName).when(httpServletRequest)
 				.getHeader("X-File-Name");
 		PowerMockito.mockStatic(IOUtils.class);
 
 		FileUploaderResponse result = aut.create(uiModel, httpServletRequest);
 		PowerMockito.verifyStatic();
-		IOUtils.copy(Mockito.any(InputStream.class),
-				Mockito.any(FileOutputStream.class));
-		Mockito.verify(mockedAttachment).persist();
-		Mockito.verify(mockedAttachment).setDisplayFileName(fileName);
-		Mockito.verify(fileService).getFileOutPutStream(
-				Mockito.contains(mockedAttachment.getId().toString()));
+		IOUtils.copy(any(InputStream.class),
+				any(FileOutputStream.class));
+		verify(attachmentRepository).save(mockedAttachment);
+		verify(mockedAttachment).setDisplayFileName(fileName);
+		verify(fileService).getFileOutPutStream(
+				contains(mockedAttachment.getId().toString()));
 		Assert.assertEquals(true, result.isSuccess());
 		assertEquals(mockedAttachment.getId(), result.getAttachmentId());
-		Mockito.verify(mockedAttachment).setRealFileName(Mockito.anyString());
+		verify(mockedAttachment).setRealFileName(anyString());
 	}
 
 	@Test
-	@PrepareForTest({ Attachment.class, AttachmentController.class,
+	@PrepareForTest({AttachmentController.class,
 			IOUtils.class, WorkItem.class })
 	public void testCreateFromWorkItem() throws Exception {
-		HttpServletRequest httpServletRequest = Mockito
-				.mock(HttpServletRequest.class);
+		HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
 		Long workItemId = (long)1;
-		Attachment mockedAttachment = Mockito.mock(Attachment.class);
-		Mockito.doReturn((long) 1).when(mockedAttachment).getId();
+		Attachment mockedAttachment = mock(Attachment.class);
+		doReturn((long) 1).when(mockedAttachment).getId();
 		PowerMockito.whenNew(Attachment.class).withNoArguments()
 				.thenReturn(mockedAttachment);
 		String fileName = "fileName";
-		Mockito.doReturn(fileName).when(httpServletRequest)
+		doReturn(fileName).when(httpServletRequest)
 				.getHeader("X-File-Name");
 		PowerMockito.mockStatic(IOUtils.class);
 		PowerMockito.mockStatic(WorkItem.class);
-		WorkItem mockedWorkItem = Mockito.mock(WorkItem.class);
+		WorkItem mockedWorkItem = mock(WorkItem.class);
 		PowerMockito.when(WorkItem.findWorkItem(workItemId)).thenReturn(mockedWorkItem);
 
 		FileUploaderResponse result = aut.createFromWorkItem(uiModel, workItemId,httpServletRequest);
 		PowerMockito.verifyStatic();
-		IOUtils.copy(Mockito.any(InputStream.class),
-				Mockito.any(FileOutputStream.class));
-		Mockito.verify(mockedAttachment).setWorkItem(mockedWorkItem);
-		Mockito.verify(mockedAttachment).persist();
-		Mockito.verify(mockedAttachment).setDisplayFileName(fileName);
-		Mockito.verify(fileService).getFileOutPutStream(
-				Mockito.contains(mockedAttachment.getId().toString()));
+		IOUtils.copy(any(InputStream.class),
+				any(FileOutputStream.class));
+		verify(mockedAttachment).setWorkItem(mockedWorkItem);
+		verify(attachmentRepository).save(mockedAttachment);
+		verify(mockedAttachment).setDisplayFileName(fileName);
+		verify(fileService).getFileOutPutStream(
+				contains(mockedAttachment.getId().toString()));
 		Assert.assertEquals(true, result.isSuccess());
 		assertEquals(mockedAttachment.getId(), result.getAttachmentId());
-		Mockito.verify(mockedAttachment).setRealFileName(Mockito.anyString());
+		verify(mockedAttachment).setRealFileName(anyString());
 	}
 	@Test
-	@PrepareForTest({Attachment.class})
 	public void testDelete(){
 		Long id = (long)1;
-		PowerMockito.mockStatic(Attachment.class);
-		Attachment mockedAttachment = Mockito.mock(Attachment.class);
-		PowerMockito.when(Attachment.findAttachment(id)).thenReturn(mockedAttachment);
+		Attachment mockedAttachment = mock(Attachment.class);
+		doReturn(mockedAttachment).when(attachmentRepository).findOne(id);
 		
 		FileUploaderResponse result = aut.delete(id);
 		
-		Mockito.verify(mockedAttachment).remove();
+		verify(attachmentRepository).delete(mockedAttachment);
 		assertEquals(true, result.isSuccess());
 		assertEquals(id, result.getAttachmentId());
 		
 	}
 	@Test
-	@PrepareForTest({Attachment.class, IOUtils.class})
+	@PrepareForTest({IOUtils.class})
 	public void testShow() throws IOException{
 		Long attachmentId  = (long)1;
-		HttpServletResponse mockedResponse = Mockito.mock(HttpServletResponse.class);
-		ServletOutputStream mockedOutputStream = Mockito.mock(ServletOutputStream.class);
-		Mockito.doReturn(mockedOutputStream).when(mockedResponse).getOutputStream();
+		HttpServletResponse mockedResponse = mock(HttpServletResponse.class);
+		ServletOutputStream mockedOutputStream = mock(ServletOutputStream.class);
+		doReturn(mockedOutputStream).when(mockedResponse).getOutputStream();
 		
-		Attachment mockedAttachment = Mockito.mock(Attachment.class);
-		Mockito.doReturn((long)1).when(mockedAttachment).getId();
-		PowerMockito.mockStatic(Attachment.class);
-		PowerMockito.when(Attachment.findAttachment(attachmentId)).thenReturn(mockedAttachment);
+		Attachment mockedAttachment = mock(Attachment.class);
+		doReturn((long)1).when(mockedAttachment).getId();
+		doReturn(mockedAttachment).when(attachmentRepository).findOne(attachmentId);
 		PowerMockito.mockStatic(IOUtils.class);
 		
-		Mockito.doReturn("realpath").when(servletContext).getRealPath(Mockito.anyString());
+		doReturn("realpath").when(servletContext).getRealPath(anyString());
 		
 		
 		aut.show(attachmentId, mockedResponse);
 		
-		Mockito.verify(mockedResponse).getOutputStream();
+		verify(mockedResponse).getOutputStream();
 		PowerMockito.verifyStatic();
-		IOUtils.copy(Mockito.any(FileInputStream.class), Mockito.any(ServletOutputStream.class));
-		Attachment.findAttachment(attachmentId);
-		Mockito.verify(fileService).getFileInPutStream("realpath" + File.separatorChar + "1");
+		IOUtils.copy(any(FileInputStream.class), any(ServletOutputStream.class));
+		verify(fileService).getFileInPutStream("realpath" + File.separatorChar + "1");
 		
 	}
 

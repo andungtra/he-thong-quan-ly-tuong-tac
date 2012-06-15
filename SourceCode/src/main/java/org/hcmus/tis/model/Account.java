@@ -29,7 +29,6 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJpaEntity
-@Configurable
 public class Account implements java.io.Serializable {
 	/**
 	 * 

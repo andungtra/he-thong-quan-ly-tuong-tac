@@ -33,6 +33,7 @@ import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -54,6 +55,7 @@ import static org.mockito.Mockito.*;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mock.staticmock.MockStaticEntityMethods;
 import org.springframework.ui.Model;
@@ -100,6 +102,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private MemberInformationRepository memberInformationRepository;
 	@Mock
+	private AttachmentRepository attachmentRepository;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -110,6 +114,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		aut.setPriorityRepository(priorityRepository);
 		aut.setAccountRepository(accountRepository);
 		doReturn(mockedSession).when(mockedSubject).getSession();
+		aut.setAttachmentRepository(attachmentRepository);
 		doReturn((long) 1).when(mockedWorkItem).getId();
 		doReturn((long) 2).when(mockedWorkItemType).getId();
 		doReturn((long) 3).when(mockedProject).getId();
@@ -214,7 +219,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	private List<Field> finalField;
 
 	@Test
-	@PrepareForTest({Attachment.class })
 	public void testCreate() throws JAXBException {
 		WorkItem workItem = new WorkItem();
 		workItem.setId((long) 4);
@@ -244,13 +248,10 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 
 		doReturn("value").when(mockedHttpRequest).getParameter("name");
 		Long attachmentIds[] = { (long) 1, (long) 2 };
-		PowerMockito.mockStatic(Attachment.class);
 		Attachment mockedAttachment1 = mock(Attachment.class);
 		Attachment mocedAttachment2 = mock(Attachment.class);
-		PowerMockito.when(Attachment.findAttachment((long) 1)).thenReturn(
-				mocedAttachment2);
-		PowerMockito.when(Attachment.findAttachment((long) 2)).thenReturn(
-				mockedAttachment1);
+		doReturn(mocedAttachment2).when(attachmentRepository).findOne((long)1);
+		doReturn(mockedAttachment1).when(attachmentRepository).findOne((long)2);
 
 		aut.create(spyWorkItem, mockedBindingResult, (long)1, mockedUIModel,
 				attachmentIds, mockedHttpRequest);
@@ -258,9 +259,8 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		verify(mockedHttpRequest).getParameter("name");
 		verify(spyWorkItem).persist();
 		verify(mockedAttachment1).setWorkItem(spyWorkItem);
-		verify(mockedAttachment1).flush();
+		verify(attachmentRepository, atLeastOnce()).flush();
 		verify(mocedAttachment2).setWorkItem(spyWorkItem);
-		verify(mocedAttachment2).flush();
 		assertEquals(1, finalField.size());
 		assertEquals("name", finalField.get(0).getName());
 		assertEquals("value", finalField.get(0).getValue());

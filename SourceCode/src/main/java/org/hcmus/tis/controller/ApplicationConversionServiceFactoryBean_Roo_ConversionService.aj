@@ -17,6 +17,8 @@ import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.AttachmentRepository;
+import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
@@ -51,6 +53,10 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     WorkItemTypeRepository ApplicationConversionServiceFactoryBean.workItemTypeRepository;
     @Autowired
     MemberInformationRepository ApplicationConversionServiceFactoryBean.memberInformationRepository;
+    @Autowired
+    AttachmentRepository ApplicationConversionServiceFactoryBean.attachmentRepository;
+    @Autowired
+    CommentRepository ApplicationConversionServiceFactoryBean.commentRepository;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -79,7 +85,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Attachment> ApplicationConversionServiceFactoryBean.getIdToAttachmentConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Attachment>() {
             public org.hcmus.tis.model.Attachment convert(java.lang.Long id) {
-                return Attachment.findAttachment(id);
+                return attachmentRepository.findOne(id);
             }
         };
     }
@@ -103,7 +109,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Comment> ApplicationConversionServiceFactoryBean.getIdToCommentConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Comment>() {
             public org.hcmus.tis.model.Comment convert(java.lang.Long id) {
-                return Comment.findComment(id);
+                return commentRepository.findOne(id);
             }
         };
     }

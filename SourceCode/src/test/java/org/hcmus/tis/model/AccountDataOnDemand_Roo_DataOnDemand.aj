@@ -14,7 +14,6 @@ import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.AccountStatus;
 import org.hcmus.tis.model.Calendar;
-import org.hcmus.tis.model.CalendarDataOnDemand;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     private Random AccountDataOnDemand.rnd = new SecureRandom();
     
     private List<Account> AccountDataOnDemand.data;
-    
-    @Autowired
-    private CalendarDataOnDemand AccountDataOnDemand.calendarDataOnDemand;
     
     @Autowired
     AccountService AccountDataOnDemand.accountService;
@@ -50,7 +46,7 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     }
     
     public void AccountDataOnDemand.setCalendar(Account obj, int index) {
-        Calendar calendar = calendarDataOnDemand.getSpecificCalendar(index);
+        Calendar calendar = null;
         obj.setCalendar(calendar);
     }
     

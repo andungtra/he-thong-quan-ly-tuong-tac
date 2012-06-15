@@ -26,36 +26,6 @@ privileged aspect AttachmentController_Roo_Controller {
         return "attachments/create";
     }
     
-    @RequestMapping(produces = "text/html")
-    public String AttachmentController.list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("attachments", Attachment.findAttachmentEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Attachment.countAttachments() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("attachments", Attachment.findAllAttachments());
-        }
-        return "attachments/list";
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String AttachmentController.update(@Valid Attachment attachment, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, attachment);
-            return "attachments/update";
-        }
-        uiModel.asMap().clear();
-        attachment.merge();
-        return "redirect:/attachments/" + encodeUrlPathSegment(attachment.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String AttachmentController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Attachment.findAttachment(id));
-        return "attachments/update";
-    }
     
     void AttachmentController.populateEditForm(Model uiModel, Attachment attachment) {
         uiModel.addAttribute("attachment", attachment);
