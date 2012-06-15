@@ -38,7 +38,7 @@
             <util:fixpanel id="detail_panel" title="Details">
                 <field:select field="status" id="c_org_hcmus_tis_model_WorkItem_status" itemValue="id" items="${workitemstatuses}" path="/workitemstatuses" required="true" z="user-managed"/>
                 <field:select field="priority" id="c_org_hcmus_tis_model_WorkItem_priority" itemValue="id" items="${prioritys}" path="/prioritys" required="true" z="user-managed"/>
-                <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" label="Iteration" path="/workitemcontainers" required="true" z="user-managed"/>
+                <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" label="Plan for" path="/workitemcontainers" required="true" z="user-managed"/>
                 <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
                 <c:set value="" var="validateRule"/>
                 <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine">

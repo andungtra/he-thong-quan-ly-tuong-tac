@@ -9,7 +9,7 @@
             <util:fixpanel id="details_panel" title="Detail">
                 <field:display field="status" id="s_org_hcmus_tis_model_WorkItem_status" object="${workitem}" z="chE+pRBiDHXZHre9KieANEoUSnc="/>
                 <field:display field="priority" id="s_org_hcmus_tis_model_WorkItem_priority" object="${workitem}" z="GWqaVhQJnEIAY698qvXTHPliL4w="/>
-                <field:display field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" label="Container" object="${workitem}" z="user-managed"/>
+                <field:display field="workItemContainer" id="s_org_hcmus_tis_model_WorkItem_workItemContainer" label="Plan for" object="${workitem}" z="user-managed"/>
                 <field:display field="workItemType" id="s_org_hcmus_tis_model_WorkItem_workItemType" label="Type" object="${workitem}" z="user-managed"/>
                 <c:forEach items="${workitem.additionFields}" var="field">
                     <label>${field.name } : </label>${field.value }
