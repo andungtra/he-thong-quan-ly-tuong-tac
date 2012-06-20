@@ -38,6 +38,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
+import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
@@ -73,6 +74,8 @@ public class ProjectController {
 	private IterationRepository iterationRepository;
 	@Autowired
 	private ProjectRepository projectRepository;
+	@Autowired
+	private WorkItemHistoryRepository workItemHistoryRepository;
 
 	public IterationRepository getIterationRepository() {
 		return iterationRepository;
@@ -245,8 +248,8 @@ public class ProjectController {
 			listStatus[index][0] = statuses.get(index).getName();
 			listStatus[index][1] = workItemRepository.countByAncestorContainerAndStatus(project, statuses.get(index));
 		}
-		List<WorkItemHistory> listHistorys = WorkItemHistory
-				.findAllWorkItemHistorysInProject(id, 10);
+		Pageable pageable = new PageRequest(0, 10);
+		List<WorkItemHistory> listHistorys = workItemHistoryRepository.findByProject(project, pageable).getContent();
 		uiModel.addAttribute("listHistorys", listHistorys);
 
 		uiModel.addAttribute("overdues", overdues);
@@ -555,12 +558,12 @@ public class ProjectController {
 		return restResponse;
 	}
 
-	@RequestMapping(value = "/workitems/{workItemId}/history", produces = "text/html")
+/*	@RequestMapping(value = "/workitems/{workItemId}/history", produces = "text/html")
 	public String history(Model uiModel, @PathVariable("workItemId") Long id) {
 		List<WorkItemHistory> history = WorkItemHistory
 				.findAllWorkItemHistorysOfWorkItem(id, 10);
 		uiModel.addAttribute("history", history);
 		uiModel.addAttribute("workItemId", id);
 		return "workitems/history";
-	}
+	}*/
 }

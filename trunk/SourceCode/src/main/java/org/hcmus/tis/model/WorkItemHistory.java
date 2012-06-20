@@ -27,18 +27,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(finders = { "findWorkItemsByWorkItemContainer" })
+@RooJpaEntity
 public class WorkItemHistory {
 	
 	@ManyToOne
 	private WorkItem workItem;
 	
 	@ManyToOne
-	private Account changedBy;
+	private MemberInformation changedBy;
 	
 	private WorkItemHistoryType type;
 	
@@ -128,15 +129,5 @@ public class WorkItemHistory {
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		this.objectFactory = objectFactory;
-	}
-	
-	public static List<WorkItemHistory> findAllWorkItemHistorysInProject(Long id, int maxResults) {
-		// TODO Auto-generated method stub
-		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItemContainer.id = %d ORDER BY o.dateLastEdit DESC", id), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
-	}
-	public static List<WorkItemHistory> findAllWorkItemHistorysOfWorkItem(
-			Long workItemId, int maxResults) {
-		// TODO Auto-generated method stub
-		return entityManager().createQuery(String.format("SELECT o FROM WorkItemHistory o where o.workItem.id = %d ORDER BY o.dateLastEdit DESC", workItemId), WorkItemHistory.class).setMaxResults(maxResults).getResultList();
 	}
 }

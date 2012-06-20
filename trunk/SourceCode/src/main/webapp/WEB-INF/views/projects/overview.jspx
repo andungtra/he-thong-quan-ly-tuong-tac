@@ -104,7 +104,7 @@
 					value="/projects/${project.id }/workitems/${item.workItem.id }?form"
 					var="link"></spring:url>
 				<div class="history">
-					<span class="changedBy">${item.changedBy.firstName}</span>
+					<span class="changedBy">${item.changedBy.account.firstName}</span>
 					${item.type} workitem <a href="${link }">${item.title }</a> <span
 						class="time"> at <date:formatDate
 							value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm" />

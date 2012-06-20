@@ -36,6 +36,7 @@ import org.hcmus.tis.dto.SearchConditionsDTO;
 import org.hcmus.tis.model.xml.ObjectFactory;
 import org.hcmus.tis.model.xml.XAdditionalFieldsImpl;
 import org.hcmus.tis.model.xml.XFieldImpl;
+import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hibernate.mapping.Array;
 
@@ -59,6 +60,9 @@ public class WorkItem {
 	@Autowired
 	@Transient
 	private WorkItemRepository workItemRepository;
+	@Autowired
+	@Transient
+	private WorkItemHistoryRepository workItemHistoryRepository;
 
 	public void setAdditionFiels(List<Field> additionalFields)
 			throws JAXBException {
@@ -111,7 +115,7 @@ public class WorkItem {
 	private Date dateLastEdit;
 
 	@ManyToOne
-	private Account userLastEdit;
+	private MemberInformation userLastEdit;
 
 	private String additionalFields;
 
@@ -204,7 +208,7 @@ public class WorkItem {
 		history.setTitle(this.title);
 		history.setWorkItemContainer(this.workItemContainer);
 		history.setWorkItemType(this.workItemType);
-		history.persist();
+		workItemHistoryRepository.save(history);
 	}
 
 	/*public static long countWorkItemByProject(Project project) {

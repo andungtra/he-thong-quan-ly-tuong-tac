@@ -294,7 +294,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		doReturn("value").when(mockedHttpRequest).getParameter("name");
 
 		aut.update(mockedWorkItem, mockedBindingResult, mockedUIModel,
-				mockedHttpRequest);
+				mockedHttpRequest, (long)1);
 
 		verify(mockedHttpRequest).getParameter("name");
 		verify(workItemRepository).save(mockedWorkItem);

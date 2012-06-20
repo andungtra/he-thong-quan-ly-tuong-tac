@@ -5,7 +5,6 @@ package org.hcmus.tis.model;
 
 import java.util.Date;
 import javax.xml.bind.JAXBContext;
-import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
@@ -25,11 +24,11 @@ privileged aspect WorkItemHistory_Roo_JavaBean {
         this.workItem = workItem;
     }
     
-    public Account WorkItemHistory.getChangedBy() {
+    public MemberInformation WorkItemHistory.getChangedBy() {
         return this.changedBy;
     }
     
-    public void WorkItemHistory.setChangedBy(Account changedBy) {
+    public void WorkItemHistory.setChangedBy(MemberInformation changedBy) {
         this.changedBy = changedBy;
     }
     
