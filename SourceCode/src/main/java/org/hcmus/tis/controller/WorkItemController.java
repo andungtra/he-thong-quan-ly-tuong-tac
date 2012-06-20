@@ -34,6 +34,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
@@ -43,6 +44,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,11 +128,13 @@ public class WorkItemController {
 	@Autowired
 	ProjectRepository projectRepository;
 	@Autowired
+	private WorkItemHistoryRepository workItemHistoryRepository;
+	@Autowired
 	private AccountRepository accountRepository;
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	@RequiresPermissions("workitem:update")
 	public String update(@Valid WorkItem workItem, BindingResult bindingResult,
-			Model uiModel, HttpServletRequest httpServletRequest)
+			Model uiModel, HttpServletRequest httpServletRequest, @PathVariable("projectId") Long projectId)
 			throws JAXBException {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, workItem);
@@ -153,7 +159,9 @@ public class WorkItemController {
 		workItem.setDateLastEdit(date);
 		Account acc = (Account) SecurityUtils.getSubject().getSession()
 				.getAttribute("account");
-		workItem.setUserLastEdit(acc);
+		Project project = projectRepository.findOne(projectId);
+		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(acc, project, false);
+		workItem.setUserLastEdit(member);
 		uiModel.asMap().clear();
 		workItemRepository.save(workItem);
 		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "updated", emailService));
@@ -307,7 +315,9 @@ public class WorkItemController {
 		workItem.setDateLastEdit(date);
 		Account acc = (Account) SecurityUtils.getSubject().getSession()
 				.getAttribute("account");
-		workItem.setUserLastEdit(acc);
+		Project project = projectRepository.findOne(projectId);
+		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(acc, project, false);
+		workItem.setUserLastEdit(member);
 		uiModel.asMap().clear();
 		workItemRepository.save(workItem);
 		if (attachmentIds != null) {
@@ -382,8 +392,9 @@ public class WorkItemController {
 	@RequiresPermissions("workitem:read")
 	@RequestMapping(value = "/{id}/history", produces = "text/html")
 	public String history(Model uiModel,@PathVariable("id") Long id) {
-		List<WorkItemHistory> history = WorkItemHistory
-				.findAllWorkItemHistorysOfWorkItem(id, 10);
+		Pageable pageable = new PageRequest(0, 10);
+		WorkItem workItem = workItemRepository.findOne(id);
+		List<WorkItemHistory> history = workItemHistoryRepository.findByWorkItem(workItem, pageable).getContent();
 		uiModel.addAttribute("history", history);
 		uiModel.addAttribute("workItemId", id);
 		return "workitems/history";

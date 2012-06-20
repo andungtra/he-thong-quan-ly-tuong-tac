@@ -8,7 +8,7 @@
 	<jsp:output omit-xml-declaration="yes" />
 
 	<c:forEach items="${history}" var="item">
-		<div class="history"> <span class="changedBy">${item.changedBy.firstName} </span>${item.type }
+		<div class="history"> <span class="changedBy">${item.changedBy.account.firstName} </span>${item.type }
 		<span class="time">at ${item.dateLastEdit}</span>
 		</div>
 	</c:forEach>

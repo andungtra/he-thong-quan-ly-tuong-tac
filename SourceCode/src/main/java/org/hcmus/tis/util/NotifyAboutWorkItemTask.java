@@ -34,8 +34,8 @@ public class NotifyAboutWorkItemTask implements Runnable {
 
 	private void sendNotify(MemberInformation member) {
 		Map model = new HashMap();
-		model.put("member", workItem.getUserLastEdit().getFirstName() + " "
-				+ workItem.getUserLastEdit().getLastName());
+		model.put("member", workItem.getUserLastEdit().getAccount().getFirstName() + " "
+				+ workItem.getUserLastEdit().getAccount().getLastName());
 		model.put("action", getAction());
 		model.put("workitem", getWorkItem().getId());
 		model.put("time", getWorkItem().getDateLastEdit());

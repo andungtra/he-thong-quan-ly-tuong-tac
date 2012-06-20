@@ -39,7 +39,7 @@ public class NotifyAboutWorkItemTest {
 	@Mock
 	private Account account2;
 	@Mock
-	private Account lastEdit;
+	private MemberInformation lastEditMember;
 	@Mock
 	private MemberInformation assignee;
 	@Mock
@@ -70,9 +70,8 @@ public class NotifyAboutWorkItemTest {
 			}
 		}).when(mockMailService)
 				.sendEmail(anyString(), anyString(), anyMap(), anyString());
-		doReturn("firstName").when(lastEdit).getFirstName();
-		doReturn("lastName").when(lastEdit).getLastName();
-		doReturn(lastEdit).when(mockedWorkItem).getUserLastEdit();
+		doReturn(account1).when(lastEditMember).getAccount();
+		doReturn(lastEditMember).when(mockedWorkItem).getUserLastEdit();
 		doReturn(assigneeAccount).when(assignee).getAccount();
 		doReturn("authorEmail").when(authorAccount).getEmail();
 		doReturn("assigneeEmail").when(assigneeAccount).getEmail();
@@ -91,7 +90,7 @@ public class NotifyAboutWorkItemTest {
 				eq("workitem-notification.vm"), anyMap(), anyString());
 		verify(mockMailService).sendEmail(eq(account2.getEmail()),
 				eq("workitem-notification.vm"), anyMap(), anyString());
-		assertEquals(mockedWorkItem.getUserLastEdit().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getLastName(), (String)map.get("member"));
+		assertEquals(mockedWorkItem.getUserLastEdit().getAccount().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getAccount().getLastName(), (String)map.get("member"));
 		assertEquals(action, map.get("action"));
 		assertEquals(mockedWorkItem.getId(), map.get("workitem"));
 		assertEquals(mockedWorkItem.getDateLastEdit(), map.get("time"));
@@ -111,7 +110,7 @@ public class NotifyAboutWorkItemTest {
 				eq("workitem-notification.vm"), anyMap(), anyString());
 		verify(mockMailService).sendEmail(eq(account2.getEmail()),
 				eq("workitem-notification.vm"), anyMap(), anyString());
-		assertEquals(mockedWorkItem.getUserLastEdit().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getLastName(), (String)map.get("member"));
+		assertEquals(mockedWorkItem.getUserLastEdit().getAccount().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getAccount().getLastName(), (String)map.get("member"));
 		assertEquals(action, map.get("action"));
 		assertEquals(mockedWorkItem.getId(), map.get("workitem"));
 		assertEquals(mockedWorkItem.getDateLastEdit(), map.get("time"));
@@ -128,7 +127,7 @@ public class NotifyAboutWorkItemTest {
 				eq("workitem-notification.vm"), anyMap(), anyString());
 		verify(mockMailService).sendEmail(eq(account2.getEmail()),
 				eq("workitem-notification.vm"), anyMap(), anyString());
-		assertEquals(mockedWorkItem.getUserLastEdit().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getLastName(), (String)map.get("member"));
+		assertEquals(mockedWorkItem.getUserLastEdit().getAccount().getFirstName() + " " + mockedWorkItem.getUserLastEdit().getAccount().getLastName(), (String)map.get("member"));
 		assertEquals(action, map.get("action"));
 		assertEquals(mockedWorkItem.getId(), map.get("workitem"));
 		assertEquals(mockedWorkItem.getDateLastEdit(), map.get("time"));

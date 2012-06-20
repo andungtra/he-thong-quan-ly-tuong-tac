@@ -5,15 +5,32 @@ package org.hcmus.tis.model;
 
 import java.util.Date;
 import javax.xml.bind.JAXBContext;
-import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.WorkItemHistoryRepository;
+import org.hcmus.tis.repository.WorkItemRepository;
 
 privileged aspect WorkItem_Roo_JavaBean {
+    
+    public WorkItemRepository WorkItem.getWorkItemRepository() {
+        return this.workItemRepository;
+    }
+    
+    public void WorkItem.setWorkItemRepository(WorkItemRepository workItemRepository) {
+        this.workItemRepository = workItemRepository;
+    }
+    
+    public WorkItemHistoryRepository WorkItem.getWorkItemHistoryRepository() {
+        return this.workItemHistoryRepository;
+    }
+    
+    public void WorkItem.setWorkItemHistoryRepository(WorkItemHistoryRepository workItemHistoryRepository) {
+        this.workItemHistoryRepository = workItemHistoryRepository;
+    }
     
     public JAXBContext WorkItem.getJaxbContext() {
         return this.jaxbContext;
@@ -55,11 +72,11 @@ privileged aspect WorkItem_Roo_JavaBean {
         this.dateLastEdit = dateLastEdit;
     }
     
-    public Account WorkItem.getUserLastEdit() {
+    public MemberInformation WorkItem.getUserLastEdit() {
         return this.userLastEdit;
     }
     
-    public void WorkItem.setUserLastEdit(Account userLastEdit) {
+    public void WorkItem.setUserLastEdit(MemberInformation userLastEdit) {
         this.userLastEdit = userLastEdit;
     }
     
