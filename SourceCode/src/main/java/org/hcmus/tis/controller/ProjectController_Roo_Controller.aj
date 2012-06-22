@@ -18,9 +18,7 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect ProjectController_Roo_Controller {
     
-
-    
-    String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
+       String ProjectController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();
         if (enc == null) {
             enc = WebUtils.DEFAULT_CHARACTER_ENCODING;

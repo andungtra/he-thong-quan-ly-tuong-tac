@@ -165,12 +165,16 @@ public class WorkItemController {
 		uiModel.asMap().clear();
 		workItemRepository.save(workItem);
 		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "updated", emailService));
-		return "redirect:/projects/"
+		/*return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
 						.getId()
 				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
-						httpServletRequest);
+						httpServletRequest);*/
+		
+		return "redirect:/projects/"
+		+ workItem.getWorkItemContainer().getParentProjectOrMyself().getId()
+		+ "/task";
 	}
 
 	@RequestMapping(value = "/{workItemId}", params = "subscribe")
@@ -327,12 +331,15 @@ public class WorkItemController {
 				attachmentRepository.flush();
 			}
 		}
-		return "redirect:/projects/"
+		/*return "redirect:/projects/"
 				+ projectId
 				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
-						httpServletRequest);
-
+						httpServletRequest);*/
+		
+		return "redirect:/projects/"
+				+ projectId
+				+ "/task";
 	}
 
 	public WorkItemRepository getWorkItemRepository() {
