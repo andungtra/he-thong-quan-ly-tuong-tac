@@ -69,7 +69,7 @@ public class InitDatabaseBean {
 		}
 		if (accountRepository.count() == 0) {
 			Account adminAccount = new Account();
-			adminAccount.setEmail("admin@yahoo.com");
+			adminAccount.setEmail("admin@tis.teamspace.com");
 			adminAccount.setFirstName("admin");
 			adminAccount.setLastName("admin");
 			adminAccount.setIsAdmin(true);

@@ -131,8 +131,10 @@ public class MemberInformationController {
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
 		MemberInformation memberInformation = memberInformationRepository.findOne(id);
-		memberInformation.setDeleted(true);
-		memberInformationRepository.save(memberInformation);
+		//memberInformation.setDeleted(true);
+		//memberInformationRepository.save(memberInformation);
+		
+		memberInformationRepository.delete(memberInformation);
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

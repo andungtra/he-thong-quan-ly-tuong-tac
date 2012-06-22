@@ -17,7 +17,7 @@
 					You don't have any overdue !
 				</c:if>
 				<c:forEach items="${overdues}" var="item">
-					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<spring:url value="/projects/${item.workItemContainer.id}/workitems/${item.id }?form" var="link"></spring:url>
 					<li><span><date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span><a
 							href="${link }">${item.title}</a></span></li>
 				</c:forEach>
@@ -30,7 +30,7 @@
 					You don't have any due this week !
 				</c:if>
 				<c:forEach items="${indues}" var="item">
-					<spring:url value="/workitems/${item.id }?form" var="link"></spring:url>
+					<spring:url value="/projects/${item.workItemContainer.id}/workitems/${item.id }?form" var="link"></spring:url>
 					<li><span><date:formatDate value="${item.dueDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span><a
 							href="${link }">${item.title}</a></span></li>
 				</c:forEach>

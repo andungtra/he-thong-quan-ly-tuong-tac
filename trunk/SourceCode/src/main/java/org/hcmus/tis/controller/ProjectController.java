@@ -2,8 +2,8 @@ package org.hcmus.tis.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +23,10 @@ import org.hcmus.tis.dto.datatables.DSRestResponse;
 import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.Event;
-import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.ProjectStatus;
-import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
@@ -42,12 +40,10 @@ import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.ProjectProcessService;
-import org.hcmus.tis.util.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.roo.addon.web.mvc.controller.finder.RooWebFinder;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -177,6 +173,7 @@ public class ProjectController {
 				WorkItemContainer.findAllWorkItemContainers());
 		uiModel.addAttribute("projectprocesses",
 				ProjectProcess.findAllProjectProcesses());
+		uiModel.addAttribute("projectstatuses", Arrays.asList(ProjectStatus.values()));
 	}
 
 	@RequestMapping(value = "ID/{id}", produces = "text/html")
@@ -229,7 +226,8 @@ public class ProjectController {
 
 		for (WorkItem workItem : workItemsList) {
 			if (workItem.getDueDate() != null
-					&& !workItem.getStatus().getName().equals("Closed")) {
+					&& !workItem.getStatus().getName().equals("Closed")
+					&& !workItem.getStatus().getName().equals("Resolved")) {
 				Calendar dueTime = Calendar.getInstance();
 				dueTime.setTime(workItem.getDueDate());
 				long due = dueTime.get(Calendar.DAY_OF_YEAR);

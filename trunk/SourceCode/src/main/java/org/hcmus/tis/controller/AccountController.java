@@ -23,6 +23,7 @@ import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
@@ -184,8 +185,9 @@ public class AccountController {
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
 				if (workItem.getAsignee() != null
-						&& workItem.getAsignee().getAccount().getId()
-								.equals(id)) {
+						&& workItem.getAsignee().getAccount().getId().equals(id) 
+						&& !workItem.getStatus().getName().equals("Closed")
+						&& !workItem.getStatus().getName().equals("Resolved")) {
 					if (workItem.getDueDate() != null) {
 						java.util.Calendar dueTime = java.util.Calendar
 								.getInstance();
