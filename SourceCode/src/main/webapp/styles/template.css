@@ -610,7 +610,7 @@ textarea
 }
 
 .box{
-	height: 200px;
+	height: 380px;
 	overflow: auto;
 	border: solid 1px #aaa;
 	border-left:none;
