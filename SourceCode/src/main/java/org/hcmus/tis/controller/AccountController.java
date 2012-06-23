@@ -414,13 +414,13 @@ public class AccountController {
 				String des = "";
 				for (Calendar calendar : event.getCalendars()) {
 					if (calendar.getProject() != null) {
-						des = "From : " + calendar.getProject().getName()
-								+ " <br/>";
+						des = "Project: " + calendar.getProject().getName()
+								+ " <br/><br/>";
 						break;
 					}
 				}
 
-				des = des + event.getDescription();
+				des = des + "Description: " + event.getDescription();
 				nonEditableEvent.setDescription(des);
 				nonEditableEvent.setId(event.getId());
 				nonEditableEvent.setVersion(event.getVersion());
