@@ -1,11 +1,15 @@
 package org.hcmus.tis.controller;
 
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.repository.ApplicationRoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
@@ -22,9 +26,23 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	protected void installFormatters(FormatterRegistry registry) {
 		super.installFormatters(registry);
 		// Register application converters and formatters
-		
+		registry.addConverter(new Converter<ApplicationRole, String>() {
+
+			@Override
+			public String convert(ApplicationRole source) {
+				return source.getName();
+			}
+		});
+		registry.addConverter(new Converter<String, ApplicationRole>() {
+
+			@Override
+			public ApplicationRole convert(String id) {
+				return appRoleRepository.findOne(Long.valueOf(id));
+			}
+		});
 	}
-	
+	@Autowired
+	private ApplicationRoleRepository appRoleRepository;
 	public Converter<StudyClass, String> getStudyClassToStringConverter() {
 		return new Converter<StudyClass, String>() {
 			
@@ -79,6 +97,13 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
         return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItemType, java.lang.String>() {
             public String convert(WorkItemType workItemType) {
                 return workItemType.getName();
+            }
+        };
+    }
+    public Converter<ProjectProcess, String> getProjectProcessToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.ProjectProcess, java.lang.String>() {
+            public String convert(ProjectProcess projectProcess) {
+                return projectProcess.getName();
             }
         };
     }

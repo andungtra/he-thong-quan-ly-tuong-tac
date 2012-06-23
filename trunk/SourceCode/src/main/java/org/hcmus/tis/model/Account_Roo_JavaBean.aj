@@ -5,6 +5,7 @@ package org.hcmus.tis.model;
 
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.Calendar;
 
 privileged aspect Account_Roo_JavaBean {
@@ -41,12 +42,12 @@ privileged aspect Account_Roo_JavaBean {
         this.password = password;
     }
     
-    public Boolean Account.getIsAdmin() {
-        return this.isAdmin;
+    public ApplicationRole Account.getRole() {
+        return this.role;
     }
     
-    public void Account.setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void Account.setRole(ApplicationRole role) {
+        this.role = role;
     }
     
     public AccountStatus Account.getStatus() {

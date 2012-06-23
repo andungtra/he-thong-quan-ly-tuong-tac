@@ -80,7 +80,7 @@
 				<prop key=".MissingServletRequestParameterException">resourceNotFound</prop>
 				<prop key="org.apache.shiro.authz.AuthorizationException">unauthorization</prop>
 				<prop key="org.apache.shiro.authc.UnknownAccountException">login</prop>
-				<prop key="org.apache.shiro.authc.IncorrectCredentialsException">unauthorization</prop>
+				<prop key="org.apache.shiro.authc.IncorrectCredentialsException">login</prop>
 			</props>
 		</property>
 	</bean>

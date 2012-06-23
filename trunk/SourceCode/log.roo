@@ -792,3 +792,24 @@ repository jpa --entity ~.model.WorkItem --interface org.hcmus.tis.repository.Wo
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-20 23:57:08
 hint
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-21 00:52:15
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-21 09:43:41
+entity jpa --class org.hcmus.tis.model.ApplicationRole --activeRecord  false
+repository jpa --interface org.hcmus.tis.repository.AppilicationRole --entity ~.model.ApplicationRole
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-21 10:23:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-21 10:26:47
+// [failed] hint
+hint
+// [failed] repository jpa --entity ~.model.ApplicationRole --interface org.hcmus.tis.repository.ApplicationRoleRepository
+repository jpa --entity ~.model.ApplicationRole --interface org.hcmus.tis.repository.ApplicationRoleRepository
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-21 10:56:59
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-21 11:03:03
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-21 12:26:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-22 22:23:50
+// [failed] web mvc scaffold --backingType ~.model.ApplicationRole --class org.hcmus.tis.controller.Test
+// [failed] controller scaffold --entity ~.model.ApplicationRole --class org.hcmus.tis.controller.Test
+entity jpa --class org.hcmus.tis.model.ForTestOnly
+repository jpa --interface org.hcmus.tis.repository.PermissionRepository --entity ~.model.Permission
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-23 00:58:46
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-06-23 08:33:22
+hint
+repository jpa --entity ~.model.MemberRole --interface org.hcmus.tis.repository.MemberRoleRepository

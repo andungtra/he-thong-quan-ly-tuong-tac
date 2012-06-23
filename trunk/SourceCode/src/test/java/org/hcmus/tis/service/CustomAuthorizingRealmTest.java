@@ -85,7 +85,7 @@ public class CustomAuthorizingRealmTest {
 	@PrepareForTest({SecurityUtils.class})
 	public void testDoGetAuthorizationInfoWithAdministratorRole(){
 		String email = "email";
-		doReturn(true).when(account).getIsAdmin();
+		//doReturn(true).when(account).getIsAdmin();
 		doReturn(account).when(accountRepository).getByEmail(email);
 		
 		PowerMockito.mockStatic(SecurityUtils.class);

@@ -21,6 +21,7 @@ import org.hcmus.tis.repository.AttachmentRepository;
 import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.MemberRoleRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
@@ -42,7 +43,22 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     AccountService ApplicationConversionServiceFactoryBean.accountService;
     
     @Autowired
+    AttachmentRepository ApplicationConversionServiceFactoryBean.attachmentRepository;
+    
+    @Autowired
+    CommentRepository ApplicationConversionServiceFactoryBean.commentRepository;
+    
+    @Autowired
+    IterationRepository ApplicationConversionServiceFactoryBean.iterationRepository;
+    
+    @Autowired
+    MemberInformationRepository ApplicationConversionServiceFactoryBean.memberInformationRepository;
+    
+    @Autowired
     PriorityRepository ApplicationConversionServiceFactoryBean.priorityRepository;
+    
+    @Autowired
+    ProjectRepository ApplicationConversionServiceFactoryBean.projectRepository;
     
     @Autowired
     ProjectProcessService ApplicationConversionServiceFactoryBean.projectProcessService;
@@ -51,21 +67,15 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     StudyClassRepository ApplicationConversionServiceFactoryBean.studyClassRepository;
     
     @Autowired
+    WorkItemRepository ApplicationConversionServiceFactoryBean.workItemRepository;
+    
+    @Autowired
     WorkItemStatusRepository ApplicationConversionServiceFactoryBean.workItemStatusRepository;
+    
     @Autowired
     WorkItemTypeRepository ApplicationConversionServiceFactoryBean.workItemTypeRepository;
     @Autowired
-    MemberInformationRepository ApplicationConversionServiceFactoryBean.memberInformationRepository;
-    @Autowired
-    AttachmentRepository ApplicationConversionServiceFactoryBean.attachmentRepository;
-    @Autowired
-    CommentRepository ApplicationConversionServiceFactoryBean.commentRepository;
-    @Autowired
-    IterationRepository ApplicationConversionServiceFactoryBean.iterationRepository;
-    @Autowired
-    ProjectRepository ApplicationConversionServiceFactoryBean.projectRepository;
-    @Autowired
-    WorkItemRepository ApplicationConversionServiceFactoryBean.workItemRepository;
+    MemberRoleRepository ApplicationConversionServiceFactoryBean.memberRoleRepository;
     
     public Converter<Long, Account> ApplicationConversionServiceFactoryBean.getIdToAccountConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.Account>() {
@@ -174,7 +184,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, MemberRole> ApplicationConversionServiceFactoryBean.getIdToMemberRoleConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, org.hcmus.tis.model.MemberRole>() {
             public org.hcmus.tis.model.MemberRole convert(java.lang.Long id) {
-                return MemberRole.findMemberRole(id);
+                return memberRoleRepository.findOne(id);
             }
         };
     }
@@ -223,14 +233,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, org.hcmus.tis.model.Project>() {
             public org.hcmus.tis.model.Project convert(String id) {
                 return getObject().convert(getObject().convert(id, Long.class), Project.class);
-            }
-        };
-    }
-    
-    public Converter<ProjectProcess, String> ApplicationConversionServiceFactoryBean.getProjectProcessToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.ProjectProcess, java.lang.String>() {
-            public String convert(ProjectProcess projectProcess) {
-                return new StringBuilder().append(projectProcess.getName()).append(" ").append(projectProcess.getDescription()).append(" ").append(projectProcess.getUniqueName()).toString();
             }
         };
     }

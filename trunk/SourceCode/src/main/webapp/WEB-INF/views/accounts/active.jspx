@@ -35,7 +35,7 @@
 			<input type="hidden" name="status" value="${account.status }"></input>
 			<input type="hidden" name="email" value="${account.email }"></input>
 			<input type="hidden" name="activeKey" value="${account.password }"></input>
-			<input type="hidden" name="isAdmin" value="${account.isAdmin }"></input>
+			<input type="hidden" name="role" value="${account.role.id }"></input>
 			<div>
 				<label for="first_name">Fist Name * :</label> <input id="firstName"
 					name="firstName" value="${account.firstName }"></input>

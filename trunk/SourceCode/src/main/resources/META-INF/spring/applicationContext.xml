@@ -175,7 +175,6 @@
 	</bean>
 	<bean name="projectPermissionFilter" id="projectPermissionFilter"
 		class="org.hcmus.tis.util.ProjectPermissionFilter" />
-	<bean name="initBean" id="initBean" class="org.hcmus.tis.util.InitDatabaseBean"></bean>
 		
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

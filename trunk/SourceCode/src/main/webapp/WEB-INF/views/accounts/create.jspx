@@ -17,13 +17,14 @@
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
         <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false" z="user-managed"/>
         <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>
-        <field:select field="calendar" id="c_org_hcmus_tis_model_Account_calendar" itemValue="id" items="${calendars}" path="/calendars" render="false" required="true" z="user-managed"/>
+        <input type="hidden"  id="c_org_hcmus_tis_model_Account_calendar"/>
         <util:advancedpanel title="Advanced">
-            <field:checkbox field="isAdmin" id="c_org_hcmus_tis_model_Account_isAdmin" z="BQqr5Xgnm5hBWX8GunBO3PIDMAM="/>
+            <field:select required="true" field="role" itemValue="id" id="c_org_hcmus_tis_model_Account_role" path="applicationroles" items="${roles }"/>
         </util:advancedpanel>
         <input name="password" type="hidden" value="dummypassword"/>
         <input name="status" type="hidden" value="${accountstatuses[0] }"/>
         <input name="c_org_hcmus_tis_model_Account_calendar" type="hidden" value=""/>
+        <field:simple render="false" field="members" id="c_org_hcmus_tis_model_Account_members" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="user-managed"/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Account" render="${not empty dependencies}" z="fLrZinEv2B+MMHZGxO2gZySAXIA="/>
 </div>

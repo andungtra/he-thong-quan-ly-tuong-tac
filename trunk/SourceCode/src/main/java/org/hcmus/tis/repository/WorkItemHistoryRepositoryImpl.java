@@ -30,6 +30,7 @@ public class WorkItemHistoryRepositoryImpl implements WorkItemHistoryRepositoryC
 			hql = hql  + " OR o.workItemContainer.id = ?" + count;
 			count ++;
 		}
+		hql = hql + " ORDER BY dateLastEdit DESC";
 		TypedQuery<WorkItemHistory> query = em.createQuery(hql, WorkItemHistory.class);
 		query.setParameter(1, project.getId());
 		count = 2;

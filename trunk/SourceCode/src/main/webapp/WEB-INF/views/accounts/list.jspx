@@ -11,7 +11,7 @@
             <div id="c_org_hcmus_tis_model_Account_password"/>
             <div id="c_org_hcmus_tis_model_Account_isAdmin"/>
             <div id="c_org_hcmus_tis_model_Account_isEnable"/>
-            <table:column id="c_org_hcmus_tis_model_Account_status" property="status" z="SDv+3DLLiPtgct5EyvXr7iDGeSM="/>
+            <table:column id="c_org_hcmus_tis_model_Account_role" property="role" z="CBJ41y4cviz32eVLGXtwAR7n4cI="/>
         </div>
     </div>
     <script type="text/javascript">

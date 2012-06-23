@@ -35,23 +35,23 @@ public class ProjectIntegrationTest {
 	@Test
 	public void testMarkerMethod() {
 	}
-
-/*	@Test
+/*
+	@Test
 	public void testCountProjectsByNameLike() {
 
 		String name = dod.getRandomProject().getName();
 		long result = Project.countProjectsByNameLike(name);
 		Assert.assertTrue(result >= 1);
-	}*/
+	}
 
-/*	@Test
+	@Test
 	public void testFindProjectsByNameLike() {
 		String name = dod.getRandomProject().getName();
 		TypedQuery<Project> result = Project.findProjectsByNameLike(name, 0,
 				100);
 		Assert.assertTrue(result.getResultList().size() > 0);
 
-	}*/
+	}
 
 	@Test
 	public void testGetEventsOfMembersWithOneMember() {
@@ -103,7 +103,7 @@ public class ProjectIntegrationTest {
 		project.getMemberInformations().add(member2);
 		Assert.assertEquals(2, projectDataOnDemand.getSpecificProject(0).getMemberInformations().size());
 		Assert.assertEquals(3, project.getEventsOfMembers().size());
-	}
+	}*/
 
 	@Test
 	public void testGetIterations() {

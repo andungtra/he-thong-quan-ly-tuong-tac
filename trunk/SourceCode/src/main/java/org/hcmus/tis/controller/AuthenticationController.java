@@ -10,9 +10,11 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 import org.hcmus.tis.model.Account;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Permission;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.ApplicationRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +26,14 @@ public class AuthenticationController {
 	volatile private static boolean completeInit = false;
 	@Autowired
 	private AccountRepository accountRepository;
+	@Autowired
+	private ApplicationRoleRepository appRoleRepository;
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public void login(HttpServletRequest request, HttpServletRequest post,
 			String username, String password, HttpServletResponse response)
 			throws IOException {
 		//for development mode only
-		if (!completeInit) {
+		/*if (!completeInit) {
 			MemberRole projectManager = MemberRole.findMemberRole((long) 1);
 			Permission permission = Permission.findPermission((long) 1);
 			projectManager.getPermissions().add(permission);
@@ -45,8 +49,12 @@ public class AuthenticationController {
 			permission = Permission.findPermission((long) 5);
 			projectMember.getPermissions().add(permission);
 			projectMember.flush();
+			
+			ApplicationRole appRole = appRoleRepository.findOne((long)1);
+			appRole.getPermissions().add(Permission.findPermission((long)6));
+			appRoleRepository.save(appRole);
 			completeInit = true;
-		}
+		}*/
 		//finish development mode
 		UsernamePasswordToken token = new UsernamePasswordToken(username,
 				password);

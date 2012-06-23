@@ -1,6 +1,7 @@
 package org.hcmus.tis.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import org.hcmus.tis.dto.datatables.DSRestResponse;
 import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.MemberInformation;
@@ -25,6 +27,7 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.WorkItem;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.ApplicationRoleRepository;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
@@ -59,12 +62,47 @@ public class AccountController {
 	MemberInformationRepository memberInformationRepository;
 	@Autowired
 	WorkItemRepository workItemRepository;
+
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
 	}
 
 	public void setAccountRepository(AccountRepository accountRepository) {
 		this.accountRepository = accountRepository;
+	}
+
+	@RequestMapping(params = "form", produces = "text/html")
+	public String createForm(Model uiModel) {
+		populateEditForm(uiModel, new Account());
+		List<String[]> dependencies = new ArrayList<String[]>();
+		if (appRoleRepository.count() == 0) {
+			dependencies.add(new String[] { "applicationrole",
+					"applicationroles" });
+		}
+		uiModel.addAttribute("dependencies", dependencies);
+		return "accounts/create";
+	}
+
+	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+	public String updateForm(@PathVariable("id") Long id, Model uiModel) {
+		populateEditForm(uiModel, accountService.findAccount(id));
+		List<String[]> dependencies = new ArrayList<String[]>();
+		if (appRoleRepository.count() == 0) {
+			dependencies.add(new String[] { "applicationrole",
+					"applicationroles" });
+		}
+		uiModel.addAttribute("dependencies", dependencies);
+		return "accounts/update";
+	}
+
+	@Autowired
+	private ApplicationRoleRepository appRoleRepository;
+
+	void populateEditForm(Model uiModel, Account account) {
+		uiModel.addAttribute("account", account);
+		uiModel.addAttribute("accountstatuses",
+				Arrays.asList(AccountStatus.values()));
+		uiModel.addAttribute("roles", appRoleRepository.findAll());
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
@@ -86,7 +124,7 @@ public class AccountController {
 			uiModel.addAttribute("sendEmailError", true);
 			return "accounts/create";
 		}
-		return list(null,null,uiModel); 
+		return list(null, null, uiModel);
 	}
 
 	public AccountService getAccountService() {
@@ -110,7 +148,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/{id}", params = "activeKey", method = RequestMethod.PUT, produces = "text/html")
-	public String active(@Valid Account account, String activeKey, Model uiModel, BindingResult bindingResult) {
+	public String active(@Valid Account account, String activeKey,
+			Model uiModel, BindingResult bindingResult) {
 		Account oldAccount = accountService.findAccount(account.getId());
 		if (oldAccount.getPassword().compareTo(activeKey) == 0
 				&& oldAccount.getStatus() == AccountStatus.INACTIVE) {
@@ -132,8 +171,10 @@ public class AccountController {
 	@RequestMapping(params = "term")
 	public @ResponseBody
 	Collection<String> findAccount(String term) {
-		Pageable pageable = new  PageRequest(0, 50);
-		Collection<Account> accounts = accountRepository.findByEmailLikeAndStatus("%" + term  + "%", AccountStatus.ACTIVE, pageable).getContent();
+		Pageable pageable = new PageRequest(0, 50);
+		Collection<Account> accounts = accountRepository
+				.findByEmailLikeAndStatus("%" + term + "%",
+						AccountStatus.ACTIVE, pageable).getContent();
 		Collection<String> result = new ArrayList<String>();
 		for (Account account : accounts) {
 			result.add(account.getEmail());
@@ -181,7 +222,8 @@ public class AccountController {
 		long now = cal.get(java.util.Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = workItemRepository.findByAsigneeAndFinalStatus(account, false);
+		List<WorkItem> workItemsList = workItemRepository
+				.findByAsigneeAndFinalStatus(account, false);
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
 				if (workItem.getAsignee() != null
@@ -205,9 +247,10 @@ public class AccountController {
 		}
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);
-		Collection<MemberInformation> members = memberInformationRepository.findByAccountAndDeleted(account, false);
+		Collection<MemberInformation> members = memberInformationRepository
+				.findByAccountAndDeleted(account, false);
 		Collection<Project> listProject = new HashSet<Project>();
-		for(MemberInformation member : members){
+		for (MemberInformation member : members) {
 			listProject.add(member.getProject());
 		}
 		ArrayList<Event> newEvent = new ArrayList<Event>();
@@ -218,7 +261,7 @@ public class AccountController {
 			for (Event event : e) {
 				if (event.getStartDate() != null
 						&& event.getStartDate().getTime() > n.getTime()
-						&& (event.getStartDate().getTime() - n.getTime()) < (7*86400000)) {
+						&& (event.getStartDate().getTime() - n.getTime()) < (7 * 86400000)) {
 					newEvent.add(event);
 				}
 			}
@@ -234,9 +277,12 @@ public class AccountController {
 			String sEcho, String sSearch, HttpSession session) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
+				iDisplayLength);
 		Account acc = (Account) session.getAttribute("account");
-		Page<MemberInformation> page = memberInformationRepository.findByAccountAndProjectLikeAndDeleted(acc,"%" + sSearch +"%", false, pageable);
+		Page<MemberInformation> page = memberInformationRepository
+				.findByAccountAndProjectLikeAndDeleted(acc,
+						"%" + sSearch + "%", false, pageable);
 		List<MemberInformation> list = page.getContent();
 		for (MemberInformation item : list) {
 			if (item.getAccount().getEmail().equals(acc.getEmail())
@@ -250,8 +296,9 @@ public class AccountController {
 				reply.getAaData().add(dto);
 			}
 		}
-		reply.setiTotalDisplayRecords((int)page.getTotalElements());
-		reply.setiTotalRecords((int)memberInformationRepository.countByAccountAndDeleted(acc, false));
+		reply.setiTotalDisplayRecords((int) page.getTotalElements());
+		reply.setiTotalRecords((int) memberInformationRepository
+				.countByAccountAndDeleted(acc, false));
 		return reply;
 	}
 
@@ -281,16 +328,18 @@ public class AccountController {
 			populateEditForm(uiModel, account);
 			return "accounts/update";
 		}
-		//accountService.updateAccount(account);
+		// accountService.updateAccount(account);
 		accountRepository.save(account);
 		uiModel.asMap().clear();
-		/*Calendar cal = Calendar.findCalendar(calendar);
-		account.setCalendar(cal);*/
-		
-		return list(null,null,uiModel); 
+		/*
+		 * Calendar cal = Calendar.findCalendar(calendar);
+		 * account.setCalendar(cal);
+		 */
+
+		return list(null, null, uiModel);
 	}
 
-	@RequestMapping(value = "/edit",params = { "newPass" }, method = RequestMethod.PUT, produces = "text/html")
+	@RequestMapping(value = "/edit", params = { "newPass" }, method = RequestMethod.PUT, produces = "text/html")
 	public String userupdate(@Valid Account account, String firstName,
 			String lastName, String email, String newPass, Model uiModel,
 			HttpServletRequest httpServletRequest) {
@@ -302,12 +351,12 @@ public class AccountController {
 		account.setFirstName(firstName);
 		account.setLastName(lastName);
 		account.setEmail(email);
-		if(!newPass.equals("password") && newPass.trim().length()>0){
+		if (!newPass.equals("password") && newPass.trim().length() > 0) {
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			String encodePassword = encoder.encodePassword(newPass, null);
 			account.setPassword(encodePassword);
 		}
-			
+
 		accountRepository.save(account);
 		return "redirect:/accounts/home";
 	}
@@ -319,8 +368,10 @@ public class AccountController {
 			String sSearch) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
-		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
-		Page<Account> page = accountRepository.find("%" + sSearch + "%", pageable);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
+				iDisplayLength);
+		Page<Account> page = accountRepository.find("%" + sSearch + "%",
+				pageable);
 		List<Account> list = page.getContent();
 		for (Account item : list) {
 			AccountDTO dto = new AccountDTO();
@@ -332,8 +383,8 @@ public class AccountController {
 			dto.setStatus(item.getStatus().name());
 			reply.getAaData().add(dto);
 		}
-		reply.setiTotalDisplayRecords((int)page.getTotalElements());
-		reply.setiTotalRecords((int)accountRepository.countNotDeleted());
+		reply.setiTotalDisplayRecords((int) page.getTotalElements());
+		reply.setiTotalRecords((int) accountRepository.countNotDeleted());
 		return reply;
 	}
 
@@ -397,7 +448,7 @@ public class AccountController {
 		event.setCalendars(new ArrayList<Calendar>());
 		Calendar calender = accountRepository.findOne(accountId).getCalendar();
 		calender.getEvents().add(event);
-		
+
 		eventRepository.save(event);
 		List<Object> data = new ArrayList<Object>();
 		data.add(event);
@@ -453,45 +504,40 @@ public class AccountController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-/*		List<Account> lst = null;
-		if (page != null || size != null) {
-			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1)
-					* sizeNo;
-			lst = accountService.findAccountEntries(firstResult, sizeNo);
-			float nrOfPages = (float) accountService.countAllAccounts()
-					/ sizeNo;
-			uiModel.addAttribute(
-					"maxPages",
-					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
-							: nrOfPages));
-		} else {
-			lst = accountService.findAllAccounts();
-		}
-
-		for (int i = 0; i < lst.size(); i++) {
-			if (lst.get(i).getStatus().equals(AccountStatus.DELETED))
-				lst.remove(i);
-		}
-
-		uiModel.addAttribute("accounts", lst);*/
+		/*
+		 * List<Account> lst = null; if (page != null || size != null) { int
+		 * sizeNo = size == null ? 10 : size.intValue(); final int firstResult =
+		 * page == null ? 0 : (page.intValue() - 1) sizeNo; lst =
+		 * accountService.findAccountEntries(firstResult, sizeNo); float
+		 * nrOfPages = (float) accountService.countAllAccounts() / sizeNo;
+		 * uiModel.addAttribute( "maxPages", (int) ((nrOfPages > (int) nrOfPages
+		 * || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages)); } else { lst =
+		 * accountService.findAllAccounts(); }
+		 * 
+		 * for (int i = 0; i < lst.size(); i++) { if
+		 * (lst.get(i).getStatus().equals(AccountStatus.DELETED)) lst.remove(i);
+		 * }
+		 * 
+		 * uiModel.addAttribute("accounts", lst);
+		 */
 		return "accounts/list";
 	}
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
 	public String delete(@PathVariable("id") Long id,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel, HttpSession session) {
-		Account cur = (Account)session.getAttribute("account");
+		Account cur = (Account) session.getAttribute("account");
 		Account account = accountService.findAccount(id);
-		if(cur.getEmail().equals(account.getEmail())){
+		if (cur.getEmail().equals(account.getEmail())) {
 			uiModel.addAttribute("error", "You can not delete yourself !");
 			return "redirect:/accounts";
 		}
 		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
 		accountRepository.save(account);
-		for(MemberInformation member : account.getMembers()){
+		for (MemberInformation member : account.getMembers()) {
 			member.setDeleted(true);
 			memberInformationRepository.save(member);
 		}
@@ -500,9 +546,9 @@ public class AccountController {
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/accounts";
 	}
-	
+
 	@RequestMapping(value = "/projects/{projectId}", produces = "text/html")
-	public String reDirectProject(@PathVariable("projectId") Long projectId){
+	public String reDirectProject(@PathVariable("projectId") Long projectId) {
 		return "redirect:/projects/" + projectId;
 	}
 }

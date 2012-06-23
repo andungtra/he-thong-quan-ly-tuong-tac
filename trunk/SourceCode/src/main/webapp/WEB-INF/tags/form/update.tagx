@@ -38,13 +38,15 @@
 		description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
 	<jsp:directive.attribute name="width" type="java.lang.String"
 		required="false" description="width of fixpanel" />
-		
+
 	<jsp:directive.attribute name="cancel" type="java.lang.String"
 		required="false" description="link cancel" />
-		
+
 	<jsp:directive.attribute name="labelBackList" type="java.lang.String"
 		required="false" description="label for back to list" />
-		
+	<jsp:directive.attribute name="submitbutton" type="java.lang.Boolean"
+		required="false" description="specify wether use can submit form" />
+
 	<c:if test="${empty render or render}">
 		<c:if test="${empty label}">
 			<spring:message
@@ -66,33 +68,35 @@
 		<div class="fix-panel" style="width: ${width}">
 			<spring:url value="${path}" var="form_url" />
 			<form:form action="${form_url}" method="PUT"
-				modelAttribute="${modelAttribute}" enctype="${enctype}" >
+				modelAttribute="${modelAttribute}" enctype="${enctype}">
 				<div class="panel-title">
-					<c:set value="${modelAttribute}" var="label_Back"/>
-					<c:set value="${form_url}" var="cancel_url"/>
+					<c:set value="${modelAttribute}" var="label_Back" />
+					<c:set value="${form_url}" var="cancel_url" />
 					<c:if test="${not empty cancel}">
 						<spring:url value="${cancel}" var="cancel_url" />
 					</c:if>
-					
+
 					<c:if test="${not empty labelBackList}">
-						<c:set value="${labelBackList}" var="label_Back"/>
+						<c:set value="${labelBackList}" var="label_Back" />
 					</c:if>
-					<a href="${cancel_url}" onclick="abortChange()">${label_Back}</a> >					
+					<a href="${cancel_url}" onclick="abortChange()">${label_Back}</a> >
 					${title_msg}
-					<div class="submit" >
+					<div class="submit">
 						<a href="${cancel_url}" onclick="abortChange()">
 							<button>Cancel</button>
-						</a>						
+						</a>
 					</div>
-					
+
 					<div class="submit" id="${fn:escapeXml(id)}_submit">
 						<spring:message code="button_save" var="save_button"
 							htmlEscape="false" />
 						<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
-						<input id="proceed" type="submit"
-							value="${fn:escapeXml(save_button)}" onclick="abortChange()"/>
+						<c:if test="${empty submitbutton or submitbutton}">
+							<input id="proceed" type="submit"
+								value="${fn:escapeXml(save_button)}" onclick="abortChange()" />
+						</c:if>
 					</div>
-					<div class="border-bottom"/>
+					<div class="border-bottom" />
 				</div>
 				<form:errors cssClass="errors" delimiter="&lt;p/&gt;" />
 				<jsp:doBody />

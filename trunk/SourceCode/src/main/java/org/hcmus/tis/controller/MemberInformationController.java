@@ -16,6 +16,7 @@ import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.MemberRoleRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,13 @@ public class MemberInformationController {
 	private MemberInformationRepository memberInformationRepository;
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private MemberRoleRepository memberRoleRepository;
 
 	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
 	public String createForm(Model uiModel,
 			@PathVariable("projectId") Long projectId, String redirectUrl) {
-		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
+		List<MemberRole> memberRoles = memberRoleRepository.findAll();
 		uiModel.addAttribute("memberRoles", memberRoles);
 		uiModel.addAttribute("projectId", projectId);
 		uiModel.addAttribute("redirectUrl", redirectUrl);
@@ -67,15 +70,14 @@ public class MemberInformationController {
 		try {
 			account = accountRepository.getByEmail(email);
 		} catch (Exception e) {
-			Collection<MemberRole> memberRoles = MemberRole
-					.findAllMemberRoles();
+			List<MemberRole> memberRoles = memberRoleRepository.findAll();
 			uiModel.addAttribute("memberRoles", memberRoles);
 			uiModel.addAttribute("projectId", projectId);
 			uiModel.addAttribute("redirectUrl", redirectUrl);
 			return "memberinformations/createfromproject";
 		}
 
-		MemberRole memberRole = MemberRole.findMemberRole(memberRoleId);
+		MemberRole memberRole = memberRoleRepository.findOne(memberRoleId);
 		Project project = projectRepository.findOne(projectId);
 
 		MemberInformation exist = memberInformationRepository
@@ -116,7 +118,7 @@ public class MemberInformationController {
 			return "projects/member";
 		}
 
-		Collection<MemberRole> memberRoles = MemberRole.findAllMemberRoles();
+		List<MemberRole> memberRoles = memberRoleRepository.findAll();
 		uiModel.addAttribute("memberRoles", memberRoles);
 		uiModel.addAttribute("projectId", projectId);
 		uiModel.addAttribute("redirectUrl", redirectUrl);
@@ -149,7 +151,7 @@ public class MemberInformationController {
 			Model uiModel, String redirectUrl) {
 		MemberInformation memberInformation = memberInformationRepository.findOne(id);
 		uiModel.addAttribute("memberInformation", memberInformation);
-		uiModel.addAttribute("memberRoles", MemberRole.findAllMemberRoles());
+		uiModel.addAttribute("memberRoles", memberRoleRepository.findAll());
 		uiModel.addAttribute("redirectUrl", redirectUrl);
 		return "memberinformations/updatefromproject";
 	}
@@ -206,7 +208,7 @@ public class MemberInformationController {
     void populateEditForm(Model uiModel, MemberInformation memberInformation) {
         uiModel.addAttribute("memberInformation", memberInformation);
         uiModel.addAttribute("accounts", accountService.findAllAccounts());
-        uiModel.addAttribute("memberroles", MemberRole.findAllMemberRoles());
+        uiModel.addAttribute("memberroles", memberRoleRepository.findAll());
         uiModel.addAttribute("projects", projectRepository.findAll());
     }
 }

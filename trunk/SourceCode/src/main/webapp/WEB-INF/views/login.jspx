@@ -3,28 +3,14 @@
   <jsp:output omit-xml-declaration="yes" />
   
    <div class="title">Login</div>
-    <c:if test="${not empty param.login_error}">
-      <div class="errors">
-        <p>
-          <spring:message code="security_login_unsuccessful" />
-          <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-          .
-        </p>
-      </div>
-    </c:if>
-    <c:if test="${empty param.login_error}">
-      <p>
-        <spring:message code="security_login_message" />
-      </p>
-    </c:if>
+   <br/>
+   <br/>
     <spring:url value="/login" var="action_url"></spring:url>
     <form name="loginform" action="${action_url }" method="POST" >
     <div class="tbcontent">
       <div>
         <label>Email</label> 
         <input id="j_username" type='text' name='username' />
-        
-        <spring:message code="security_login_form_email_message" var="name_msg" htmlEscape="false" />
         <script type="text/javascript">
           <c:set var="sec_name_msg">
             <spring:escapeBody javaScriptEscape="true">${name_msg}</spring:escapeBody>

@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CustomAuthorizingRealm extends AuthorizingRealm {
 	@Autowired
 	AuthorityRepository authorizingRepository;
+
 	public AuthorityRepository getAccountRepository() {
 		return authorizingRepository;
 	}
@@ -47,23 +48,29 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 				info.setRoles(new HashSet<String>());
 				info.addStringPermission("account:*:"
 						+ account.getId().toString());
-				if (account.getIsAdmin()) {
-					info.getRoles().add("administrator");
-					info.addStringPermission("*:*");
-					return info;
+				info.getRoles().add(account.getRole().getName());
+				for (Permission permission : account.getRole().getPermissions()) {
+					info.addStringPermission(permission.getRefName());
+
 				}
 				if (SecurityUtils.getSubject() != null
 						&& SecurityUtils.getSubject().getSession() != null) {
 					Long projectId = (Long) SecurityUtils.getSubject()
 							.getSession().getAttribute("projectid");
-					Project project = authorizingRepository.findProject(projectId);
-					if (project != null) {
-						MemberInformation member = authorizingRepository.findByAccountAndProjectAndDeleted(account, project, false);
-						info.getRoles()
-								.add(member.getMemberRole().getRefName());
-						for (Permission permission : member.getMemberRole()
-								.getPermissions()) {
-							info.addStringPermission(permission.getRefName());
+					if (projectId != null) {
+						Project project = authorizingRepository
+								.findProject(projectId);
+						if (authorizingRepository.countByAccountAndProjectAndDeleted(account, project, false) > 0) {
+							MemberInformation member = authorizingRepository
+									.findByAccountAndProjectAndDeleted(account,
+											project, false);
+							info.getRoles().add(
+									member.getMemberRole().getRefName());
+							for (Permission permission : member.getMemberRole()
+									.getPermissions()) {
+								info.addStringPermission(permission
+										.getRefName());
+							}
 						}
 					}
 
@@ -78,17 +85,17 @@ public class CustomAuthorizingRealm extends AuthorizingRealm {
 	}
 
 	@Override
-	public AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken arg0) throws AuthenticationException {
-		try{
-		if (arg0 instanceof UsernamePasswordToken) {
-			UsernamePasswordToken userNamePasswordToken = (UsernamePasswordToken) arg0;
-			Account account = authorizingRepository.getByEmail(
-					userNamePasswordToken.getUsername());
-			return new SimpleAuthenticationInfo(account.getEmail(),
-					account.getPassword(), this.getName());
-		}
-		}catch (Exception e) {
+	public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0)
+			throws AuthenticationException {
+		try {
+			if (arg0 instanceof UsernamePasswordToken) {
+				UsernamePasswordToken userNamePasswordToken = (UsernamePasswordToken) arg0;
+				Account account = authorizingRepository
+						.getByEmail(userNamePasswordToken.getUsername());
+				return new SimpleAuthenticationInfo(account.getEmail(),
+						account.getPassword(), this.getName());
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

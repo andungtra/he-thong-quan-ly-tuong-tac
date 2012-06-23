@@ -35,7 +35,7 @@
 		<input name="email" type="hidden" value="${account.email}" />
 		<input name="status" type="hidden" value="${account.status}" />
 		<input name="password" type="hidden" value="${account.password}" />
-		<input name="isAdmin" type="hidden" value="${account.isAdmin }" />
+		<input name="role" type="hidden" value="${account.role.id }" />
 		<script type="text/javascript">
 			$('form').submit(function() {
 				var newpass = $("#newPass").val();
