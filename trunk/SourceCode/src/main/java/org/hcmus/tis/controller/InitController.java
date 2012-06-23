@@ -109,7 +109,7 @@ public class InitController {
 		initMemberRolePermission(projectMemberPer, projectMember);
 		if (accountRepository.count() == 0) {
 			Account adminAccount = new Account();
-			adminAccount.setEmail("admin@yahoo.com");
+			adminAccount.setEmail("admin@tis.teamspace.com");
 			adminAccount.setFirstName("admin");
 			adminAccount.setLastName("admin");
 			adminAccount.setRole(admin);
