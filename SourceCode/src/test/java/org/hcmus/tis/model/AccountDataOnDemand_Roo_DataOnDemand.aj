@@ -13,7 +13,9 @@ import javax.validation.ConstraintViolationException;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountDataOnDemand;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.Calendar;
+import org.hcmus.tis.model.CalendarDataOnDemand;
 import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
     private List<Account> AccountDataOnDemand.data;
     
     @Autowired
+    private CalendarDataOnDemand AccountDataOnDemand.calendarDataOnDemand;
+    
+    @Autowired
     AccountService AccountDataOnDemand.accountService;
     
     @Autowired
@@ -38,15 +43,15 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         setCalendar(obj, index);
         setEmail(obj, index);
         setFirstName(obj, index);
-        setIsAdmin(obj, index);
         setLastName(obj, index);
         setPassword(obj, index);
+        setRole(obj, index);
         setStatus(obj, index);
         return obj;
     }
     
     public void AccountDataOnDemand.setCalendar(Account obj, int index) {
-        Calendar calendar = null;
+        Calendar calendar = calendarDataOnDemand.getSpecificCalendar(index);
         obj.setCalendar(calendar);
     }
     
@@ -63,11 +68,6 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
         obj.setFirstName(firstName);
     }
     
-    public void AccountDataOnDemand.setIsAdmin(Account obj, int index) {
-        Boolean isAdmin = Boolean.TRUE;
-        obj.setIsAdmin(isAdmin);
-    }
-    
     public void AccountDataOnDemand.setLastName(Account obj, int index) {
         String lastName = "lastName_" + index;
         if (lastName.length() > 50) {
@@ -82,6 +82,11 @@ privileged aspect AccountDataOnDemand_Roo_DataOnDemand {
             password = password.substring(0, 50);
         }
         obj.setPassword(password);
+    }
+    
+    public void AccountDataOnDemand.setRole(Account obj, int index) {
+        ApplicationRole role = null;
+        obj.setRole(role);
     }
     
     public void AccountDataOnDemand.setStatus(Account obj, int index) {

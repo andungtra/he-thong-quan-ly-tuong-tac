@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -55,10 +56,9 @@ public class Account implements java.io.Serializable {
 	public String getFullName() {
 		return firstName + " " + lastName;
 	}
-
 	@NotNull
-	@Value("false")
-	private Boolean isAdmin;
+	@ManyToOne
+	private ApplicationRole role;
 
 	@Enumerated
 	@NotNull

@@ -4,17 +4,10 @@
 package org.hcmus.tis.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.hcmus.tis.controller.AccountController;
-import org.hcmus.tis.model.Account;
-import org.hcmus.tis.model.AccountStatus;
-import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -22,24 +15,6 @@ privileged aspect AccountController_Roo_Controller {
     
     @Autowired
     AccountService AccountController.accountService;
-    
-    @RequestMapping(params = "form", produces = "text/html")
-    public String AccountController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new Account());
-        return "accounts/create";
-    }
-    
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String AccountController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, accountService.findAccount(id));
-        return "accounts/update";
-    }
-    
-    void AccountController.populateEditForm(Model uiModel, Account account) {
-        uiModel.addAttribute("account", account);
-        uiModel.addAttribute("accountstatuses", Arrays.asList(AccountStatus.values()));
-        uiModel.addAttribute("calendars", Calendar.findAllCalendars());
-    }
     
     String AccountController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();

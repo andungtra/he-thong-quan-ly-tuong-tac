@@ -47,6 +47,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -250,7 +251,7 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-	@RequiresPermissions("workitem:update")
+	@RequiresPermissions("workitem:read")
 	public String updateForm(@PathVariable("projectId") Long projectId,
 			@PathVariable("id") Long id, Model uiModel) {
 		WorkItem workItem = workItemRepository.findOne(id);
@@ -399,7 +400,7 @@ public class WorkItemController {
 	@RequiresPermissions("workitem:read")
 	@RequestMapping(value = "/{id}/history", produces = "text/html")
 	public String history(Model uiModel,@PathVariable("id") Long id) {
-		Pageable pageable = new PageRequest(0, 10);
+		Pageable pageable = new PageRequest(0, 10, Direction.DESC, "dateLastEdit");
 		WorkItem workItem = workItemRepository.findOne(id);
 		List<WorkItemHistory> history = workItemHistoryRepository.findByWorkItem(workItem, pageable).getContent();
 		uiModel.addAttribute("history", history);

@@ -7,8 +7,8 @@
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" z="user-managed"/>
         <field:select field="projectProcess" id="c_org_hcmus_tis_model_Project_projectProcess" itemValue="id" items="${projectprocesses}" path="/projectprocesses" required="true" z="RtYHYGN7PFWC0YJisGpaT3tVlyw="/>
         <util:advancedpanel title="Advanced">
-            <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" label="Parent project" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="user-managed"/>
-            <field:select field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
+            <field:select required="false" label="Parent project" field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="user-managed"/>
+            <field:select  required="false"  field="studyClass" id="c_org_hcmus_tis_model_Project_studyClass" itemValue="id" items="${studyclasses}" path="/studyclasses" z="fEWofCtiPO5qOrjns9kIsogmnfM="/>
         </util:advancedpanel>
         <field:simple field="memberInformations" id="c_org_hcmus_tis_model_Project_memberInformations" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" render="false" z="user-managed"/>
         <input name="c_org_hcmus_tis_model_Project_memberInformations" type="hidden" value="${project.memberInformations}"/>

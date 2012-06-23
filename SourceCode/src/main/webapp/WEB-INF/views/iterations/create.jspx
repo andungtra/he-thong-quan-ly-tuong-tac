@@ -8,5 +8,4 @@
         <field:select field="parentContainer" id="c_org_hcmus_tis_model_Iteration_parentContainer" itemValue="id" items="${iterations}" label="Parent" path="/workitemcontainers" z="user-managed"/>
         <field:simple field="workItems" id="c_org_hcmus_tis_model_Iteration_workItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item" render="false" z="user-managed"/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_org_hcmus_tis_model_Iteration" render="${not empty dependencies}" z="1kAUQTGthr52fEzEP24eYk1vJeM="/>
 </div>

@@ -4,7 +4,9 @@
 	xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields"
 	xmlns:form="urn:jsptagdir:/WEB-INF/tags/form"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:spring="http://www.springframework.org/tags" version="2.0" class="link">
+	xmlns:shiro="http://shiro.apache.org/tags"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0"
+	class="link">
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 
@@ -49,37 +51,42 @@
 	<link href="${task_css }" rel="stylesheet" type="text/css"
 		id="skinSheet" />
 	<div style="float: left" id="container">
-		<div id="topnav" class="topnav">
-			<spring:url value="/projects/${itemId }/workitems?form"
-				var="default_workitemform_url">
-				<spring:param name="workItemTypeId" value="${workItemTypes[0].id }"></spring:param>
-			</spring:url>
-			<span class="signin"> <a href="${default_workitemform_url }">
-					<span>Create</span>
-			</a><span class="img"></span>
-			</span>
-		</div>
-		<div id="signin_menu">
-			<ul>
-				<c:forEach items="${workItemTypes }" var="workItemType">
-					<spring:url value="/projects/${itemId }/workitems?form"
+		<shiro:hasPermission name="workitem:create">
+			<div id="topnav" class="topnav">
+				<spring:url value="/projects/${itemId }/workitems?form"
+					var="default_workitemform_url">
+					<spring:param name="workItemTypeId" value="${workItemTypes[0].id }"></spring:param>
+				</spring:url>
+				<span class="signin"> <a href="${default_workitemform_url }">
+						<span>Create</span>
+				</a><span class="img"></span>
+				</span>
+			</div>
+			<div id="signin_menu">
+				<ul>
+					<c:forEach items="${workItemTypes }" var="workItemType">
+						<spring:url value="/projects/${itemId }/workitems?form"
 							var="workitemform_url">
 							<spring:param name="workItemTypeId" value="${workItemType.id }"></spring:param>
-						</spring:url> <a href="${workitemform_url}"><li>${workItemType.name }</li></a>
-				</c:forEach>
-			</ul>
-		</div>
+						</spring:url>
+						<a href="${workitemform_url}"><li>${workItemType.name }</li></a>
+					</c:forEach>
+				</ul>
+			</div>
+		</shiro:hasPermission>
 	</div>
 	<div style="float: right;">
-	<spring:url value="/projects/${itemId }/advancedsearch" var="advancedsearch_url"></spring:url>
-		<a href="${advancedsearch_url }"  class="due">Advanced Search</a>
+		<spring:url value="/projects/${itemId }/advancedsearch"
+			var="advancedsearch_url"></spring:url>
+		<a href="${advancedsearch_url }" class="due">Advanced Search</a>
 	</div>
 	<div style="clear: both;" />
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
 	<field:datatable aoColumns="lName,sStatus,sType,priority,sIteration"
 		id="tbproject" path="/workitems"
-		source="/projects/${itemId }/workitems" thead="Title,Status,Type,Priority,Plan for" fshow="true"
+		source="/projects/${itemId }/workitems"
+		thead="Title,Status,Type,Priority,Plan for" fshow="true"
 		lshow="/projects/${itemId }/workitems" filter="true" />
 	<div style="clear: both;" />
 </div>
