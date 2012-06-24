@@ -184,7 +184,8 @@ public class AccountController {
 
 	@RequestMapping(value = "/ID/{id}", produces = "text/html")
 	public String showAccount(@PathVariable("id") Long id, Model uiModel) {
-		uiModel.addAttribute("account", accountService.findAccount(id));
+		uiModel.addAttribute("itemId", id);				
+		uiModel.addAttribute("account",  accountService.findAccount(id));
 		return "accounts/show";
 	}
 

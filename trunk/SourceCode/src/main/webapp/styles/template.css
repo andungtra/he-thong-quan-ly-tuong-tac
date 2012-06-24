@@ -594,7 +594,7 @@ textarea
 	background-repeat:no-repeat;	
 }
 .comment{
-	color:#008040;
+	color:#333;
 }
 .comment-box{
 	background-image: url("../images/Default-Avatar.png");
@@ -605,6 +605,11 @@ textarea
 	min-height: 55px;
 }
 
+.comment-box a{
+	color:#3B5998 !important;
+	cursor: pointer;
+	font-weight: bold;
+}
 .comment-box .time{
 	color: gray;
 }
