@@ -59,7 +59,7 @@ public class StudyClassController {
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho", "sSearch"})
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
@@ -75,7 +75,7 @@ public class StudyClassController {
 			if (item.isDeleted() != true) {
 				StudyClassDTO dto = new StudyClassDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../studyclasses/"+item.getId()+"?form'>"+item.getName()+"</a>");
+				dto.setName("<a href='" + request.getContextPath() + "/studyclasses/"+item.getId()+"?form'>"+item.getName()+"</a>");
 				dto.setDescription(item.getDescription());
 
 				reply.getAaData().add(dto);

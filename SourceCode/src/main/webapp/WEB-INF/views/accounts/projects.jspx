@@ -8,6 +8,5 @@
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
 	<table:datatable aoColumns="name,parentContainer,description"
-       		id="tbproject" path="/accounts" source="/accounts/mListProject" fgoto="true" fshow="true" lshow="/projects"
-       		thead="Name,ParentContainer,Description"/>    
+       		id="tbproject" path="/accounts" source="/accounts/mListProject"  thead="Name,ParentContainer,Description"/>    
 </div>

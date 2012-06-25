@@ -219,6 +219,7 @@ public class AccountController {
 	@RequestMapping(value = "/{id}/dashboard", produces = "text/html")
 	public String showDashBoard(@PathVariable("id") Long id, Model uiModel) {
 		Account account = accountRepository.findOne(id);
+		uiModel.addAttribute("id", id);
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		long now = cal.get(java.util.Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
@@ -366,7 +367,7 @@ public class AccountController {
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch) {
+			String sSearch, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
@@ -377,7 +378,7 @@ public class AccountController {
 		for (Account item : list) {
 			AccountDTO dto = new AccountDTO();
 			dto.DT_RowId = item.getId();
-			dto.setFirstName("<a href='../accounts/" + item.getId() + "?form'>"
+			dto.setFirstName("<a href='" + request.getContextPath() + "/accounts/" + item.getId() + "?form'>"
 					+ item.getFirstName() + "</a>");
 			dto.setLastName(item.getLastName());
 			dto.setEmail(item.getEmail());

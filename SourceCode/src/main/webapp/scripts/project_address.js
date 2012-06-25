@@ -12,25 +12,18 @@ function changeAddress(url){
 function addressChangeHandler(event) {
 	// do something depending on the event.value property, e.g.
 	debugger;
+	var tabMappings = ['/overview','/workitems','/dumpcalendar', '/iterations', '/memberinformations', '/?form'];
+	debugger;
 	var url = event.value;
 	if(url == '/'){
-		$.address.value('overview');
+		$.address.value(tabMappings[0]);
 		return;
 	}
-	if(url.search(/\/overview/) > -1){
-		$("#menu_menu").tabs( "select" , 0);
-	}
-	if(url.search(/\/workitems/) > -1){
-		$("#menu_menu").tabs( "select" , 1);
-	}
-	if(url.search(/\/dumpcalendar/) > -1){
-		$("#menu_menu").tabs( "select" , 2);
-	}
-	if(url.search(/\/roadmap/) > -1){
-		$("#menu_menu").tabs( "select" , 3);
-	}
-	if(url.search(/\/members/) > -1){
-		$("#menu_menu").tabs( "select" , 4);
+	for(var index = 0; index < tabMappings.length; ++index){
+		if(url.search(tabMappings[index]) > -1){
+			$("#menu_menu").tabs( "select" , index);
+			break;
+		}
 	}
 		$(panel).mask("Loading...");
 		var track = $.address.baseURL() + url;

@@ -192,10 +192,11 @@
 		var oTable;
 		function fnew(){
 			//debugger;
-			$(panel).load("${lNew}", function() {
-				$(panel).unmask();
-			});
-			$(panel).mask('Loading ...');
+// 			$(panel).load("${lNew}", function() {
+// 				$(panel).unmask();
+// 			});
+// 			$(panel).mask('Loading ...');
+			changeAddress('${lNew}');
 		}
 				
 		function fupdate(){
@@ -208,7 +209,8 @@
 				var url="${fupdate}/"+idtr+"?fromProjectForm&amp;redirectUrl=${redirectUrl}";
 				//alert(url);
 				//window.location=url;
-				$(panel).load(url, function() {});
+				/* $(panel).load(url, function() {}); */
+				changeAddress(url);
 			}
 		}
 		
@@ -225,10 +227,11 @@
 					url = "${lshow}/"+idtr+"?form";
 				else
 					url="${path}/"+idtr+"?form";
-				$(panel).load(url, function() {
+				/* $(panel).load(url, function() {
 					$(panel).unmask();
 				});
-				$(panel).mask('Loading ...');
+				$(panel).mask('Loading ...'); */
+				changeAddress(url);
 			}
 		}
 		

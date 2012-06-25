@@ -344,7 +344,7 @@ public class ProjectController {
 		for (Project item : list) {
 			ProjectDTO dto = new ProjectDTO();
 			dto.DT_RowId = item.getId();
-			dto.setName("<a href='" + request.getContextPath() + "/projects/" + item.getId() + "'>"
+			dto.setName("<a href='" + request.getContextPath() + "/projects/" + item.getId() + "?goto=true'>"
 					+ item.getName() + "</a>");
 
 			if (item.getParentContainer() != null)
