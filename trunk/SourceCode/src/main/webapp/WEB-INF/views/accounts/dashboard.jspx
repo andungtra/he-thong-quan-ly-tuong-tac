@@ -38,13 +38,14 @@
 		</util:fixpanel>
 	</div>
 	<div class="right-panel">
+	<spring:url value = "/accounts/${id}/dumpcalendar" var="calendar"/>
 		<util:fixpanel title="Incomming Event" id="">
 			<ul class="due">
 				<c:if test="${empty newEvent}">
 					You don't have any event !
 				</c:if>
 				<c:forEach items="${newEvent}" var="item">
-					<li><span><date:formatDate value="${item.startDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <span>${item.name}</span>
+					<li><span><date:formatDate value="${item.startDate}" pattern="dd-MM-yyyy hh:mm"/></span> : <a href="${calendar}"><span>${item.name}</span></a>
 					</li>
 				</c:forEach>
 			</ul>

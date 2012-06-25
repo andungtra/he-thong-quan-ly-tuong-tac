@@ -50,7 +50,7 @@ public class ProjectProcessController {
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho", "sSearch"})
 	@ResponseBody
-	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch) {
+	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho, String sSearch, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		
@@ -60,7 +60,7 @@ public class ProjectProcessController {
 			if (item.isIsDeleted() != true) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getId();
-				dto.setName("<a href='../projectprocesses/"+item.getId()+"?form'>"+item.getName()+"</a>");
+				dto.setName("<a href='" + request.getContextPath() + "/projectprocesses/"+item.getId()+"?form'>"+item.getName()+"</a>");
 				dto.setDescription(item.getDescription());
 				reply.getAaData().add(dto);
 			}

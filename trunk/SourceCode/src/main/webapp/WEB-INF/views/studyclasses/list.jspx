@@ -11,4 +11,7 @@
             <table:column id="c_org_hcmus_tis_model_StudyClass_deleted" property="deleted" z="+/6a+UtZjfuqgXxNDZgi3EKrC2Y="/>
         </div>
     </div>
+    <script type="text/javascript">
+    operationSucess = true;
+    </script>
 </div>
