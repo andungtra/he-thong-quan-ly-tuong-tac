@@ -70,7 +70,7 @@
 		<c:set var="submitbutton" value="true"></c:set>
 	</shiro:hasPermission>
 	<form:update submitbutton="${submitbutton }"
-		cancel="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/task"
+		cancel="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems"
 		id="fu_org_hcmus_tis_model_WorkItem"
 		label="${workItemType.name } : #${workItem.id }" labelBackList="Tasks"
 		modelAttribute="workItem"

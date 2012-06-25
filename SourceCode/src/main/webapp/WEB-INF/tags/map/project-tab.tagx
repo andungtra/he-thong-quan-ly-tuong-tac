@@ -8,9 +8,9 @@
 	<jsp:directive.attribute name="id" type="java.lang.String"
 		required="true" rtexprvalue="true" description="The id of project" />
 	<spring:url value="/projects/${projectId}/overview" var="projectOverview" />
-	<spring:url value="/projects/${projectId}/task" var="projectTask" />
-	<spring:url value="/projects/${projectId}/roadmap" var="projectRoadmap" />
-	<spring:url value="/projects/${projectId}/members" var="projectMember" />
+	<spring:url value="/projects/${projectId}/workitems" var="projectTask" />
+	<spring:url value="/projects/${projectId}/iterations" var="projectRoadmap" />
+	<spring:url value="/projects/${projectId}/memberinformations" var="projectMember" />
 	<spring:url value="/projects/${projectId}/dumpcalendar" var="projectCalendar" />
 	<spring:url value="/projects/${projectId}?form&amp;keepupdate=true" var="projectSetting" />
 
@@ -26,5 +26,6 @@
 			</shiro:hasPermission>
 		</ul>
 	</div>
-
+<spring:url value="/resources/scripts/project_address.js" var="project_address_url" />
+<script type="text/javascript" src="${project_address_url }"> <!--project address--></script>
 </jsp:root>

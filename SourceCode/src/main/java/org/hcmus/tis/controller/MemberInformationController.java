@@ -57,7 +57,9 @@ public class MemberInformationController {
 		uiModel.addAttribute("redirectUrl", redirectUrl);
 		return "memberinformations/createfromproject";
 	}
-	
+    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    	return null;
+    }
 	@RequestMapping(params = { "email", "memberRoleId", "projectId" }, method = RequestMethod.POST, produces = "text/html")
 	public String create(
 			Model uiModel,
@@ -103,7 +105,7 @@ public class MemberInformationController {
 					projectId).getMemberInformations();
 			uiModel.addAttribute("memberinformations", memberInformations);
 			uiModel.addAttribute("projectId", projectId);
-			return "projects/member";
+			return "projects/memberinformations";
 
 		}
 

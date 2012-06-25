@@ -71,5 +71,6 @@
 		<script src="${jquery_address_url }" type="text/javascript"><!--jquery address--></script>
 	<script type="text/javascript" language="javascript"
 		src="${datatables_js }"><!--datatables--></script>
-
+		<spring:url value="/"
+		var="context_name" />
 </jsp:root>

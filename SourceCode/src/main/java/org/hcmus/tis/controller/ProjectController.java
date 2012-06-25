@@ -257,7 +257,7 @@ public class ProjectController {
 		return "projects/overview";
 	}
 
-	@RequestMapping(value = "/{id}/task", produces = "text/html")
+	@RequestMapping(value = "/{id}/workitems", produces = "text/html")
 	public String task(@PathVariable("id") Long id, Model uiModel) {
 		// uiModel.addAttribute("project", projectRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
@@ -313,14 +313,14 @@ public class ProjectController {
 		this.projectRepository = projectRepository;
 	}
 
-	@RequestMapping(value = "/{id}/roadmap", produces = "text/html")
+	@RequestMapping(value = "/{id}/iterations", produces = "text/html")
 	public String getPlan(@PathVariable("id") Long id, Model uiModel) {
 		uiModel.addAttribute("project", projectRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
 		return "projects/roadmap";
 	}
 
-	@RequestMapping(value = "/{id}/members", produces = "text/html")
+	@RequestMapping(value = "/{id}/memberinformations", produces = "text/html")
 	public String listMembers(@PathVariable("id") Long id, Model uiModel) {
 		Set<MemberInformation> memberInformations = projectRepository.findOne(
 				id).getMemberInformations();
@@ -333,7 +333,7 @@ public class ProjectController {
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mList(int iDisplayStart, int iDisplayLength, String sEcho,
-			String sSearch) {
+			String sSearch, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
@@ -344,7 +344,7 @@ public class ProjectController {
 		for (Project item : list) {
 			ProjectDTO dto = new ProjectDTO();
 			dto.DT_RowId = item.getId();
-			dto.setName("<a href='../projects/" + item.getId() + "?goto=true'>"
+			dto.setName("<a href='" + request.getContextPath() + "/projects/" + item.getId() + "'>"
 					+ item.getName() + "</a>");
 
 			if (item.getParentContainer() != null)

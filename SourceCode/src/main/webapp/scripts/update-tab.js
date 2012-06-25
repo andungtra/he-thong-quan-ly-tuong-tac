@@ -2,32 +2,41 @@ var panel = null;
 // create ui tab.
 var testIndex = 0;
 var changed = 0;
+var tabUrl = null;
+var reallyClick = true;
+var operationSucess = false;
+var triggerAddressHandler = true;
+var firstTime = true;
 $(function() {
 	$("#menu_menu").tabs(
 			{
+				create: function(event, ui) {
+					
+				},
 				ajaxOptions : {
-					error : function(xhr, status, index, anchor) {
-						$(anchor.hash).html(
-								"Couldn't load this tab. We'll try to fix this as soon as possible. "
-										+ "If this wouldn't be a demo.");
-					},
 					beforeSend : function(jqXHR, settings) {
+						tabUrl = settings.url;
+						return false;
 					}
 				},
 				select : function(event, ui) {
-					if(changed==1){
-						if(!confirm("You don't want to save your change ?")){
+					if (changed == 1) {
+						if (!confirm("You don't want to save your change ?")) {
 							return false;
-						}else{
-							changed=0;
+						} else {
+							changed = 0;
 							return true;
 						}
 					}
 				},
 				show : function(event, ui) {
-					$(panel).unmask();
-					$(ui.panel).mask('Loading ...');
 					panel = ui.panel;
+					if (reallyClick == true && !firstTime) {
+						changeAddress(tabUrl);
+					}
+					reallyClick = true;
+					firstTime = false;
+					return false;
 				},
 				load : function(event, ui) {
 					var x;
@@ -40,17 +49,8 @@ $(function() {
 	if (!(window.notAddHandler === undefined) && notAddHandler) {
 		// hook global link click event.
 		$('#menu_menu').on('click', 'a', function(event) {
-			var url = this.href;
-			if (url.indexOf("goto=true")!=-1){
-				window.open(url, "_blank");
-			}
-				
-			else {
-				$(panel).mask("Loading...");
-				$(panel).load(this.href, function() {
-					$(panel).unmask();
-				});
-				}
+			var fullUrl = $(this).attr('href');
+			changeAddress(fullUrl);
 			return false;
 		});
 		// hook global form submit event
@@ -61,6 +61,16 @@ $(function() {
 		notAddHandler = false;
 	}
 });
+$(function() {
+	$.address.change(function(event){
+		if(triggerAddressHandler){
+		reallyClick = false;
+		addressChangeHandler(event);
+		reallyClick = true;
+		}
+		triggerAddressHandler = true;
+	});
+})
 function removeFormSubmitHandler(container) {
 	$(container).off('submit', 'form', formSubmitHandler);
 }
@@ -93,8 +103,19 @@ function formSubmitHandler(event, receiver) {
 	if (form.attr('method').toLowerCase() == 'post') {
 		var parameters = form.serializeArray();
 		var url = form.attr('action');
+		operationSucess = false;
 		$(resultReceiver).load(url, parameters, function() {
 			$(panel).unmask();
+			if(operationSucess){
+				var deeplink = $.address.value();
+				triggerAddressHandler = false;
+				var formRexg = /\d*\?/;
+				var index = deeplink.search(formRexg);
+				if(index > -1){
+				deeplink = deeplink.substr(0, index);
+				$.address.value(deeplink);
+				}
+			}
 		}).change();
 		event.preventDefault();
 	}

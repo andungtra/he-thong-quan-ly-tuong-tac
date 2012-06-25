@@ -12,7 +12,7 @@
 	<spring:url value="/login" var="login" />
 	<spring:url value="/logout" var="logout" />
 
-	<spring:url value="/administrator/homepage" var="administrator_url" />
+	<spring:url value="/administrator" var="administrator_url" />
 	<spring:message code="security_login_as" var="loginAs" />
 	<spring:url value="/resources/images/left_right_arrow.png"
 		var="left_right_arrow_url"></spring:url>

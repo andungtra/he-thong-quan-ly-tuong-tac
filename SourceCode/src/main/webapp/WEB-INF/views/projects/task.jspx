@@ -12,6 +12,7 @@
 
 	<script type="text/javascript">
 		$(function() {
+			operationSucess = true;
 			// BUTTON
 			//debugger;
 			$('.fg-button').hover(
