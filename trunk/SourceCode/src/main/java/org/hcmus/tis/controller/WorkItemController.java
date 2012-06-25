@@ -175,7 +175,7 @@ public class WorkItemController {
 		
 		return "redirect:/projects/"
 		+ workItem.getWorkItemContainer().getParentProjectOrMyself().getId()
-		+ "/task";
+		+ "/workitems";
 	}
 
 	@RequestMapping(value = "/{workItemId}", params = "subscribe")
@@ -340,7 +340,7 @@ public class WorkItemController {
 		
 		return "redirect:/projects/"
 				+ projectId
-				+ "/task";
+				+ "/workitems";
 	}
 
 	public WorkItemRepository getWorkItemRepository() {

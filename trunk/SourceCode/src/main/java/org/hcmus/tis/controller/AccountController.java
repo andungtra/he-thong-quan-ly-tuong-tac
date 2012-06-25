@@ -275,7 +275,7 @@ public class AccountController {
 			"iDisplayLength", "sEcho", "sSearch" })
 	@ResponseBody
 	public DtReply mListProject(int iDisplayStart, int iDisplayLength,
-			String sEcho, String sSearch, HttpSession session) {
+			String sEcho, String sSearch, HttpSession session, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
@@ -290,8 +290,8 @@ public class AccountController {
 					&& item.getDeleted() == false) {
 				ProjectDTO dto = new ProjectDTO();
 				dto.DT_RowId = item.getProject().getId();
-				dto.setName("<a href='../../../TIS/projects/"
-						+ item.getProject().getId() + "?goto=true'>"
+				dto.setName("<a href='" + request.getContextPath() + "/projects/"
+						+ item.getProject().getId() + "'>"
 						+ item.getProject().getName() + "</a>");
 				dto.setDescription(item.getProject().getDescription());
 				reply.getAaData().add(dto);

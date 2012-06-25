@@ -17,4 +17,6 @@
 			<li><a href="${projects}">My Projects</a></li>
 		</ul>
 	</div>
+<spring:url value="/resources/scripts/home_address.js" var="home_address_url" />
+<script type="text/javascript" src="${home_address_url }"> <!--project address--></script>
 </jsp:root>

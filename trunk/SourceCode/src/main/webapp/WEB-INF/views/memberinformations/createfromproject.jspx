@@ -28,7 +28,7 @@
 		<form:form action="${create_url }" method="POST">
 		<div class="fix-panel">
 			<div class="panel-title">
-				<spring:url value="/projects/${projectId}/members" var="cancel_url" />
+				<spring:url value="/projects/${projectId}/memberinformations" var="cancel_url" />
 				<div class="panel-title"><a href="${cancel_url}">Member</a> > Add member to project
 					<div class="submit" >
 						

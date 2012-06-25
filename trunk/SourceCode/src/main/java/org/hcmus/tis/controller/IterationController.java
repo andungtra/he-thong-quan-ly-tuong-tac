@@ -48,7 +48,7 @@ public class IterationController {
         	iteration.setParentContainer(project);
         }
         iteration.merge();
-        return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/roadmap";
+        return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/iterations";
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
@@ -70,7 +70,7 @@ public class IterationController {
         	iteration.setParentContainer(project);
         }
         iteration.persist();
-        return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/roadmap";
+        return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/iterations";
     }
     public ProjectRepository getProjectRepository() {
 		return projectRepository;

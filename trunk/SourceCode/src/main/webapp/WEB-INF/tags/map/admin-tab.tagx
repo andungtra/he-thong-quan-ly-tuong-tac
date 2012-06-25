@@ -24,5 +24,6 @@
 			<li><a href="${listProcessUrl }">Processes</a></li>
 		</ul>
 	</div>
-
+<spring:url value="/resources/scripts/admin_address.js" var="project_address_url" />
+<script type="text/javascript" src="${project_address_url }"> <!--project address--></script>
 </jsp:root>
