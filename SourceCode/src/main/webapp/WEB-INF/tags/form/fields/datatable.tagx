@@ -76,7 +76,8 @@
 	
 	var asInitVals = new Array();
 	var oTable;
-	var statusID=0;
+	var statusID= false;
+	var statusName = 'closed';
 	$(document)
 			.ready(
 					function() {
@@ -100,7 +101,7 @@
 													},
 													</c:forEach>													
 													{
-														"name":"status",
+														"name":statusName,
 														"value" : statusID
 													});
 											},												
@@ -145,10 +146,18 @@
 			if('${filter}' != ''){
 				bt = bt + '<div class="filter">Show : <select id="${id}_status"></select></div>';
 				$.getJSON('/TIS/projects/workitemstatuses/listJSON', function(data) {
-					  var items = '<option value="0">All</option>';
-
+					  var items = '<option>All workitem</option>';
+					  items = items + '<option title="closed" value="false" selected="selected">Open workitem</option>';
 					  $.each(data, function(key, val) {
-					    items = items + ('<option value="' + val.id + '">' + val.name + '</option>');
+						  if(val.closed == false){
+					    items = items + ('<option title="status" value="' + val.id + '"> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' + val.name + ' workitem</option>');
+						  }
+					  });
+					  items = items + '<option value="true" title="closed">Closed workitem</option>';
+					  $.each(data, function(key, val) {
+						  if(val.closed == true){
+					    items = items + ('<option title="status" value="' + val.id + '"> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' + val.name + ' workitem</option>');
+						  }
 					  });
 					  //debugger;
 					  document.getElementById('${id}_status').innerHTML = items;
@@ -323,12 +332,15 @@
 	</div>
 	<script>
 	$(function(){
-		//debugger;
+		debugger;
 		var selector = '#table_${id} select';
 		  $(selector).change(function () {
 		    	if('${filter}' != ''){
+		    		if(this.selectedIndex > -1){
+		    		statusName  = this.options[this.selectedIndex].title;
 		    		statusID = this.value;
 		        	oTable.fnFilter("");
+		    		}
 		    	}
 		    })
 		        .change();

@@ -72,7 +72,7 @@
 	<form:update submitbutton="${submitbutton }"
 		cancel="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems"
 		id="fu_org_hcmus_tis_model_WorkItem"
-		label="${workItemType.name } : #${workItem.id }" labelBackList="Tasks"
+		label="${workItemType.name }: #${workItem.id }" labelBackList="Tasks"
 		modelAttribute="workItem"
 		path="/projects/${workItem.workItemContainer.parentProjectOrMyself.id }/workitems"
 		versionField="Version" z="user-managed">
@@ -139,19 +139,19 @@
 						</c:choose>
 					</div>
 				</c:forEach>
-				<field:display date="true" dateTimePattern="${date_format}"
+				<field:display date="true" label="Date created" dateTimePattern="${date_format}"
 					field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated"
 					object="${workItem}" z="user-managed" />
-				<field:datetime dateTimePattern="${date_format}" field="dueDate"
+				<field:datetime label="Due date" dateTimePattern="${date_format}" field="dueDate"
 					id="c_org_hcmus_tis_model_WorkItem_dueDate" z="user-managed" />
 				<field:display date="true" dateTimePattern="${date_format}"
-					field="dateLastEdit"
+					field="dateLastEdit" label="Date last updated"
 					id="c_org_hcmus_tis_model_WorkItem_dateLastEdit"
 					object="${workItem}" z="user-managed" />
 			</util:fixpanel>
 		</div>
 		<div class="right-panel link">
-			<util:fixpanel id="peoples_panel" title="Peoples">
+			<util:fixpanel id="peoples_panel" title="People">
 				<field:display label="Created by" field="fullName"
 					id="s_org_hcmus_tis_model_WorkItem_author" object="${workItem.author.account}"
 					z="user-managed" />
@@ -183,7 +183,7 @@
 							var="unSubscribe_url">
 							<spring:param name="unSubscribe" />
 						</spring:url>
-						<a href="${unSubscribe_url }">Unsubcribed</a>
+						<a href="${unSubscribe_url }">Unsubcribe</a>
 					</p>
 					<p>You and ${fn:length(workItem.subcribers)} members subscribed
 						this.</p>
@@ -247,7 +247,7 @@
 			items="${memberinformations}" multiple="true"
 			path="/memberinformations" render="false" z="user-managed" />
 	</form:update>
-	<util:fixpanel id="activity_panel" title="Activity">
+	<util:fixpanel id="activity_panel" title="Activities">
 		<div id="activity_tabs">
 			<div id="activity_tabs_content">
 				<ul>

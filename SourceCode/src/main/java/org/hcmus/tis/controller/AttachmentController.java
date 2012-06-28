@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.hcmus.tis.dto.FileUploaderResponse;
 import org.hcmus.tis.model.Attachment;
 import org.hcmus.tis.model.WorkItem;
@@ -130,7 +132,11 @@ public class AttachmentController {
 			attachment.setRealFileName(realFileName);
 			attachment.setWorkItem(workItem);
 			attachmentRepository.flush();
-		} finally {
+		} 
+		catch (Exception e) {
+			Logger.getLogger(getClass()).log(Priority.FATAL, e);
+		}
+		finally {
 			try {
 				if (fos != null) {
 					fos.close();
@@ -141,6 +147,7 @@ public class AttachmentController {
 			} catch (IOException ignored) {
 			}
 		}
+		
 		FileUploaderResponse response = new FileUploaderResponse();
 		response.setAttachmentId(attachment.getId());
 		response.setSuccess(true);

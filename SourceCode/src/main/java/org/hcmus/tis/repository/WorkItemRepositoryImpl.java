@@ -25,14 +25,14 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	private IterationRepository iterationRepository;
 
 	private Query createQuery(boolean generateCountQuery, String filter,
-			SearchConditionsDTO searchCondition, Boolean closed) {
+			SearchConditionsDTO searchCondition) {
 		String hql = "";
 		if (generateCountQuery) {
 			hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
 		} else {
 			hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
 		}
-		if(closed != null){
+		if(searchCondition.getClosed() != null){
 			hql = hql + " AND workItem.status.closed =:closed";
 		}
 		if (searchCondition.getTitleDescription() != null) {
@@ -65,9 +65,10 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 			}
 			hql = hql + ")";
 		}
+		hql = hql + " ORDER BY workItem.title ASC";
 		Query query = em.createQuery(hql);
-		if(closed != null){
-			query = query.setParameter("closed", closed);
+		if(searchCondition.getClosed() != null){
+			query = query.setParameter("closed", searchCondition.getClosed());
 		}
 		if (searchCondition.getTitleDescription() != null) {
 
@@ -101,20 +102,21 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	@Override
 	public  long countBy(String filter,
 			SearchConditionsDTO searchCondition) {
-		Query query =  createQuery(true, filter, searchCondition, null);
+		Query query =  createQuery(true, filter, searchCondition);
 		return (Long)query.getSingleResult();
 	}
 	@Override
 	public long countByAncestorContainter(WorkItemContainer container, Boolean closed){
 		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
 		searchCondition.setContainer(container);
-		Query query = createQuery(true, null, searchCondition, closed);
+		searchCondition.setClosed(closed);
+		Query query = createQuery(true, null, searchCondition);
 		return (Long)query.getSingleResult();
 	}
 	@Override
 	public  List<WorkItem> findBy(String filter, SearchConditionsDTO searchCondition,
 			int startDisplay, int displayLength) {
-		Query query = createQuery(false, filter, searchCondition, null);
+		Query query = createQuery(false, filter, searchCondition);
 		
 		query.setFirstResult(startDisplay);
 		query.setMaxResults(displayLength);
@@ -125,7 +127,8 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 			int startDisplay, int displayLength) {
 		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
 		searchCondition.setContainer(container);
-		Query query = createQuery(false, null, searchCondition, closed);	
+		searchCondition.setClosed(closed);
+		Query query = createQuery(false, null, searchCondition);	
 		query.setFirstResult(startDisplay);
 		query.setMaxResults(displayLength);
 		return query.getResultList();
@@ -134,7 +137,8 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	public  List<WorkItem> findByAncestor(WorkItemContainer container, Boolean closed) {
 		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
 		searchCondition.setContainer(container);
-		Query query = createQuery(false, null, searchCondition, closed);	
+		searchCondition.setClosed(closed);
+		Query query = createQuery(false, null, searchCondition);	
 		return query.getResultList();
 	}
 	@Override
@@ -142,7 +146,7 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 		SearchConditionsDTO condition = new SearchConditionsDTO();
 		condition.setContainer(container);
 		condition.setStatus(status);
-		Query query = createQuery(true, null, condition, null);
+		Query query = createQuery(true, null, condition);
 		return (Long)query.getSingleResult();
 	}
 }
