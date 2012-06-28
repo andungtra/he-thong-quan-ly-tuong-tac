@@ -29,7 +29,7 @@
 		<div class="fix-panel">
 			<div class="panel-title">
 				<spring:url value="/projects/${projectId}/memberinformations" var="cancel_url" />
-				<div class="panel-title"><a href="${cancel_url}">Member</a> > Add member to project
+				<div class="panel-title"><a href="${cancel_url}">Members</a> > Add member to project
 					<div class="submit" >
 						
 						<a href="${cancel_url}">

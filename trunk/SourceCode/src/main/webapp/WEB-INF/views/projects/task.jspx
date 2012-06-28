@@ -59,7 +59,7 @@
 					<spring:param name="workItemTypeId" value="${workItemTypes[0].id }"></spring:param>
 				</spring:url>
 				<span class="signin"> <a href="${default_workitemform_url }">
-						<span>Create</span>
+						<span>Create ${workItemTypes[0].name }</span>
 				</a><span class="img"></span>
 				</span>
 			</div>
@@ -82,12 +82,16 @@
 		<a href="${advancedsearch_url }" class="due">Advanced Search</a>
 	</div>
 	<div style="clear: both;" />
+	<c:if test="${not empty recentActivity  }">
+	<spring:url value="/projects/${itemId }/workitems/${recentWorkItem.id }?form" var="recentworkitem_url"></spring:url>
+	<div style="text-align: center;"><h4>you have ${recentActivity } ${recentWorkItem.workItemType.name }: <a href="${recentworkitem_url }">${recentWorkItem.title }</a></h4></div>
+	</c:if>
+	
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
 	<field:datatable aoColumns="lName,sStatus,sType,priority,sIteration"
 		id="tbproject" path="/workitems"
 		source="/projects/${itemId }/workitems"
-		thead="Title,Status,Type,Priority,Plan for" fshow="true"
-		lshow="/projects/${itemId }/workitems" filter="true" />
+		thead="Title,Status,Type,Priority,Plan for" filter="true" />
 	<div style="clear: both;" />
 </div>

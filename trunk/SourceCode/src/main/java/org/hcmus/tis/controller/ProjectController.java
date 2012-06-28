@@ -258,9 +258,13 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}/workitems", produces = "text/html")
-	public String task(@PathVariable("id") Long id, Model uiModel) {
+	public String task(@PathVariable("id") Long id, Model uiModel, String recentAction, Long recentWorkItemId) {
 		// uiModel.addAttribute("project", projectRepository.findOne(id));
 		uiModel.addAttribute("itemId", id);
+		if(recentAction != null && recentWorkItemId != null){
+			uiModel.addAttribute("recentActivity", recentAction);
+			uiModel.addAttribute("recentWorkItem", workItemRepository.findOne(recentWorkItemId));
+		}
 		uiModel.addAttribute("workItemTypes", projectRepository.findOne(id)
 				.getProjectProcess().getWorkItemTypes());
 		return "projects/tasks";
@@ -300,6 +304,10 @@ public class ProjectController {
 		if (searchCondition.getTitleDescription() != null) {
 			params.add(new AttributeValueDTO("titleDescription",
 					searchCondition.getTitleDescription()));
+		}
+		if(searchCondition.getClosed() != null){
+			params.add(new AttributeValueDTO("closed",
+					searchCondition.getClosed().toString()));
 		}
 		uiModel.addAttribute("searchparams", params);
 		return "projects/advancedtasks";
