@@ -95,7 +95,7 @@
 	</div>
 	<div class="clear" />
 	<div class="recent">
-		<util:fixpanel id="" title="Recent activity" bt="true">
+		<util:fixpanel id="" title="Recent activities" bt="true">
 			<c:if test="${empty listHistorys}">
 					Don't have any activity !
 			</c:if>

@@ -1,16 +1,16 @@
 .qq-uploader { position:relative; width: 100%;}
 
 .qq-upload-button {
-    padding: 4px;
+	color: #3375D9;
 	font-weight: bold;
-	background-color: #666 !important;
-	border: solid 1px #666;
-	color: #fff;	
-	border-radius:2px;	   
+	width: 80px;
 }
-.qq-upload-button-hover {	background-color: #ccc !important;
-	border-color: #bbb;
-	color: #333;}
+.qq-upload-button-hover {
+	color: #06A209;
+	text-decoration: underline;
+		font-weight: bold;
+		width: 80px;
+	}
 .qq-upload-button-focus {outline:1px dotted black;}
 
 .qq-upload-drop-area, .qq-upload-extra-drop-area {

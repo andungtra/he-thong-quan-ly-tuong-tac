@@ -10,6 +10,13 @@ public class SearchConditionsDTO {
 	private WorkItemStatus status;
 	private MemberInformation owner;
 	private MemberInformation asignee;
+	private Boolean closed;
+	public Boolean getClosed() {
+		return closed;
+	}
+	public void setClosed(Boolean closed) {
+		this.closed = closed;
+	}
 	private WorkItemContainer container;
 	public String getTitleDescription() {
 		return titleDescription;

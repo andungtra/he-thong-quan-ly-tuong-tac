@@ -39,7 +39,7 @@
 	</div>
 	<div class="right-panel">
 	<spring:url value = "/accounts/${id}/dumpcalendar" var="calendar"/>
-		<util:fixpanel title="Incomming Event" id="">
+		<util:fixpanel title="Incoming events" id="">
 			<ul class="due">
 				<c:if test="${empty newEvent}">
 					You don't have any event !
