@@ -172,10 +172,11 @@ public class WorkItemController {
 				+ "/workitems/"
 				+ encodeUrlPathSegment(workItem.getId().toString(),
 						httpServletRequest);*/
+		uiModel.addAttribute("action", "updated");
 		
 		return "redirect:/projects/"
 		+ workItem.getWorkItemContainer().getParentProjectOrMyself().getId()
-		+ "/workitems";
+		+ "/workitems?recentAction=updated&recentWorkItemId="  + workItem.getId();
 	}
 
 	@RequestMapping(value = "/{workItemId}", params = "subscribe")
@@ -340,7 +341,7 @@ public class WorkItemController {
 		
 		return "redirect:/projects/"
 				+ projectId
-				+ "/workitems";
+				+ "/workitems?recentAction=created&recentWorkItemId="  + workItem.getId();
 	}
 
 	public WorkItemRepository getWorkItemRepository() {

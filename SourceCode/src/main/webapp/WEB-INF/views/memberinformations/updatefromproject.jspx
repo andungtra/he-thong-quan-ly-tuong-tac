@@ -21,8 +21,8 @@
 		<div class="fix-panel">
 			<div class="panel-title">
 				<div class="panel-title">
-				<spring:url value="/projects/${memberInformation.project.id}/members"	var="cancel_url" />
-				<a href="${cancel_url}">Member</a> > Add member to project
+				<spring:url value="/projects/${memberInformation.project.id}/memberinformations"	var="cancel_url" />
+				<a href="${cancel_url}">Members</a> > Add member to project
 					<div class="submit">
 						
 						<a href="${cancel_url}"> <input type="button" value="Cancel" />

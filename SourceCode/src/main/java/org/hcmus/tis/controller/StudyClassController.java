@@ -1,12 +1,16 @@
 package org.hcmus.tis.controller;
 
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.hcmus.tis.dto.DtReply;
+import org.hcmus.tis.dto.datatables.ProjectDTO;
 import org.hcmus.tis.dto.datatables.StudyClassDTO;
+import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.repository.StudyClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +115,42 @@ public class StudyClassController {
 		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
 		return "redirect:/studyclasses";
 
+	}
+	@RequestMapping(value = "/{classId}/projects", params = { "iDisplayStart",
+			"iDisplayLength", "sEcho", "sSearch" })
+	@ResponseBody
+	public DtReply listProjects(@PathVariable("classId") Long classId, int iDisplayStart, int iDisplayLength, String sEcho,
+			String sSearch, HttpServletRequest request) {
+		DtReply reply = new DtReply();
+		reply.setsEcho(sEcho);
+		StudyClass studyClass = studyClassRepository.findOne(classId);
+		studyClass.setId(classId);
+		Pageable pageable = new PageRequest(iDisplayStart / iDisplayLength,
+				iDisplayLength);
+		Page<Project> page = projectRepository.findByNameLikeAndStudyClassAndStatusNot("%"
+				+ sSearch + "%",studyClass, ProjectStatus.DELETED, pageable);
+		List<Project> list = page.getContent();
+		for (Project item : list) {
+			ProjectDTO dto = new ProjectDTO();
+			dto.DT_RowId = item.getId();
+			dto.setName("<a href='" + request.getContextPath() + "/projects/" + item.getId() + "?goto=true'>"
+					+ item.getName() + "</a>");
+
+			if (item.getParentContainer() != null)
+				dto.setParentContainer(item.getParentContainer().getName());
+			String s;
+			if (item.getDescription() != null
+					&& item.getDescription().length() > 50)
+				s = item.getDescription().substring(0, 49) + " ...";
+			else
+				s = item.getDescription();
+			dto.setDescription(s);
+
+			reply.getAaData().add(dto);
+		}
+		reply.setiTotalDisplayRecords((int) page.getTotalElements());
+		reply.setiTotalRecords((int) projectRepository
+				.countByStudyClassAndStatusNot(studyClass,ProjectStatus.DELETED));
+		return reply;
 	}
 }
