@@ -433,7 +433,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		ArrayList<WorkItem> workItems = new ArrayList<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";
-		doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
+		//doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
 		doReturn(totalRecord).when(workItemRepository).countBy(null, searchConditions);
 		doReturn(filteredRecord).when(workItemRepository).countBy(globalSearch, searchConditions);
 		String sEcho = "";
@@ -441,10 +441,10 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	
 
 		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
-				startDisplay, displayLength, sEcho, sSearch, searchConditions);
+				startDisplay, displayLength, sEcho, sSearch, searchConditions, null);
 		verify(workItemRepository).countBy(null, searchConditions);
 		verify(workItemRepository).countBy(globalSearch, searchConditions);
-		verify(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
+		//verify(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
 		verify(searchConditions, times(0)).setContainer(any(WorkItemContainer.class));
 		assertNotNull(result);
 		assertEquals(totalRecord, result.getiTotalRecords());
@@ -468,14 +468,14 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		ArrayList<WorkItem> workItems = new ArrayList<WorkItem>();
 		workItems.add(mockedWorkItem);
 		String globalSearch = "";
-		doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
+		//doReturn(workItems).when(workItemRepository).findBy(globalSearch, searchConditions, startDisplay, displayLength);
 		doReturn(totalRecord).when(workItemRepository).countBy(null, searchConditions);
 		doReturn(filteredRecord).when(workItemRepository).countBy(globalSearch, searchConditions);
 		String sEcho = "";
 		String sSearch = "";
 
 		DtReply result = aut.listWorkItemByProject(mockedProject.getId(),
-				startDisplay, displayLength, sEcho, sSearch, searchConditions);
+				startDisplay, displayLength, sEcho, sSearch, searchConditions, null);
 		verify(searchConditions).setContainer(mockedProject);
 		
 	}

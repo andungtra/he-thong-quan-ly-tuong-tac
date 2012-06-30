@@ -2,6 +2,7 @@ package org.hcmus.tis.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,9 @@ import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	@PersistenceContext
@@ -25,14 +29,14 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	private IterationRepository iterationRepository;
 
 	private Query createQuery(boolean generateCountQuery, String filter,
-			SearchConditionsDTO searchCondition) {
+			SearchConditionsDTO searchCondition, List<Order> orders) {
 		String hql = "";
 		if (generateCountQuery) {
 			hql = "SELECT COUNT(workItem) FROM WorkItem workItem WHERE 1 = 1";
 		} else {
 			hql = "SELECT workItem FROM WorkItem workItem WHERE 1 = 1";
 		}
-		if(searchCondition.getClosed() != null){
+		if (searchCondition.getClosed() != null) {
 			hql = hql + " AND workItem.status.closed =:closed";
 		}
 		if (searchCondition.getTitleDescription() != null) {
@@ -65,9 +69,15 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 			}
 			hql = hql + ")";
 		}
-		hql = hql + " ORDER BY workItem.title ASC";
+		if (generateCountQuery == false && orders != null && orders.size() > 0) {
+			hql = hql + " ORDER BY";
+			for (Order order : orders) {
+				hql = hql + " workItem." + order.getProperty() + " "
+						+ order.getDirection();
+			}
+		}
 		Query query = em.createQuery(hql);
-		if(searchCondition.getClosed() != null){
+		if (searchCondition.getClosed() != null) {
 			query = query.setParameter("closed", searchCondition.getClosed());
 		}
 		if (searchCondition.getTitleDescription() != null) {
@@ -100,53 +110,62 @@ public class WorkItemRepositoryImpl implements WorkItemRepositoryCustom {
 	}
 
 	@Override
-	public  long countBy(String filter,
-			SearchConditionsDTO searchCondition) {
-		Query query =  createQuery(true, filter, searchCondition);
-		return (Long)query.getSingleResult();
+	public long countBy(String filter, SearchConditionsDTO searchCondition) {
+		Query query = createQuery(true, filter, searchCondition, null);
+		return (Long) query.getSingleResult();
 	}
+
 	@Override
-	public long countByAncestorContainter(WorkItemContainer container, Boolean closed){
+	public long countByAncestorContainter(WorkItemContainer container,
+			Boolean closed) {
 		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
 		searchCondition.setContainer(container);
 		searchCondition.setClosed(closed);
-		Query query = createQuery(true, null, searchCondition);
-		return (Long)query.getSingleResult();
+		Query query = createQuery(true, null, searchCondition, null);
+		return (Long) query.getSingleResult();
 	}
+
 	@Override
-	public  List<WorkItem> findBy(String filter, SearchConditionsDTO searchCondition,
-			int startDisplay, int displayLength) {
-		Query query = createQuery(false, filter, searchCondition);
-		
-		query.setFirstResult(startDisplay);
-		query.setMaxResults(displayLength);
+	public List<WorkItem> findBy(String filter,
+			SearchConditionsDTO searchCondition, Pageable pageable) {
+		List<Order> orders = new ArrayList<Sort.Order>();
+		if (pageable.getSort() != null) {
+			Iterator<Order> iterator = pageable.getSort().iterator();
+			while (iterator.hasNext()) {
+				orders.add(iterator.next());
+			}
+		}
+		Query query = createQuery(false, filter, searchCondition, orders);
+
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
 		return query.getResultList();
 	}
+
 	@Override
-	public  List<WorkItem> findByAncestor(WorkItemContainer container, Boolean closed,
-			int startDisplay, int displayLength) {
+	public List<WorkItem> findByAncestor(WorkItemContainer container,
+			Boolean closed, Pageable pageable) {
 		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
 		searchCondition.setContainer(container);
 		searchCondition.setClosed(closed);
-		Query query = createQuery(false, null, searchCondition);	
-		query.setFirstResult(startDisplay);
-		query.setMaxResults(displayLength);
+		List<Order> orders = new ArrayList<Sort.Order>();
+		Iterator<Order> iterator = pageable.getSort().iterator();
+		while (iterator.hasNext()) {
+			orders.add(iterator.next());
+		}
+		Query query = createQuery(false, null, searchCondition, orders);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
 		return query.getResultList();
 	}
+
 	@Override
-	public  List<WorkItem> findByAncestor(WorkItemContainer container, Boolean closed) {
-		SearchConditionsDTO searchCondition = new SearchConditionsDTO();
-		searchCondition.setContainer(container);
-		searchCondition.setClosed(closed);
-		Query query = createQuery(false, null, searchCondition);	
-		return query.getResultList();
-	}
-	@Override
-	public long countByAncestorContainerAndStatus(WorkItemContainer container, WorkItemStatus status){
+	public long countByAncestorContainerAndStatus(WorkItemContainer container,
+			WorkItemStatus status) {
 		SearchConditionsDTO condition = new SearchConditionsDTO();
 		condition.setContainer(container);
 		condition.setStatus(status);
-		Query query = createQuery(true, null, condition);
-		return (Long)query.getSingleResult();
+		Query query = createQuery(true, null, condition, null);
+		return (Long) query.getSingleResult();
 	}
 }
