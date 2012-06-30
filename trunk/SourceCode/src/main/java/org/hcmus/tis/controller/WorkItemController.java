@@ -4,7 +4,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -47,6 +50,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -343,7 +347,6 @@ public class WorkItemController {
 				+ projectId
 				+ "/workitems?recentAction=created&recentWorkItemId="  + workItem.getId();
 	}
-
 	public WorkItemRepository getWorkItemRepository() {
 		return workItemRepository;
 	}
@@ -356,16 +359,33 @@ public class WorkItemController {
 	@RequiresPermissions("workitem:list")
 	public DtReply listWorkItemByProject(
 			@PathVariable("projectId") Long projectId, int iDisplayStart,
-			int iDisplayLength, String sEcho, String sSearch, @Valid SearchConditionsDTO searchCondition) {
+			int iDisplayLength, String sEcho, String sSearch, @Valid SearchConditionsDTO searchCondition, HttpServletRequest request) {
 		DtReply reply = new DtReply();
 		reply.setsEcho(sEcho);
 		Project project = projectRepository.findOne(projectId);
 		if(searchCondition.getContainer() == null){
 			searchCondition.setContainer(project);
 		}
+		Pageable pageable;
+		int sortingColsNumber = Integer.valueOf(request.getParameter("iSortingCols"));
+		if(sortingColsNumber > 0){
+			int index = 0;
+			int columnNumber = Integer.valueOf(request.getParameter("iSortCol_" + index));
+			String dtoProper = request.getParameter("mDataProp_" + columnNumber);
+			if(dtoProper != null && dtoProper.compareTo("null") != 0){
+				String directionString = request.getParameter("sSortDir_" + index);
+				pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength, new Sort(Direction.fromString(directionString.toUpperCase()), WorkItemDTO.mapToEntityProper(dtoProper)));
+			}else{
+				pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+			}
+			
+			
+		}else{
+			pageable = new PageRequest(iDisplayStart / iDisplayLength, iDisplayLength);
+		}
 		reply.setiTotalRecords((int) workItemRepository.countBy(null, searchCondition));
 		reply.setiTotalDisplayRecords((int) workItemRepository.countBy(sSearch, searchCondition));
-		Collection<WorkItem> workItems = workItemRepository.findBy(sSearch, searchCondition, iDisplayStart, iDisplayLength);
+		Collection<WorkItem> workItems = workItemRepository.findBy(sSearch, searchCondition, pageable);
 
 		for (WorkItem workItem : workItems) {
 			WorkItemDTO workItemDto = new WorkItemDTO();

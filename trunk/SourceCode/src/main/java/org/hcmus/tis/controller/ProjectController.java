@@ -44,6 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -222,7 +224,8 @@ public class ProjectController {
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
 		Project project = projectRepository.findOne(id);
-		List<WorkItem> workItemsList = workItemRepository.findByAncestor(project, false);
+		Pageable workItemPageable = new PageRequest(0, (int)workItemRepository.countByAncestorContainter(project, false), new Sort(Direction.ASC, "dueDate"));
+		List<WorkItem> workItemsList = workItemRepository.findByAncestor(project, false, workItemPageable);
 
 		for (WorkItem workItem : workItemsList) {
 			if (workItem.getDueDate() != null

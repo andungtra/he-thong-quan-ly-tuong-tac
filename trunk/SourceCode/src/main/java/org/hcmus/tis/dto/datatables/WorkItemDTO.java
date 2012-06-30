@@ -10,6 +10,15 @@ public class WorkItemDTO {
 	public String getIteration() {
 		return iteration;
 	}
+	private static String [][] mappingTable = {{"lName","title"},{"sStatus","status.name"}, {"sType","workItemType.name"},{"priority","priority.name"},{"iteration","workItemContainer.name"}};
+	public static String mapToEntityProper(String dtoProper){
+		for(int index = 0; index < mappingTable.length; ++index){
+			if(mappingTable[index][0].compareTo(dtoProper) == 0){
+				return mappingTable[index][1];
+			}
+		}
+		return null;
+	}
 	public void setIteration(String iteration) {
 		this.iteration = iteration;
 	}

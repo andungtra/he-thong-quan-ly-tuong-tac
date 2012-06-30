@@ -57,6 +57,8 @@
 
 	<jsp:directive.attribute name="filter" type="java.lang.Boolean"
 		required="false" rtexprvalue="true" description="filter work item" />
+		<jsp:directive.attribute name="checkbox" type="java.lang.Boolean"
+		required="false" rtexprvalue="true" description="check box" />
 
 
 	<spring:url value="/resources/media/js/TableTools.js" var="table_tool" />
@@ -67,8 +69,13 @@
 	<spring:url value="${source}" var="source" />
 	<spring:url value="${lshow}" var="lshow" />
 	<c:set var="lNew" value="${path}?form" />
+	<c:if test="${empty checkbox || checkbox }">
 	<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false}' />
-	<c:forTokens items="${aoColumns}" var="column" delims="{,}">
+	</c:if>
+	<c:if test="${not empty checkbox &amp;&amp; not checkbox }">
+		<c:set var="ao" value='[ {"mDataProp" : null,"bSortable" : false,  "bVisible": false}' />
+	</c:if>
+	<c:forTokens items="${aoColumns}" var="column" delims="{,}" >
 		<c:set var="ao" value='${ao},{"mDataProp" :"${column}"}' />
 	</c:forTokens>
 	<c:set var="ao" value='${ao}]' />
@@ -108,7 +115,9 @@
 											"aoColumns" : ${ao},
 											"bJQueryUI" : true,												
 											"sPaginationType" : "full_numbers",
-											"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;',												
+											"sDom" : '&lt;"H"&lt;"datatable_buttons"eeee&gt;fr&gt;t&lt;"F"ip&gt;'
+										<c:if test="${empty checkbox || checkbox }">
+											,												
 											"fnCreatedRow" : function(nRow,
 													aData, iDataIndex) {
 												if (iDataIndex == 0) {
@@ -122,6 +131,7 @@
 														.html(
 																'<input type="checkbox"/>');
 											}
+											</c:if>
 
 										});	
 					});
