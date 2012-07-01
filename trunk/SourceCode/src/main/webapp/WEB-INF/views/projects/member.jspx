@@ -24,8 +24,8 @@
 	<div style="clear: both; height: 10px;" />
 
 	<table:datatable aoColumns="firstName,lastName,memberRole" id="tbmember"
-		path="memberinformations"
+		path="/projects/${projectId}/memberinformations"
 		source="/projects/${projectId}/memberinformations"
 		thead="First Name, Last Name, Member Role" fadd="${lAdd}"
-		fremove="${remove_url}" redirectUrl="${redirectUrl}"  />
+		deleteLabel ="Remove" fdelete="true" redirectUrl="${redirectUrl}"  />
 </div>

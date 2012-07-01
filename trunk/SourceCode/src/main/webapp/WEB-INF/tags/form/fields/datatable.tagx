@@ -45,8 +45,8 @@
 	<jsp:directive.attribute name="fupdate" type="java.lang.String"
 		required="false" rtexprvalue="true" description="Update" />
 
-	<jsp:directive.attribute name="fremove" type="java.lang.String"
-		required="false" rtexprvalue="true" description="Remove" />
+	<jsp:directive.attribute name="deleteLabel" type="java.lang.String"
+		required="false" rtexprvalue="true" description="label for delete button" />
 
 	<jsp:directive.attribute name="redirectUrl" type="java.lang.String"
 		required="false" rtexprvalue="true" description="The server source" />
@@ -141,14 +141,18 @@
 			var bt = "";
 			if('${fnew}' != '')
 				bt = bt+ '<button onclick="fnew()">New</button>';
+				if('${fadd}' != '')
+					bt = bt	+'<a href="${fadd}"><button>Add</button></a>';
 			if('${fshow}' != '')
 				bt = bt +'<button onclick="fshow()">Edit</button>';
 			if('${fgoto}' != '')
 				bt = bt+'<button onclick="fgoto()">Goto</button>';
+			<c:if test="${empty deleteLabel}">
+				<c:set var="deleteLabel" value="Delete"></c:set>
+			</c:if>
 			if('${fdelete}' != '')
-				bt = bt	+'<button onclick="fdel()">Delete</button>';
-			if('${fadd}' != '')
-				bt = bt	+'<a href="${fadd}"><button>Add</button></a>';
+				bt = bt	+'<button onclick="fdel()">${deleteLabel}</button>';
+
 			if('${fupdate}' != '')
 				bt = bt	+'<button onclick="fupdate()">Update</button>';
 			if('${fremove}' != '')
@@ -287,13 +291,12 @@
 				if(confirm('Do you want to delete ?')){
 					for(var x in d){
 						var idtr = $(d[x]).attr('id');
-						$("#"+idtr).html("");
 						$.ajax({
 					        type: "DELETE",
 					        url: "${path}/"+idtr,
-					        success:function(){			        	
-				        		$("#"+idtr).html("");				        		
-				        		alert("Item is deleted !");
+					        success:function(data){			        	
+				        		$("#"+data).html("");				        		
+				        		alert("Item " + data +" is deleted !");
 				        	} 
 					    });					
 					}
