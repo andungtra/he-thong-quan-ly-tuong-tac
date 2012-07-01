@@ -26,6 +26,6 @@
 	<table:datatable aoColumns="firstName,lastName,memberRole" id="tbmember"
 		path="memberinformations"
 		source="/projects/${projectId}/memberinformations"
-		thead="First Name, Last Name, Member Role" fadd="${lAdd}" fupdate="${update_url}" 
+		thead="First Name, Last Name, Member Role" fadd="${lAdd}"
 		fremove="${remove_url}" redirectUrl="${redirectUrl}"  />
 </div>

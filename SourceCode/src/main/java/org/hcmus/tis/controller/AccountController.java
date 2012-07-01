@@ -30,6 +30,7 @@ import org.hcmus.tis.repository.AccountRepository;
 import org.hcmus.tis.repository.ApplicationRoleRepository;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
+import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.service.AccountService;
@@ -62,6 +63,8 @@ public class AccountController {
 	MemberInformationRepository memberInformationRepository;
 	@Autowired
 	WorkItemRepository workItemRepository;
+	@Autowired
+	ProjectRepository projectRepository;
 
 	public AccountRepository getAccountRepository() {
 		return accountRepository;
@@ -168,13 +171,19 @@ public class AccountController {
 		return "accounts/activeFailure";
 	}
 
-	@RequestMapping(params = "term")
+	@RequestMapping(value="/{projectId}",params = "term")
 	public @ResponseBody
-	Collection<String> findAccount(String term) {
+	Collection<String> findAccount(@PathVariable("projectId")Long projectId, String term) {
+		Project project = projectRepository.findOne(projectId);
 		Pageable pageable = new PageRequest(0, 50);
+		List<MemberInformation> members = memberInformationRepository.findByProjectAndDeleted(project, false);
+		Collection<Long> ids = new HashSet<Long>();
+		for(MemberInformation member : members){
+			ids.add(member.getAccount().getId());
+		}
 		Collection<Account> accounts = accountRepository
-				.findByEmailLikeAndStatus("%" + term + "%",
-						AccountStatus.ACTIVE, pageable).getContent();
+				.findByEmailLikeAndStatusAndIdNotIn("%" + term + "%",
+						AccountStatus.ACTIVE,ids, pageable).getContent();
 		Collection<String> result = new ArrayList<String>();
 		for (Account account : accounts) {
 			result.add(account.getEmail());
