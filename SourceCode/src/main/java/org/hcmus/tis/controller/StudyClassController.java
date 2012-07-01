@@ -90,31 +90,20 @@ public class StudyClassController {
 		return reply;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id") Long id,
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Long delete(@PathVariable("id") Long id,
 			@RequestParam(value = "listId", required = false) String listId,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "size", required = false) Integer size,
 			Model uiModel) {
-		if (listId != null && listId.length() > 0) {
-			String [] lst = listId.split(",");
-			for (String string : lst) {
-				StudyClass studyClass = studyClassRepository.findOne(Long.valueOf(string));
-				studyClass.setDeleted(true);
-				studyClassRepository.save(studyClass);
-			}
-		} else {
 			StudyClass studyClass = studyClassRepository.findOne(id);
 			studyClass.setDeleted(true);
 			studyClassRepository.save(studyClass);
-		}
 		// studyClass.remove();
 		//uiModel.asMap().clear();
 		studyClassRepository.flush();
-		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-		return "redirect:/studyclasses";
-
+		return id;
 	}
 	@RequestMapping(value = "/{classId}/projects", params = { "iDisplayStart",
 			"iDisplayLength", "sEcho", "sSearch" })

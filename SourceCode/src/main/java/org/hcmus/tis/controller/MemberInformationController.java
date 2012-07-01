@@ -127,25 +127,14 @@ public class MemberInformationController {
 		return "memberinformations/createfromproject";
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(
-			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-			@PathVariable("id") Long id,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Long delete(@PathVariable("id") Long id) {
 		MemberInformation memberInformation = memberInformationRepository.findOne(id);
-		//memberInformation.setDeleted(true);
-		//memberInformationRepository.save(memberInformation);
-		
-		memberInformationRepository.delete(memberInformation);
-		uiModel.asMap().clear();
-		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-		if (redirectUrl != null) {
-			return "redirect:" + redirectUrl;
-		}
-		return "redirect:/memberinformations";
+		memberInformation.setDeleted(true);
+		memberInformationRepository.save(memberInformation);
+		memberInformationRepository.flush();
+		return id;
 	}
 
 	@RequestMapping(value = "/{id}", params = { "redirectUrl" }, produces = "text/html")

@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -233,8 +234,8 @@ public class AccountController {
 		long now = cal.get(java.util.Calendar.DAY_OF_YEAR);
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
-		List<WorkItem> workItemsList = workItemRepository
-				.findByAsigneeAndFinalStatus(account, false);
+		Pageable pageable = new PageRequest(0, 1000, Direction.ASC, "dueDate");
+		List<WorkItem> workItemsList = workItemRepository.findByAsignee_AccountAndStatus_Closed(account, false,pageable);
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
 				if (workItem.getAsignee() != null
@@ -534,16 +535,13 @@ public class AccountController {
 		return "accounts/list";
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id") Long id,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel, HttpSession session) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Long delete(@PathVariable("id") Long id, HttpSession session) {
 		Account cur = (Account) session.getAttribute("account");
 		Account account = accountService.findAccount(id);
 		if (cur.getEmail().equals(account.getEmail())) {
-			uiModel.addAttribute("error", "You can not delete yourself !");
-			return "redirect:/accounts";
+			return (long)-1;
 		}
 		account.setEmail((new Date()).toString());
 		account.setStatus(AccountStatus.DELETED);
@@ -552,10 +550,7 @@ public class AccountController {
 			member.setDeleted(true);
 			memberInformationRepository.save(member);
 		}
-		uiModel.asMap().clear();
-		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-		return "redirect:/accounts";
+		return id;
 	}
 
 	@RequestMapping(value = "/projects/{projectId}", produces = "text/html")
