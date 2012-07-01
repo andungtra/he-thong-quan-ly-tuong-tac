@@ -1,5 +1,7 @@
 package org.hcmus.tis.repository;
 
+import java.util.Collection;
+
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
 import org.springframework.data.domain.Page;
@@ -17,4 +19,5 @@ public interface AccountRepository {
 	@Query(countQuery = "SELECT COUNT(account) FROM Account account WHERE (account.email LIKE ?1 OR account.firstName LIKE ?1 OR account.lastName LIKE ?1) AND account.status <> org.hcmus.tis.model.AccountStatus.DELETED", value="SELECT account FROM Account account WHERE (account.email LIKE ?1 OR account.firstName LIKE ?1 OR account.lastName LIKE ?1) AND account.status <> org.hcmus.tis.model.AccountStatus.DELETED")
 	public Page<Account> find(String search, Pageable pageable);
 	public Page<Account> findByEmailLikeAndStatus(String email, AccountStatus status, Pageable pageable);
+	public Page<Account> findByEmailLikeAndStatusAndIdNotIn(String email, AccountStatus status,Collection<Long> ids, Pageable pageable);
 }
