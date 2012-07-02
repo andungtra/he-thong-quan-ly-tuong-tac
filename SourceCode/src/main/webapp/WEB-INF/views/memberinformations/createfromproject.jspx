@@ -42,7 +42,6 @@
 					<div class="border-bottom"/>					
 				</div>
 			</div>
-			<input type="hidden" name="redirectUrl" value="${redirectUrl }" />
 			<input type="hidden" name="projectId" value="${projectId}" />
 
 			<div>

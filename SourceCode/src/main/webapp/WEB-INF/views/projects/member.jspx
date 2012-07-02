@@ -9,10 +9,10 @@
 
 	<spring:url value="/memberinformations" var="object_url"></spring:url>
 	<spring:url
-		value="/projects/${projectId}/memberinformations?form&amp;projectId=${projectId}&amp;redirectUrl=/projects/${projectId}/members"
+		value="/projects/${projectId}/memberinformations?form"
 		var="lAdd"></spring:url>
 	<spring:url
-		value="/projects/${projectId}/memberinformations?${memberinformation.id}&amp;redirectUrl=/projects/${projectId}/members"
+		value="/projects/${projectId}/memberinformations?${memberinformation.id}"
 		var="lDelete"></spring:url>
 	<spring:url value="/projects/${projectId}/memberinformations" var="update_url">
 		<!-- <spring:param name="fromProjectForm"></spring:param> -->

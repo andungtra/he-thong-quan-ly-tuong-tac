@@ -24,12 +24,6 @@ privileged aspect MemberInformationController_Roo_Controller {
         uiModel.addAttribute("itemId", id);
         return "memberinformations/show";
     }
-      
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String MemberInformationController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, memberInformationRepository.findOne(id));
-        return "memberinformations/update";
-    }
     
     String MemberInformationController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();

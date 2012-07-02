@@ -37,7 +37,7 @@ public class NotifyAboutWorkItemTask implements Runnable {
 		model.put("member", workItem.getUserLastEdit().getAccount().getFirstName() + " "
 				+ workItem.getUserLastEdit().getAccount().getLastName());
 		model.put("action", getAction());
-		model.put("workitem", getWorkItem().getId());
+		model.put("workitem", getWorkItem());
 		model.put("time", getWorkItem().getDateLastEdit());
 		try {
 			emailService.sendEmail(member.getAccount().getEmail(),
