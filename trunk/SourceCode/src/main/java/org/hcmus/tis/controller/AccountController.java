@@ -178,13 +178,21 @@ public class AccountController {
 		Project project = projectRepository.findOne(projectId);
 		Pageable pageable = new PageRequest(0, 50);
 		List<MemberInformation> members = memberInformationRepository.findByProjectAndDeleted(project, false);
-		Collection<Long> ids = new HashSet<Long>();
-		for(MemberInformation member : members){
-			ids.add(member.getAccount().getId());
+		Collection<Account> accounts = null;
+		if(members.size() > 0){
+			Collection<Long> ids = new HashSet<Long>();
+			for(MemberInformation member : members){
+				ids.add(member.getAccount().getId());
+			}
+			 accounts = accountRepository
+					.findByEmailLikeAndStatusAndIdNotIn("%" + term + "%",
+							AccountStatus.ACTIVE,ids, pageable).getContent();
+		}else{
+			 accounts = accountRepository
+						.findByEmailLikeAndStatus("%" + term + "%",
+								AccountStatus.ACTIVE, pageable).getContent();
 		}
-		Collection<Account> accounts = accountRepository
-				.findByEmailLikeAndStatusAndIdNotIn("%" + term + "%",
-						AccountStatus.ACTIVE,ids, pageable).getContent();
+		
 		Collection<String> result = new ArrayList<String>();
 		for (Account account : accounts) {
 			result.add(account.getEmail());
@@ -235,7 +243,7 @@ public class AccountController {
 		ArrayList<WorkItem> overdues = new ArrayList<WorkItem>();
 		ArrayList<WorkItem> indues = new ArrayList<WorkItem>();
 		Pageable pageable = new PageRequest(0, 1000, Direction.ASC, "dueDate");
-		List<WorkItem> workItemsList = workItemRepository.findByAsignee_AccountAndStatus_Closed(account, false,pageable);
+		List<WorkItem> workItemsList = workItemRepository.findByAsignee_AccountAndAsignee_DeletedAndStatus_Closed(account, false,false,pageable);
 		if (workItemsList.size() > 0) {
 			for (WorkItem workItem : workItemsList) {
 				if (workItem.getAsignee() != null

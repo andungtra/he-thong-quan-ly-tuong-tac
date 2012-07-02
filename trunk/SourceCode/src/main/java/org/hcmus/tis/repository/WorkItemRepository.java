@@ -10,6 +10,6 @@ import org.springframework.roo.addon.layers.repository.jpa.RooJpaRepository;
 
 @RooJpaRepository(domainType = WorkItem.class)
 public interface WorkItemRepository extends WorkItemRepositoryCustom {
-	public List<WorkItem> findByAsignee_AccountAndStatus_Closed(Account account, boolean closed, Pageable pageable);
+	public List<WorkItem> findByAsignee_AccountAndAsignee_DeletedAndStatus_Closed(Account account,boolean deleted, boolean closed, Pageable pageable);
 	
 }

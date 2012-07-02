@@ -45,7 +45,7 @@ public class ProjectPermissionFilter implements Filter {
 		// TODO Auto-generated method stub
 		// place your code here
 		if (request instanceof HttpServletRequest) {
-			Pattern pattern = Pattern.compile("/projects/\\d+?");
+			Pattern pattern = Pattern.compile("/projects/\\d+");
 			String url = ((HttpServletRequest) request).getRequestURI();
 			Matcher matcher = pattern.matcher(url);
 			if (matcher.find()) {
@@ -59,6 +59,12 @@ public class ProjectPermissionFilter implements Filter {
 						subject.getSession().setAttribute("projectid", projectId);
 						realm.clearCachedAuthorizationInfo(subject.getPrincipals());
 					}
+				}
+			}else{
+				Subject subject = SecurityUtils.getSubject();
+				if(subject != null && subject.getSession().getAttribute("projectid") != null){
+					subject.getSession().removeAttribute("projectid");
+					realm.clearCachedAuthorizationInfo(subject.getPrincipals());
 				}
 			}
 			// pass the request along the filter chain

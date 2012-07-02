@@ -132,7 +132,7 @@ public class Project extends WorkItemContainer {
 
 	public Collection<Event> getEventsOfMembers() {
 		EntityManager entityManager = Project.entityManager();
-		String jpq = "SELECT DISTINCT event FROM Project project JOIN project.memberInformations memberInformation JOIN memberInformation.account.calendar calendar JOIN calendar.events event WHERE project.id = :projectId  AND event NOT MEMBER OF project.calendar.events";
+		String jpq = "SELECT DISTINCT event FROM Project project JOIN project.memberInformations memberInformation JOIN memberInformation.account.calendar calendar JOIN calendar.events event WHERE project.id = :projectId AND memberInformation.deleted = false  AND event NOT MEMBER OF project.calendar.events";
 		TypedQuery<Event> q = entityManager.createQuery(jpq, Event.class);
 		q.setParameter("projectId", this.getId());
 
