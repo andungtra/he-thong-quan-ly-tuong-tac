@@ -1,5 +1,7 @@
 package org.hcmus.tis.repository;
 
+import java.util.List;
+
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
@@ -16,4 +18,5 @@ public interface ProjectRepository {
 	long countByStatusNot(ProjectStatus status);
 	@Query("SELECT COUNT(o) FROM Project AS o WHERE o.studyClass =?1 AND (o.status IS NULL or  o.status <> ?2)")
 	long countByStudyClassAndStatusNot(StudyClass studyClass ,ProjectStatus status);
+	List<Project> findByStatusNot(ProjectStatus status);
 }
