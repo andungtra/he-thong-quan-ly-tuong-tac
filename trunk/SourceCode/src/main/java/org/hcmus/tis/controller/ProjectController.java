@@ -174,8 +174,10 @@ public class ProjectController {
 		uiModel.addAttribute("project", project);
 		uiModel.addAttribute("studyclasses",
 				studyClassRepository.findByDeleted(false));
+		List<Project> projects = projectRepository.findByStatusNot(ProjectStatus.DELETED);
+		projects.remove(project);
 		uiModel.addAttribute("workitemcontainers",
-				WorkItemContainer.findAllWorkItemContainers());
+				projects);
 		uiModel.addAttribute("projectprocesses",
 				ProjectProcess.findAllProjectProcesses());
 		uiModel.addAttribute("projectstatuses",
