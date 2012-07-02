@@ -1,6 +1,6 @@
 <html>
 <body>
-<p><b>${member}</b> ${action} <b>task ${workitem}</b> at ${time}</p>
+<p><b>${member}</b> ${action} <b>${workitem.workItemType.name} ${workitem.title}</b> at ${time}</p>
 <p> You received this email because you subscribed to this task.<br />
 </body>
 </body>

@@ -11,7 +11,6 @@
 		value="/projects/${memberInformation.project.id }/memberinformations"
 		var="create_url"></spring:url>
 	<form:form action="${create_url }" method="PUT">
-		<input type="hidden" name="redirectUrl" value="${redirectUrl }" />
 		<input type="hidden" name="project"
 			value="${memberInformation.project.id }" />
 		<input type="hidden" name="memberInformation"

@@ -49,13 +49,12 @@ public class MemberInformationController {
 	@Autowired
 	private MemberRoleRepository memberRoleRepository;
 
-	@RequestMapping(params = { "form", "redirectUrl" }, produces = "text/html")
+	@RequestMapping(params = {"form"}, produces = "text/html")
 	public String createForm(Model uiModel,
-			@PathVariable("projectId") Long projectId, String redirectUrl) {
+			@PathVariable("projectId") Long projectId) {
 		List<MemberRole> memberRoles = memberRoleRepository.findAll();
 		uiModel.addAttribute("memberRoles", memberRoles);
 		uiModel.addAttribute("projectId", projectId);
-		uiModel.addAttribute("redirectUrl", redirectUrl);
 		return "memberinformations/createfromproject";
 	}
     public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
@@ -66,9 +65,7 @@ public class MemberInformationController {
 			Model uiModel,
 			String email,
 			Long memberRoleId,
-			Long projectId,
-			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-			HttpServletRequest httpServletRequest) {
+			Long projectId,	HttpServletRequest httpServletRequest) {
 		Account account = null;
 		try {
 			account = accountRepository.getByEmail(email);
@@ -76,7 +73,6 @@ public class MemberInformationController {
 			List<MemberRole> memberRoles = memberRoleRepository.findAll();
 			uiModel.addAttribute("memberRoles", memberRoles);
 			uiModel.addAttribute("projectId", projectId);
-			uiModel.addAttribute("redirectUrl", redirectUrl);
 			return "memberinformations/createfromproject";
 		}
 
@@ -120,12 +116,7 @@ public class MemberInformationController {
 			uiModel.addAttribute("projectId", projectId);
 			return "projects/member";
 		}
-
-		List<MemberRole> memberRoles = memberRoleRepository.findAll();
-		uiModel.addAttribute("memberRoles", memberRoles);
-		uiModel.addAttribute("projectId", projectId);
-		uiModel.addAttribute("redirectUrl", redirectUrl);
-		return "memberinformations/createfromproject";
+		return "redirect:/projects/"+ projectId.toString() +"/memberinformations";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -142,20 +133,17 @@ public class MemberInformationController {
 		return id;
 	}
 
-	@RequestMapping(value = "/{id}", params = { "redirectUrl" }, produces = "text/html")
-	public String updateFromProjectForm(@PathVariable("id") Long id,
-			Model uiModel, String redirectUrl) {
+	@RequestMapping(value = "/{id}", params = {"form"}, produces = "text/html")
+	public String updateForm(@PathVariable("id") Long id,
+			Model uiModel) {
 		MemberInformation memberInformation = memberInformationRepository.findOne(id);
 		uiModel.addAttribute("memberInformation", memberInformation);
 		uiModel.addAttribute("memberRoles", memberRoleRepository.findAll());
-		uiModel.addAttribute("redirectUrl", redirectUrl);
 		return "memberinformations/updatefromproject";
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(
-			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-			@Valid MemberInformation memberInformation,
+	public String update(@Valid MemberInformation memberInformation,
 			BindingResult bindingResult, Model uiModel,
 			HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -164,12 +152,7 @@ public class MemberInformationController {
 		}
 		uiModel.asMap().clear();
 		memberInformationRepository.save(memberInformation);
-		if (redirectUrl != null) {
-			return "redirect:" + redirectUrl;
-		}
-		return "redirect:/memberinformations/"
-				+ encodeUrlPathSegment(memberInformation.getId().toString(),
-						httpServletRequest);
+		return "redirect:/projects/" + memberInformation.getProject().getId() + "/memberinformations";
 	}
 
 	@RequestMapping(params = { "iDisplayStart", "iDisplayLength", "sEcho",
@@ -187,10 +170,9 @@ public class MemberInformationController {
 			if (!item.getDeleted()) {
 				MemberDTO dto = new MemberDTO();
 				dto.DT_RowId = item.getId();
-				String redirectUrl = "/projects/" + projectId + "/members";
 				dto.setFirstName("<a href='../projects/" + projectId
 						+ "/memberinformations/" + item.getId()
-						+ "?fromProjectForm&redirectUrl=" + redirectUrl + "'>"
+						+ "?form'>"
 						+ item.getAccount().getFirstName() + "</a>");
 				dto.setLastName(item.getAccount().getLastName());
 				dto.setMemberRole(item.getMemberRole().getName());
