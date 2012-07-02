@@ -11,6 +11,7 @@ import org.hcmus.tis.dto.DtReply;
 import org.hcmus.tis.dto.datatables.MemberDTO;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
@@ -132,6 +133,10 @@ public class MemberInformationController {
 	public Long delete(@PathVariable("id") Long id) {
 		MemberInformation memberInformation = memberInformationRepository.findOne(id);
 		memberInformation.setDeleted(true);
+		for(Event event : memberInformation.getProject().getCalendar().getEvents()){
+			memberInformation.getAccount().getCalendar().getEvents().remove(event);
+		}
+		memberInformation.getAccount().getCalendar().merge();
 		memberInformationRepository.save(memberInformation);
 		memberInformationRepository.flush();
 		return id;

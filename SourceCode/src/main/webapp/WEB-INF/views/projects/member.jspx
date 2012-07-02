@@ -22,7 +22,9 @@
 
 	<jsp:output omit-xml-declaration="yes" />
 	<div style="clear: both; height: 10px;" />
-
+	<script type="text/javascript">
+	operationSucess = true;
+	</script>
 	<table:datatable aoColumns="firstName,lastName,memberRole" id="tbmember"
 		path="/projects/${projectId}/memberinformations"
 		source="/projects/${projectId}/memberinformations"

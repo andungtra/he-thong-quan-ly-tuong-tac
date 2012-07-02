@@ -134,12 +134,11 @@
 			</util:map> </property> -->
 		<property name="filterChainDefinitions">
 			<value>
-				/projects/** = projectPermissionFilter
+<!-- 				/projects/** = projectPermissionFilter -->
 				/logout = logout
 				/resources/** = anon
 				/login = anon
-				/accounts/** = anon
-				/ = anon
+				/** = projectPermissionFilter
 			</value>
 		</property>
 	</bean>

@@ -1,0 +1,8 @@
+<div xmlns:spring="http://www.springframework.org/tags">
+<spring:url value="${url }" var="real_url"></spring:url>
+<script type="text/javascript">
+	debugger;
+	document.location = '${real_url}';
+</script>
+</div>
+

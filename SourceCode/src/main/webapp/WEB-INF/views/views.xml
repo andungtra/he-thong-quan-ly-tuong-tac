@@ -27,4 +27,7 @@
 	<definition extends="content" name="unauthorization">
 		<put-attribute name="body" value="/WEB-INF/views/unauthorization.jspx" />
 	</definition>
+	<definition extends="content" name="redirect">
+		<put-attribute name="body" value="/WEB-INF/views/redirect.jspx" />
+	</definition>
 </tiles-definitions>
