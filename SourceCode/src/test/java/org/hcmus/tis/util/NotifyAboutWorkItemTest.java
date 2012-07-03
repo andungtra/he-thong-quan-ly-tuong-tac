@@ -22,7 +22,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 public class NotifyAboutWorkItemTest {
-	private NotifyAboutWorkItemTask aut;
+	private UpdateWorkitemNotification aut;
 	@Mock
 	private WorkItem mockedWorkItem;
 	private String action = "action";
@@ -50,7 +50,7 @@ public class NotifyAboutWorkItemTest {
 	@Before
 	public void setUp() throws SendMailException {
 		MockitoAnnotations.initMocks(this);
-		aut = new NotifyAboutWorkItemTask(mockedWorkItem, action,mockMailService);
+		aut = new UpdateWorkitemNotification(mockedWorkItem,mockMailService);
 		doReturn(account1).when(member1).getAccount();
 		doReturn(account2).when(member2).getAccount();
 		doReturn("email1").when(account1).getEmail();

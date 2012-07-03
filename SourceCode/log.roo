@@ -814,3 +814,10 @@ repository jpa --interface org.hcmus.tis.repository.PermissionRepository --entit
 hint
 repository jpa --entity ~.model.MemberRole --interface org.hcmus.tis.repository.MemberRoleRepository
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-06-23 12:57:26
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-02 21:43:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-03 00:33:40
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-03 17:02:04
+hint
+hint
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-03 17:58:06

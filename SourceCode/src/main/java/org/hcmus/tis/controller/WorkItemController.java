@@ -42,7 +42,9 @@ import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
 import org.hcmus.tis.service.EmailService;
-import org.hcmus.tis.util.NotifyAboutWorkItemTask;
+import org.hcmus.tis.util.AsigneeNotificationTask;
+import org.hcmus.tis.util.SubscribeWorkitemNotification;
+import org.hcmus.tis.util.UpdateWorkitemNotification;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -168,14 +170,16 @@ public class WorkItemController {
 		MemberInformation member = memberInformationRepository.findByAccountAndProjectAndDeleted(acc, project, false);
 		workItem.setUserLastEdit(member);
 		uiModel.asMap().clear();
+
+		
+		WorkItem oldWorkItem = workItemRepository.findOne(workItem.getId());
+		WorkItem notifyingWorkItem = workItem.clone();
+		notifyingWorkItem.setAsignee(oldWorkItem.getAsignee());
 		workItemRepository.save(workItem);
-		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "updated", emailService));
-		/*return "redirect:/projects/"
-				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
-						.getId()
-				+ "/workitems/"
-				+ encodeUrlPathSegment(workItem.getId().toString(),
-						httpServletRequest);*/
+		taskExecutor.execute(new UpdateWorkitemNotification(notifyingWorkItem, emailService));
+		if(workItem.getAsignee() != null && (notifyingWorkItem.getAsignee() == null || notifyingWorkItem.getAsignee() != workItem.getAsignee())){
+			taskExecutor.execute(new AsigneeNotificationTask(workItem, emailService));
+		}
 		uiModel.addAttribute("action", "updated");
 		
 		return "redirect:/projects/"
@@ -196,6 +200,7 @@ public class WorkItemController {
 			workItem.getSubcribers().add(member);
 			workItemRepository.save(workItem);
 		}
+		taskExecutor.execute(new SubscribeWorkitemNotification(workItem, member, emailService));
 		return "redirect:/projects/"
 				+ workItem.getWorkItemContainer().getParentProjectOrMyself()
 						.getId()
@@ -330,6 +335,9 @@ public class WorkItemController {
 		workItem.setUserLastEdit(member);
 		uiModel.asMap().clear();
 		workItemRepository.save(workItem);
+		if(workItem.getAsignee() != null){
+			taskExecutor.execute(new AsigneeNotificationTask(workItem, emailService));
+		}
 		if (attachmentIds != null) {
 			for (Long attachmentId : attachmentIds) {
 				Attachment attachment = attachmentRepository.findOne(attachmentId);

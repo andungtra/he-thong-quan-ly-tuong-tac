@@ -16,7 +16,8 @@ import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.service.EmailService;
-import org.hcmus.tis.util.NotifyAboutWorkItemTask;
+import org.hcmus.tis.util.CommentNotificationTask;
+import org.hcmus.tis.util.UpdateWorkitemNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
@@ -120,7 +121,11 @@ public class CommentController {
 		comment.setProjectMember(memberInformation);
 		commentRepository.save(comment);
 		workItem.getSubcribers().toArray();
-		taskExecutor.execute(new NotifyAboutWorkItemTask(workItem, "commented", emailService));
+		taskExecutor.execute(new CommentNotificationTask(workItem, comment, emailService));
+		if (!workItem.getSubcribers().contains(memberInformation) && workItem.getAuthor() != memberInformation && workItem.getAsignee() != memberInformation) {
+			workItem.getSubcribers().add(memberInformation);
+			workItemRepository.save(workItem);
+		}
 		return "redirect:/projects/" + project.getId() + "/workitems/" + workItem.getId() + "/comments";
 	}
 
