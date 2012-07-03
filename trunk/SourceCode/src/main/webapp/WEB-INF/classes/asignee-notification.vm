@@ -1,7 +1,7 @@
 <html>
 <body>
-<p><b>${workitem.userLastEdit.account.fullName}</b> updated ${workitem.workItemType.name} <b><a href="${link}/projects/${workitem.workItemContainer.parentProjectOrMyself.id}#/workitems/${workitem.id}?form"> ${workitem.title} </a></b> at ${workitem.dateLastEdit}</p>
---------------------------------------------------------------------------
+<p>${workitem.workItemType.name} <b><a href="${link}/projects/${workitem.workItemContainer.parentProjectOrMyself.id}#/workitems/${workitem.id}?form"> ${workitem.title} </a></b> was asigned to you.</p>
+-----------------------------------------------------------------------------------------------
 <p><b>Title</b> : ${workitem.title}</p>
 <p><b>Description</b> : ${workitem.description}</p>
 <p><b>Status</b> : ${workitem.status.name}</p>

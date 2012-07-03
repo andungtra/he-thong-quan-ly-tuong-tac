@@ -1,0 +1,5 @@
+<html>
+<body>
+<p><b>${member.fullName}</b> subscribed to ${workitem.workItemType.name} <b><a href="${link}/projects/${workitem.workItemContainer.parentProjectOrMyself.id}#/workitems/${workitem.id}?form"> ${workitem.title} </a></b></p>
+</body>
+</html>

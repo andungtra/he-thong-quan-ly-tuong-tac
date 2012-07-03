@@ -8,6 +8,7 @@ import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.ApplicationRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 				return appRoleRepository.findOne(Long.valueOf(id));
 			}
 		});
+		registry.addConverter(getWorkItemContainerToStringConverter());
 	}
 	@Autowired
 	private ApplicationRoleRepository appRoleRepository;
@@ -104,6 +106,13 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
     public Converter<ProjectProcess, String> getProjectProcessToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.ProjectProcess, java.lang.String>() {
             public String convert(ProjectProcess projectProcess) {
+                return projectProcess.getName();
+            }
+        };
+    }
+    public Converter<WorkItemContainer, String> getWorkItemContainerToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<org.hcmus.tis.model.WorkItemContainer, java.lang.String>() {
+            public String convert(WorkItemContainer projectProcess) {
                 return projectProcess.getName();
             }
         };

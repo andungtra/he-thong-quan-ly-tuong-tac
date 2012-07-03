@@ -28,7 +28,6 @@ import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
-@RooToString
 @RooJpaEntity
 public class Project extends WorkItemContainer {
 	@Type(type="text")

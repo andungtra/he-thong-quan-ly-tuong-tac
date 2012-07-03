@@ -12,7 +12,6 @@ import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
-@RooToString
 @RooJpaActiveRecord(inheritanceType = "JOINED")
 @RooJpaEntity(inheritanceType="JOINED")
 public abstract class WorkItemContainer {

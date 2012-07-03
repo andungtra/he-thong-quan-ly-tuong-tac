@@ -1,0 +1,7 @@
+<html>
+<body>
+<p><b>${comment.projectMember.account.fullName}</b> commented "<b>${comment.content}</b>"
+
+on ${workitem.workItemType.name} <a href="${link}/projects/${workitem.workItemContainer.parentProjectOrMyself.id}#/workitems/${workitem.id}?form"> ${workitem.title} </a> at ${comment.commentDate}</p>
+</body>
+</html>

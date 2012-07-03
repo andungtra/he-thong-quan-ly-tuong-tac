@@ -281,6 +281,27 @@ public class WorkItem {
 	public Collection<MemberInformation> getSubcribers() {
 		return subcribers;
 	}
+	public WorkItem clone(){
+		WorkItem clonedWorkItem = new WorkItem();
+		clonedWorkItem.additionalFields = this.additionalFields;
+		clonedWorkItem.asignee = this.asignee;
+		clonedWorkItem.attachments = this.attachments;
+		clonedWorkItem.author = this.author;
+		clonedWorkItem.dateCreated = this.dateCreated;
+		clonedWorkItem.dateLastEdit = this.dateLastEdit;
+		clonedWorkItem.description = this.description;
+		clonedWorkItem.dueDate = this.dueDate;
+		clonedWorkItem.priority = this.priority;
+		clonedWorkItem.status = this.status;
+		clonedWorkItem.subcribers = this.subcribers;
+		clonedWorkItem.title = this.title;
+		clonedWorkItem.userLastEdit = this.userLastEdit;
+		clonedWorkItem.workItemContainer = this.workItemContainer;
+		clonedWorkItem.workItemType = this.workItemType;
+		clonedWorkItem.setId(this.getId());
+		clonedWorkItem.setVersion(this.getVersion());
+		return clonedWorkItem;
+	}
 
 	public void setSubcribers(Collection<MemberInformation> subcribers) {
 		this.subcribers = subcribers;
