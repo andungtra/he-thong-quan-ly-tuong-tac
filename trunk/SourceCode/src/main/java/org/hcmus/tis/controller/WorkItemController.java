@@ -37,6 +37,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemContainerRepository;
 import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -276,14 +277,14 @@ public class WorkItemController {
 		uiModel.addAttribute("involved", involved);
 		return "workitems/update";
 	}
-
+	@Autowired
+	WorkItemContainerRepository workitemContainerRepository;
 	void populateEditForm(Model uiModel, WorkItem workItem) {
 		uiModel.addAttribute("workItem", workItem);
 		addDateTimeFormatPatterns(uiModel);
 		uiModel.addAttribute("memberinformations",memberInformationRepository.findByProjectAndDeleted(workItem.getWorkItemContainer().getParentProjectOrMyself(), false));
 		uiModel.addAttribute("prioritys", priorityRepository.findAll());
-		workItem.setWorkItemContainer(WorkItemContainer
-				.findWorkItemContainer(workItem.getWorkItemContainer().getId()));
+		workItem.setWorkItemContainer(workitemContainerRepository.findOne(workItem.getWorkItemContainer().getId()));
 		Project project = workItem.getWorkItemContainer()
 				.getParentProjectOrMyself();
 		Collection<Iteration> iterations = iterationRepository.findByAncestor(project);

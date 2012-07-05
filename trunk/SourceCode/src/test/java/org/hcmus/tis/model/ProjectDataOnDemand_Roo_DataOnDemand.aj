@@ -18,6 +18,7 @@ import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.StudyClassDataOnDemand;
 import org.hcmus.tis.model.WorkItemContainer;
+import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,7 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     public Project ProjectDataOnDemand.getNewTransientProject(int index) {
         Project obj = new Project();
         setDescription(obj, index);
+        setEventRepository(obj, index);
         setName(obj, index);
         setParentContainer(obj, index);
         setProjectProcess(obj, index);
@@ -53,6 +55,11 @@ privileged aspect ProjectDataOnDemand_Roo_DataOnDemand {
     public void ProjectDataOnDemand.setDescription(Project obj, int index) {
         String description = "description_" + index;
         obj.setDescription(description);
+    }
+    
+    public void ProjectDataOnDemand.setEventRepository(Project obj, int index) {
+        EventRepository eventRepository = null;
+        obj.setEventRepository(eventRepository);
     }
     
     public void ProjectDataOnDemand.setName(Project obj, int index) {

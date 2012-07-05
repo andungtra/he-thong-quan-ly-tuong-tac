@@ -109,7 +109,7 @@ public class IterationControllerTest extends AbstractShiroTest {
 	public void testCreateSubIteration(){
 		String result = aut.create(project.getId(),subIteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
-		verify(subIteration).persist();
+		//verify(subIteration).persist();
 		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
 		//verify(subIteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
@@ -118,7 +118,7 @@ public class IterationControllerTest extends AbstractShiroTest {
 	public void testUpdateSubIteration(){
 		String result = aut.update(project.getId(),subIteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
-		verify(subIteration).merge();
+		//verify(subIteration).merge();
 		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
 		//verify(subIteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
@@ -144,7 +144,7 @@ public class IterationControllerTest extends AbstractShiroTest {
 		
 		String result = aut.create(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
-		verify(iteration).persist();
+		//verify(iteration).persist();
 		verify(iteration).setParentContainer(project);
 		verify(iteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
@@ -169,7 +169,7 @@ public class IterationControllerTest extends AbstractShiroTest {
 		
 		String result = aut.update(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
-		verify(iteration).merge();
+		//verify(iteration).merge();
 		verify(iteration).setParentContainer(project);
 		verify(iteration).getParentProjectOrMyself();
 		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);

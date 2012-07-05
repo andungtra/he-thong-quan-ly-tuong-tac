@@ -196,9 +196,9 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		workItem.setWorkItemType(workItemType);
 		workItem.setWorkItemContainer(workItemContainer);
 		PowerMockito.mockStatic(WorkItemContainer.class);
-		PowerMockito.when(
-				WorkItemContainer.findWorkItemContainer(workItemContainer
-						.getId())).thenReturn(workItemContainer);
+		//PowerMockito.when(
+				//WorkItemContainer.findWorkItemContainer(workItemContainer
+					//	.getId())).thenReturn(workItemContainer);
 
 		List<Iteration> iterations = new ArrayList<Iteration>();
 		doReturn(iterations).when(iterationRepository).findByAncestor(workItemContainer);
