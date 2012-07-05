@@ -9,7 +9,7 @@
     );
     
     </SCRIPT>
-    <form:update id="fu_org_hcmus_tis_model_Project" labelBackList="Projects" modelAttribute="project" cancel="/projects/${project.id }?form&amp;keepupdate=true" path="/projects" versionField="Version" z="user-managed">
+    <form:update noDependency="true" id="fu_org_hcmus_tis_model_Project" labelBackList="Projects" modelAttribute="project" cancel="/projects/${project.id }?form&amp;keepupdate=true" path="/projects" versionField="Version" z="user-managed">
         <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
         <field:select field="parentContainer" id="c_org_hcmus_tis_model_Project_parentContainer" label="name" itemValue="id" items="${workitemcontainers}" path="/workitemcontainers" z="+KxKNAd7UdrjvvqloKjVyFR4ZZQ="/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_Project_description" value="${project.description}" z="user-managed"/>

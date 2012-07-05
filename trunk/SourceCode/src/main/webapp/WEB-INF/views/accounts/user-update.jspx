@@ -26,10 +26,10 @@
 		<field:input field="password"
 			id="c_org_hcmus_tis_model_Account_password" z="user-managed"
 			render="false" />
-		<label>Password : </label>
+		<label class="label">Password : </label>
 		<input id="newPass" name="newPass" type="password" value="password" />
 		<br/>
-		<label>Retype : </label>
+		<label class="label">Retype : </label>
 		<input id="newPassValidate" name="newPassValidate" type="password"
 			value="password" />
 		<input name="email" type="hidden" value="${account.email}" />
