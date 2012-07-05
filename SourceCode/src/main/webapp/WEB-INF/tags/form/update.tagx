@@ -46,7 +46,9 @@
 		required="false" description="label for back to list" />
 	<jsp:directive.attribute name="submitbutton" type="java.lang.Boolean"
 		required="false" description="specify wether use can submit form" />
-
+	<jsp:directive.attribute name="noDependency" type="java.lang.Boolean"
+		required="false" description="noDependency" />
+		
 	<c:if test="${empty render or render}">
 		<c:if test="${empty label}">
 			<spring:message
@@ -79,8 +81,10 @@
 					<c:if test="${not empty labelBackList}">
 						<c:set value="${labelBackList}" var="label_Back" />
 					</c:if>
+					<c:if test="${!(noDependency eq true)}">
 					<a href="${cancel_url}" onclick="abortChange()">${label_Back}</a> >
 					${title_msg}
+					</c:if>.
 					<div class="submit">
 						<a href="${cancel_url}" onclick="abortChange()">
 							<button>Cancel</button>

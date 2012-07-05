@@ -107,7 +107,7 @@
 					<span class="changedBy">${item.changedBy.account.firstName}</span>
 					${item.type} workitem <a href="${link }">${item.title }</a> <span
 						class="time"> at <date:formatDate
-							value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm" />
+							value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm a" dateStyle="medium"/>
 					</span>
 				</div>
 			</c:forEach>
