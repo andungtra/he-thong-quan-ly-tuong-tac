@@ -54,7 +54,7 @@ public class ProjectProcess {
 
 		}
 
-		EntityManager entityManager = Project.entityManager();
+		EntityManager entityManager = entityManager();
 
 		TypedQuery<ProjectProcess> q = entityManager
 				.createQuery(hql, ProjectProcess.class)
@@ -74,7 +74,7 @@ public class ProjectProcess {
 
 		}
 
-		EntityManager entityManager = Project.entityManager();
+		EntityManager entityManager = entityManager();
 
 		TypedQuery<Long> q = entityManager.createQuery(hql, Long.class);
 		if (sSearch.length() > 0)

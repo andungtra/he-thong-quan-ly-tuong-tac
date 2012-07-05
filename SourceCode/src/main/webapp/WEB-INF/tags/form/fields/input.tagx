@@ -50,6 +50,9 @@
 	<jsp:directive.attribute name="type" type="java.lang.String"
 		required="false" rtexprvalue="true"
 		description="Set field type (default 'text', or 'password')" />
+		<jsp:directive.attribute name="cssStyle" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="css style for input" />
 	<jsp:directive.attribute name="render" type="java.lang.Boolean"
 		required="false" rtexprvalue="true"
 		description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
@@ -65,6 +68,9 @@
 
 		<c:if test="${empty disabled}">
 			<c:set value="false" var="disabled" />
+		</c:if>
+		<c:if test="${empty cssStyle }">
+			<c:set value="width:780px;height:30px;" var="cssStyle"></c:set>
 		</c:if>
 
 		<c:if test="${empty label}">
@@ -105,7 +111,7 @@
 			</label>
 			<c:choose>
 				<c:when test="${disableFormBinding}">
-					<input id="_${sec_field}_id" name="${sec_field}"
+					<input class="input_tag" id="_${sec_field}_id" name="${sec_field}"
 						type="${fn:escapeXml(type)}" />
 				</c:when>
 				<c:otherwise>
@@ -115,7 +121,7 @@
 								disabled="${disabled}" />
 						</c:when>						
 						<c:otherwise>
-							<form:input id="_${sec_field}_id" path="${sec_field}"
+							<form:input cssStyle="${cssStyle }" id="_${sec_field}_id" path="${sec_field}"
 								disabled="${disabled}"  />
 
 						</c:otherwise>

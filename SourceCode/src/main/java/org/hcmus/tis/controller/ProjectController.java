@@ -154,7 +154,7 @@ public class ProjectController {
 		}
 		project.setStatus(ProjectStatus.OPEN);
 		uiModel.asMap().clear();
-		project.persist();
+		projectRepository.save(project);
 		uiModel.addAttribute("projectId", project.getId());
 		uiModel.addAttribute("projects", projectRepository.findAll());
 		return "projects/list";
@@ -415,7 +415,7 @@ public class ProjectController {
 				for (org.hcmus.tis.model.Calendar calendar2 : event.getCalendars()) {
 					calendar2.getEvents().remove(event);
 				}
-				event.remove();
+				eventRepository.delete(event);
 			}
 		}
 		if (bindingResult.hasErrors()) {
@@ -478,7 +478,7 @@ public class ProjectController {
 			Model uiModel) {
 		Project project = projectRepository.findOne(id);
 		project.setStatus(ProjectStatus.DELETED);
-		project.merge();
+		projectRepository.save(project);
 		// project.remove();
 		uiModel.asMap().clear();
 		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());

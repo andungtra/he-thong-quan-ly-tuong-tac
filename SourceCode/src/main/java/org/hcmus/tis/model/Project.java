@@ -17,10 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Query;
+import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.hcmus.tis.repository.EventRepository;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -29,7 +33,11 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooJpaEntity
+@Configurable
 public class Project extends WorkItemContainer {
+	@Autowired
+	@Transient
+	EventRepository eventRepository;
 	@Type(type="text")
 	private String description;
 
@@ -130,12 +138,13 @@ public class Project extends WorkItemContainer {
 	}
 
 	public Collection<Event> getEventsOfMembers() {
-		EntityManager entityManager = Project.entityManager();
+		/*EntityManager entityManager = Project.entityManager();
 		String jpq = "SELECT DISTINCT event FROM Project project JOIN project.memberInformations memberInformation JOIN memberInformation.account.calendar calendar JOIN calendar.events event WHERE project.id = :projectId AND memberInformation.deleted = false  AND event NOT MEMBER OF project.calendar.events";
 		TypedQuery<Event> q = entityManager.createQuery(jpq, Event.class);
 		q.setParameter("projectId", this.getId());
 
-		return q.getResultList();
+		return q.getResultList();*/
+		return eventRepository.findEventsOfMembers(this);
 	}
 
 	/*public static List<Project> findProjectEntries(int iDisplayStart,

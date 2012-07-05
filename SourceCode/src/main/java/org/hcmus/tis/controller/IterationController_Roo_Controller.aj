@@ -37,10 +37,7 @@ privileged aspect IterationController_Roo_Controller {
         return "redirect:/iterations";
     }*/
     
-    void IterationController.populateEditForm(Model uiModel, Iteration iteration) {
-        uiModel.addAttribute("iteration", iteration);
-        uiModel.addAttribute("workitemcontainers", WorkItemContainer.findAllWorkItemContainers());
-    }
+   
     
     String IterationController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
         String enc = httpServletRequest.getCharacterEncoding();

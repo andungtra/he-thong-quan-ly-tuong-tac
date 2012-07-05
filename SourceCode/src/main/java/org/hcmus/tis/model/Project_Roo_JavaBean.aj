@@ -8,8 +8,17 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.StudyClass;
+import org.hcmus.tis.repository.EventRepository;
 
 privileged aspect Project_Roo_JavaBean {
+    
+    public EventRepository Project.getEventRepository() {
+        return this.eventRepository;
+    }
+    
+    public void Project.setEventRepository(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
     
     public String Project.getDescription() {
         return this.description;

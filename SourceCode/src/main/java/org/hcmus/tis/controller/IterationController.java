@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.hcmus.tis.model.Iteration;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 
@@ -47,7 +48,7 @@ public class IterationController {
         	Project project = projectRepository.findOne(projectId);
         	iteration.setParentContainer(project);
         }
-        iteration.merge();
+        iterationRepository.save(iteration);
         return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/iterations";
     }
     
@@ -69,7 +70,7 @@ public class IterationController {
         	Project project = projectRepository.findOne(projectId);
         	iteration.setParentContainer(project);
         }
-        iteration.persist();
+        iterationRepository.save(iteration);
         return "redirect:/projects/" + encodeUrlPathSegment(iteration.getParentProjectOrMyself().getId().toString(), httpServletRequest) + "/iterations";
     }
     public ProjectRepository getProjectRepository() {
@@ -87,7 +88,8 @@ public class IterationController {
         uiModel.addAttribute("iterations", iterations);
         uiModel.addAttribute("projectId", project.getId());
     }
-
+	 void populateEditForm(Model uiModel, Iteration iteration) {
+	    }
 	public IterationRepository getIterationRepository() {
 		return iterationRepository;
 	}

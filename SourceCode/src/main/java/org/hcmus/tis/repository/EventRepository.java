@@ -4,5 +4,5 @@ import org.hcmus.tis.model.Event;
 import org.springframework.roo.addon.layers.repository.jpa.RooJpaRepository;
 
 @RooJpaRepository(domainType = Event.class)
-public interface EventRepository {
+public interface EventRepository extends EventRepositoryCustom {
 }
