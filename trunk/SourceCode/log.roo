@@ -824,3 +824,7 @@ hint
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-04 21:38:55
 hint
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-05 00:29:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-06 08:45:51
+focus --class ~.model.ProjectProcess
+finder list 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-06 11:20:17

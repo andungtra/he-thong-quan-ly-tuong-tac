@@ -20,7 +20,7 @@
 		$(function() {
 			$("#email").autocomplete({
 				source : "${search_url}",
-				minLength : 2
+				minLength : 1
 			});
 		});
 	</SCRIPT>
@@ -45,13 +45,13 @@
 			<input type="hidden" name="projectId" value="${projectId}" />
 
 			<div>
-				<label for="email">Account : </label> <input type="email" id="email"
+				<label for="email">Account : </label> <input placeholder="search by email" type="email" id="email"
 					name="email" width="400px" class="input" />
 			</div>
 			<br />
 			<div class="clear" />
 			<div>
-				<label>Role</label> <select name="memberRoleId">
+				<label>Role</label> <select name="memberRoleId" style="width: 254px; height: 25px;">
 					<c:forEach items="${memberRoles }" var="memberRole"
 						varStatus="status">
 						<c:if test="${status.index == 0}">

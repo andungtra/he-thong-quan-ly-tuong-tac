@@ -94,10 +94,7 @@ body {
 }
 
 .dijitTextArea{
-	min-height:5.5em !important;
-	max-height:22em !important;
 	overflow-y: auto !important;
-	max-width: 175px;
 }
 
 .RichTextEditable{

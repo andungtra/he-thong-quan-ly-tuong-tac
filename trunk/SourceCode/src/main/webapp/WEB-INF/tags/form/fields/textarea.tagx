@@ -36,7 +36,7 @@
         <c:out value="${fn:escapeXml(label)}" />
         :
       </label>
-      <form:textarea id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" cols="1050" cssStyle="height:150px;width:900px;"/>
+      <form:textarea id="_${sec_field}_id" path="${sec_field}" disabled="${disabled}" cols="1050" cssStyle="height:150px;width:775px;"/>
       <!-- <textarea name="${sec_field}"  value="${value}" cols="1050"/> -->
       <br />
       <form:errors cssClass="errors" id="_${sec_field}_error_id" path="${sec_field}" />

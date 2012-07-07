@@ -100,8 +100,8 @@
 								value="${fn:escapeXml(save_button)}" onclick="abortChange()" />
 						</c:if>
 					</div>
-					<div class="border-bottom" />
 				</div>
+				<div class="border-bottom" />
 				<form:errors cssClass="errors" delimiter="&lt;p/&gt;" />
 				<jsp:doBody />
 

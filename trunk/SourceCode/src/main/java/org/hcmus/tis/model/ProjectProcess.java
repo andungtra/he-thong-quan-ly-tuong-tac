@@ -32,6 +32,7 @@ public class ProjectProcess {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@NotNull
+	@Column(updatable=false)
 	private byte[] processTemplateFile;
 
 	@NotNull

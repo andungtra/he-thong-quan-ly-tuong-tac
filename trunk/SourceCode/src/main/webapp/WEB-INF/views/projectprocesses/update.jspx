@@ -5,11 +5,12 @@
     <form:update id="fu_org_hcmus_tis_model_ProjectProcess" labelBackList="Processes" modelAttribute="projectProcess" path="/projectprocesses" versionField="Version" z="user-managed">
         <field:input field="name" id="c_org_hcmus_tis_model_ProjectProcess_name" required="true" z="user-managed"/>
         <field:textarea field="description" id="c_org_hcmus_tis_model_ProjectProcess_description" z="user-managed"/>
-        <field:input field="uniqueName" id="c_org_hcmus_tis_model_ProjectProcess_uniqueName" required="true" z="1ovcrW6cUvnGXCLZV5NkF33IfX4="/>
+        <input type="hidden" name="uniqueName" value="${projectProcess.uniqueName }"></input>
+        <field:input field="uniqueName" render="false" id="c_org_hcmus_tis_model_ProjectProcess_uniqueName" required="true" z="user-managed"/>
         <field:textarea field="processTemplateFile" id="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" render="false" required="true" z="user-managed"/>
-        <input name="c_org_hcmus_tis_model_ProjectProcess_processTemplateFile" type="hidden" value="${ projectProcess.processTemplateFile}"/>
-        <field:simple field="workItemTypes" id="c_org_hcmus_tis_model_ProjectProcess_workItemTypes" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Type" z="XJkdexxi89GR97uKvxqtHVSwCqM="/>
+        <input name="processTemplateFile" type="hidden" value="${ projectProcess.processTemplateFile}"/>
+        <field:simple render="false" field="workItemTypes" id="c_org_hcmus_tis_model_ProjectProcess_workItemTypes" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Type" z="user-managed"/>
         <field:checkbox field="isDeleted" id="c_org_hcmus_tis_model_ProjectProcess_isDeleted" render="false" z="user-managed"/>
-        <input name="c_org_hcmus_tis_model_ProjectProcess_isDeleted" type="hidden" value="${projectProcess.isDeleted}"/>
+        <input name="isDeleted" type="hidden" value="${projectProcess.isDeleted}"/>
     </form:update>
 </div>

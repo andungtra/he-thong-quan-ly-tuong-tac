@@ -11,6 +11,7 @@ import org.hcmus.tis.model.StudyClass;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemType;
 import org.hcmus.tis.repository.ApplicationRoleRepository;
+import org.hcmus.tis.repository.MemberRoleRepository;
 import org.hcmus.tis.repository.WorkItemContainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -58,6 +59,18 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 			}
 		};
 		
+	}
+	@Autowired
+	private MemberRoleRepository memberRoleRepository;
+	public Converter<String, MemberRole> getStringToMemberRoleConverter(){
+		return new Converter<String, MemberRole>() {
+
+			@Override
+			public MemberRole convert(String source) {
+				return memberRoleRepository.findOne(Long.valueOf(source));
+			}
+			
+		};
 	}
 	public Converter<Account, String> getAccountToStringConverter()
 	

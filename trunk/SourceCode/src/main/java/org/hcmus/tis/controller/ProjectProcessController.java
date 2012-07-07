@@ -1,9 +1,11 @@
 package org.hcmus.tis.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
 
 import org.hcmus.tis.dto.DtReply;
@@ -12,6 +14,7 @@ import org.hcmus.tis.model.ProjectProcess;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +33,16 @@ public class ProjectProcessController {
 		uiModel.addAttribute("itemId", id);
 		return "projectprocesses/show";
 	}
-
+	   @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
+	    public String update(@Valid ProjectProcess projectProcess, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
+	        if (bindingResult.hasErrors()) {
+	            populateEditForm(uiModel, projectProcess);
+	            return "projectprocesses/update";
+	        }
+	        uiModel.asMap().clear();
+	        projectProcessService.updateProjectProcess(projectProcess);
+	        return "redirect:/projectprocesses";
+	    }
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(Model uiModel, MultipartFile multipartFile,
 			HttpServletRequest httpServletRequest) throws IOException,
@@ -70,19 +82,16 @@ public class ProjectProcessController {
 		return reply;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id") Long id,
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Long delete(@PathVariable("id") Long id) {
 		ProjectProcess projectProcess = projectProcessService
 				.findProjectProcess(id);
 		projectProcess.setIsDeleted(true);
+		Date date = new Date();
+		projectProcess.setUniqueName(String.valueOf(date.getTime()));
 		projectProcess.merge();
-		uiModel.asMap().clear();
-		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-		return "redirect:/projectprocesses";
+		return id;
 	}
 
 	@RequestMapping(produces = "text/html")
