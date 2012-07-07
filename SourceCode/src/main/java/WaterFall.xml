@@ -27,7 +27,7 @@
 					</xChoices>
 				</xField>
 				<xField name="Environment" type="string" refName="environment">
-					<xDefaultValue>fas</xDefaultValue>
+					<xDefaultValue></xDefaultValue>
 				</xField>
 				<xField name="type" type="string" refName="type"></xField>
 			</xAddionalFields>

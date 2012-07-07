@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update cancel="/projects/${projectId}/iterations" id="fu_org_hcmus_tis_model_Iteration" modelAttribute="iteration" path="/projects/${iteration.parentProjectOrMyself.id}/iterations" versionField="Version" z="user-managed">
-        <field:textarea field="name" id="c_org_hcmus_tis_model_Iteration_name" required="true" z="z2GAspdZzRaRL+/8zifgDbUTc6k="/>
-        <field:select field="parentContainer" id="c_org_hcmus_tis_model_Iteration_parentContainer" itemValue="id" items="${iterations}" path="/workitemcontainers" z="user-managed"/>
+    <form:update labelBackList="Iterations" cancel="/projects/${projectId}/iterations" id="fu_org_hcmus_tis_model_Iteration" modelAttribute="iteration" path="/projects/${iteration.parentProjectOrMyself.id}/iterations" versionField="Version" z="user-managed">
+        <field:input cssStyle="width:180px;" field="name" id="c_org_hcmus_tis_model_Iteration_name" required="true" z="user-managed"/>
+        <field:select label="Parent" field="parentContainer" id="c_org_hcmus_tis_model_Iteration_parentContainer" itemValue="id" items="${iterations}" path="/workitemcontainers" z="user-managed"/>
         <field:simple field="children" id="c_org_hcmus_tis_model_Iteration_children" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item Container" render="false" z="user-managed"/>
         <field:simple field="workItems" id="c_org_hcmus_tis_model_Iteration_workItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Work Item" render="false" z="user-managed"/>
     </form:update>

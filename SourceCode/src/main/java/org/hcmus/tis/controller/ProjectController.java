@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -178,8 +179,15 @@ public class ProjectController {
 		projects.remove(project);
 		uiModel.addAttribute("workitemcontainers",
 				projects);
+		List<ProjectProcess> tempt = ProjectProcess.findAllProjectProcesses();
+		List<ProjectProcess> projectProcesses = new ArrayList<ProjectProcess>();
+		for(ProjectProcess process : tempt){
+			if(process.isIsDeleted() == false){
+				projectProcesses.add(process);
+			}
+		}
 		uiModel.addAttribute("projectprocesses",
-				ProjectProcess.findAllProjectProcesses());
+				projectProcesses);
 		uiModel.addAttribute("projectstatuses",
 				Arrays.asList(ProjectStatus.values()));
 	}

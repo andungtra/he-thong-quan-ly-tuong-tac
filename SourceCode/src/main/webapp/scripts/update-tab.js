@@ -21,12 +21,15 @@ $(function() {
 				},
 				select : function(event, ui) {
 					if (changed == 1) {
-						if (!confirm("You don't want to save your change ?")) {
+						if (!confirm("You will lose unsaved changes. Are you sure?")) {
 							return false;
 						} else {
 							changed = 0;
+							$(panel).html('');
 							return true;
 						}
+					}else{
+						$(panel).html('');
 					}
 				},
 				show : function(event, ui) {

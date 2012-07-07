@@ -34,19 +34,19 @@
 				</div>
 			</div>
 			<div>
-			<label for="name"> Name : </label> <input disabled="disabled"
+			<label for="name"> Name : </label> <input disabled="disabled" style="width:255px;"
 					type="text" id="name" name="name"
 					value="${memberInformation.account.firstName } ${memberInformation.account.lastName}"></input>
 					<br/>
 					<br/>
 				<label for="email"> Email : </label> <input disabled="disabled"
-					type="text" id="email" name="email"
+					type="text" id="email" name="email" style="width: 255px;"
 					value="${memberInformation.account.email }"></input>
 					<br/>
 					<br/>
 			</div>
 			<div>
-				<label>Role</label> <SELECT name="memberRole">
+				<label>Role</label> <SELECT name="memberRole" style="width: 257px; height: 28px;">
 					<c:forEach items="${memberRoles }" var="memberRole">
 						<c:choose>
 							<c:when

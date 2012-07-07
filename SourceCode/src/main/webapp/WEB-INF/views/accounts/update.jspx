@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_org_hcmus_tis_model_Account" labelBackList="Accounts" modelAttribute="account" path="/accounts" versionField="Version" z="user-managed">
-        <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
-        <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
+        <field:input cssStyle="width:300px;" field="firstName" id="c_org_hcmus_tis_model_Account_firstName" required="true" z="user-managed"/>
+        <field:input cssStyle="width:300px;" field="lastName" id="c_org_hcmus_tis_model_Account_lastName" required="true" z="user-managed"/>
         <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="/accountstatuses" required="true" z="user-managed"/>
         <field:input field="email" id="c_org_hcmus_tis_model_Account_email" min="1" render="false" required="true" validationMessageCode="field_invalid_email" z="user-managed"/>
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
@@ -12,7 +12,7 @@
         <input name="email" type="hidden" value="${account.email}"/>
         <input name="password" type="hidden" value="${account.password}"/>
         <input name="calendar" type="hidden" value="${account.calendar.id}"/>
-        <field:simple field="members" id="c_org_hcmus_tis_model_Account_members" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="x1PFoCDAJJSNpImn6JfJmZXa9go="/>
+        <field:simple render="false" field="members" id="c_org_hcmus_tis_model_Account_members" messageCode="entity_reference_not_managed" messageCodeAttribute="Member Information" z="user-managed"/>
         <field:select field="role" id="c_org_hcmus_tis_model_Account_role" itemValue="id" items="${roles}" path="/applicationroles" required="true" z="user-managed"/>
     </form:update>
 </div>

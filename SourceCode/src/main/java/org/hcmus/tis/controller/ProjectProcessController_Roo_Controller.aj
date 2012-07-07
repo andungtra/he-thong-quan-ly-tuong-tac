@@ -40,16 +40,7 @@ privileged aspect ProjectProcessController_Roo_Controller {
         return "projectprocesses/show";
     }
     
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String ProjectProcessController.update(@Valid ProjectProcess projectProcess, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, projectProcess);
-            return "projectprocesses/update";
-        }
-        uiModel.asMap().clear();
-        projectProcessService.updateProjectProcess(projectProcess);
-        return "redirect:/projectprocesses/" + encodeUrlPathSegment(projectProcess.getId().toString(), httpServletRequest);
-    }
+ 
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ProjectProcessController.updateForm(@PathVariable("id") Long id, Model uiModel) {

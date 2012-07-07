@@ -137,7 +137,7 @@
 					});
 	
 		 $(function() {
-			//debugger;
+			debugger;
 			var bt = "";
 			if('${fnew}' != '')
 				bt = bt+ '<button onclick="fnew()">New</button>';
@@ -173,8 +173,10 @@
 					    items = items + ('<option title="status" value="' + val.id + '"> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' + val.name + ' workitem</option>');
 						  }
 					  });
-					  //debugger;
-					  document.getElementById('${id}_status').innerHTML = items;
+					  debugger;
+					  var test  = $('#${id}_status');
+					  $('#${id}_status').html(items).change();
+					  
 				});
 			}
 			

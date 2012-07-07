@@ -596,18 +596,16 @@ qq.FileUploader = function(o) {
 	// bind delete event
 	$(this._listElement).on('click', '.qq-upload-delete', function(event) {
 		debugger;
-		alert(event.target.href);
 		$.ajax({
 			type : "DELETE",
 			url : event.target.href,
 			success : function(data) {
 				if (data.success) {
-					alert('delete sucess' + data.attachmentId);
-
 					$('#' + data.attachmentId).remove();
 				}
 			}
 		});
+		return false;
 	});
 	$(this._listElement).on('click', '.qq-upload-file', function(event) {
 		debugger;

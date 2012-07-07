@@ -103,8 +103,8 @@ public class InitController {
 		MemberRole projectMember = new MemberRole();
 		projectMember.setName("project member");
 		projectMember.setRefName("projectmember");
-		initAppRolePermission(adminPer, admin);
 		appRoleRepository.save(user);
+		initAppRolePermission(adminPer, admin);
 		initMemberRolePermission(projectManagerPer, projectManager);
 		initMemberRolePermission(projectMemberPer, projectMember);
 		if (accountRepository.count() == 0) {

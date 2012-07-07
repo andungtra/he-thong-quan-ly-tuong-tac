@@ -82,14 +82,14 @@
 		<br/>
 	<springform:form modelAttribute="searchcondition"
 		action="${advanced_task_url }">
-		<label>Title/Description : </label>
-		<springform:input path="titleDescription" />
+		<label>Title/Description : 		</label>
+		<springform:input cssStyle="width:430px; height:20px;" path="titleDescription" />
 		<br />
 		<br />
 
 		<label>Status : </label>
 
-		<springform:select path="status">
+		<springform:select cssClass="advanced_task_select" path="status">
 			<springform:option value="0">Choose status ...</springform:option>
 			<springform:options items="${statuses }" itemLabel="name"
 				itemValue="id" />
@@ -101,23 +101,23 @@
 				<option value="${item.id}">${item.name }</option>
 			</c:forEach>
 		</select> -->
-		<springform:select itemValue="id" itemLabel="name" path="container"
+		<springform:select cssClass="advanced_task_select" itemValue="id" itemLabel="name" path="container"
 			title="Planed for">
-			<springform:option value="">Choose iteration ...</springform:option>
+			<springform:option value="0">Choose iteration ...</springform:option>
 			<springform:options items="${iterations }" itemValue="id"
 				itemLabel="name" />
 		</springform:select>
 		<br />
 		<br />
 		<label>Created by : </label>
-		<springform:select path="owner">
+		<springform:select cssClass="advanced_task_select" path="owner">
 			<springform:option value="0">Choose owner ...</springform:option>
 			<springform:options items="${members }" itemLabel="account.fullName"
 				itemValue="id" />
 		</springform:select>
 
 		<label>Asigned to : </label>
-		<springform:select path="asignee">
+		<springform:select cssClass="advanced_task_select" path="asignee">
 			<springform:option value="0">Choose asignee ...</springform:option>
 			<springform:options items="${members }" itemLabel="account.fullName"
 				itemValue="id" />
