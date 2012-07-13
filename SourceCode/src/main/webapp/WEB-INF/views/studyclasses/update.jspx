@@ -10,7 +10,9 @@
     </form:update>
     <div style="padding: 0px 0px 0px 80px;">
     <util:fixpanel id="" title="Projects">
+    <div style="padding: 0px 40px;">
     <field:datatable aoColumns="name,parentContainer,description" fgoto="true" fnew="true" fshow="true" id="tbstudyclass_project" path="" source="/studyclasses/${studyClass.id }/projects" thead="Project,Parent Project,Description"/>
+    </div>
     </util:fixpanel>
     </div>
 </div>

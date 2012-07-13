@@ -130,7 +130,7 @@ public class AccountController {
 			uiModel.addAttribute("sendEmailError", true);
 			return "accounts/create";
 		}
-		return list(null, null, uiModel);
+		return "redirect:/accounts?recentAction=updated&recentAccountId=" + account.getId();
 	}
 
 	public AccountService getAccountService() {
@@ -360,12 +360,8 @@ public class AccountController {
 		// accountService.updateAccount(account);
 		accountRepository.save(account);
 		uiModel.asMap().clear();
-		/*
-		 * Calendar cal = Calendar.findCalendar(calendar);
-		 * account.setCalendar(cal);
-		 */
-
-		return list(null, null, uiModel);
+		return "redirect:/accounts?recentAction=updated&recentAccountId=" + account.getId();
+		
 	}
 
 	@RequestMapping(value = "/edit", params = { "newPass" }, method = RequestMethod.PUT, produces = "text/html")
@@ -529,26 +525,12 @@ public class AccountController {
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String list(
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
+	public String list(String recentAction, Long recentAccountId,
 			Model uiModel) {
-		/*
-		 * List<Account> lst = null; if (page != null || size != null) { int
-		 * sizeNo = size == null ? 10 : size.intValue(); final int firstResult =
-		 * page == null ? 0 : (page.intValue() - 1) sizeNo; lst =
-		 * accountService.findAccountEntries(firstResult, sizeNo); float
-		 * nrOfPages = (float) accountService.countAllAccounts() / sizeNo;
-		 * uiModel.addAttribute( "maxPages", (int) ((nrOfPages > (int) nrOfPages
-		 * || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages)); } else { lst =
-		 * accountService.findAllAccounts(); }
-		 * 
-		 * for (int i = 0; i < lst.size(); i++) { if
-		 * (lst.get(i).getStatus().equals(AccountStatus.DELETED)) lst.remove(i);
-		 * }
-		 * 
-		 * uiModel.addAttribute("accounts", lst);
-		 */
+		if(recentAccountId != null && recentAction != null){
+			uiModel.addAttribute("recentAction", recentAction);
+			uiModel.addAttribute("recentItem", accountRepository.findOne(recentAccountId));
+		}
 		return "accounts/list";
 	}
 

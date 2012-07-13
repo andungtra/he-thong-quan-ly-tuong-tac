@@ -39,6 +39,16 @@ public class StudyClassController {
 		uiModel.addAttribute("itemId", id);
 		return "studyclasses/show";
 	}
+    @RequestMapping(produces = "text/html")
+    public String list(String recentAction, Long recentId,Model uiModel)
+    {
+    	if (recentAction != null && recentId != null) {
+			uiModel.addAttribute("recentAction", recentAction);
+			uiModel.addAttribute("recentItem",
+					studyClassRepository.findOne(recentId));
+		}
+        return "studyclasses/list";
+    }
 	 @RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	    public String create(@Valid StudyClass studyClass, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
 	        if (bindingResult.hasErrors()) {
@@ -47,7 +57,7 @@ public class StudyClassController {
 	        }
 	        uiModel.asMap().clear();
 	        studyClassRepository.save(studyClass);
-	        return "redirect:/studyclasses";
+	        return "redirect:/studyclasses?recentAction=created&recentId=" + studyClass.getId();
 	    }
 	 @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
 	    public String update(@Valid StudyClass studyClass, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -57,7 +67,7 @@ public class StudyClassController {
 	        }
 	        uiModel.asMap().clear();
 	        studyClassRepository.save(studyClass);
-	        return "redirect:/studyclasses";
+	        return "redirect:/studyclasses?recentAction=updated&recentId=" + studyClass.getId();
 	    }
 	    
 	@RequestMapping(value = "mList", params = { "iDisplayStart",

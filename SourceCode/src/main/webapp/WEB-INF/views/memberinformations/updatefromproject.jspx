@@ -30,8 +30,8 @@
 					<div class="submit">
 						<input type="submit" value="Save" />
 					</div>
-					<div class="border-bottom" />
 				</div>
+				<div class="border-bottom" />
 			</div>
 			<div>
 			<label for="name"> Name : </label> <input disabled="disabled" style="width:255px;"

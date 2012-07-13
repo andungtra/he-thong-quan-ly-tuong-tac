@@ -82,10 +82,7 @@
 		<a href="${advancedsearch_url }" class="due">Advanced Search</a>
 	</div>
 	<div style="clear: both;" />
-	<c:if test="${not empty recentActivity  }">
-	<spring:url value="/projects/${itemId }/workitems/${recentWorkItem.id }?form" var="recentworkitem_url"></spring:url>
-	<div style="text-align: center;"><h4>you have ${recentActivity } ${recentWorkItem.workItemType.name }: <a href="${recentworkitem_url }">${recentWorkItem.title }</a></h4></div>
-	</c:if>
+	<field:recentaction action="${recentActivity }" path="/projects/${itemId }/workitems" itemLabel="title" itemType="${ recentWorkItem.workItemType.name}" item="${recentWorkItem }" id="recent_action_${recentWorkItem.id }"></field:recentaction>
 	
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>

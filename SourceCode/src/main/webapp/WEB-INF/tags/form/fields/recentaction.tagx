@@ -1,0 +1,55 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<jsp:directive.tag import="java.util.ArrayList" />
+	<jsp:output omit-xml-declaration="yes" />
+	<jsp:directive.attribute name="path" type="java.lang.String"
+		required="true" rtexprvalue="true" description="The path" />
+	<jsp:directive.attribute name="id" type="java.lang.String"
+		required="true" rtexprvalue="true" description="The id" />
+	<jsp:directive.attribute name="item" type="java.lang.Object"
+		required="true" rtexprvalue="true"
+		description="The object which was taken action" />
+	<jsp:directive.attribute name="itemLabel" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="The label of object. Default is name" />
+	<jsp:directive.attribute name="staticLabel" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="The static label of object. if setted, it will override label of item" />
+	<jsp:directive.attribute name="itemValue" type="java.lang.String"
+		required="false" rtexprvalue="true"
+		description="The id of object. Default is id" />
+	<jsp:directive.attribute name="itemType" type="java.lang.String"
+		required="true" rtexprvalue="true" description="The type of object" />
+	<jsp:directive.attribute name="action" type="java.lang.String"
+		required="true" rtexprvalue="true" description="The action" />
+	<c:if test="${empty itemLabel }">
+		<c:set var="itemLabel" value="name">
+		</c:set>
+	</c:if>
+	<c:if test="${empty itemValue }">
+		<c:set var="itemValue" value="id">
+		</c:set>
+	</c:if>
+	
+	<c:if test="${empty staticLabel }">
+	<c:set var="finalLabel" value="${item[itemLabel]}"></c:set>
+	</c:if>
+	<c:if test="${not empty staticLabel }">
+		<c:set var="finalLabel" value="${staticLabel}"></c:set>
+	</c:if>
+	<c:if test="${not empty action  }">
+		<spring:url value="${path }/${item[itemValue]}?form"
+			var="recentobject_url"></spring:url>
+		<div class="link" style="text-align: center;">
+			<h4>
+				You have ${action } ${itemType }: <a href="${recentobject_url }">${finalLabel}</a>
+			</h4>
+		</div>
+	</c:if>
+</jsp:root>

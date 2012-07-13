@@ -97,12 +97,7 @@ public class MemberInformationController {
 			 * return "redirect:/memberinformations/" + encodeUrlPathSegment(
 			 * memberInformation.getId().toString(), httpServletRequest);
 			 */
-
-			Set<MemberInformation> memberInformations = projectRepository.findOne(
-					projectId).getMemberInformations();
-			uiModel.addAttribute("memberinformations", memberInformations);
-			uiModel.addAttribute("projectId", projectId);
-			return "projects/memberinformations";
+			return "redirect:/projects/" + projectId + "/memberinformations?recentAction=added&recentMemberId=" + memberInformation.getId();
 
 		}
 
@@ -143,7 +138,7 @@ public class MemberInformationController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid MemberInformation memberInformation,
+	public String update(@Valid MemberInformation memberInformation,@PathVariable("projectId") Long projectId,
 			BindingResult bindingResult, Model uiModel,
 			HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -152,7 +147,7 @@ public class MemberInformationController {
 		}
 		uiModel.asMap().clear();
 		memberInformationRepository.save(memberInformation);
-		return "redirect:/projects/" + memberInformation.getProject().getId() + "/memberinformations";
+		return "redirect:/projects/" + projectId + "/memberinformations?recentAction=changed role of &recentMemberId=" + memberInformation.getId();
 	}
 
 	@RequestMapping(params = { "iDisplayStart", "iDisplayLength", "sEcho",

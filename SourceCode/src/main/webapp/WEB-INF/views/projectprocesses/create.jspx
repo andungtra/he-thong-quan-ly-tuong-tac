@@ -4,10 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <spring:url value="/projectprocesses" var="create_url"/>
     <style>
-body {
-	padding: 30px
-}
-
 form {
 	display: block;
 	margin: 20px auto;
