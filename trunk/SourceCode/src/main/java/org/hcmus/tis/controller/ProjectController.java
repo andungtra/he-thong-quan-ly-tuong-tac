@@ -156,18 +156,19 @@ public class ProjectController {
 		project.setStatus(ProjectStatus.OPEN);
 		uiModel.asMap().clear();
 		projectRepository.save(project);
-		uiModel.addAttribute("projectId", project.getId());
-		uiModel.addAttribute("projects", projectRepository.findAll());
-		return "projects/list";
+		return "redirect:projects?recentAction=created&recentId=" + project.getId();
 	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
 	public String updateForm(
 			@PathVariable("id") Long id,
 			Model uiModel,
-			@RequestParam(value = "keepupdate", required = false) Boolean keepUpdate) {
+			@RequestParam(value = "keepupdate", required = false) Boolean keepUpdate, String recentAction) {
 		populateEditForm(uiModel, projectRepository.findOne(id));
 		uiModel.addAttribute("keepupdate", keepUpdate);
+		if(keepUpdate != null && keepUpdate){
+			uiModel.addAttribute("recentAction", recentAction);
+		}
 		return "projects/update";
 	}
 
@@ -360,11 +361,15 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}/memberinformations", produces = "text/html")
-	public String listMembers(@PathVariable("id") Long id, Model uiModel) {
+	public String listMembers(@PathVariable("id") Long id, Model uiModel,String recentAction, Long recentMemberId) {
 		Set<MemberInformation> memberInformations = projectRepository.findOne(
 				id).getMemberInformations();
 		uiModel.addAttribute("memberinformations", memberInformations);
 		uiModel.addAttribute("projectId", id);
+		if(recentAction != null && recentMemberId != null){
+			uiModel.addAttribute("recentAction", recentAction);
+			uiModel.addAttribute("recentMember", memberInformationRepository.findOne(recentMemberId));
+		}
 		return "projects/member";
 	}
 
@@ -438,36 +443,19 @@ public class ProjectController {
 				return "redirect";
 			}
 			return "redirect:/projects/" + project.getId()
-					+ "?form&keepupdate=true";
+					+ "?form&keepupdate=true&recentAction=updated";
 		}
-		uiModel.addAttribute("projects", projectRepository.findAll());
-		return "projects/list";
+		return "redirect:/projects?recentAction=updated&recentId=" + project.getId();
 
 	}
 
 	@RequestMapping(produces = "text/html")
 	@RequiresPermissions("project:list")
-	public String list(
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
-		/*
-		 * List<Project> lst = null; if (page != null || size != null) { int
-		 * sizeNo = size == null ? 10 : size.intValue(); final int firstResult =
-		 * page == null ? 0 : (page.intValue() - 1) sizeNo; lst =
-		 * Project.findProjectEntries(firstResult, sizeNo);
-		 * 
-		 * float nrOfPages = (float) Project.countProjects() / sizeNo;
-		 * uiModel.addAttribute( "maxPages", (int) ((nrOfPages > (int) nrOfPages
-		 * || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages)); } else { lst =
-		 * Project.findAllProjects(); }
-		 * 
-		 * for (int i = 0; i < lst.size(); i++) { if (lst.get(i).getStatus() !=
-		 * null && lst.get(i).getStatus().equals(ProjectStatus.DELETED))
-		 * lst.remove(i); }
-		 * 
-		 * uiModel.addAttribute("projects", lst);
-		 */
+	public String list(String recentAction,  Long recentId, Model uiModel) {
+		if(recentAction != null && recentId != null){
+			uiModel.addAttribute("recentAction", recentAction);
+			uiModel.addAttribute("recentProject", projectRepository.findOne(recentId));
+		}
 		return "projects/list";
 	}
 

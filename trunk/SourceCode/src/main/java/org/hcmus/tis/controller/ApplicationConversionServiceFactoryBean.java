@@ -46,6 +46,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		});
 		registry.addConverter(getWorkItemContainerToStringConverter());
 		registry.addConverter(getStringToWorkItemContainerConverter());
+		registry.addConverter(getStringToMemberRoleConverter());
+		registry.addConverter(getMemberRoleToStringConverter());
 	}
 	@Autowired
 	private ApplicationRoleRepository appRoleRepository;
@@ -95,15 +97,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 			}
 		};
 	}
-	public Converter<MemberRole, String> getMemberRoleToStringConverter(){
-		return new Converter<MemberRole, String>() {
-			
-			@Override
-			public String convert(MemberRole arg0) {
-				return arg0.getName();
-			}
-		};
-	}
 	@Autowired
 	private WorkItemContainerRepository workItemContainerRepository;
 	public Converter<String, WorkItemContainer> getStringToWorkItemContainerConverter(){
@@ -141,6 +134,15 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
                 return projectProcess.getName();
             }
         };
+    }
+    public Converter<MemberRole, String> getMemberRoleToStringConverter(){
+    	return new Converter<MemberRole, String>() {
+
+			@Override
+			public String convert(MemberRole source) {
+				return source.getName();
+			}
+		};
     }
 
 }

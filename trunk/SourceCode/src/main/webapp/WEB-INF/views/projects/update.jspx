@@ -14,6 +14,9 @@
     <c:if test="${keepupdate }">
     	<c:set value="/projects/${project.id }?form&amp;keepupdate=true&amp;dump=${currentDate }" var="cancelUrl" ></c:set>
     </c:if>
+    <c:if test="${keepupdate &amp;&amp; not empty recentAction }">
+    	<div style="text-align: center;"><h4 style="padding: 0px;margin: 0px;">You have changed settings</h4></div>
+    </c:if>
     <form:update noDependency="${keepupdate }" id="fu_org_hcmus_tis_model_Project" labelBackList="Projects" modelAttribute="project" cancel="${cancelUrl }" path="/projects" versionField="Version" z="user-managed">
         <field:input field="name" id="c_org_hcmus_tis_model_Project_name" required="true" z="user-managed"/>
        

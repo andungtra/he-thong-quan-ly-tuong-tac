@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <table:datatable aoColumns="firstName,lastName,email,status" fdelete="true" fnew="true" id="tbaccount" path="/accounts" source="/accounts/mList" thead="First Name, Last Name, Email, Status"/>
-    <div id="pl_org_hcmus_tis_model_Account">
-        <div id="l_org_hcmus_tis_model_Account">
-            <div id="c_org_hcmus_tis_model_Account_firstName"/>
-            <div id="c_org_hcmus_tis_model_Account_lastName"/>
-            <div id="c_org_hcmus_tis_model_Account_email"/>
-            <div id="c_org_hcmus_tis_model_Account_password"/>
-            <div id="c_org_hcmus_tis_model_Account_isAdmin"/>
-            <div id="c_org_hcmus_tis_model_Account_isEnable"/>
-            <table:column id="c_org_hcmus_tis_model_Account_role" property="role" z="CBJ41y4cviz32eVLGXtwAR7n4cI="/>
-        </div>
-    </div>
-    <script type="text/javascript">
-	$(document).ready(
-    		function(){if("${error}" !='')
-    			alert("${error}");}   		
-    );
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:page="urn:jsptagdir:/WEB-INF/tags/form"
+	xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	<table:recentaction item="${recentItem }" action="${recentAction }" path="/accounts" itemLabel="fullName" itemType="account" id="list_recent_account"></table:recentaction>
+	<table:datatable aoColumns="firstName,lastName,email,status"
+		fdelete="true" fnew="true" id="tbaccount" path="/accounts"
+		source="/accounts/mList" thead="First Name, Last Name, Email, Status" />
+	<div id="pl_org_hcmus_tis_model_Account">
+		<div id="l_org_hcmus_tis_model_Account">
+			<div id="c_org_hcmus_tis_model_Account_firstName" />
+			<div id="c_org_hcmus_tis_model_Account_lastName" />
+			<div id="c_org_hcmus_tis_model_Account_email" />
+			<div id="c_org_hcmus_tis_model_Account_password" />
+			<div id="c_org_hcmus_tis_model_Account_isAdmin" />
+			<div id="c_org_hcmus_tis_model_Account_isEnable" />
+			<table:column id="c_org_hcmus_tis_model_Account_role" property="role"
+				z="CBJ41y4cviz32eVLGXtwAR7n4cI=" />
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if ("${error}" != '')
+				alert("${error}");
+		});
+	</script>
+	<script type="text/javascript">
+		operationSucess = true;
 	</script>
 </div>

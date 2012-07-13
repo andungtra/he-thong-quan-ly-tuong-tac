@@ -41,7 +41,7 @@ public class ProjectProcessController {
 	        }
 	        uiModel.asMap().clear();
 	        projectProcessService.updateProjectProcess(projectProcess);
-	        return "redirect:/projectprocesses";
+	        return "redirect:/projectprocesses?recentAction=created&recentProcessId=" + projectProcess.getId();
 	    }
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(Model uiModel, MultipartFile multipartFile,
@@ -56,7 +56,7 @@ public class ProjectProcessController {
 		uiModel.addAttribute("projectprocess", projectProcess);
 		uiModel.addAttribute("itemId", projectProcess.getId());
 	
-		return "redirect:/projectprocesses";
+		return "redirect:/projectprocesses?recentAction=created&recentProcessId=" + projectProcess.getId();
 	}
 
 	@RequestMapping(value = "mList", params = { "iDisplayStart",
@@ -95,11 +95,8 @@ public class ProjectProcessController {
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String list(
-			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size,
-			Model uiModel) {
-		List<ProjectProcess> list = null;
+	public String list(Model uiModel, String recentAction, Long recentProcessId) {
+/*		List<ProjectProcess> list = null;
 		if (page != null || size != null) {
 			int sizeNo = size == null ? 10 : size.intValue();
 			final int firstResult = page == null ? 0 : (page.intValue() - 1)
@@ -120,7 +117,11 @@ public class ProjectProcessController {
 			if (list.get(i).isIsDeleted() == true)
 				list.remove(i);
 		}
-		uiModel.addAttribute("projectprocesses", list);
+		uiModel.addAttribute("projectprocesses", list);*/
+		if(recentAction != null && recentProcessId != null){
+			uiModel.addAttribute("recentAction", recentAction);
+			uiModel.addAttribute("recentProcess", ProjectProcess.findProjectProcess(recentProcessId));
+		}
 		return "projectprocesses/list";
 	}
 }

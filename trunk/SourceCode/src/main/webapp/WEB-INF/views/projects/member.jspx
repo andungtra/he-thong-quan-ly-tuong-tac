@@ -25,6 +25,7 @@
 	<script type="text/javascript">
 	operationSucess = true;
 	</script>
+	<table:recentaction item="${recentMember }" staticLabel="${recentMember.account.fullName }" action="${recentAction }" path="/projects/${projectId}/memberinformations" itemType="member" id="list_recent_member"></table:recentaction>
 	<table:datatable aoColumns="firstName,lastName,memberRole" id="tbmember"
 		path="/projects/${projectId}/memberinformations"
 		source="/projects/${projectId}/memberinformations"
