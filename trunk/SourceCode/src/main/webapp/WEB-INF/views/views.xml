@@ -15,6 +15,10 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/resourceNotFound.jspx" />
 	</definition>
+	<definition extends="default" name="successactivation">
+		<put-attribute name="body"
+			value="/WEB-INF/views/sucessactivation.jspx" />
+	</definition>
 
 	<definition extends="content" name="uncaughtException">
 		<put-attribute name="body"

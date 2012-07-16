@@ -40,6 +40,7 @@
 	<mvc:view-controller path="/uncaughtException" />
 	<mvc:view-controller path="/resourceNotFound" />
 	<mvc:view-controller path="/dataAccessFailure" />
+	<mvc:view-controller path="/successactivation" view-name="successactivation" />
 
 	<!-- Resolves localized messages*.properties and application.properties 
 		files in the application to allow for internationalization. The messages*.properties 

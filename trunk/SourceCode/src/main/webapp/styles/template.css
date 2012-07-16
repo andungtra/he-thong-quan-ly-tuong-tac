@@ -4,6 +4,18 @@ body {
 	padding: 0px;
 	background-color: #ccc;
 }
+.custom_field select, .custom_field option{
+	width: 183px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+.custom_field input[type="text"]{
+	width: 178px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+}
 .dataTables_filter input{
 	width:200px;
 }
@@ -631,6 +643,10 @@ a:hover {
 .filter{
 	text-align: right;
 	float:right;
+	width: 300px;
+}
+.filter input{
+	height: 10px !important;
 }
 .hide{
 	display: none;

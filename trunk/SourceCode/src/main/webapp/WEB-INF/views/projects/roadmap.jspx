@@ -18,4 +18,7 @@
 		<util:iteration model="${iteration }" path="/projects/${project.id}/iterations"></util:iteration>
 	</c:forEach>
 	</div>
+		<script type="text/javascript">
+	operationSucess = true;
+	</script>
 </div>

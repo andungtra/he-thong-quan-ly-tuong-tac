@@ -86,9 +86,10 @@
 	
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
+	<spring:url value="/projects/${itemId }/workitemstatuses/listJSON" var="workitem_type_url"></spring:url>
 	<field:datatable checkbox="false" aoColumns="lName,sStatus,sType,priority,iteration"
 		id="tbproject" path="/workitems"
 		source="/projects/${itemId }/workitems"
-		thead="Title,Status,Type,Priority,Plan for" filter="true" />
+		thead="Title,Status,Type,Priority,Plan for" filter="${workitem_type_url }" />
 	<div style="clear: both;" />
 </div>

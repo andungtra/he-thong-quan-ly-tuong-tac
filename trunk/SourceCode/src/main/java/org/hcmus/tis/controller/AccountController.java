@@ -167,9 +167,8 @@ public class AccountController {
 			oldAccount.setLastName(account.getLastName());
 			oldAccount.setStatus(AccountStatus.ACTIVE);
 			accountService.updateAccount(oldAccount);
-			uiModel.addAttribute("account", oldAccount);
-			uiModel.addAttribute("itemId", oldAccount.getId());
-			return "accounts/home";
+			uiModel.addAttribute("url", "/successactivation");
+			return "redirect";
 		}
 		return "accounts/activeFailure";
 	}

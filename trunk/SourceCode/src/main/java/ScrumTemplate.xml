@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xProjectProcess identity="scrum" name="Scrum" xmlns="http://www.w3schools.com"
+<xProjectProcess identity="scrum3" name="Scrum" xmlns="http://www.w3schools.com"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 	<xWorkItems>
@@ -26,9 +26,8 @@ xsi:schemaLocation="http://www.w3schools.com ProcessTemplateSchema.xsd">
 					</xChoices>
 				</xField>
 				<xField name="Environment" type="string" refName="environment">
-					<xDefaultValue>My environment</xDefaultValue>
+					<xDefaultValue></xDefaultValue>
 				</xField>
-				<xField name="type" type="number" refName="type" requied="true"></xField>
 			</xAddionalFields>
 		</xWorkItem>
 	</xWorkItems>

@@ -27,10 +27,10 @@
 			id="c_org_hcmus_tis_model_Account_password" z="user-managed"
 			render="false" />
 		<label class="label">Password : </label>
-		<input id="newPass" name="newPass" type="password" value="password" />
+		<input style="width: 246px; margin: 0px; padding: 0px;" id="newPass" name="newPass" type="password" value="password" />
 		<br/>
 		<label class="label">Retype : </label>
-		<input id="newPassValidate" name="newPassValidate" type="password"
+		<input style="width: 246px; padding: 0px;margin: 9px 0px 10px 0px;" id="newPassValidate" name="newPassValidate" type="password"
 			value="password" />
 		<input name="email" type="hidden" value="${account.email}" />
 		<input name="status" type="hidden" value="${account.status}" />

@@ -22,6 +22,7 @@ import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.hcmus.tis.repository.EventRepository;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,6 +43,7 @@ public class Project extends WorkItemContainer {
 	private String description;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
+	@Filter(condition="deleted==false", name = "not deleted")
 	private Set<MemberInformation> memberInformations = new HashSet<MemberInformation>();
 
 	@ManyToOne

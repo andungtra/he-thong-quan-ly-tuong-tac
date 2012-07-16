@@ -41,6 +41,7 @@
                 <field:select field="workItemContainer" id="c_org_hcmus_tis_model_WorkItem_workItemContainer" itemValue="id" items="${workitemcontainers}" label="Plan for" path="/workitemcontainers" required="true" z="user-managed"/>
                 <field:select field="workItemType" id="c_org_hcmus_tis_model_WorkItem_workItemType" itemValue="id" items="${workitemtypes}" path="/workitemtypes" render="false" required="true" z="user-managed"/>
                 <c:set value="" var="validateRule"/>
+                <div class="custom_field">
                 <c:forEach items="${workItemType.additionalFieldDefines }" var="fieldDefine">
                     <c:if test="${fieldDefine.required }">
                         <c:set value="required" var="validateRule"/>
@@ -48,10 +49,10 @@
                     <c:set value="${validateRule} ${fieldDefine.type}" var="validateRule"/>
                     <div>
                         <label for="ctf_${fieldDefine.refName }">
-							${fieldDefine.refName } : </label>
+							${fieldDefine.name } : </label>
                         <c:choose>
                             <c:when test="${empty fieldDefine.choices }">
-                                <input class="${validateRule }" id="ctf_${fieldDefine.refName }" name="${fieldDefine.refName }" value="${fieldDefine.defaultValue }"/>
+                                <input type="text" class="${validateRule }" id="ctf_${fieldDefine.refName }" name="${fieldDefine.refName }" value="${fieldDefine.defaultValue }"/>
                                 <br/>
                                 <br/>
                             </c:when>
@@ -67,13 +68,17 @@
                         </c:choose>
                     </div>
                 </c:forEach>
+                </div>
                 <field:datetime dateTimePattern="${date_format}" field="dateCreated" id="c_org_hcmus_tis_model_WorkItem_dateCreated" render="false" required="true" z="user-managed"/>
                 <field:datetime dateTimePattern="${date_format}" field="dueDate" id="c_org_hcmus_tis_model_WorkItem_dueDate" z="user-managed"/>
-                <field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemLabel="account.fullName" itemValue="id" items="${memberinformations}" label="Assign to" path="/memberinformations" z="user-managed"/>
-                <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
+                
             </util:fixpanel>
         </div>
         <div class="right-panel">
+        	<util:fixpanel id="people_panel" title="People">
+        	<field:select field="asignee" id="c_org_hcmus_tis_model_WorkItem_asignee" itemLabel="account.fullName" itemValue="id" items="${memberinformations}" label="Assign to" path="/memberinformations" z="user-managed"/>
+                <field:select field="author" id="c_org_hcmus_tis_model_WorkItem_author" itemValue="id" items="${memberinformations}" path="/memberinformations" render="false" required="true" z="user-managed"/>
+        	</util:fixpanel>
             <util:fixpanel id="Attachments_panel" title="Attachments">
                 <div id="file-uploader-demo1">
                     <noscript>
