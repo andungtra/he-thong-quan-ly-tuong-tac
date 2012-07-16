@@ -11,9 +11,9 @@
         </c:if>
         <field:input field="firstName" id="c_org_hcmus_tis_model_Account_firstName" cssStyle="width:300px;" required="true" z="user-managed"/>
         <field:input field="lastName" id="c_org_hcmus_tis_model_Account_lastName" cssStyle="width:300px;" required="true" z="user-managed"/>
-        <field:input field="email" cssStyle="width:300px;" id="c_org_hcmus_tis_model_Account_email" min="1" render="false" required="true" type="email" validationMessageCode="field_invalid_email" z="user-managed"/>
+        <field:input field="email" cssStyle="width:300px; margin:0px;padding:0px;" id="c_org_hcmus_tis_model_Account_email" min="1" render="false" required="true" type="email" validationMessageCode="field_invalid_email" z="user-managed"/>
         <label>Email:</label>
-        <input style="width: 300px;" name="email" type="email"/>
+        <input style="width: 300px; margin-left: 0px;" name="email" type="email"/>
         <field:input field="password" id="c_org_hcmus_tis_model_Account_password" render="false" required="true" z="user-managed"/>
         <field:checkbox field="isEnable" id="c_org_hcmus_tis_model_Account_isEnable" render="false" z="user-managed"/>
         <field:select field="status" id="c_org_hcmus_tis_model_Account_status" items="${accountstatuses}" path="accountstatuses" render="false" z="user-managed"/>

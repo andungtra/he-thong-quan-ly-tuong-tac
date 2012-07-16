@@ -134,7 +134,7 @@
 	<div style="clear: both;" />
 	<spring:url value="/projects/${itemId }/workitems" var="update_url">
 	</spring:url>
-	<field:datatable aoColumns="lName,sStatus,sType,priority,sIteration"
+	<field:datatable aoColumns="lName,sStatus,sType,priority,iteration"
 		id="tbprojectdsfsfs" path="/workitems"
 		source="/projects/${itemId }/workitems"
 		searchparams="${searchparams }"

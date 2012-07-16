@@ -55,8 +55,8 @@
 		required="false" rtexprvalue="true"
 		description="list parameters sending to server" />
 
-	<jsp:directive.attribute name="filter" type="java.lang.Boolean"
-		required="false" rtexprvalue="true" description="filter work item" />
+	<jsp:directive.attribute name="filter" type="java.lang.String"
+		required="false" rtexprvalue="true" description="server source to get workitem status list" />
 		<jsp:directive.attribute name="checkbox" type="java.lang.Boolean"
 		required="false" rtexprvalue="true" description="check box" />
 
@@ -95,10 +95,11 @@
 											"bProcessing" : true,
 											"bServerSide" : true,
 											"bFilter": true,
-											"sAjaxSource" : "${source}",	
+											"sAjaxSource" : "${source}",
 											"oLanguage": {
 												"sSearch": "Search : "
 											},
+											
 											"fnServerParams" : function(aoData){
 												aoData.push(
 													<c:forEach items="${searchparams}" var="searchparam" varStatus="status">
@@ -159,7 +160,7 @@
 				bt = bt	+'<button onclick="fremove()">Remove</button>';
 			if('${filter}' != ''){
 				bt = bt + '<div class="filter">Show : <select id="${id}_status"></select></div>';
-				$.getJSON('/TIS/projects/workitemstatuses/listJSON', function(data) {
+				$.getJSON('${filter}', function(data) {
 					  var items = '<option>All workitem</option>';
 					  items = items + '<option title="closed" value="false" selected="selected">Open workitem</option>';
 					  $.each(data, function(key, val) {
@@ -346,17 +347,19 @@
 		</TABLE>
 	</div>
 	<script>
+	var first_filter_${id} = 0;
 	$(function(){
 		debugger;
 		var selector = '#table_${id} select';
 		  $(selector).change(function () {
-		    	if('${filter}' != ''){
+		    	if('${filter}' != '' &amp;&amp; first_filter_${id} > 1){
 		    		if(this.selectedIndex > -1){
 		    		statusName  = this.options[this.selectedIndex].title;
 		    		statusID = this.value;
 		        	oTable.fnFilter("");
 		    		}
 		    	}
+		    	first_filter_${id}++;
 		    })
 		        .change();
 	})

@@ -508,6 +508,7 @@ public class ProjectController {
 		for (Event event : project.getCalendar().getEvents()) {
 			restResponse.getResponse().getData().add(event);
 		}
+		List<MemberInformation> projectMembers = memberInformationRepository.findByProjectAndDeleted(project, false);
 		for (Event event : project.getEventsOfMembers()) {
 			NonEditableEvent nonEditableEvent = new NonEditableEvent();
 			nonEditableEvent.setId(event.getId());
@@ -516,8 +517,7 @@ public class ProjectController {
 
 			for (org.hcmus.tis.model.Calendar calendar : event.getCalendars()) {
 				if (calendar.getAccount() != null) {
-					for (MemberInformation memberInformation : project
-							.getMemberInformations()) {
+					for (MemberInformation memberInformation : projectMembers) {
 						if (memberInformation.getAccount().getCalendar()
 								.getId() == calendar.getId()) {
 							membersNumber++;

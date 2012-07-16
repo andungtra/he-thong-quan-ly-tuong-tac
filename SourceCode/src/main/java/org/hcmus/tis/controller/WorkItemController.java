@@ -403,15 +403,11 @@ public class WorkItemController {
 					+ "/workitems/" + workItem.getId() + "?form'>"
 					+ workItem.getTitle() + "</a>");
 			workItemDto.setsStatus(workItem.getStatus().getName());
-			if(!(workItem.getWorkItemContainer() instanceof Project)){
-				workItemDto.setsIteration(workItem.getWorkItemContainer().getName());
-			}
 			workItemDto.setsType(workItem.getWorkItemType().getName());
 			workItemDto.setPriority(workItem.getPriority().getName());
-			if(workItem.getWorkItemContainer() instanceof Iteration)
+			if(workItem.getWorkItemContainer() instanceof Iteration){
 				workItemDto.setIteration(workItem.getWorkItemContainer().getName());
-			else
-				workItemDto.setIteration("");
+			}
 			reply.getAaData().add(workItemDto);
 		}
 		return reply;
@@ -476,9 +472,9 @@ public class WorkItemController {
 		this.emailService = emailService;
 	}
 	
-	@RequestMapping(value = "/query")
+/*	@RequestMapping(value = "/query")
 	@ResponseBody
 	public List filter(){
 		return null;
-	}
+	}*/
 }
