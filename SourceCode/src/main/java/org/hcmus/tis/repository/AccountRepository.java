@@ -20,4 +20,5 @@ public interface AccountRepository {
 	public Page<Account> find(String search, Pageable pageable);
 	public Page<Account> findByEmailLikeAndStatus(String email, AccountStatus status, Pageable pageable);
 	public Page<Account> findByEmailLikeAndStatusAndIdNotIn(String email, AccountStatus status,Collection<Long> ids, Pageable pageable);
+	public Account findByEmail(String email);
 }

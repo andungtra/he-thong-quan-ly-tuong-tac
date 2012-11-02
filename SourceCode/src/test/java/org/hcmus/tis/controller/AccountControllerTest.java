@@ -2,8 +2,10 @@ package org.hcmus.tis.controller;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,10 +17,12 @@ import org.hcmus.tis.dto.NonEditableEvent;
 import org.hcmus.tis.dto.datatables.DSRestResponse;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.AccountStatus;
+import org.hcmus.tis.model.ApplicationRole;
 import org.hcmus.tis.model.Calendar;
 import org.hcmus.tis.model.Event;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.repository.AccountRepository;
+import org.hcmus.tis.repository.ApplicationRoleRepository;
 import org.hcmus.tis.repository.EventRepository;
 import org.hcmus.tis.service.AccountService;
 import org.hcmus.tis.service.DuplicateException;
@@ -51,6 +55,9 @@ public class AccountControllerTest extends AbstractShiroTest {
 	@Mock
 	private AccountRepository accountRepository;
 	@Mock
+	private ApplicationRoleRepository appRoleRepositoy;
+	
+	@Mock
 	private Event event;
 	@Before
 	public void setUp() {
@@ -67,7 +74,21 @@ public class AccountControllerTest extends AbstractShiroTest {
 		aut.setEventRepository(eventRepository);
 		aut.setAccountRepository(accountRepository);
 	}
-
+	public void testPopulateEditForm(){
+		List<ApplicationRole> apRoles = mock(List.class);
+		doReturn(apRoles).when(appRoleRepositoy).findAll();
+		aut.populateEditForm(uiModel, account);
+		verify(uiModel).addAttribute("account", account);
+		verify(uiModel).addAttribute("accountstatuses", Arrays.asList(AccountStatus.values()));
+		verify(uiModel).addAttribute("roles", apRoles);
+	}
+	@Test
+	public void testCreateForm(){
+		AccountController spyAut = spy(aut);
+		doNothing().when(spyAut).populateEditForm(eq(uiModel), any(Account.class));
+		spyAut.createForm(uiModel);
+		verify(spyAut).populateEditForm(eq(uiModel), any(Account.class));
+	}
 	@Test
 	public void testCreate() throws DuplicateException, SendMailException {
 
@@ -79,7 +100,7 @@ public class AccountControllerTest extends AbstractShiroTest {
 		String result = aut.create(account, bindingResult, uiModel, request);
 
 		verify(mockedAccountService).createAccount(account);
-		assertEquals("accounts/list", result);
+		assertEquals("redirect:/accounts?recentAction=updated&recentAccountId=" + account.getId(), result);
 	}
 
 	@Test
@@ -189,7 +210,8 @@ public class AccountControllerTest extends AbstractShiroTest {
 
 		verify(mockedAccountService).updateAccount(
 				any(Account.class));
-		Assert.assertEquals("accounts/home", result);
+		verify(uiModel).addAttribute("url", "/successactivation");
+		Assert.assertEquals("redirect", result);
 	}
 
 	@Test
@@ -238,19 +260,6 @@ public class AccountControllerTest extends AbstractShiroTest {
 		Assert.assertEquals("accounts/activeFailure", result);
 	}
 
-/*	@Test
-	public void testFindAccount() {
-		PowerMockito.mockStatic(Account.class);
-		String term = "term";
-		TypedQuery<Account> mockedQuery = mock(TypedQuery.class);
-		// PowerMockito.doReturn(mockedQuery).when(Account.findAccount(eq(term),
-		// anyInt(), anyInt()));
-		aut.findAccount(term);
-
-		PowerMockito.verifyStatic();
-		Account.findAccount(eq(term), anyInt(),
-				anyInt());
-	}*/
 
 	@Test
 	public void testCreatEvent() {

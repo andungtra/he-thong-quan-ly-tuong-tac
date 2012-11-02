@@ -19,6 +19,7 @@ import org.hcmus.tis.repository.CommentRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
+import org.hcmus.tis.util.CommentNotificationTask;
 import org.hcmus.tis.util.UpdateWorkitemNotification;
 
 import static org.junit.Assert.*;
@@ -100,7 +101,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
-				notifyTask = (UpdateWorkitemNotification) invocation
+				notifyTask = (CommentNotificationTask) invocation
 						.getArguments()[0];
 				return null;
 			}
@@ -130,7 +131,7 @@ public class CommentControllerTest extends AbstractShiroTest {
 		verify(uiModel).addAttribute("workitem", workItem);
 	}
 
-	private UpdateWorkitemNotification notifyTask;
+	private CommentNotificationTask notifyTask;
 
 	@Test
 	public void testCreate() {

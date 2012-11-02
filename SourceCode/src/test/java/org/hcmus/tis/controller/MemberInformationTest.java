@@ -7,9 +7,11 @@ import javax.jws.WebParam.Mode;
 import org.hcmus.tis.model.Account;
 import org.hcmus.tis.model.MemberRole;
 import org.hcmus.tis.model.Project;
+import org.hcmus.tis.repository.MemberRoleRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -21,10 +23,13 @@ import org.springframework.ui.Model;
 public class MemberInformationTest {
 	private Model mockedUiModel;
 	private MemberInformationController aut;
+	@Mock
+	private MemberRoleRepository memberRoleRepository;
 	@Before
 	public void setUp() throws Exception {
 		mockedUiModel = Mockito.mock(Model.class);
 		aut = new MemberInformationController();
+		aut.setMemberRoleRepository(memberRoleRepository);
 	}
 
 	@Test
@@ -32,10 +37,9 @@ public class MemberInformationTest {
 	public void testCreateForm() {
 		PowerMockito.mockStatic(MemberRole.class);
 		String redirectUrl = "redirect";
-		//String result = aut.createForm(mockedUiModel, (long) 1, redirectUrl );
+		String result = aut.createForm(mockedUiModel, (long) 1 );
 		 
-		Mockito.verify(mockedUiModel).addAttribute("redirectUrl", redirectUrl);
-		//assertEquals("memberinformations/createfromproject", result);
+		assertEquals("memberinformations/createfromproject", result);
 	}
 
 }

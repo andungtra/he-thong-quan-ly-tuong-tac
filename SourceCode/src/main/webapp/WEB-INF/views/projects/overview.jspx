@@ -96,20 +96,48 @@
 	<div class="clear" />
 	<div class="recent">
 		<util:fixpanel id="" title="Recent activities" bt="true">
+			<spring:url value="/resources/images/Default-Avatar.png" var="avatar"></spring:url>
 			<c:if test="${empty listHistorys}">
 					Don't have any activity !
 			</c:if>
 			<c:forEach var="item" items="${listHistorys}">
 				<spring:url
-					value="/projects/${project.id }/workitems/${item.workItem.id }?form"
+					value="/projects/${project.id }/workitems/${item.resultVersion.workItem.id }?form"
 					var="link"></spring:url>
 				<div class="history">
-					<span class="changedBy">${item.changedBy.account.firstName}</span>
-					${item.type} workitem <a href="${link }">${item.title }</a> <span
-						class="time"> at <date:formatDate
-							value="${item.dateLastEdit}" pattern="dd-MM-yyyy hh:mm a" dateStyle="medium"/>
-					</span>
+					<div class="activity_avatar"><img src="${avatar }"></img></div>
+					<div class="activity_content">
+					<span class="changedBy"><a href="#">${item.account.firstName}</a></span>
+					${item.name } workitem <a href="${link }">${item.resultVersion.workItem.title }</a> 
+					<div>
+					<p>+ Changed <b>priority</b> from <b>low</b> to <b>heigh</b></p>
+					<p>+ Changed <b>status</b> from <b>open</b> to <b>close</b></p>
 				</div>
+						<div style="font-size: 80%">
+							<span style="padding-right: 5px;">*<a href="#">detail</a></span><span style="padding-right: 30px;">*<a href="#">subscribe</a></span>*<span class="time">
+								at <date:formatDate value="${item.date}"
+									pattern="dd-MM-yyyy hh:mm a" dateStyle="medium" />
+							</span>
+						</div>
+					<div style=" background-color: aqua;padding: 5px; margin-top: 10px;">
+					<div style="overflow: hidden;">
+								<div style="float: left;">
+									<img src="${avatar}" style="width: 20px; heigh: 20px"></img>
+								</div>
+								<div style="float: left;"><a href="#">Nguyen Duc</a> ok. very good</div>
+					</div>
+					<div style="overflow: hidden;">
+						<div style="float: left;"><img src="${avatar}" style="width: 20px; heigh:20px"></img></div>
+						<div style="float: left;"><a href="#">Nguyen Duc</a> ok. very good</div>
+					</div>
+					<div style="overflow: hidden;">
+						<div style="float: left;"><img src="${avatar}" style="width: 20px; heigh:20px"></img></div>
+						<div style="float: left;"><input style="padding: 0px; margin: 0px;" type="text" placeholder="write your comment"></input></div>
+					</div>
+					</div>
+					</div>
+				</div>
+				
 			</c:forEach>
 		</util:fixpanel>
 	</div>

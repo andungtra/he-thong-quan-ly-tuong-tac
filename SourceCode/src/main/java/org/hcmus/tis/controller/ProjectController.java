@@ -29,6 +29,7 @@ import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectProcess;
 import org.hcmus.tis.model.ProjectStatus;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemActivity;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemHistory;
 import org.hcmus.tis.model.WorkItemStatus;
@@ -37,6 +38,7 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.repository.StudyClassRepository;
+import org.hcmus.tis.repository.WorkItemActivityRepository;
 import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
@@ -228,6 +230,8 @@ public class ProjectController {
 
 	@Autowired
 	WorkItemRepository workItemRepository;
+	@Autowired
+	WorkItemActivityRepository workItemActivityRepository;
 
 	@RequestMapping(value = "/{id}/overview", produces = "text/html")
 	@RequiresPermissions("project:read")
@@ -276,9 +280,8 @@ public class ProjectController {
 							statuses.get(index));
 		}
 		Pageable pageable = new PageRequest(0, 10);
-		List<WorkItemHistory> listHistorys = workItemHistoryRepository
-				.findByProject(project, pageable).getContent();
-		uiModel.addAttribute("listHistorys", listHistorys);
+		List<WorkItemActivity> workItemActivities = workItemActivityRepository.findByProject(project, new PageRequest(0, 1000)).getContent();
+		uiModel.addAttribute("listHistorys", workItemActivities);
 
 		uiModel.addAttribute("overdues", overdues);
 		uiModel.addAttribute("indues", indues);

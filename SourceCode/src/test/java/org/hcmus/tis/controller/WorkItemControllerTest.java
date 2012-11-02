@@ -38,9 +38,11 @@ import org.hcmus.tis.repository.IterationRepository;
 import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.PriorityRepository;
 import org.hcmus.tis.repository.ProjectRepository;
+import org.hcmus.tis.repository.WorkItemContainerRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
 import org.hcmus.tis.repository.WorkItemStatusRepository;
 import org.hcmus.tis.repository.WorkItemTypeRepository;
+import org.hcmus.tis.service.WorkItemService;
 import org.hcmus.tis.util.UpdateWorkitemNotification;
 import org.junit.After;
 import org.junit.Assert;
@@ -113,6 +115,10 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 	@Mock
 	private WorkItemRepository workItemRepository;
 	@Mock
+	private WorkItemContainerRepository workItemContainerRepository;
+	@Mock
+	private WorkItemService workItemService;
+	@Mock
 	private Account account;
 	private WorkItemController aut;
 
@@ -127,6 +133,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		aut.setIterationRepository(iterationRepository);
 		aut.setProjectRepository(projectRepository);
 		aut.setWorkItemRepository(workItemRepository);
+		aut.setWorkitemContainerRepository(workItemContainerRepository);
 		doReturn((long) 1).when(mockedWorkItem).getId();
 		doReturn((long) 2).when(mockedWorkItemType).getId();
 		doReturn((long) 3).when(mockedProject).getId();
@@ -147,6 +154,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 		aut.setWorkItemStatusRepository(workItemStatusRepository);
 		aut.setWorkItemTypeRepository(workItemTypeRepository);
 		aut.setMemberInformationRepository(memberInformationRepository);
+		aut.setWorkItemService(workItemService);
 		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock invocation) throws Throwable {
@@ -187,7 +195,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 
 	@Test
 	@PrepareForTest({WorkItemContainer.class})
-	public void testPopulateEditFormCustomly() {
+	public void testPopulateEditForm() {
 		Long projectId = (long) 1;
 		WorkItem workItem = new WorkItem();
 		WorkItemContainer workItemContainer = new Project();
@@ -215,7 +223,6 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				anyCollectionOf(WorkItemStatus.class));
 		verify(mockedUIModel)
 				.addAttribute(eq("workItemType"), eq(workItemType));
-
 	}
 
 	private List<Field> finalField;
@@ -255,7 +262,7 @@ public class WorkItemControllerTest extends AbstractShiroTest {
 				attachmentIds, mockedHttpRequest);
 
 		verify(mockedHttpRequest).getParameter("name");
-		verify(workItemRepository).save(mockedWorkItem);
+		verify(workItemService).save(mockedWorkItem);
 		verify(mockedAttachment1).setWorkItem(mockedWorkItem);
 		verify(attachmentRepository, atLeastOnce()).flush();
 		verify(mocedAttachment2).setWorkItem(mockedWorkItem);

@@ -8,11 +8,14 @@ import javax.xml.bind.JAXBContext;
 import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Priority;
 import org.hcmus.tis.model.WorkItem;
+import org.hcmus.tis.model.WorkItemActivity;
 import org.hcmus.tis.model.WorkItemContainer;
 import org.hcmus.tis.model.WorkItemStatus;
 import org.hcmus.tis.model.WorkItemType;
+import org.hcmus.tis.model.WorkItemVersion;
 import org.hcmus.tis.repository.WorkItemHistoryRepository;
 import org.hcmus.tis.repository.WorkItemRepository;
+import org.hcmus.tis.repository.WorkItemVersionRepository;
 
 privileged aspect WorkItem_Roo_JavaBean {
     
@@ -128,6 +131,15 @@ privileged aspect WorkItem_Roo_JavaBean {
         this.asignee = asignee;
     }
     
+    
+    public WorkItemVersion WorkItem.getHeadVersion() {
+        return this.headVersion;
+    }
+    
+    public void WorkItem.setHeadVersion(WorkItemVersion headVersion) {
+        this.headVersion = headVersion;
+    }
+    
     public WorkItemStatus WorkItem.getStatus() {
         return this.status;
     }
@@ -143,5 +155,6 @@ privileged aspect WorkItem_Roo_JavaBean {
     public void WorkItem.setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+    
     
 }
