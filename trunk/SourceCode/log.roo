@@ -828,3 +828,18 @@ hint
 focus --class ~.model.ProjectProcess
 finder list 
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-06 11:20:17
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-29 08:28:43
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-29 11:03:09
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-29 11:35:07
+service --entity ~.model.WorkItem --interface org.hcmus.tis.service.WorkItemService
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-29 13:08:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-29 14:15:36
+hint
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-29 16:40:44
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-08-09 19:56:48
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-09 21:59:06
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-08-19 19:26:48
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-08-19 19:43:39
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-08-19 19:45:02
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-08-19 20:42:18
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-02 22:29:21

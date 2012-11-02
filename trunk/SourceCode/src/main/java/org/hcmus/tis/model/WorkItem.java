@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
@@ -79,7 +80,24 @@ public class WorkItem {
 		marshaller.marshal(xAdditionalFields, writer);
 		this.additionalFields = writer.toString();
 	}
-
+	@OneToOne
+	private WorkItemVersion headVersion;
+	public WorkItemVersion getCurrentVersion(){
+		WorkItemVersion version = new WorkItemVersion();
+		version.setAdditionalFields(additionalFields);
+		version.setAsignee(asignee);
+		version.setAttachments(attachments);
+		version.setDescription(description);
+		version.setDueDate(dueDate);
+		version.setPriority(priority);
+		version.setStatus(status);
+		version.setStatus(status);
+		version.setTitle(title);
+		version.setWorkItem(this);
+		version.setWorkItemContainer(workItemContainer);
+		version.setWorkItemType(workItemType);
+		return version;
+	}
 	public List<Field> getAdditionFields() throws JAXBException {
 		List<Field> additionFiels = new ArrayList<Field>();
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

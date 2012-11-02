@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.persistence.TypedQuery;
@@ -19,10 +20,11 @@ import org.hcmus.tis.model.MemberInformation;
 import org.hcmus.tis.model.Project;
 import org.hcmus.tis.model.ProjectDataOnDemand;
 import org.hcmus.tis.repository.EventRepository;
+import org.hcmus.tis.repository.MemberInformationRepository;
 import org.hcmus.tis.repository.ProjectRepository;
 import org.hcmus.tis.util.Parameter;
 import org.hibernate.mapping.Array;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,11 +58,14 @@ public class ProjectControllerTest extends AbstractShiroTest{
 	private Project mockedProject;
 	@Mock
 	private ProjectRepository projectRepository;
+	@Mock
+	private MemberInformationRepository memberInformationRepository;
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		aut = new ProjectController();
 		aut.setProjectRepository(projectRepository);
+		aut.setMemberInformationRepository(memberInformationRepository);
 		 doReturn(mockedSession).when(mockedSubject).getSession();
 		 doReturn(mockedLoginedAccount).when(mockedSession).getAttribute("account");
 		doReturn(true).when(mockedSubject).isAuthenticated();
@@ -71,39 +76,23 @@ public class ProjectControllerTest extends AbstractShiroTest{
 	public void tearDown(){
 		clearSubject();
 	}
-//	@Test
-//	public void testFindProjectsByNameLikeWhenNameEmpty() {
-//		ProjectController controller = new ProjectController();
-//		PowerMockito.when(Project.findAllProjects()).thenReturn(null);
-//		controller.findProjectsQuickly("", uiModel, 1, 2);
-//		PowerMockito.verifyStatic();
-//		Project.findProjectEntries(0, 2);
-//		verify(uiModel).addAttribute(eq("parameters"), anyCollection());
-//	}
-//	@Test
-//	public void testFindProjectByNameWhenNameNotNull(){
-//		ProjectController controller = new ProjectController();
-//		PowerMockito.mockStatic(Project.class);
-//		String name = "name";
-//		TypedQuery<Project> mockResult =  mock(TypedQuery.class);
-//		when(mockResult.getResultList()).thenReturn(new Vector<Project>());
-//		PowerMockito.when(Project.findProjectsByNameLike(eq(name), anyInt(), anyInt())).thenReturn(mockResult);
-//		Model mockUIModel = mock(Model.class);
-//		
-//		controller.findProjectsQuickly(name, mockUIModel, null, null);
-//		
-//		PowerMockito.verifyStatic();
-//		Project.findProjectsByNameLike(name, 0, 10);
-//		verify(mockUIModel).addAttribute("query", name);
-//		verify(mockUIModel).addAttribute(eq("parameters"), anyCollectionOf(Parameter.class));
-//	}
 	@Test
 	public void testListMembers(){
 		doReturn(new HashSet<MemberInformation>()).when(mockedProject).getMemberInformations();
-		doReturn(mockedProject).when(projectRepository).findOne((long)1);
-		//String result = aut.listMembers((long)1, uiModel);
-		
-		//verify(uiModel).addAttribute(eq("memberinformations"), anyCollection());
+		String recentAction = "action";
+		Long recentMemberId = (long)1;
+		Set<MemberInformation> members = mock(Set.class);
+		doReturn(members).when(mockedProject).getMemberInformations();
+		Long projectId = mockedProject.getId();
+		doReturn(mockedProject).when(projectRepository).findOne(projectId);
+		doReturn(mockedProject).when(projectRepository).findOne((long)1);	
+		MemberInformation recentMember = mock(MemberInformation.class);
+		doReturn(recentMember).when(memberInformationRepository).findOne(recentMemberId);
+		String result = aut.listMembers(projectId, uiModel, recentAction, recentMemberId);
+		verify(uiModel).addAttribute("recentAction", recentAction);
+		verify(uiModel).addAttribute("recentMember", recentMember);
+		verify(uiModel).addAttribute("memberinformations", members);
+		assertEquals("projects/member", result);
 	}
 	@Test
 	public void testGetEvents(){
@@ -125,8 +114,8 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		DSRestResponse restResponse = aut.getEvents(id, encodedMemberIds);
 		
 		verify(mockedProject).getEventsOfMembers();
-		Assert.assertEquals(0, restResponse.getResponse().getStatus());
-		Assert.assertEquals(2, restResponse.getResponse().getData().size());
+		assertEquals(0, restResponse.getResponse().getStatus());
+		assertEquals(2, restResponse.getResponse().getData().size());
 	}
 	@Test
 	public void testCreateEvent(){
@@ -145,8 +134,8 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		
 		verify(projectRepository).findOne(projectId);
 		verify(mockedEvents).add(mockedEvent);
-		Assert.assertEquals(0, restResponse.getResponse().getStatus());
-		Assert.assertEquals(1, restResponse.getResponse().getData().size());
+		assertEquals(0, restResponse.getResponse().getStatus());
+		assertEquals(1, restResponse.getResponse().getData().size());
 	}
 	@Test
 	public void testUpdateEvent(){
@@ -163,9 +152,9 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		
 		verify(eventRepository).save(mockedEvent);
 		verify(mockedEvent).setId(id);
-		Assert.assertEquals(0, restResponse.getResponse().getStatus());
-		Assert.assertEquals(1, restResponse.getResponse().getData().size());
-		Assert.assertTrue(restResponse.getResponse().getData().contains(mockedResultEvent));
+		assertEquals(0, restResponse.getResponse().getStatus());
+		assertEquals(1, restResponse.getResponse().getData().size());
+		assertTrue(restResponse.getResponse().getData().contains(mockedResultEvent));
 	}
 	@Test
 	public void testDeleteEvent(){
@@ -184,9 +173,9 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		
 		verify(events).remove(mockedEvent);
 		verify(eventRepository).delete(mockedEvent);
-		Assert.assertEquals(0, restResponse.getResponse().getStatus());
-		Assert.assertEquals(1, restResponse.getResponse().getData().size());
-		Assert.assertTrue(restResponse.getResponse().getData().contains(mockedEvent));
+		assertEquals(0, restResponse.getResponse().getStatus());
+		assertEquals(1, restResponse.getResponse().getData().size());
+		assertTrue(restResponse.getResponse().getData().contains(mockedEvent));
 		
 	}
 	@Test
@@ -197,7 +186,7 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		
 		String result = aut.getPlan(itemId, uiModel);
 		verify(uiModel).addAttribute("project", mockedProject);
-		Assert.assertEquals("projects/roadmap", result);
+		assertEquals("projects/roadmap", result);
 	}
 	List<SiteMapItem> siteMapItems;
 	@Test
@@ -222,10 +211,10 @@ public class ProjectControllerTest extends AbstractShiroTest{
 		String result = aut.showhomepage(id, uiModel);
 		
 		verify(projectRepository).findOne(id);
-		Assert.assertEquals("projects/homepage", result);
+		assertEquals("projects/homepage", result);
 		verify(uiModel).addAttribute(eq("siteMapItems"), any(List.class));
-		Assert.assertEquals(2, siteMapItems.size());
-		Assert.assertEquals("name parent", siteMapItems.get(0).getName());
-		Assert.assertEquals("/projects/2", siteMapItems.get(0).getUrl());
+		assertEquals(2, siteMapItems.size());
+		assertEquals("name parent", siteMapItems.get(0).getName());
+		assertEquals("/projects/2", siteMapItems.get(0).getUrl());
 	}
 }

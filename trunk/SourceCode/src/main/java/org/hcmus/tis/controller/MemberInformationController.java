@@ -49,6 +49,12 @@ public class MemberInformationController {
 	@Autowired
 	private MemberRoleRepository memberRoleRepository;
 
+	public MemberRoleRepository getMemberRoleRepository() {
+		return memberRoleRepository;
+	}
+	public void setMemberRoleRepository(MemberRoleRepository memberRoleRepository) {
+		this.memberRoleRepository = memberRoleRepository;
+	}
 	@RequestMapping(params = {"form"}, produces = "text/html")
 	public String createForm(Model uiModel,
 			@PathVariable("projectId") Long projectId) {

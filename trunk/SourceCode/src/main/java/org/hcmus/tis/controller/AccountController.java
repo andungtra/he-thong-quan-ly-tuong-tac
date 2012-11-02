@@ -80,12 +80,6 @@ public class AccountController {
 	@RequestMapping(params = "form", produces = "text/html")
 	public String createForm(Model uiModel) {
 		populateEditForm(uiModel, new Account());
-		List<String[]> dependencies = new ArrayList<String[]>();
-		if (appRoleRepository.count() == 0) {
-			dependencies.add(new String[] { "applicationrole",
-					"applicationroles" });
-		}
-		uiModel.addAttribute("dependencies", dependencies);
 		return "accounts/create";
 	}
 

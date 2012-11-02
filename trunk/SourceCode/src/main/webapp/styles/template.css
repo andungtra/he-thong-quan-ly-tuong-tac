@@ -608,9 +608,20 @@ a:hover {
 }
 
 .history{
-	padding-left:25px;
-	background-image:url("../images/history-icon.png");
-	background-repeat:no-repeat;	
+/* 	background-image:url("../images/"); */
+	background-repeat:no-repeat;
+	border-left:solid gray 1px;
+	border-bottom: solid gray 1px;
+	overflow: hidden;	
+	padding: 10px;
+}
+.activity_avatar{
+	float: left;
+}
+.activity_content{
+	float: left;
+	margin-left: 10px;
+	ba
 }
 .comment{
 	color:#333;

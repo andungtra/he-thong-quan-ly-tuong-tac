@@ -108,20 +108,18 @@ public class IterationControllerTest extends AbstractShiroTest {
 	@Test
 	public void testCreateSubIteration(){
 		String result = aut.create(project.getId(),subIteration , bindingResult, uiModel, mockedHttpServletRequest);
-		
-		//verify(subIteration).persist();
+		verify(iterationRepository).save(subIteration);
 		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
-		//verify(subIteration).getParentProjectOrMyself();
-		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+		verify(subIteration).getParentProjectOrMyself();
+		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/iterations", result);
 	}
 	@Test
 	public void testUpdateSubIteration(){
 		String result = aut.update(project.getId(),subIteration , bindingResult, uiModel, mockedHttpServletRequest);
-		
-		//verify(subIteration).merge();
+		verify(iterationRepository).save(subIteration);
 		verify(iteration, times(0)).setParentContainer(any(WorkItemContainer.class));
-		//verify(subIteration).getParentProjectOrMyself();
-		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+		verify(subIteration).getParentProjectOrMyself();
+		Assert.assertEquals("redirect:/projects/"+ subIteration.getParentProjectOrMyself().getId() +"/iterations", result);
 	}
 	private Project projectForTestCreateTopIteration;
 	@Test
@@ -144,10 +142,10 @@ public class IterationControllerTest extends AbstractShiroTest {
 		
 		String result = aut.create(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
 		
-		//verify(iteration).persist();
+		verify(iterationRepository).save(iteration);
 		verify(iteration).setParentContainer(project);
 		verify(iteration).getParentProjectOrMyself();
-		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/iterations", result);
 	}
 	@Test
 	public void testUpdateTopIteration(){
@@ -168,11 +166,10 @@ public class IterationControllerTest extends AbstractShiroTest {
 		}).when(iteration).getParentProjectOrMyself();
 		
 		String result = aut.update(project.getId(),iteration , bindingResult, uiModel, mockedHttpServletRequest);
-		
-		//verify(iteration).merge();
+		verify(iterationRepository).save(iteration);
 		verify(iteration).setParentContainer(project);
 		verify(iteration).getParentProjectOrMyself();
-		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/roadmap", result);
+		Assert.assertEquals("redirect:/projects/"+ iteration.getParentProjectOrMyself().getId() +"/iterations", result);
 	}
 	@Test
 	public void testUpdateForm(){
